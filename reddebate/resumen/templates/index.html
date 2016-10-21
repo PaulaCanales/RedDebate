@@ -1,0 +1,26 @@
+
+<h1 style="text-align:center;">Resumen de Debates</h1>
+
+
+
+{% for deb in object_list %}
+<table border=1 width=1200>
+    <tr> <td width=400 ><p> {{ deb.titulo }} </p></td>
+
+    <td width=500> <p>{{ deb.argumento }} </p></td> 
+	<td width=300> <button type='input'   style="cursor:pointer; width:200px; height: 35px; padding:8px; float:left; margin-top:10px; margin-right:10px;" > Ver Debate</button></td> 
+    </tr>
+</table>
+
+{% endfor %}
+
+<button type='input'   style="cursor:pointer; width:200px; height: 35px; padding:8px; float:left; margin-top:10px; margin-right:10px;" > Nuevo Debate</button> </div>
+
+
+<h3>Nuevo Bloque de horario</h3>
+			<label for='block'>Bloque: </label><input  onchange="validar()" onkeyup="validar()" name="block" type="text" ><br>
+			<label for='start'>Hora inicio: </label><input i onchange="validar()" onkeyup="validar()" type="time" name="start"  min="0" max="23"><br>
+			
+			<a  style="display:inline;cursor:pointer; width:80px; height: 35px; padding:8px; margin-top:10px">Cancelar</a>
+			<a  style="cursor:pointer; width:80px; height: 35px; padding:8px; margin-top:10px">Guardar</a>
+		</form>
