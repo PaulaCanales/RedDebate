@@ -11,7 +11,7 @@ from resumen.models import Usuario, Debate
 
 #class PhotoDetailView(DetailView):
  #   model = Photo
-
+##hola
 def index(request):
 	category_list = Debate.objects.all()
 	context = {'object_list': category_list}
