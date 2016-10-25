@@ -1,8 +1,25 @@
 
-<h1 style="text-align:center;">Resumen de Debates</h1>
+    {% load staticfiles %}
+    <html>
+        <head>
+            <title>RED DE DEBATE</title>
+            <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+            <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+            <link href='//fonts.googleapis.com/css?family=Lobster&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+            <link rel="stylesheet" href="{% static 'css/blog.css' %}">
+        </head>
+        <body>
+            
+            <div class="content container">
+                <div class="row">
+                    <div class="col-md-8">
+                        {% block content %}
+                        {% endblock %}
+                    </div>
+                </div>
+            </div>
 
-
-
+<h1><a href="/resumen">RED DE DEBATE</a></h1>
 {% for deb in object_list %}
 <table border=1 width=1200>
     <tr> <td width=400 ><p> {{ deb.titulo }} </p></td>
@@ -14,13 +31,8 @@
 
 {% endfor %}
 
-<button type='input'   style="cursor:pointer; width:200px; height: 35px; padding:8px; float:left; margin-top:10px; margin-right:10px;" > Nuevo Debate</button> </div>
-
-
-<h3>Nuevo Debate </h3>
-			<label for='block'>título: </label><input  onchange="validar()" onkeyup="validar()" name="block" type="text" ><br>
-			<label for='start'>Argumento inicial: </label><input i onchange="validar()" onkeyup="validar()" type="time" name="start"  min="0" max="23"><br>
-			
-			<a  style="display:inline;cursor:pointer; width:80px; height: 35px; padding:8px; margin-top:10px">Cancelar</a>
-			<a  style="cursor:pointer; width:80px; height: 35px; padding:8px; margin-top:10px">Guardar</a>
-		</form>
+<div class="page-header">
+                <a href="{% url 'post_new' %}" class="top-menu">Nuevo Debate</a> 
+       		</div>
+        </body>
+    </html>

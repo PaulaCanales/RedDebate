@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.views.generic import ListView, DetailView
+from .forms import PostForm
 
 # Create your views here.
 from django.http import HttpResponse
@@ -25,3 +26,8 @@ def index(request):
 		#argumentos[i] = debates[i].argumento()
 #	html = "<html><body>It is now %s  .</body></html>" %  titulos
 #	return HttpResponse(html)
+
+#Formulario
+def post_new(request):
+        form = PostForm()
+        return render(request, 'post_edit.html', {'form': form})
