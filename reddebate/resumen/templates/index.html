@@ -19,7 +19,7 @@
                 </div>
             </div>
 
-<h1><a href="reddebate/resumen">RED DE DEBATE</a></h1>
+<h1><a href="{% url 'resumen' %}" >RED DE DEBATE</a></h1>
 {% for deb in object_list %}
 <table border=1 width=1200>
     <tr> <td width=400 ><p> {{ deb.titulo }} </p></td>
