@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 
-{% extends 'index.html' %}
+{% extends 'base.html' %}
 
-{% block content %}  
+{% block content %}
+<div class="container">  
 <h3>Publicar Debate</h3>
 <form method="POST" class="post-form">{% csrf_token %}
 	{{ form.as_p }}
 	<button type="submit" class="saveform">Publicar</button>
 </form>
+</div>
 {% endblock%}

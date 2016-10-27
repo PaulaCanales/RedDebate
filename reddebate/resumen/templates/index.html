@@ -1,26 +1,12 @@
 <!DOCTYPE html>
-{% load staticfiles %}
+{% extends 'base.html' %}
+{% load static %}
+
 <html>
-	<head>
-		<title>RED DE DEBATE </title>
-       <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
-       <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
-       <link href='//fonts.googleapis.com/css?family=Lobster&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
-       <link rel="stylesheet" href="{% static 'css/blog.css' %}">
-	</head>
-    <body>
-	
-	<div class="page-header"><h1>RED DE DEBATE</h1></div>
-	
-	<!--barra superior-->
-	<nav id="page_sub_nav" class="clearfix athena-big-menu"><span class="breadcrumbs_nav contained-and-centered"><span class="float-left"><h3 class="barrasuperior"></h3></span>
-	<a class="" href="{% url 'index' %}" id="inicio"><span>Inicio</span></a>
-	<a class="" href="{% url 'post_new' %}" id="nuevodebate"><span>Nuevo Debate</span></a>
-	</span></nav>
 	{% block content %}
-	{% endblock %}
 	<!--tabla de debates-->
-	<div class="tabladebates">
+	<div class="container">
+	<h3> Listado </h3>
 	{% for deb in object_list %}
 	<table border=1 width=1200>
 		<tr> <td width=400 ><p> {{ deb.titulo }} </p></td>
@@ -31,4 +17,5 @@
 	{% endfor %}
 	</div>
 	</body>
+	{% endblock content %}
 </html>
