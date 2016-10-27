@@ -6,16 +6,22 @@
 	{% block content %}
 	<!--tabla de debates-->
 	<div class="container">
-	<h3> Listado </h3>
-	{% for deb in object_list %}
-	<table border=1 width=1200>
-		<tr> <td width=400 ><p> {{ deb.titulo }} </p></td>
-		<td width=500> <p>{{ deb.argumento }} </p></td> 
-		<td width=300> <button type='input' style="cursor:pointer; width:200px; height: 35px; padding:8px; float:left; margin-top:10px; margin-right:10px;" > Ver Debate</button></td> 
-		</tr>
-	</table>
-	{% endfor %}
+		<h3> Listado </h3>
+		<table class="table" width=1200>
+			<tr>
+				<td><strong>Título</strong></td>
+				<td><strong>Descripción</strong></td>
+				<td></td>
+			</tr>
+		{% for deb in object_list %}
+			<tr> 
+				<td width=400 ><p> {{ deb.titulo }} </p></td>
+				<td width=500> <p>{{ deb.argumento }} </p></td> 
+				<td width=300> <button type='input' style="cursor:pointer; width:200px; height: 35px; padding:8px; float:left; margin-top:10px; margin-right:10px;" > Ver Debate</button></td> 
+			</tr>
+		{% endfor %}
+
+		</table>
 	</div>
-	</body>
 	{% endblock content %}
 </html>
