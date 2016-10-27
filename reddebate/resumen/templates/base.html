@@ -18,17 +18,7 @@
 	<a class="" href="{% url 'post_new' %}" id="nuevodebate"><span>Nuevo Debate</span></a>
 	</span></nav>
 	{% block content %}
-	{% endblock %}
-	<!--tabla de debates-->
-	<div class="tabladebates">
-	{% for deb in object_list %}
-	<table border=1 width=1200>
-		<tr> <td width=400 ><p> {{ deb.titulo }} </p></td>
-		<td width=500> <p>{{ deb.argumento }} </p></td> 
-		<td width=300> <button type='input' style="cursor:pointer; width:200px; height: 35px; padding:8px; float:left; margin-top:10px; margin-right:10px;" > Ver Debate</button></td> 
-		</tr>
-	</table>
-	{% endfor %}
-	</div>
+	{% endblock content %}
+	
 	</body>
 </html>
