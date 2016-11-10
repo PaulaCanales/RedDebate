@@ -22,6 +22,7 @@ class Debate(models.Model):
     argumento = models.CharField(max_length=100)
     date = models.DateField(default=datetime.now, blank=True)
     id_usuario= models.ForeignKey(Usuario)
+    estado= models.CharField(max_length=20, default='abierto')
 
     def __unicode__(self): # __unicode__ on Python 2
 		return self.titulo
