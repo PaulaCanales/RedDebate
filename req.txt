@@ -1,1 +1,1 @@
-pip install python-social-auth
+python-social-auth
