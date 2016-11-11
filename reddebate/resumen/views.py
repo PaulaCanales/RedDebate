@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.views.generic import ListView, DetailView
-from .forms import PostForm
+#from .forms import PostForm
 from django.shortcuts import redirect
 import requests
 
