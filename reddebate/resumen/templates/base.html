@@ -11,29 +11,6 @@
 </script>
 	</head>
     <body>
-  <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
-
- <script type="text/javascript" >
-  function despliega_debate(id_deb){
-    console.log("funciona .. hasta aqui");
-
-        $.ajax({
- 
-           url:  'debate' ,
-            type: 'POST',
-            data:{ id : id_deb,
-                   csrfmiddlewaretoken: '{{ csrf_token }}'} ,
-                  success: function(data) {
-                    console.log(data);
-                    console.log("sucess");
-                  },
-                  failure: function(data) {
-                      alert('Error de conexión');
-                  },
-                  crossDomain: true
-              });
-    }
-</script>
 
 
         <script>
@@ -94,6 +71,28 @@
             statusChangeCallback(response);
           });
 
+          function onLogin(response) {
+  if (response.status == 'connected') {
+    FB.api('/me?fields=first_name', function(data) {
+      var welcomeBlock = document.getElementById('fb-welcome');
+      welcomeBlock.innerHTML = 'Hello, ' + data.first_name + '!';
+    });
+  }
+}
+
+FB.getLoginStatus(function(response) {
+  // Check login status on load, and if the user is
+  // already logged in, go directly to the welcome message.
+  if (response.status == 'connected') {
+    onLogin(response);
+  } else {
+    // Otherwise, show Login dialog first.
+    FB.login(function(response) {
+      onLogin(response);
+    }, {scope: 'user_friends, email'});
+  }
+});
+
           };
 
           // Load the SDK asynchronously
@@ -117,27 +116,7 @@
           }
 // Place following code after FB.init call.
 
-function onLogin(response) {
-  if (response.status == 'connected') {
-    FB.api('/me?fields=first_name', function(data) {
-      var welcomeBlock = document.getElementById('fb-welcome');
-      welcomeBlock.innerHTML = 'Hello, ' + data.first_name + '!';
-    });
-  }
-}
 
-FB.getLoginStatus(function(response) {
-  // Check login status on load, and if the user is
-  // already logged in, go directly to the welcome message.
-  if (response.status == 'connected') {
-    onLogin(response);
-  } else {
-    // Otherwise, show Login dialog first.
-    FB.login(function(response) {
-      onLogin(response);
-    }, {scope: 'user_friends, email'});
-  }
-});
 
 
 
@@ -169,7 +148,12 @@ FB.getLoginStatus(function(response) {
                     </li>
                     <li>
                         <a href="#">Contacto</a>
+                        <div style="align-content: right" >
+                        <fb:login-button scope="public_profile,email" onlogin="checkLoginState();"   data-size="xlarge" >
+                        </fb:login-button>
+                    </div>
                     </li>
+
                 </ul>
             </div>
              

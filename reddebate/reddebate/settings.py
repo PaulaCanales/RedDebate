@@ -112,6 +112,8 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 APPEND_SLASH=False
+
+
 AUTHENTICATION_BACKENDS = (
  #'social.backends.facebook.FacebookAppOAuth2',
  'social.backends.facebook.FacebookOAuth2',
