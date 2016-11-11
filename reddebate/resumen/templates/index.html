@@ -10,7 +10,7 @@
 	{% block content %}
 	<!--tabla de debates  onclick='javascript:despliega_debate("{{ deb.id_debate }}");'  -->
 	<div class="container">
-		<h3> Listado </h3>
+		<h3> Debates Abiertos </h3>
 		<table class="table">
 			<tr>
 				<td><strong>Título</strong></td>
@@ -18,15 +18,41 @@
 				<td></td>
 			</tr>
 		{% for deb in object_list %}
+		{% ifequal deb.estado 'abierto'%}
 			<tr> 
 				<td width=400 ><p> {{ deb.id_debate }} </p></td>
 				<td width=400 ><p> {{ deb.titulo }} </p></td>
 				<td width=500> <p>{{ deb.descripcion }} </p></td> 
+<<<<<<< HEAD
 				<td width=300> <a  style="cursor:pointer; width:200px; height: 35px; padding:8px; float:left; margin-top:10px; margin-right:10px;" href="{% url 'despliega' deb.id_debate %}" > Ver Debate</a></td>
 		
 			
 
+=======
+				<td width=300> <button type='input' style="cursor:pointer; width:200px; height: 35px; padding:8px; float:left; margin-top:10px; margin-right:10px;" > Ver Debate</button></td> 
+>>>>>>> origin/master
 			</tr>
+		{%endifequal%}
+		{% endfor %}
+
+		</table>
+
+		<h3> Debates Cerrados</h3>
+		
+		<table class="table">
+			<tr>
+				<td><strong>Título</strong></td>
+				<td><strong>Descripción</strong></td>
+				<td></td>
+			</tr>
+		{% for deb in object_list %}
+		{% ifequal deb.estado 'cerrado'%}
+			<tr> 
+				<td width=400 ><p> {{ deb.titulo }} </p></td>
+				<td width=500> <p>{{ deb.descripcion }} </p></td> 
+				<td width=300> <button type='input' style="cursor:pointer; width:200px; height: 35px; padding:8px; float:left; margin-top:10px; margin-right:10px;" > Ver Debate</button></td> 
+			</tr>
+		{%endifequal%}	
 		{% endfor %}
 
 		</table>
