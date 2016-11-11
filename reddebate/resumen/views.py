@@ -1,6 +1,6 @@
 from django.shortcuts import render, render_to_response
 from django.views.generic import ListView, DetailView
-<<<<<<< HEAD
+
 from .forms import PostForm
 from django.http import HttpResponse
 from django.template import loader
