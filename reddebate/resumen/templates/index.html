@@ -17,7 +17,7 @@
 		{% ifequal deb.estado 'abierto'%}
 			<tr> 
 				<td width=400 ><p> {{ deb.titulo }} </p></td>
-				<td width=500> <p>{{ deb.argumento }} </p></td> 
+				<td width=500> <p>{{ deb.descripcion }} </p></td> 
 				<td width=300> <button type='input' style="cursor:pointer; width:200px; height: 35px; padding:8px; float:left; margin-top:10px; margin-right:10px;" > Ver Debate</button></td> 
 			</tr>
 		{%endifequal%}
@@ -37,7 +37,7 @@
 		{% ifequal deb.estado 'cerrado'%}
 			<tr> 
 				<td width=400 ><p> {{ deb.titulo }} </p></td>
-				<td width=500> <p>{{ deb.argumento }} </p></td> 
+				<td width=500> <p>{{ deb.descripcion }} </p></td> 
 				<td width=300> <button type='input' style="cursor:pointer; width:200px; height: 35px; padding:8px; float:left; margin-top:10px; margin-right:10px;" > Ver Debate</button></td> 
 			</tr>
 		{%endifequal%}	
