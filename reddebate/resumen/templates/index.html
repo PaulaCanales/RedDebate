@@ -2,9 +2,13 @@
 {% extends 'base.html' %}
 {% load static %}
 
+
+
 <html>
+
+
 	{% block content %}
-	<!--tabla de debates-->
+	<!--tabla de debates  onclick='javascript:despliega_debate("{{ deb.id_debate }}");'  -->
 	<div class="container">
 		<h3> Listado </h3>
 		<table class="table">
@@ -15,9 +19,13 @@
 			</tr>
 		{% for deb in object_list %}
 			<tr> 
+				<td width=400 ><p> {{ deb.id_debate }} </p></td>
 				<td width=400 ><p> {{ deb.titulo }} </p></td>
-				<td width=500> <p>{{ deb.argumento }} </p></td> 
-				<td width=300> <button type='input' style="cursor:pointer; width:200px; height: 35px; padding:8px; float:left; margin-top:10px; margin-right:10px;" > Ver Debate</button></td> 
+				<td width=500> <p>{{ deb.descripcion }} </p></td> 
+				<td width=300> <a  style="cursor:pointer; width:200px; height: 35px; padding:8px; float:left; margin-top:10px; margin-right:10px;" href="{% url 'despliega' deb.id_debate %}" > Ver Debate</a></td>
+		
+			
+
 			</tr>
 		{% endfor %}
 
@@ -25,3 +33,8 @@
 	</div>
 	{% endblock content %}
 </html>
+
+
+
+
+ 

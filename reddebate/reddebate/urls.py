@@ -20,9 +20,11 @@ from django.views.generic import TemplateView
 
 urlpatterns = [
 	url(r'^resumen/', include('resumen.urls')),
+    url(r'^debate/', include('debate.urls')),
     url(r'^admin/', admin.site.urls),
-    #Python social auth
 
+    
+    #Python social auth
     url('social/', include('social.apps.django_app.urls', namespace='social')),
 	# Home URL
 	url(r'^$', TemplateView.as_view(template_name="home.html"), name='social'),

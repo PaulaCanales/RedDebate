@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+{% extends 'base.html' %}
+{% load static %}
+
+
+<html>
+	{% block content %}
+	<!--tabla de debates-->
+	<div class="container">
+
+	{% for deb in debate %}
+				<h3> {{ deb.titulo }}</h3>
+		<div>
+			<h4>Descripcion: {{ deb.descripcion }}</h4>
+			<p>Fecha inicio: {{ deb.date }}</p>
+			<p>estado: {{ deb.estado }}</p>
+			<!--<p>usuario {{ usuario.id_usuario_id }}</p>-->
+		</div>
+	{% endfor %}
+	{% endblock content %}
+</html>

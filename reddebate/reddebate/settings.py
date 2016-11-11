@@ -33,6 +33,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'resumen',
+    'debate', #aplicación de "Ver debate"
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -48,6 +49,7 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
@@ -65,6 +67,9 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'social.apps.django_app.context_processors.backends',
+                'social.apps.django_app.context_processors.login_redirect',
+
             ],
         },
     },
@@ -106,10 +111,11 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+APPEND_SLASH=False
 AUTHENTICATION_BACKENDS = (
- 'social.backends.facebook.FacebookAppOAuth2',
+ #'social.backends.facebook.FacebookAppOAuth2',
  'social.backends.facebook.FacebookOAuth2',
- "django.contrib.auth.backends.ModelBackend",
+ 'django.contrib.auth.backends.ModelBackend',
  )
 
 #Facebook inicio de sesión con social-auth
@@ -117,31 +123,38 @@ SOCIAL_AUTH_FACEBOOK_KEY = '644604552363752'
 SOCIAL_AUTH_FACEBOOK_SECRET = '84c5cbb25d73be84f4f4d050b9877a78'
 
 SOCIAL_AUTH_URL_NAMESPACE = 'social'
-SOCIAL_AUTH_LOGIN_REDIRECT_URL = 'resumen/'
+SOCIAL_AUTH_LOGIN_REDIRECT_URL =  '/resumen/'
 SOCIAL_AUTH_FACEBOOK_SCOPE =['email']
-#SOCIAL_AUTH_USER_MODEL = "users.MyUser" auth.User
+SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {
+    'fields': 'id,name,email',
+    }
+#SOCIAL_AUTH_STRATEGY = 'social.strategies.django_strategy.DjangoStrategy'
+#SOCIAL_AUTH_STORAGE = 'social.apps.django_app.default.models.DjangoStorage'
 
-SOCIAL_AUTH_PIPELINE = (
+
+#SOCIAL_AUTH_USER_MODEL = 'auth.User'
+
+#SOCIAL_AUTH_PIPELINE = (
 #Obtiene las instancias de social_user y user
-'social.pipeline.social_auth.social_details',
-'social.pipeline.social_auth.social_uid',
-'social.pipeline.social_auth.auth_allowed',
+#'social.pipeline.social_auth.social_details',
+#'social.pipeline.social_auth.social_uid',
+#'social.pipeline.social_auth.auth_allowed',
 #Recibe según el user.email la instancia del usuario y lo reemplaza con uno que recibió anteriormente
-'social.pipeline.social_auth.social_user',
-'social.pipeline.social_auth.associate_by_email',
+#'social.pipeline.social_auth.social_user',
+#'social.pipeline.social_auth.associate_by_email',
 #Intenta crear un username válido 
-'social.pipeline.user.get_username',
+#'social.pipeline.user.get_username',
 #Crea un nuevo usuario si todavía no existe
-'social.pipeline.user.create_user',
+#'social.pipeline.user.create_user',
 #Trata de asociar las cuentas
-'social.pipeline.social_auth.associate_user',
+#'social.pipeline.social_auth.associate_user',
 #Recibe y actualiza social_user.extra_data
-'social.pipeline.social_auth.load_extra_data',
+#'social.pipeline.social_auth.load_extra_data',
 #Actualiza los campos de la instancia user con la información que obtiene vía backend
-'social.pipeline.user.user_details',
+#'social.pipeline.user.user_details',
 #Función creado por mi que termina de realizar la autenticación
 #'apps.reddebate.pipelines.login',
-)
+#)
 
 
 # Internationalization
