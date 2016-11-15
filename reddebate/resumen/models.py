@@ -28,9 +28,12 @@ class Debate(models.Model):
 		return self.titulo
 
 
+class Postura(models.Model):
+    #parametros de la tabla. 
+    id_postura = models.AutoField(primary_key=True)
+    postura =  models.NullBooleanField(null=True)
+    id_usuario= models.ForeignKey(Usuario)
+    id_debate= models.ForeignKey(Debate)
 
-
-    
-
-
-
+    def __unicode__(self): # __unicode__ on Python 2
+        return self.postura

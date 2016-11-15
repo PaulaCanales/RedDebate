@@ -10,6 +10,7 @@
 
 	{% for deb in debate %}
 				<h3> {{ deb.titulo }}</h3>
+				<button type="submit" class="btn btn-default">A favor</button><button type="submit" class="btn btn-default">En contra</button>
 		<div>
 			<h4>Descripcion: {{ deb.descripcion }}</h4>
 			<p>Fecha inicio: {{ deb.date }}</p>
