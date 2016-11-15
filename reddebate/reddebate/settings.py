@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/1.10/ref/settings/
 """
 
 import os
+from os.path import join
+
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -28,7 +30,9 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
+TEMPLATE_DIRS=(
+    join(BASE_DIR, 'templates'),
+    )
 # Application definition
 
 INSTALLED_APPS = [
@@ -177,3 +181,5 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
 STATIC_URL = '/static/'
+STATICFILES_DIRS= ( os.path.join(BASE_DIR,'static'),
+    )
