@@ -22,8 +22,19 @@
 			<tr> 
 				
 				<td width=400 ><p> {{ deb.titulo }} </p></td>
-				<td width=500> <p>{{ deb.descripcion }} </p></td> 
-				<td width=300> <a  style="cursor:pointer; width:200px; height: 35px; padding:8px; float:left; margin-top:10px; margin-right:10px;" href="{% url 'despliega' deb.id_debate %}" > Ver Debate</a></td>
+				<td width=500> <p> {{ deb.descripcion }} </p></td>
+
+
+				 <form id="id" method="post" action= "{% url 'index' %}" enctype="multipart/form-data" onsubmit="return confirm('¿Seguro que desea cerrar el debate?');">{% csrf_token %}
+            	 <input type="hidden" value="{{ deb.id_debate }}" name="id_deb">
+            	<td width=200> <button type="submit" class="btn btn-default" style="cursor:pointer; width:200px; height: 35px; padding:8px; float:left; margin-top:10px; margin-right:10px; color:grey" >Cerrar debate</button> </td> 
+
+        	<!--<td><input class="btn btn-primary" type="submit" name="submit" value="A" /></td>-->
+    		</form>
+
+				
+				<td width=200> <a class="btn btn-default" style="cursor:pointer; width:200px; height: 35px; padding:8px; float:left; margin-top:10px; margin-right:10px;" href="{% url 'despliega' deb.id_debate %}" > Ver Debate</a></td>
+
 		
 
 			</tr>
@@ -44,8 +55,10 @@
 		{% ifequal deb.estado 'cerrado'%}
 			<tr> 
 				<td width=400 ><p> {{ deb.titulo }} </p></td>
-				<td width=500> <p>{{ deb.descripcion }} </p></td> 
-				<td width=300> <a  style="cursor:pointer; width:200px; height: 35px; padding:8px; float:left; margin-top:10px; margin-right:10px;" href="{% url 'despliega' deb.id_debate %}" > Ver Debate</a></td>
+				<td width=500> <p> {{ deb.descripcion }} </p></td> 
+				<td width=200> <p> </p></td> 
+
+				<td width=200> <a  class="btn btn-default"  style="cursor:pointer; width:200px; height: 35px; padding:8px; float:left; margin-top:10px; margin-right:10px; margin-left:100px;" href="{% url 'despliega' deb.id_debate %}" > Ver Debate</a></td>
 			</tr>
 		{%endifequal%}	
 		{% endfor %}

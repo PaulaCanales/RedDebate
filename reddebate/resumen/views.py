@@ -15,9 +15,18 @@ from resumen.models import Usuario, Debate
 
 
 def index(request):
-	category_list = Debate.objects.all()
-	context = {'object_list': category_list}
-	return render(request, 'index.html', context)
+    if request.method == 'POST':
+        print("cerrado el debate", request.POST['id_deb'])
+        id_deb = request.POST['id_deb']
+        obj = Debate.objects.get(pk=id_deb)
+        print (obj)
+        obj.estado = 'cerrado'
+        obj.save()
+    category_list = Debate.objects.all()
+    context = {'object_list': category_list}
+    return render(request, 'index.html', context)
+
+
 
 #Formulario
 # def post_new(request):
