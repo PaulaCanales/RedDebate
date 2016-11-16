@@ -2,19 +2,26 @@
 {% extends 'base.html' %}
 {% load static %}
 
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+
 
 <html>
+
 	{% block content %}
 	<!--tabla de debates-->
 	<div class="container">
 
 	{% for deb in debate %}
 				<h3> {{ deb.titulo }}</h3>
-				<button type="submit" class="btn btn-default">A favor</button><button type="submit" class="btn btn-default">En contra</button>
+				<button type="submit" class="btn btn-default" onclick='javascript:cambiar_postura("{{ deb.id_debate }}", 1);'>A favor</button>
+
+				<button type="submit" class="btn btn-default" onclick='javascript:cambiar_postura("{{ deb.id_debate }}", 0);' >En contra</button>
 		<div>
 			<h4>Descripcion: {{ deb.descripcion }}</h4>
 			<p>Fecha inicio: {{ deb.date }}</p>
 			<p>estado: {{ deb.estado }}</p>
+			<div id="tu_postura" > </div>
 			<!--<p>usuario {{ usuario.id_usuario_id }}</p>-->
 		</div>
 	{% endfor %}

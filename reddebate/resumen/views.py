@@ -18,10 +18,10 @@ def index(request):
     if request.method == 'POST':
         print("cerrado el debate", request.POST['id_deb'])
         id_deb = request.POST['id_deb']
-        obj = Debate.objects.get(pk=id_deb)
+        deb = Debate.objects.get(pk=id_deb)
         print (obj)
-        obj.estado = 'cerrado'
-        obj.save()
+        deb.estado = 'cerrado'
+        deb.save()
     category_list = Debate.objects.all()
     context = {'object_list': category_list}
     return render(request, 'index.html', context)
