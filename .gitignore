@@ -12,3 +12,5 @@
 *.pyc
 
 *.pyc
+
+reddebate/resumen/views.pyc
