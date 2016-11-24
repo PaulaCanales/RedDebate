@@ -7,7 +7,7 @@ from django.contrib.auth.models import User
 
 # Create your views here.
 def despliega(request, id_debate): #debate_id
-	if request.method == 'POST':
+	if request.method == 'POST' and ('postu' in request.POST):
 		
 		post_usuario= request.POST['postu'] 
 		print (post_usuario)
@@ -48,13 +48,14 @@ def despliega(request, id_debate): #debate_id
 	
 	
 
-	#def despliega_postura(request): 
-	#	if request.method == 'POST': 
-		#postura= request.POST['postu'] 
-		#id_debate = request.POST['id'] 
-		#postura = request.postu 
-		#id_debate = request.id id_usuario = 1; 
-		#if la postura ya existe, hay que sobreescribirla. 
-		#publicar = Postura(postura=postura, id_debate_id=id_debate, id_usuario_id=id_usuario); 
-		#publicar.save(); 
-		#return ("hola")
+def post_arg(request):
+	print("post_arg")
+	if request.method == 'POST':
+		des = request.POST['descripcion']
+		usuario = request.user
+		debate = id_deb
+		publicar= Argumento(descripcion=des, id_usuario_id=usuario, id_debate_id=debate)
+		publicar.save()
+		return redirect(debate)
+	return render(request, 'post_edit.html')
+

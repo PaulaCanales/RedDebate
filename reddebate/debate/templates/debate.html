@@ -55,7 +55,7 @@
 			<button id="bot_argumento_afavor" type="submit" class="btn btn-default" onclick='javascript:fomulario_argumento_afavor();' >Argumentar</button>
 			<div id="form_argumento_afavor" style="display: none;" > 
 				<form method="POST" class="post-form">{% csrf_token %}
-					<form action="/post_new" id="publicar_form" method="post">{% csrf_token %}
+					<form action="/post_arg" id="publicar_form" method="post">{% csrf_token %}
 		  				<div class="form-group">
 		   		 <input name="argumento" value="" type="text" class="form-control" placeholder="Argumento">
 		  			</div>
@@ -89,10 +89,12 @@
 			</div>
 			<button id="bot_argumento_encontra" type="submit" class="btn btn-default" onclick='javascript:fomulario_argumento_encontra();' >Argumentar</button>
 			<div id="form_argumento_encontra" style="display: none;" > 
+
 				<form method="POST" class="post-form">{% csrf_token %}
-					<form action="/post_new" id="publicar_form" method="post">{% csrf_token %}
+					<form action="{% url 'post_arg' %}" id="publicar_form" method="post">{% csrf_token %}
 		  				<div class="form-group">
 		   		 <input name="argumento" value="" type="text" class="form-control" placeholder="Argumento">
+		   		 <input type="hidden" value="{{ debate.id_debate }}" name="id_deb">
 		  			</div>
 		  		<button type="submit" class="btn btn-default">Publicar</button>
 	</form>
