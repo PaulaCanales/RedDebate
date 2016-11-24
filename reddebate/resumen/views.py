@@ -23,7 +23,9 @@ def index(request):
         deb.estado = 'cerrado'
         deb.save()
     category_list = Debate.objects.all()
-    context = {'object_list': category_list}
+    usuario = request.user.id
+    print("el usuario activo es_: ", usuario)
+    context = {'object_list': category_list, 'usuario': usuario}
     return render(request, 'index.html', context)
 
 

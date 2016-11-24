@@ -34,7 +34,7 @@ class Debate(models.Model):
 class Postura(models.Model):
     #parametros de la tabla. 
     id_postura = models.AutoField(primary_key=True)
-    postura =  models.NullBooleanField(null=True)
+    postura =  models.IntegerField(default=1)
     id_usuario= models.ForeignKey(User)
     id_debate= models.ForeignKey(Debate)
 
