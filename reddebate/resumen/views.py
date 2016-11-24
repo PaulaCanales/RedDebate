@@ -1,5 +1,6 @@
 from django.shortcuts import render, render_to_response
 from django.views.generic import ListView, DetailView
+from django.contrib.auth.models import User
 
 #from .forms import PostForm
 from django.http import HttpResponse
@@ -37,7 +38,9 @@ def post_new(request):
     if request.method == 'POST':
         ti = request.POST['titulo']
         des = request.POST['descripcion']
-        publicar= Debate(titulo=ti, descripcion=des, id_usuario_id=1)
+        usuario = request.user
+        print (usuario.id)
+        publicar= Debate(titulo=ti, descripcion=des, id_usuario_id=usuario.id)
         publicar.save()
         return redirect('index')
     return render(request, 'post_edit.html')
