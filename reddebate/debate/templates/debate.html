@@ -29,11 +29,16 @@
 			<div id="tu_postura" > tu postura actual: {{postura_usr_deb}} </div>
 			<!--<p>usuario {{ usuario.id_usuario_id }}</p>-->
 		</div>
+		{% ifequal postura_usr_deb 'No definido' %}
+		
+		<div id="argumentos" style="display: none;" > 
 
+		{%endifequal%}
 		<h2>Argumentos</h2>
+		
 		<table>
 		<td width="50%">
-		<div >
+		<div style="width:500px; height: 500px; padding:8px; float:left; margin-top:10px; margin-right:10px; color:grey" >
 			<div class="panel panel-default" >
 			  	<!-- Default panel contents --> 
 			
@@ -41,23 +46,28 @@
 
 			  <!-- Table -->
 			  <table class="table">
-			   
-			    <tr><td>contenido 1</td></tr> 
-			    <tr><td>contenido 1</td></tr> 
-			    <tr><td>contenido 1</td></tr> 
-			    <tr><td>contenido 1</td></tr> 
+			  
+			    {% for arg in argF %}
 
+			    <tr><td> {{arg.1}} : {{arg.0}}  </td></tr> 
 			    
+			    {% empty %}
+			    <tr><td> </td></tr> 
+			    {% endfor %}
+
 			  </table>
 
 
 			</div>
-			<button id="bot_argumento_afavor" type="submit" class="btn btn-default" onclick='javascript:fomulario_argumento_afavor();' >Argumentar</button>
+
 			<div id="form_argumento_afavor" style="display: none;" > 
 				<form method="POST" class="post-form">{% csrf_token %}
 					<form action="/post_arg" id="publicar_form" method="post">{% csrf_token %}
 		  				<div class="form-group">
-		   		 <input name="argumento" value="" type="text" class="form-control" placeholder="Argumento">
+		   		 <input name="descripcion" value="" type="text" class="form-control" placeholder="descripcion">
+		   		  <input type="hidden" value="{{ debate.id_debate }}" name="id_deb">
+
+		   		 <input type="hidden" value="1" name="postura">
 		  			</div>
 		  		<button type="submit" class="btn btn-default">Publicar</button>
 	</form>
@@ -65,40 +75,56 @@
 
 
 			 </div>
+
+			{% ifequal postura_usr_deb 'A Favor'  %}
+			{% ifequal t_arg 'no' %}
+			<button id="bot_argumento_afavor" type="submit" class="btn btn-default" onclick='javascript:fomulario_argumento_afavor();'  style="display: block;" >Argumentar</button>
+			{%endifequal%}
+			{%endifequal%}
+
+			
 		</div>
 		</td>
 		<td width="100px"></td>
 		<td width="50%">
-		<div >
+		<div style="width:500px; height: 500px; padding:8px; float:left; margin-top:10px; margin-right:10px; color:grey" >
 			<div class="panel panel-default" >
 			  	<!-- Default panel contents --> 
 			
-			 	 <div class="panel-heading">En Contra</div>
+			 	 <div class="panel-heading" >En Contra</div>
 
 			  <!-- Table -->
-			  <table class="table">
-			   
-			    <tr><td>contenido 1</td></tr> 
-			    <tr><td>contenido 1</td></tr> 
-			    <tr><td>contenido 1</td></tr> 
-			    <tr><td>contenido 1</td></tr> 
+			  <table class="table" >
+			   {% for arg in argC %}
+			    <tr><td>{{ arg.1 }}: {{arg.0}}  </td></tr> 
+ 				{% empty %}
+			    <tr><td> </td></tr> 
+			    {% endfor %}
+
 
 			    
 			  </table>
 			  
 			</div>
-			<button id="bot_argumento_encontra" type="submit" class="btn btn-default" onclick='javascript:fomulario_argumento_encontra();' >Argumentar</button>
+			{% ifequal postura_usr_deb 'En Contra' %}
+			{% ifequal t_arg 'no' %}
+			<button id="bot_argumento_encontra" type="submit" class="btn btn-default" onclick='javascript:fomulario_argumento_encontra();' style="display: block;" >Argumentar</button>
+			{%endifequal%}
+			{%endifequal%}
+
 			<div id="form_argumento_encontra" style="display: none;" > 
 
 				<form method="POST" class="post-form">{% csrf_token %}
-					<form action="{% url 'post_arg' %}" id="publicar_form" method="post">{% csrf_token %}
-		  				<div class="form-group">
-		   		 <input name="argumento" value="" type="text" class="form-control" placeholder="Argumento">
-		   		 <input type="hidden" value="{{ debate.id_debate }}" name="id_deb">
-		  			</div>
-		  		<button type="submit" class="btn btn-default">Publicar</button>
-	</form>
-</form>
+					<form action="/post_arg" id="publicar_form" method="post">{% csrf_token %}
+			  				<div class="form-group">
+						   		 <input name="descripcion" value="" type="text" class="form-control" placeholder="descripcion">
+						   		 <input type="hidden" value="{{ debate.id_debate }}" name="id_deb">
+
+						   		 <input type="hidden" value="0" name="postura">
+						  	</div>
+			  				<button type="submit" class="btn btn-default">Publicar</button>
+					</form>
+				</form>
 
 
 			 </div>
@@ -109,6 +135,7 @@
 
 		</table>
 
+</div>
 
 	{% endblock content %}
 </html>

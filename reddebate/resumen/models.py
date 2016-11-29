@@ -24,8 +24,8 @@ class Debate(models.Model):
     titulo = models.CharField(max_length=50)
     descripcion = models.CharField(max_length=300)
     date = models.DateField(default=datetime.now, blank=True)
-    id_usuario= models.ForeignKey(User)
-    estado= models.CharField(max_length=20, default='abierto')
+    id_usuario = models.ForeignKey(User)
+    estado = models.CharField(max_length=20, default='abierto')
 
     def __unicode__(self): # __unicode__ on Python 2
 		return self.titulo
@@ -34,9 +34,9 @@ class Debate(models.Model):
 class Postura(models.Model):
     #parametros de la tabla. 
     id_postura = models.AutoField(primary_key=True)
-    postura =  models.IntegerField(default=1)
-    id_usuario= models.ForeignKey(User)
-    id_debate= models.ForeignKey(Debate)
+    postura = models.IntegerField(default=1)
+    id_usuario = models.ForeignKey(User)
+    id_debate = models.ForeignKey(Debate)
 
     def __unicode__(self): # __unicode__ on Python 2
         return self.postura
@@ -44,9 +44,11 @@ class Postura(models.Model):
 class Argumento(models.Model):
     #parametros de la tabla. 
     id_argumento = models.AutoField(primary_key=True)
-    descripcion =  models.CharField(max_length=300)
-    id_usuario= models.ForeignKey(User)
-    id_debate= models.ForeignKey(Debate)
+    descripcion = models.CharField(max_length=300)
+    postura = models.IntegerField(default=1)
+    id_usuario = models.ForeignKey(User)
+    id_debate = models.ForeignKey(Debate)
+    
 
     def __unicode__(self): # __unicode__ on Python 2
-        return self.descripcions
+        return self.descripcion

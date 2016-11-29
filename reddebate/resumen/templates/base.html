@@ -73,6 +73,21 @@
                     csrfmiddlewaretoken: '{{ csrf_token }}'} ,
                   success: function(data) {
                     document.getElementById('tu_postura').innerHTML = ' tu postura actual: ' + data;
+                    console.log(data);
+                     if (data == "En Contra"){
+                      document.getElementById('bot_argumento_encontra').style.display = 'block';
+                      document.getElementById('bot_argumento_afavor').style.display = 'none';
+                    }
+                    else{
+                      document.getElementById('bot_argumento_afavor').style.display = 'block';
+                      document.getElementById('bot_argumento_encontra').style.display = 'none';
+
+                    }
+
+                    document.getElementById('argumentos').style.display = 'block';
+
+                   
+
                   },
                   failure: function(data) {
                       alert('Error de conexión');
