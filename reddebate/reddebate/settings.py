@@ -131,7 +131,7 @@ SOCIAL_AUTH_FACEBOOK_SECRET = '84c5cbb25d73be84f4f4d050b9877a78'
 SOCIAL_AUTH_URL_NAMESPACE = 'social'
 
 #luego de la autentificacion del usuario redirecciona a la URL, entonces solo será necesario el decorador @login_required. 
-SOCIAL_AUTH_LOGIN_REDIRECT_URL =  '/resumen/'
+SOCIAL_AUTH_LOGIN_REDIRECT_URL =  'reddebate/resumen/'
 SOCIAL_AUTH_FACEBOOK_SCOPE =['email']
 SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {
     'fields': 'id,name,email',
