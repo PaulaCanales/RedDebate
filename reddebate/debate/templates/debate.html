@@ -12,129 +12,117 @@
 	<!--tabla de debates-->
 	<div class="container">
 
-	
-				<h3> {{ debate.titulo }}</h3>
-				{% ifequal debate.estado 'abierto'%}
+	<h3> {{ debate.titulo }}</h3>
+	{% ifequal debate.estado 'abierto'%}
+		<button type="submit" class="btn btn-default" onclick='javascript:cambiar_postura("{{ debate.id_debate }}", "1");'>A favor</button>
 
-				<button type="submit" class="btn btn-default" onclick='javascript:cambiar_postura("{{ debate.id_debate }}", "1");'>A favor</button>
+		<button type="submit" class="btn btn-default" onclick='javascript:cambiar_postura("{{ debate.id_debate }}", "0");' >En contra</button>
 
-				<button type="submit" class="btn btn-default" onclick='javascript:cambiar_postura("{{ debate.id_debate }}", "0");' >En contra</button>
-
-				{%endifequal%}
-		<div>
-			<h4>Descripcion: {{ debate.descripcion }}</h4>
-			<p>Fecha inicio: {{ debate.date }}</p>
-			<p>estado: {{ debate.estado }}</p>
-			<p>usuario: {{usuario}}</p>
-			<div id="tu_postura" > tu postura actual: {{postura_usr_deb}} </div>
-			<!--<p>usuario {{ usuario.id_usuario_id }}</p>-->
-		</div>
-		{% ifequal postura_usr_deb 'No definido' %}
+	{%endifequal%}
+	<div>
+		<h4>Descripcion: {{ debate.descripcion }}</h4>
+		<p>Fecha inicio: {{ debate.date }}</p>
+		<p>estado: {{ debate.estado }}</p>
+		<p>usuario: {{usuario}}</p>
+		<div id="tu_postura" > tu postura actual: {{postura_usr_deb}} </div>
+		<!--<p>usuario {{ usuario.id_usuario_id }}</p>-->
+	</div>
+	{% ifequal postura_usr_deb 'No definido' %}
 		
 		<div id="argumentos" style="display: none;" > 
+	
 
-		{%endifequal%}
-		<h2>Argumentos</h2>
+	<!-- 
+	{% else %}
+		<div id="argumentos2" style="display: block;" >
+	 ERROR -->
+	
+	{%endifequal%}
+	
+	<h2>Argumentos</h2>
 		
-		<table>
-		<td width="50%">
-		<div style="width:500px; height: 500px; padding:8px; float:left; margin-top:10px; margin-right:10px; color:grey" >
-			<div class="panel panel-default" >
-			  	<!-- Default panel contents --> 
-			
-			 	 <div class="panel-heading">A Favor</div>
+	<table>
+	<td width="50%">
+	<div style="width:500px; height: 500px; padding:8px; float:left; margin-top:10px; margin-right:10px; color:grey" >
+		<div class="panel panel-default" >
+	  		<!-- Default panel contents --> 
+	 		<div class="panel-heading">A Favor</div>
 
-			  <!-- Table -->
-			  <table class="table">
+			<!-- Table -->
+			<table class="table">
 			  
-			    {% for arg in argF %}
+			{% for arg in argF %}
 
-			    <tr><td> {{arg.1}} : {{arg.0}}  </td></tr> 
-			    
-			    {% empty %}
-			    <tr><td> </td></tr> 
-			    {% endfor %}
+			   	<tr><td> {{arg.1}} : {{arg.0}}  </td></tr> 
+				    
+			{% empty %}
+			   	<tr><td> </td></tr> 
+			{% endfor %}
 
-			  </table>
-
-
-			</div>
-
-			<div id="form_argumento_afavor" style="display: none;" > 
-				<form method="POST" class="post-form">{% csrf_token %}
-					<form action="/post_arg" id="publicar_form" method="post">{% csrf_token %}
-		  				<div class="form-group">
-		   		 <input name="descripcion" value="" type="text" class="form-control" placeholder="descripcion">
-		   		  <input type="hidden" value="{{ debate.id_debate }}" name="id_deb">
-
-		   		 <input type="hidden" value="1" name="postura">
-		  			</div>
-		  		<button type="submit" class="btn btn-default">Publicar</button>
-	</form>
-</form>
-
-
-			 </div>
-
-			{% ifequal postura_usr_deb 'A Favor'  %}
-			{% ifequal t_arg 'no' %}
-			<button id="bot_argumento_afavor" type="submit" class="btn btn-default" onclick='javascript:fomulario_argumento_afavor();'  style="display: block;" >Argumentar</button>
-			{%endifequal%}
-			{%endifequal%}
-
-			
+			</table>
 		</div>
-		</td>
-		<td width="100px"></td>
-		<td width="50%">
-		<div style="width:500px; height: 500px; padding:8px; float:left; margin-top:10px; margin-right:10px; color:grey" >
-			<div class="panel panel-default" >
-			  	<!-- Default panel contents --> 
-			
-			 	 <div class="panel-heading" >En Contra</div>
 
-			  <!-- Table -->
-			  <table class="table" >
-			   {% for arg in argC %}
-			    <tr><td>{{ arg.1 }}: {{arg.0}}  </td></tr> 
- 				{% empty %}
-			    <tr><td> </td></tr> 
-			    {% endfor %}
-
-
-			    
-			  </table>
-			  
-			</div>
-			{% ifequal postura_usr_deb 'En Contra' %}
-			{% ifequal t_arg 'no' %}
-			<button id="bot_argumento_encontra" type="submit" class="btn btn-default" onclick='javascript:fomulario_argumento_encontra();' style="display: block;" >Argumentar</button>
-			{%endifequal%}
-			{%endifequal%}
-
-			<div id="form_argumento_encontra" style="display: none;" > 
-
-				<form method="POST" class="post-form">{% csrf_token %}
-					<form action="/post_arg" id="publicar_form" method="post">{% csrf_token %}
-			  				<div class="form-group">
-						   		 <input name="descripcion" value="" type="text" class="form-control" placeholder="descripcion">
-						   		 <input type="hidden" value="{{ debate.id_debate }}" name="id_deb">
-
-						   		 <input type="hidden" value="0" name="postura">
-						  	</div>
-			  				<button type="submit" class="btn btn-default">Publicar</button>
-					</form>
+		<div id="form_argumento_afavor" style="display: none;" > 
+			<form method="POST" class="post-form">{% csrf_token %}
+				<form action="/post_arg" id="publicar_form" method="post">{% csrf_token %}
+			  		<div class="form-group">
+			   			<input name="descripcion" value="" type="text" class="form-control" placeholder="descripcion">
+			   		  	<input type="hidden" value="{{ debate.id_debate }}" name="id_deb">
+			   		 	<input type="hidden" value="1" name="postura">
+			  		</div>
+			  		<button type="submit" class="btn btn-default">Publicar</button>
 				</form>
+			</form>
+		 </div>
 
+		{% ifequal postura_usr_deb 'A Favor'  %}
+			{% ifequal t_arg 'no' %}
+				<button id="bot_argumento_afavor" type="submit" class="btn btn-default" onclick='	javascript:fomulario_argumento_afavor();'  style="display: block;" >Argumentar</button>
+			{%endifequal%}
+		{%endifequal%}
 
-			 </div>
+			
+	</div>
+	</td>
+	<td width="100px"></td>
+	<td width="50%">
+	<div style="width:500px; height: 500px; padding:8px; float:left; margin-top:10px; margin-right:10px; color:grey" >
+		<div class="panel panel-default" >
+			<!-- Default panel contents --> 
+			<div class="panel-heading" >En Contra</div>
+			<!-- Table -->
+			<table class="table" >
+			{% for arg in argC %}
+			    <tr><td>{{ arg.1 }}: {{arg.0}}  </td></tr> 
+ 			{% empty %}
+				<tr><td> </td></tr> 
+			{% endfor %}
+   			</table>
+			  
 		</div>
+		{% ifequal postura_usr_deb 'En Contra' %}
+			{% ifequal t_arg 'no' %}
+				<button id="bot_argumento_encontra" type="submit" class="btn btn-default" onclick='javascript:fomulario_argumento_encontra();' style="display: block;" >Argumentar</button>
+			{%endifequal%}
+		{%endifequal%}
 
-		
-		</td>
+		<div id="form_argumento_encontra" style="display: none;" > 
 
-		</table>
+			<form method="POST" class="post-form">{% csrf_token %}
+				<form action="/post_arg" id="publicar_form" method="post">{% csrf_token %}
+					<div class="form-group">
+				   		 <input name="descripcion" value="" type="text" class="form-control" placeholder="descripcion">
+				   		 <input type="hidden" value="{{ debate.id_debate }}" name="id_deb">
+				   		 <input type="hidden" value="0" name="postura">
+				  	</div>
+			  		<button type="submit" class="btn btn-default">Publicar</button>
+				</form>
+			</form>
 
+		</div>
+	</div>
+	</td>
+	</table>
 </div>
 
 	{% endblock content %}

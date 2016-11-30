@@ -21,9 +21,9 @@ def despliega(request, id_debate): #debate_id
 				print(publicar_postura)
 			publicar_postura.save() 
 			if post_usuario=='1' :
-				resp="A Favor"
+				resp= "A Favor"
 			else:
-				resp="En Contra"
+				resp= "En Contra"
 			return HttpResponse(resp)
 
 		if 'descripcion' in request.POST:
@@ -54,13 +54,14 @@ def despliega(request, id_debate): #debate_id
 	for argumento in argumentos_aFavor:
 		usuario_debate = User.objects.get(id= argumento.id_usuario_id) 
 		argumentos_F.append([argumento.descripcion, usuario_debate] ) 
-		if (request.user.id == usuario_debate):
+
+		if (request.user.id == argumento.id_usuario_id):
 			tiene_argumento ='si'
 
 	for argumento in argumentos_enContra:
 		usuario_debate = User.objects.get(id= argumento.id_usuario_id) 
 		argumentos_C.append([argumento.descripcion, usuario_debate] ) 
-		if (request.user.id == usuario_debate):
+		if (request.user.id == argumento.id_usuario_id):
 			tiene_argumento = 'si'
 	print("argumentos: ", argumentos_C)
 	try:
@@ -72,12 +73,25 @@ def despliega(request, id_debate): #debate_id
 
 	print (debate)
 	print (usuario_debate)
+	print (tiene_argumento)
 	#print (postura_debate_usuario)
 	if tiene_postura:
 		if postura_debate_usuario.postura == 1:
 			postura_debate_usuario = "A Favor"
 		else:
 			postura_debate_usuario = "En Contra"
+
+	posturas_f=Postura.objects.filter(id_debate_id=id_debate, postura=1)
+	posturas_c=Postura.objects.filter(id_debate_id=id_debate, postura=0)
+	numpost_f=0
+	numpost_c=0
+	for postura in posturas_f:
+		numpost_f+=1
+	for postura in posturas_c:
+		numpost_c+=1
+	print(numpost_f)
+	print(numpost_c)
+
 	return render(request, 'debate.html', {'debate': debate, 'usuario': usuario_debate, 'postura_usr_deb': postura_debate_usuario, 'argF': argumentos_F, 'argC': argumentos_C, 't_arg': tiene_argumento })
 	#return render_to_response('debate.html', context)
 
