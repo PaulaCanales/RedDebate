@@ -14,9 +14,21 @@
 
 	<h3> {{ debate.titulo }}</h3>
 	{% ifequal debate.estado 'abierto'%}
-		<button type="submit" class="btn btn-default" onclick='javascript:cambiar_postura("{{ debate.id_debate }}", "1");'>A favor</button>
+		{% ifequal postura_usr_deb 'No definido' %}
+		<button id = "bot_af" type="submit" class="btn btn-default" onclick='javascript:cambiar_postura("{{ debate.id_debate }}", "1");'>A favor</button>
 
-		<button type="submit" class="btn btn-default" onclick='javascript:cambiar_postura("{{ debate.id_debate }}", "0");' >En contra</button>
+		<button id = "bot_ec" type="submit" class="btn btn-default" onclick='javascript:cambiar_postura("{{ debate.id_debate }}", "0");' >En contra</button>
+		{%else%}
+
+			{% ifequal postura_usr_deb 'A Favor' %}
+				<button id = "bot_af" style="background-color: #535353;" type="submit" class="btn btn-default" onclick='javascript:cambiar_postura("{{ debate.id_debate }}", "1");'>A favor</button>
+				<button id = "bot_ec" style="background-color: WHITE;" type="submit" class="btn btn-default" onclick='javascript:cambiar_postura("{{ debate.id_debate }}", "0");' >En contra</button>
+			{% else %}
+				<button id = "bot_af" style="background-color :WHITE;" type="submit" class="btn btn-default" onclick='javascript:cambiar_postura("{{ debate.id_debate }}", "1");'>A favor</button>
+				<button id = "bot_ec" style="background-color :#535353;" type="submit" class="btn btn-default" onclick='javascript:cambiar_postura("{{ debate.id_debate }}", "0");' >En contra</button>
+			{%endifequal%}
+		{%endifequal%}
+
 
 	{%endifequal%}
 	<div>
