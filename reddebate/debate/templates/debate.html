@@ -40,7 +40,11 @@
 	<div style="width:500px; height: 500px; padding:8px; float:left; margin-top:10px; margin-right:10px; color:grey" >
 		<div class="panel panel-default" >
 	  		<!-- Default panel contents --> 
-	 		<div class="panel-heading">A Favor</div>
+	 		<div class="panel-heading">A Favor 
+	 				<div style="float:right"><span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
+	 				{{num_post_f}}
+	 				</div>
+	 		</div>
 
 			<!-- Table -->
 			<table class="table">
@@ -85,7 +89,13 @@
 	<div style="width:500px; height: 500px; padding:8px; float:left; margin-top:10px; margin-right:10px; color:grey" >
 		<div class="panel panel-default" >
 			<!-- Default panel contents --> 
-			<div class="panel-heading" >En Contra</div>
+			<div class="panel-heading" >En Contra
+					<div style="float:right"><span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span> {{num_post_c}}</div>
+
+			</div>
+
+			
+
 			<!-- Table -->
 			<table class="table" >
 			{% for arg in argC %}

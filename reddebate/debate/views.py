@@ -92,6 +92,9 @@ def despliega(request, id_debate): #debate_id
 	print(numpost_f)
 	print(numpost_c)
 
-	return render(request, 'debate.html', {'debate': debate, 'usuario': usuario_debate, 'postura_usr_deb': postura_debate_usuario, 'argF': argumentos_F, 'argC': argumentos_C, 't_arg': tiene_argumento })
+	return render(request, 'debate.html', {'debate': debate, 'usuario': usuario_debate,
+		'postura_usr_deb': postura_debate_usuario,
+		'argF': argumentos_F, 'argC': argumentos_C, 't_arg': tiene_argumento,
+		'num_post_f': numpost_f, 'num_post_c': numpost_c })
 	#return render_to_response('debate.html', context)
 
