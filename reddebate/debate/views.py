@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 
-from resumen.models import Usuario, Debate, Postura, Argumento
+from resumen.models import Usuario, Debate, Postura, Argumento, Valoracion 
 
 from django.http import HttpResponse
 from django.contrib.auth.models import User
@@ -39,6 +39,16 @@ def despliega(request, id_debate): #debate_id
 			print (Argumento.objects.filter(id_debate_id= id_debat))
 			return redirect(despliega,id_debat)
 
+		if 'id_arg' in request.POST:
+			val_argumento= request.POST['id_arg'] 
+			usuario = request.user
+			publicar_valoracion = Valoracion(id_argumento_id=val_argumento, id_usuario_id=usuario.id)
+			
+			publicar_valoracion.save() 
+			respuesta = Valoracion.objects.filter(id_argumento_id = val_argumento).count()
+
+			return HttpResponse(respuesta)
+
 	debate = Debate.objects.get(id_debate= id_debate)
 	usuario_id = debate.id_usuario_id #usuario creador 
 	usuario_debate = User.objects.get(id= usuario_id) 
@@ -53,14 +63,28 @@ def despliega(request, id_debate): #debate_id
 	tiene_argumento ='no'
 	for argumento in argumentos_aFavor:
 		usuario_debate = User.objects.get(id= argumento.id_usuario_id) 
-		argumentos_F.append([argumento.descripcion, usuario_debate] ) 
+		try: 
+			valoracion = Valoracion.objects.get(id_argumento_id= argumento.id_argumento, id_usuario_id = usuario_actual)
+			t_valoracion = "si"
+		except:
+			t_valoracion = "no"
+
+		valoracion_argF = Valoracion.objects.filter(id_argumento_id= argumento.id_argumento).count()
+		argumentos_F.append([argumento.descripcion, usuario_debate, valoracion_argF, argumento.id_argumento, t_valoracion]) 
 
 		if (request.user.id == argumento.id_usuario_id):
 			tiene_argumento ='si'
 
 	for argumento in argumentos_enContra:
 		usuario_debate = User.objects.get(id= argumento.id_usuario_id) 
-		argumentos_C.append([argumento.descripcion, usuario_debate] ) 
+		try: 
+			valoracion = Valoracion.objects.get(id_argumento_id= argumento.id_argumento, id_usuario_id = request.user.id)
+			t_valoracion = "si"
+		except:
+			t_valoracion = "no"
+		valoracion_argC = Valoracion.objects.filter(id_argumento_id= argumento.id_argumento).count()
+
+		argumentos_C.append([argumento.descripcion, usuario_debate, valoracion_argC, argumento.id_argumento, t_valoracion] ) 
 		if (request.user.id == argumento.id_usuario_id):
 			tiene_argumento = 'si'
 	print("argumentos: ", argumentos_C)

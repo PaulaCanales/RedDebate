@@ -78,21 +78,15 @@
                       if (document.getElementById('form_argumento_afavor').style.display=='none'){
                         document.getElementById('bot_argumento_encontra').style.display = 'block';
                         document.getElementById('bot_argumento_afavor').style.display = 'none';
-                      }
-                     
+                      }                  
                     }
                     else{
                       if (document.getElementById('form_argumento_afavor').style.display=='none'){
                         document.getElementById('bot_argumento_afavor').style.display = 'block';
                         document.getElementById('bot_argumento_encontra').style.display = 'none';
                       }
-
                     }
-
                     document.getElementById('argumentos').style.display = 'block';
-
-                   
-
                   },
                   failure: function(data) {
                       alert('Error de conexión');
@@ -100,6 +94,7 @@
                   crossDomain: true
               });
     }
+
     function fomulario_argumento_afavor(){
      console.log("funciona .. hasta aqui");
      document.getElementById('form_argumento_afavor').style.display = 'block';
@@ -114,6 +109,30 @@
      document.getElementById('bot_argumento_encontra').style.display = 'none';
     }
 
+     function valorar(argumento, id_div){
+     console.log("llega al valorar");
+
+     console.log(argumento);
+
+        $.ajax({
+    
+            url: "{% url 'despliega' 15 %}" , 
+            type: 'POST',
+            data:{  id_arg : argumento,
+                    csrfmiddlewaretoken: '{{ csrf_token }}'} ,
+                  success: function(data) { // id
+                    document.getElementById(id_div).innerHTML = data;
+                    document.getElementById(argumento).style.display = 'block';
+                    
+                    console.log("div: ");
+                    console.log(id_div);
+                    },
+                  failure: function(data) {
+                      alert('Error de conexión');
+                  },
+                  crossDomain: true
+              });
+    }
 
 </script>
 

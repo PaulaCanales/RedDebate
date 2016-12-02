@@ -52,3 +52,13 @@ class Argumento(models.Model):
 
     def __unicode__(self): # __unicode__ on Python 2
         return self.descripcion
+
+class Valoracion(models.Model):
+    #parametros de la tabla. 
+    id_valoracion = models.AutoField(primary_key=True)
+    id_usuario = models.ForeignKey(User)
+    id_argumento = models.ForeignKey(Argumento)
+    
+
+    def __unicode__(self): # __unicode__ on Python 2
+        return self.id_valoracion

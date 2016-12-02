@@ -50,7 +50,19 @@
 			<table class="table">
 			  
 			{% for arg in argF %}
-			   	<tr><td> {{arg.1}} : {{arg.0}}  </td></tr>     
+			   	<tr><td> {{arg.1}} : {{arg.0}}  
+			   	{% ifequal arg.4 'no' %}
+			   	<div style="display:none; float:right; margin-right:10px;" id= "{{arg.3}}" > <span  class="glyphicon glyphicon-thumbs-up" aria-hidden="true" ></span></div>
+
+			   	<div style="float:right;" id="num_valoracion1{{arg.3}}"> <button type="submit" class="btn btn-default" onclick='javascript:valorar("{{arg.3}}", "num_valoracion1{{arg.3}}");' >   <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true" ></span>  
+			   	 {{arg.2}}  </button>
+			   			 </div>
+
+
+			   	{% else %}
+			   			<div style="float:right" >   <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true" ></span> {{arg.2}} </div>
+			   	{%endifequal%}
+			   	 </td></tr>     
 			{% empty %}
 			   	<tr><td> </td></tr> 
 			{% endfor %}
@@ -99,7 +111,16 @@
 			<!-- Table -->
 			<table class="table" >
 			{% for arg in argC %}
-			    <tr><td>{{ arg.1 }}: {{arg.0}}  </td></tr> 
+			    <tr><td>{{ arg.1 }}: {{arg.0}} 
+			    	{% ifequal arg.4 'no' %}
+			    		<div style="display:none; float:right;" id= "{{arg.3}}" > 
+			    	<span  class="glyphicon glyphicon-thumbs-up" aria-hidden="true" ></span></div>
+			    	<div style="float:right" id = "num_valoracion2{{arg.3}}"> <button type="submit" class="btn btn-default" onclick='javascript:valorar("{{arg.3}}", "num_valoracion2{{arg.3}}");' >   <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true" ></span> {{arg.2}} </button>
+			   			 </div>
+			   		{% else %}
+			   			<div style="float:right" >   <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true" ></span> {{arg.2}} </div>
+			   		{%endifequal%}
+			     </td></tr> 
  			{% empty %}
 				<tr><td> </td></tr> 
 			{% endfor %}
