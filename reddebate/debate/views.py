@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 
-from resumen.models import Usuario, Debate, Postura, Argumento, Valoracion 
+from resumen.models import Perfil, Debate, Postura, Argumento, Valoracion 
 
 from django.http import HttpResponse
 from django.contrib.auth.models import User

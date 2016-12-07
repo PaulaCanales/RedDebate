@@ -12,7 +12,7 @@ import requests
 
 # Create your views here.
 from django.http import HttpResponse
-from resumen.models import Usuario, Debate
+from resumen.models import Perfil, Debate
 
 
 def index(request):

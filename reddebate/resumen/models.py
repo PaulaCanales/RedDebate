@@ -5,17 +5,21 @@ from datetime import *
 from django.db import models
 
 # Create your models here.
-
-class Usuario(models.Model):
-    #parametros de la tabla. 
-    #class UserProfile(models.Model):
-        #id_usuario = models.ForeignKey(User)
-    id_usuario = models.AutoField(primary_key=True)
-    nombre = models.CharField(max_length=30)
-    alias = models.CharField(max_length=30)
-
-    def __unicode__(self): # __unicode__ on Python 2
-		return self.nombre
+class Perfil(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
+    alias = models.CharField(max_length=30, default="anonimo")
+#Como acceder al alias?
+#u = User.objects.get(username='fsmith')
+#alias_usuario = u.Usuario.alias
+#class Usuario(models.Model):
+#    parametros de la tabla. 
+#    class UserProfile(models.Model):
+#        id_usuario = models.ForeignKey(User)
+#   id_usuario = models.AutoField(primary_key=True)
+#   nombre = models.CharField(max_length=30)
+#   alias = models.CharField(max_length=30)
+#   def __unicode__(self): # __unicode__ on Python 2
+#       return self.nombre
 
 
 class Debate(models.Model):
@@ -24,6 +28,9 @@ class Debate(models.Model):
     titulo = models.CharField(max_length=50)
     descripcion = models.CharField(max_length=300)
     date = models.DateField(default=datetime.now, blank=True)
+    date_fin = models.DateField(default=None, blank=True)
+    alias_c = models.CharField(max_length=50, default='False')
+    largo = models.IntegerField(default=300, blank=True)
     id_usuario = models.ForeignKey(User)
     estado = models.CharField(max_length=20, default='abierto')
 
