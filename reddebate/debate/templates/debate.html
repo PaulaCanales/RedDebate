@@ -91,7 +91,8 @@
 			<form method="POST" class="post-form">{% csrf_token %}
 				<form action="/post_arg" id="publicar_form" method="post">{% csrf_token %}
 			  		<div class="form-group">
-			   			<input name="descripcion" value="" type="text" class="form-control" placeholder="descripcion">
+			   			<input id="textarea1" maxlength="{{debate.largo}}" name="descripcion" value="" type="text" class="form-big" placeholder="descripcion"> 
+				   		 <div id="textarea_feedback1"></div>
 			   		  	<input type="hidden" value="{{ debate.id_debate }}" name="id_deb">
 			   		 	<input type="hidden" value="1" name="postura">
 			  		</div>
@@ -166,7 +167,8 @@
 			<form method="POST" class="post-form">{% csrf_token %}
 				<form action="/post_arg" id="publicar_form" method="post">{% csrf_token %}
 					<div class="form-group">
-				   		 <input name="descripcion" value="" type="text" class="form-control" placeholder="descripcion">
+				   		 <input id="textarea2" maxlength="{{debate.largo}}" name="descripcion" value="" type="text" class="form-big" placeholder="descripcion"> 
+				   		 <div id="textarea_feedback2"></div>
 				   		 <input type="hidden" value="{{ debate.id_debate }}" name="id_deb">
 				   		 <input type="hidden" value="0" name="postura">
 				  	</div>
@@ -178,6 +180,9 @@
 	</div>
 	</td>
 	</table>
+
+
+
 {% ifequal postura_usr_deb 'No definido' %}
 </div>
 {%endifequal%}

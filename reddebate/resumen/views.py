@@ -40,9 +40,10 @@ def post_new(request):
     if request.method == 'POST':
         ti = request.POST['titulo']
         des = request.POST['descripcion']
+        largo_max = request.POST['largo_m']
         usuario = request.user
         print (usuario.id)
-        publicar= Debate(titulo=ti, descripcion=des, id_usuario_id=usuario.id)
+        publicar= Debate(titulo=ti, descripcion=des, id_usuario_id=usuario.id, largo=largo_max)
         publicar.save()
         return redirect('index')
     return render(request, 'post_edit.html')
