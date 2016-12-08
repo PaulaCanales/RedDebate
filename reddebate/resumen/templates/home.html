@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-{% extends 'base.html' %}
 {% load static %}
 
 
@@ -9,18 +8,44 @@
 
 
 <head>
+<link rel="stylesheet" type='text/css' href="{% static 'font-awesome-4.7.0/bootstrap-social-gh-pages/assets/css/bootstrap.css' %}" >
+<link rel="stylesheet" type='text/css' href="{% static 'font-awesome-4.7.0/bootstrap-social-gh-pages/assets/css/bootstrap-social.css' %}" >
+<link rel="stylesheet" type='text/css' href="{% static 'font-awesome-4.7.0/bootstrap-social-gh-pages/assets/css/font-awesome.css' %}" >
+<link rel="stylesheet" type='text/css' href="{% static 'font-awesome-4.7.0/bootstrap-social-gh-pages/assets/css/docs.css' %}" >
  <meta charset="UTF-8" />
- <title>inicio</title>
+ <title>Inicia Sesión</title>
 </head>
+<body>
+	<br>
+	<br>
+	
+		<h1 align='center'  id="fb-welcome"> RED DE DEBATE</h1>
+	
+	<div class="col-sm-4"></div> 
+	<div class="col-sm-4 social-buttons">
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+	
+		<div class="panel panel-default">
+		
+		  <h3 align="center">Inicia Sesión</h3>
+		  <div class="panel-body">
 
-	{% block content %}
-<h1 id="fb-welcome"></h1>
+		    <a href="{% url 'social:begin' 'facebook' %}" align="center" class="btn btn-block btn-lg btn-social btn-facebook">
+		  	<i class="fa fa-facebook" aria-hidden="true"></i> Ingresa con Facebook </a> 
+		  	<br>
+	  
+		  </div>
+		</div>
 
-<a href="{% url 'social:begin' 'facebook' %}" class="btn btn-facebook">
-  <i class="fa fa-facebook"></i> Ingresa con Facebook
-</a>
 
-	{% endblock content %}
+		
+			
+			 
+		</div>
+	</div>
+</body>
 </html>
-
-
