@@ -29,7 +29,7 @@ class Debate(models.Model):
     descripcion = models.CharField(max_length=300)
     date = models.DateField(default=datetime.now, blank=True)
     date_fin = models.DateField(default=None, blank=True, null=True)
-    alias_c = models.CharField(max_length=50, default='False')
+    alias_c = models.CharField(max_length=50, default='username')
     largo = models.IntegerField(default=300, blank=True)
     id_usuario = models.ForeignKey(User)
     estado = models.CharField(max_length=20, default='abierto')

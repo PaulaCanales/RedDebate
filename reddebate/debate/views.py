@@ -51,7 +51,12 @@ def despliega(request, id_debate): #debate_id
 
 	debate = Debate.objects.get(id_debate= id_debate)
 	usuario_id = debate.id_usuario_id #usuario creador 
-	usuario_debate = User.objects.get(id= usuario_id) 
+	usuario_creador = User.objects.get(id= usuario_id) 
+	try:
+		perfil_creador = Perfil.objects.get(user= usuario_creador) 
+		perfil_creador = perfil_creador.alias
+	except:
+		perfil_creador = 'username'
 	usuario_actual = request.user.id
 	#que es mejor, tener la llave foranea a postura, y luego buscar en varias tablas, para armar el arreglo voy a 
 	# usar varias decisiones. 
@@ -96,7 +101,7 @@ def despliega(request, id_debate): #debate_id
 		tiene_postura = False
 
 	print (debate)
-	print (usuario_debate)
+	print (usuario_creador)
 	print (tiene_argumento)
 	#print (postura_debate_usuario)
 	if tiene_postura:
@@ -116,7 +121,9 @@ def despliega(request, id_debate): #debate_id
 	print(numpost_f)
 	print(numpost_c)
 
-	return render(request, 'debate.html', {'debate': debate, 'usuario': usuario_debate,
+	return render(request, 'debate.html', {'debate': debate,
+		'usuario': usuario_creador,
+		'alias': perfil_creador,
 		'postura_usr_deb': postura_debate_usuario,
 		'argF': argumentos_F, 'argC': argumentos_C, 't_arg': tiene_argumento,
 		'num_post_f': numpost_f, 'num_post_c': numpost_c })

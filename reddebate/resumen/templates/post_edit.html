@@ -4,53 +4,40 @@
 
 {% block content %}
 <div class="container">  
-<h3>Publicar Debate</h3>
 
   	<form method="POST" class="post-form">{% csrf_token %}
 		<form action="/post_new" id="publicar_form" method="post">{% csrf_token %}
 		 <div class="row">
   			<div class="col-md-6">
 
+<h3>Publicar Debate</h3>
 			  <div class="form-group">
+
 			    <input name="titulo" value="" type="text" class="form-control" placeholder="Titulo">
 			    <br><br>
 			    <input name="descripcion" value="" type="text" class="form-big" placeholder="Descripcion">
 			  </div>
 			 </div>
 
-			  <div class="col-md-6">
-			  	<div class="form-group">
 
-				<h2>Reglas del Debate</h2>
-				Máximo largo de los argumentos:<br>
-				  <input type="radio" name="largo_m" value="300" checked> 300<br>
-				  <input type="radio" name="largo_m" value="200"> 200<br>
-				  <input type="radio" name="largo_m" value="140"> 140<br>
-				  <br>
-				  
+			  <div class="col-md-6">
+			  <h3>Reglas del Debate</h3>
+			  	<div class="input-group">
+
 				
-				publicar el debate como anónimo ?<br>
-				fecha finalizacion ___<br>
-				<div class="container">
-    <div class="row">
-        <div class='col-sm-6'>
-            <div class="form-group">
-                <div class='input-group date' id='datetimepicker1'>
-                    <input type='text' class="form-control" />
-                    <span class="input-group-addon">
-                        <span class="glyphicon glyphicon-calendar"></span>
-                    </span>
-                </div>
-            </div>
-        </div>
-        <script type="text/javascript">
-            $(function () {
-                $('#datetimepicker1').datetimepicker();
-            });
-        </script>
-    </div>
-</div>
-			  </div>
+				Largo máximo de los argumentos:<br>
+				<div class="radio">
+				 <label><input type="radio" name="largo_m" value="300" checked> 300</label>
+				 <br>
+				  <label><input type="radio" name="largo_m" value="200"> 200</label><br>
+				  <label><input type="radio" name="largo_m" value="140"> 140</label><br>
+				  <br>
+				  Nombre del creador del debate:
+				  <label><input type="radio" name="alias" value="username" checked>  Publicar el debate con mi usuario: {{nombre}}</label><br>
+				  <label><input type="radio" name="alias" value="alias"> Publicar el debate con mi Alias: {{alias}}</label><br>
+				  </div>
+					fecha finalizacion ___<br>
+				</div>
 
 			  </div>
 			</div>

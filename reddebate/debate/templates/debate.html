@@ -35,7 +35,12 @@
 		<h4>Descripcion: {{ debate.descripcion }}</h4>
 		<p>Fecha inicio: {{ debate.date }}</p>
 		<p>estado: {{ debate.estado }}</p>
-		<p>usuario: {{usuario}}</p>
+		{% ifequal debate.alias_c 'alias' %}
+		El usuario {{alias}} ha creado este debate en modo anonimo
+		{%else%}
+
+		<p>El usuario {{usuario}} ha creado este debate</p>
+		{%endifequal%}
 		<div id="tu_postura" > tu postura actual: {{postura_usr_deb}} </div>
 		<!--<p>usuario {{ usuario.id_usuario_id }}</p>-->
 	</div>
