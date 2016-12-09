@@ -1,6 +1,7 @@
 from django.shortcuts import render, render_to_response
 from django.views.generic import ListView, DetailView
 from django.contrib.auth.models import User
+import datetime
 
 #from .forms import PostForm
 from django.http import HttpResponse
@@ -25,8 +26,17 @@ def index(request):
     usuario = request.user
     u = User.objects.get(username= usuario.username)
     iniciando_alias(request, u)
-    
     category_list = Debate.objects.all()
+    for debate in category_list:
+        ahora = datetime.date.today()
+        print("ahora: ")
+        print(ahora)
+        print (debate.date_fin)
+        if debate.date_fin!= None and debate.date_fin <= ahora :
+           
+            debate.estado = 'cerrado'
+            debate.save()
+            print(debate)
     usuario = request.user.id
     print("el usuario activo es_: ", usuario)
     context = {'object_list': category_list, 'usuario': usuario}
@@ -60,14 +70,17 @@ def post_new(request):
         ti = request.POST['titulo']
         des = request.POST['descripcion']
         largo_max = request.POST['largo_m']
-        alias = request.POST['alias'] #check on, 
+        alias = request.POST['alias']
+        fecha_fin = request.POST['date']
+        print(fecha_fin)
         print("valor checkbox 'alias':")
         
         print(alias)
 
         usuario = request.user
         print (usuario.id)
-        publicar= Debate(titulo=ti, descripcion=des, id_usuario_id=usuario.id, largo=largo_max, alias_c=alias)
+        publicar= Debate(titulo=ti, descripcion=des, id_usuario_id=usuario.id,
+            largo=largo_max, alias_c=alias, date_fin= fecha_fin)
         publicar.save()
         return redirect('index')
     usuario = request.user

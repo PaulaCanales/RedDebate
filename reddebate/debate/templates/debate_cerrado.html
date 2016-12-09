@@ -1,0 +1,114 @@
+<!DOCTYPE html> 
+{% extends 'base.html' %}
+{% load static %}
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+
+
+<html>
+
+	{% block content %}
+	<!--tabla de debates-->
+	<div class="container">
+
+	<h3> {{ debate.titulo }}</h3>
+	
+	<div>
+		<h4>Descripcion: {{ debate.descripcion }}</h4>
+		<p>Fecha inicio: {{ debate.date }}</p>
+		<p>estado: {{ debate.estado }}</p>
+		{% ifequal debate.alias_c 'alias' %}
+		El usuario {{alias}} ha creado este debate en modo anonimo
+		{%else%}
+
+		<p>El usuario {{usuario}} ha creado este debate</p>
+		{%endifequal%}
+		<div id="tu_postura" > tu postura actual: {{postura_usr_deb}} </div>
+		<!--<p>usuario {{ usuario.id_usuario_id }}</p>-->
+	</div>
+		
+		<div id="argumentos" style="display: none;" > 
+	
+	
+	<h2>Argumentos</h2>
+		
+	<table>
+	<td width="50%">
+	<div style="width:500px; height: 500px; padding:8px; float:left; margin-top:10px; margin-right:10px; color:grey" >
+		<div class="panel panel-default" >
+	  		<!-- Default panel contents --> 
+	 		<div class="panel-heading">A Favor 
+	 				<div style="float:right"><span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
+	 				{{num_post_f}}
+	 				</div>
+	 		</div>
+
+			<!-- Table -->
+			<table class="table">
+			  
+			{% for arg in argF %}
+			   	<tr><td> {{arg.1}} : {{arg.0}}  
+			   	{% ifequal arg.4 'no' %}
+			   	<div style="display:none; float:right; margin-right:10px;" id= "{{arg.3}}" > <span  class="glyphicon glyphicon-thumbs-up" aria-hidden="true" ></span></div>
+
+			   			<div style="float:right" >   <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true" ></span> {{arg.2}} </div>
+
+			   	 </td></tr>     
+			{% empty %}
+			   	<tr><td> </td></tr> 
+			{% endfor %}
+
+			</table>
+		</div>
+
+	
+
+
+			
+	</div>
+	</td>
+	<td width="100px"></td>
+	<td width="50%">
+	<div style="width:500px; height: 500px; padding:8px; float:left; margin-top:10px; margin-right:10px; color:grey" >
+		<div class="panel panel-default" >
+			<!-- Default panel contents --> 
+			<div class="panel-heading" >En Contra
+					<div style="float:right"><span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span> {{num_post_c}}</div>
+
+			</div>
+
+			
+
+			<!-- Table -->
+			<table class="table" >
+			{% for arg in argC %}
+			    <tr><td>{{ arg.1 }}: {{arg.0}} 
+			    	{% ifequal arg.4 'no' %}
+			    		<div style="display:none; float:right;" id= "{{arg.3}}" > 
+			    	<span  class="glyphicon glyphicon-thumbs-up" aria-hidden="true" ></span></div>
+
+			   			 <div style="float:right" >   <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true" ></span> {{arg.2}} </div>
+			   		
+
+			   		{% else %}
+			   			<div style="float:right" >   <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true" ></span> {{arg.2}} </div>
+			   		{%endifequal%}
+			     </td></tr> 
+ 			{% empty %}
+				<tr><td> </td></tr> 
+			{% endfor %}
+   			</table>
+			  
+		</div>
+		
+
+	</div>
+	</td>
+	</table>
+
+
+
+</div>
+	{% endblock content %}
+</html>

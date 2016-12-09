@@ -16,7 +16,11 @@
         <script src="{% static 'js/bootstrap-datepicker.js' %}"></script>
         <script> 
           $(function() {
-            $('.datepicker').datepicker();
+            $('.datepicker').datepicker({ dateFormat: "dd-mm-yy" });
+            //$(".datepicker").datepicker({dateFormat: 'dd-mm-yy'});
+            //var date = $('#datepicker').datepicker({ dateFormat: 'dd-mm-yy' }).val();
+
+
           });
         </script>
 
