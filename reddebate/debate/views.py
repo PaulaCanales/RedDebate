@@ -93,6 +93,10 @@ def despliega(request, id_debate): #debate_id
 		if (request.user.id == argumento.id_usuario_id):
 			tiene_argumento = 'si'
 	print("argumentos: ", argumentos_C)
+	argumentos_C = sorted(argumentos_C, key=lambda valoracion: valoracion[2], reverse=True)
+	print("argumentos: ", argumentos_C)
+	argumentos_F = sorted(argumentos_F, key=lambda valoracion: valoracion[2], reverse=True)
+	print("argumentos: ", argumentos_F)
 	try:
 		postura_debate_usuario = Postura.objects.get(id_usuario_id= usuario_actual, id_debate_id=id_debate)
 		tiene_postura = True
@@ -121,11 +125,19 @@ def despliega(request, id_debate): #debate_id
 	print(numpost_f)
 	print(numpost_c)
 
-	return render(request, 'debate.html', {'debate': debate,
-		'usuario': usuario_creador,
-		'alias': perfil_creador,
-		'postura_usr_deb': postura_debate_usuario,
-		'argF': argumentos_F, 'argC': argumentos_C, 't_arg': tiene_argumento,
-		'num_post_f': numpost_f, 'num_post_c': numpost_c })
+	if debate.estado == 'abierto':
+		return render(request, 'debate.html', {'debate': debate,
+			'usuario': usuario_creador,
+			'alias': perfil_creador,
+			'postura_usr_deb': postura_debate_usuario,
+			'argF': argumentos_F, 'argC': argumentos_C, 't_arg': tiene_argumento,
+			'num_post_f': numpost_f, 'num_post_c': numpost_c })
+	else:
+		return render(request, 'debate_cerrado.html', {'debate': debate,
+			'usuario': usuario_creador,
+			'alias': perfil_creador,
+			'postura_usr_deb': postura_debate_usuario,
+			'argF': argumentos_F, 'argC': argumentos_C, 't_arg': tiene_argumento,
+			'num_post_f': numpost_f, 'num_post_c': numpost_c })
 	#return render_to_response('debate.html', context)
 

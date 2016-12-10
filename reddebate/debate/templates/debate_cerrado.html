@@ -4,9 +4,10 @@
 
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 
-
-
 <html>
+
+
+
 
 	{% block content %}
 	<!--tabla de debates-->
@@ -28,7 +29,23 @@
 		<!--<p>usuario {{ usuario.id_usuario_id }}</p>-->
 	</div>
 		
-		<div id="argumentos" style="display: none;" > 
+	
+	 <!--Div that will hold the pie chart-->
+	 <div class="row">
+		 <div class="col-md-6">
+	    	<div id="chart_div" ></div> 
+	    </div>
+	    <div class="col-md-6">
+			<div id="chart_div2" align = "center"></div>
+		</div> 
+	</div>
+
+	<div class="row">
+		<div id="chart_arg_val" style="width: 900px; height: 300px;" ></div>
+	</div>
+
+
+	<div id="argumentos" class="row"> 
 	
 	
 	<h2>Argumentos</h2>
@@ -51,8 +68,12 @@
 			   	<tr><td> {{arg.1}} : {{arg.0}}  
 			   	{% ifequal arg.4 'no' %}
 			   	<div style="display:none; float:right; margin-right:10px;" id= "{{arg.3}}" > <span  class="glyphicon glyphicon-thumbs-up" aria-hidden="true" ></span></div>
+ <div style="float:right" >   <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true" ></span> {{arg.2}} </div>
 
+
+			   		{% else %}
 			   			<div style="float:right" >   <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true" ></span> {{arg.2}} </div>
+			   		{%endifequal%}
 
 			   	 </td></tr>     
 			{% empty %}
@@ -108,7 +129,7 @@
 	</table>
 
 
-
+</div>
 </div>
 	{% endblock content %}
 </html>
