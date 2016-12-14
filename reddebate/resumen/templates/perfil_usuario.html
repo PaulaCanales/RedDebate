@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+{% extends 'base.html' %}
+{% load static %}
+
+
+
+<html>
+
+{% block content %}
+<div class="container">
+<div>
+	<h4>Nombre: {{ usuario.first_name }} {{ usuario.last_name }} </h4>
+	<p><b>usuario: </b>{{ usuario.username}}</p>
+	<p><b>email: </b>{{ usuario.email }}</p>
+	<p><b>fecha de ingreso : </b>{{ usuario.date_joined }}</p>
+	
+<div  id="alias"> 
+<b>alias : </b>{{alias.alias}} <button id = 'boton_alias' class="btn btn-default" onclick='javascript:cambiar_alias();' >   cambiar alias <span class="glyphicon glyphicon-user" aria-hidden="true" ></span>  </button></div>
+
+<div id='formulario_alias' style="display: none;" > 
+
+			<form method="POST" class="post-form">{% csrf_token %}
+				<form action="{% url 'perfil' 2 %}" id="publicar_alias" method="post">{% csrf_token %}
+					<div class="form-group">
+				   		 <input name="nuevo_alias" value="" type="text" class="form-control" placeholder="{{alias.alias}}"> 
+
+				  	</div>
+
+
+			  		<button type="submit" class="btn btn-default">Actualizar Alias</button> 
+			  		<label type="button" onclick='cancelar_alias();' class="btn btn-default"> Cancelar </label>
+
+				</form>
+			</form>
+
+
+</div>
+
+</div>
+
+
+	
+
+<div>
+{% endblock content %}
+
+</html>
+
+

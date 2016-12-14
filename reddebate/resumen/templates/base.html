@@ -113,7 +113,22 @@
                   crossDomain: true
               });
     }
+    function cambiar_alias(){
+      console.log("llega al cambiar_alias");
+      document.getElementById('boton_alias').style.display = 'none';
 
+      document.getElementById('formulario_alias').style.display = 'block';
+
+    }
+
+    function cancelar_alias(){
+      console.log("llega al cambiar_alias");
+      document.getElementById('formulario_alias').style.display = 'none';
+      document.getElementById('boton_alias').style.display = 'block';
+
+      
+
+    }
     function fomulario_argumento_afavor(){
      console.log("funciona .. hasta aqui");
      document.getElementById('form_argumento_afavor').style.display = 'block';
@@ -152,6 +167,8 @@
                   crossDomain: true
               });
     }
+
+    
 
 
    $(document).ready(function() {
@@ -352,7 +369,7 @@ function countChar(val){
                         <a href="{% url 'post_new' %}">Nuevo Debate</a>
                     </li>
                     <li>
-                        <a href="#">Contacto</a>
+                        <a href="{% url 'perfil' 2 %}">Perfil</a>
                     </li>
                     
                    

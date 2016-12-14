@@ -37,8 +37,8 @@ def index(request):
             debate.estado = 'cerrado'
             debate.save()
             print(debate)
-    usuario = request.user.id
-    print("el usuario activo es_: ", usuario)
+    usuario = request.user #usuario actual id
+    print("el usuario activo es_: ", usuario.id)
     context = {'object_list': category_list, 'usuario': usuario}
     return render(request, 'index.html', context)
 
@@ -83,10 +83,36 @@ def post_new(request):
             largo=largo_max, alias_c=alias, date_fin= fecha_fin)
         publicar.save()
         return redirect('index')
+
     usuario = request.user
     u = User.objects.get(username= usuario.username)
     usuario_2 = Perfil.objects.get(user= u)
     alias_usuario = usuario_2.alias
 #alias_usuario = u.Usuario.alias
-    context = {'nombre':usuario.username,'alias': alias_usuario }
+    context = {'nombre':usuario.username,'alias': alias_usuario, 'usuario': usuario }
     return render(request, 'post_edit.html', context)
+
+def perfil(request, id_usuario):
+    if request.method == 'POST':
+        nuevo_alias = request.POST['nuevo_alias']
+        usuario = request.user
+        print (usuario.id)
+        publicar= Perfil.objects.get(user=usuario)
+        publicar.alias = nuevo_alias
+        publicar.save()
+        return redirect('perfil', 2)
+
+    print(id_usuario)
+    usuario = User.objects.get(id= id_usuario)
+    alias_usuario = Perfil.objects.get(user=usuario)
+    debates_abiertos = Debate.objects.filter(id_usuario_id= id_usuario, estado= 'abierto')
+    debates_cerrados = Debate.objects.filter(id_usuario_id= id_usuario, estado= 'cerrado')
+    
+    print("llega al perfil")
+    
+    return render(request, 'perfil_usuario.html', {'usuario': usuario,
+        'alias': alias_usuario,
+        'debates_abiertos': debates_abiertos,
+        'debates_cerrados': debates_cerrados,
+        })
+

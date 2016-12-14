@@ -9,44 +9,18 @@ from django.contrib.auth.models import User
 def despliega(request, id_debate): #debate_id
 	if request.method == 'POST':
 		if 'postu' in request.POST:
-			post_usuario= request.POST['postu'] 
-			print (post_usuario)
-			id_debat= request.POST['id'] 
-			usuario = request.user
-			try:
-				publicar_postura = Postura.objects.get(id_debate_id=id_debat, id_usuario_id=usuario.id)
-				publicar_postura.postura=post_usuario
-			except:
-				publicar_postura = Postura(postura=post_usuario, id_debate_id=id_debat, id_usuario_id=usuario.id)
-				print(publicar_postura)
-			publicar_postura.save() 
-			if post_usuario=='1' :
-				resp= "A Favor"
-			else:
-				resp= "En Contra"
+			resp = define_postura(request)
+			
 			return HttpResponse(resp)
 
 		if 'descripcion' in request.POST:
-			print("post_arg de despliega")
-			descrip = request.POST['descripcion']
-			postura_deb_usr = request.POST['postura']
-			print(postura_deb_usr)
-			usuario = request.user
-			print(request.user)
-			id_debat = request.POST['id_deb']
-			publicar= Argumento(descripcion=descrip, id_usuario_id=usuario.id, id_debate_id=id_debat, postura= postura_deb_usr)
-			publicar.save()
-			print (Argumento.objects.filter(id_debate_id= id_debat))
+
+			id_debat = publica_argumento(request)
+			
 			return redirect(despliega,id_debat)
 
 		if 'id_arg' in request.POST:
-			val_argumento= request.POST['id_arg'] 
-			usuario = request.user
-			publicar_valoracion = Valoracion(id_argumento_id=val_argumento, id_usuario_id=usuario.id)
-			
-			publicar_valoracion.save() 
-			respuesta = Valoracion.objects.filter(id_argumento_id = val_argumento).count()
-
+			respuesta = publica_valoracion(request)
 			return HttpResponse(respuesta)
 
 	debate = Debate.objects.get(id_debate= id_debate)
@@ -57,23 +31,28 @@ def despliega(request, id_debate): #debate_id
 		perfil_creador = perfil_creador.alias
 	except:
 		perfil_creador = 'username'
-	usuario_actual = request.user.id
-	#que es mejor, tener la llave foranea a postura, y luego buscar en varias tablas, para armar el arreglo voy a 
-	# usar varias decisiones. 
+	
+	usuario_actual = request.user
+	usuario_actual_alias = Perfil.objects.get(user= usuario_actual)
+	usuario_actual = usuario_actual.id
 
 	argumentos_aFavor = Argumento.objects.filter(id_debate_id= id_debate, postura= 1) 
 	argumentos_enContra = Argumento.objects.filter(id_debate_id= id_debate, postura= 0) 
 	argumentos_F = []
 	argumentos_C = []
+
 	tiene_argumento ='no'
 	for argumento in argumentos_aFavor:
-		usuario_debate = User.objects.get(id= argumento.id_usuario_id) 
+		usuario_debate = User.objects.get(id= argumento.id_usuario_id)
+		if (argumento.alias_c == "alias"): 
+			usuario_alias = Perfil.objects.get(user=usuario_debate)
+			usuario_debate = usuario_alias.alias
 		try: 
 			valoracion = Valoracion.objects.get(id_argumento_id= argumento.id_argumento, id_usuario_id = usuario_actual)
 			t_valoracion = "si"
 		except:
 			t_valoracion = "no"
-
+		print(usuario_debate)
 		valoracion_argF = Valoracion.objects.filter(id_argumento_id= argumento.id_argumento).count()
 		argumentos_F.append([argumento.descripcion, usuario_debate, valoracion_argF, argumento.id_argumento, t_valoracion]) 
 
@@ -81,7 +60,10 @@ def despliega(request, id_debate): #debate_id
 			tiene_argumento ='si'
 
 	for argumento in argumentos_enContra:
-		usuario_debate = User.objects.get(id= argumento.id_usuario_id) 
+		usuario_debate = User.objects.get(id= argumento.id_usuario_id)
+		if (argumento.alias_c == "alias"): 
+			usuario_alias = Perfil.objects.get(user=usuario_debate)
+			usuario_debate = usuario_alias.alias
 		try: 
 			valoracion = Valoracion.objects.get(id_argumento_id= argumento.id_argumento, id_usuario_id = request.user.id)
 			t_valoracion = "si"
@@ -97,23 +79,19 @@ def despliega(request, id_debate): #debate_id
 	print("argumentos: ", argumentos_C)
 	argumentos_F = sorted(argumentos_F, key=lambda valoracion: valoracion[2], reverse=True)
 	print("argumentos: ", argumentos_F)
+	
+
 	try:
 		postura_debate_usuario = Postura.objects.get(id_usuario_id= usuario_actual, id_debate_id=id_debate)
 		tiene_postura = True
 	except: 
 		postura_debate_usuario = "No definido"
 		tiene_postura = False
-
-	print (debate)
-	print (usuario_creador)
-	print (tiene_argumento)
-	#print (postura_debate_usuario)
 	if tiene_postura:
 		if postura_debate_usuario.postura == 1:
 			postura_debate_usuario = "A Favor"
 		else:
 			postura_debate_usuario = "En Contra"
-
 	posturas_f=Postura.objects.filter(id_debate_id=id_debate, postura=1)
 	posturas_c=Postura.objects.filter(id_debate_id=id_debate, postura=0)
 	numpost_f=0
@@ -127,17 +105,68 @@ def despliega(request, id_debate): #debate_id
 
 	if debate.estado == 'abierto':
 		return render(request, 'debate.html', {'debate': debate,
-			'usuario': usuario_creador,
+			'usuario_creador': usuario_creador,
+			'usuario': usuario_actual,
 			'alias': perfil_creador,
+			'alias_actual': usuario_actual_alias.alias,
 			'postura_usr_deb': postura_debate_usuario,
 			'argF': argumentos_F, 'argC': argumentos_C, 't_arg': tiene_argumento,
 			'num_post_f': numpost_f, 'num_post_c': numpost_c })
 	else:
 		return render(request, 'debate_cerrado.html', {'debate': debate,
-			'usuario': usuario_creador,
+			'usuario_creador': usuario_creador,
+			'usuario': usuario_actual,
 			'alias': perfil_creador,
+			'alias_actual': usuario_actual_alias.alias,
 			'postura_usr_deb': postura_debate_usuario,
 			'argF': argumentos_F, 'argC': argumentos_C, 't_arg': tiene_argumento,
 			'num_post_f': numpost_f, 'num_post_c': numpost_c })
 	#return render_to_response('debate.html', context)
+
+def define_postura(request):
+	post_usuario= request.POST['postu'] 
+	print (post_usuario)
+	id_debat= request.POST['id'] 
+	usuario = request.user
+	try:
+		publicar_postura = Postura.objects.get(id_debate_id=id_debat, id_usuario_id=usuario.id)
+		publicar_postura.postura=post_usuario
+	except:
+		publicar_postura = Postura(postura=post_usuario, id_debate_id=id_debat, id_usuario_id=usuario.id)
+		print(publicar_postura)
+	publicar_postura.save() 
+	if post_usuario=='1' :
+		resp= "A Favor"
+	else:
+		resp= "En Contra"
+	return (resp)
+
+def publica_argumento(request):
+	print("post_arg de despliega")
+	descrip = request.POST['descripcion']
+	postura_deb_usr = request.POST['postura']
+	usuario = request.user
+	print(request.user)
+	id_debat = request.POST['id_deb']
+	if 'alias' in request.POST:
+		alias_usuario = request.POST['alias']
+		publicar= Argumento(descripcion=descrip, id_usuario_id=usuario.id,
+	 		id_debate_id=id_debat, postura= postura_deb_usr, alias_c=alias_usuario)
+	
+	else :
+		publicar= Argumento(descripcion=descrip, id_usuario_id=usuario.id,
+	 		id_debate_id=id_debat, postura= postura_deb_usr)
+	
+	publicar.save()
+	print (Argumento.objects.filter(id_debate_id= id_debat))
+	return(id_debat)
+
+def publica_valoracion(request):
+	val_argumento= request.POST['id_arg'] 
+	usuario = request.user
+	publicar_valoracion = Valoracion(id_argumento_id=val_argumento, id_usuario_id=usuario.id)
+	
+	publicar_valoracion.save() 
+	respuesta = Valoracion.objects.filter(id_argumento_id = val_argumento).count()
+	return(respuesta)
 

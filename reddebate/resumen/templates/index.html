@@ -1,9 +1,6 @@
 <!DOCTYPE html>
 {% extends 'base.html' %}
 {% load static %}
-
-
-
 <html>
 
 
@@ -25,7 +22,7 @@
 				<td width=500> <p> {{ deb.descripcion }} {{usuario}}</p></td>
 
 
-				{% ifequal usuario deb.id_usuario_id %}
+				{% ifequal usuario.id deb.id_usuario_id %}
 
 				 <form id="id" method="post" action= "{% url 'index' %}" enctype="multipart/form-data" onsubmit="return confirm('¿Seguro que desea cerrar el debate?');">{% csrf_token %}
             	 <input type="hidden" value="{{ deb.id_debate }}" name="id_deb">

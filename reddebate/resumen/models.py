@@ -53,6 +53,7 @@ class Argumento(models.Model):
     id_argumento = models.AutoField(primary_key=True)
     descripcion = models.CharField(max_length=300)
     postura = models.IntegerField(default=1)
+    alias_c = models.CharField(max_length=50, default='username')
     id_usuario = models.ForeignKey(User)
     id_debate = models.ForeignKey(Debate)
     
