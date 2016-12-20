@@ -1,46 +1,37 @@
 <!DOCTYPE html>
 {% load static %}
-
-
-
 <html>
-
-
-
 <head>
-<link rel="stylesheet" type='text/css' href="{% static 'font-awesome-4.7.0/bootstrap-social-gh-pages/assets/css/bootstrap.css' %}" >
-<link rel="stylesheet" type='text/css' href="{% static 'font-awesome-4.7.0/bootstrap-social-gh-pages/assets/css/bootstrap-social.css' %}" >
-<link rel="stylesheet" type='text/css' href="{% static 'font-awesome-4.7.0/bootstrap-social-gh-pages/assets/css/font-awesome.css' %}" >
-<link rel="stylesheet" type='text/css' href="{% static 'font-awesome-4.7.0/bootstrap-social-gh-pages/assets/css/docs.css' %}" >
+<link rel="stylesheet" type='text/css' href="{% static 'bootstrap-social-gh-pages/assets/css/bootstrap.css' %}" >
+<link rel="stylesheet" type='text/css' href="{% static 'bootstrap-social-gh-pages/assets/css/font-awesome.css' %}" >
+<link rel="stylesheet" type='text/css' href="{% static 'bootstrap-social-gh-pages/assets/css/docs.css' %}" >
+<link rel="stylesheet" type='text/css' href="{% static 'bootstrap-social-gh-pages/assets/css/bootstrap-social.css' %}" >
  <meta charset="UTF-8" />
- <title>Inicia Sesión</title>
+
+<title>Inicia Sesión</title>
 </head>
-<body>
+<body style="background: #18BD9B">
+	<br>  
 	<br>
+		<div align="center">
+		<IMG SRC="{% static 'img/RDLogo02.png' %}" WIDTH='300' VSPACE='3' HSPACE='3' ALT="RedDebateLogo">
+		</div>
 	<br>
-	
-		<h1 align='center'  id="fb-welcome"> RED DE DEBATE</h1>
-	
 	<div class="col-sm-4"></div> 
 	<div class="col-sm-4 social-buttons">
-		<br>
-		<br>
-		<br>
-		<br>
 		<br>
 	
 		<div class="panel panel-default">
 		
-		  <h3 align="center">Inicia Sesión</h3>
-		  <div class="panel-body">
+          </a>
+		  <a class="btn btn-block btn-social btn-facebook" href="{% url 'social:begin' 'facebook' %}" align="center" >
+		  	<span class="fa fa-facebook"></span> <div align="center">Ingresa con Facebook </div>
+		  </a> 
 
-		    <a href="{% url 'social:begin' 'facebook' %}" align="center" class="btn btn-block btn-lg btn-social btn-facebook">
-		  	<i class="fa fa-facebook" aria-hidden="true"></i> Ingresa con Facebook </a> 
-		  	<br>
-	  
-		  </div>
 		</div>
 
+        </div>
+        <div>
 
 		
 			
