@@ -6,73 +6,21 @@
 
     <!--Load the AJAX API google charts-->
       <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+      <link rel="stylesheet" type='text/css' href="{% static '/css/bootstrap.css' %}" >
 
-
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
-        <link rel="stylesheet" type='text/css' href="{% static '/css/bootstrap.css' %}" >
-        <link rel="stylesheet" type='text/css' href="{% static 'bootstrap-master/dist/css/bootstrap.min.css' %}" >
-        <script type="text/javascript" href="{% static 'bootstrap-master/js/moment-with-locales.js' %}" ></script> 
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-        <script type="text/javascript" href="{% static 'bootstrap-master/js/bootstrap-datetimepicker.js' %}" ></script> 
-        <link href='//fonts.googleapis.com/css?family=Lobster&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
-
-        <!-- DatePicker -->
-        <link rel="stylesheet" href="{% static 'css/datepicker.css' %}"/>
-        <script src="{% static 'js/bootstrap-datepicker.js' %}"></script>
-        <script> 
-          $(function() {
-            $('.datepicker').datepicker();
-          });
-        </script>
+      <!-- DatePicker -->
+      <link rel="stylesheet" href="{% static 'css/datepicker.css' %}"/>
+      <script src="{% static 'js/bootstrap-datepicker.js' %}"></script>
+      <script> 
+        $(function() {
+          $('.datepicker').datepicker();
+        });
+      </script>
 
        <title>RED DE DEBATE </title>
 	</head>
-    <body>
-        <script>
-              window.fbAsyncInit = function() {
-                FB.init({
-                  appId      : '644604552363752',
-                  xfbml      : true,
-                  version    : 'v2.8'
-                });
-
-                // ADD ADDITIONAL FACEBOOK CODE HERE
-                function onLogin(response) {
-                  if (response.status == 'connected') {
-                    FB.api('/me?fields=first_name', function(data) {
-                      var welcomeBlock = document.getElementById('fb-welcome');
-                      welcomeBlock.innerHTML = 'Hello, ' + data.first_name + '!';
-                    });
-                  }
-                }
-
-                FB.getLoginStatus(function(response) {
-                  // Check login status on load, and if the user is
-                  // already logged in, go directly to the welcome message.
-                  if (response.status == 'connected') {
-                    onLogin(response);
-                  } else {
-                    // Otherwise, show Login dialog first.
-                    FB.login(function(response) {
-                      onLogin(response);
-                    }, {scope: 'user_friends, email'});
-                  }
-                });
-
-
-              };
-
-              (function(d, s, id){
-                 var js, fjs = d.getElementsByTagName(s)[0];
-                 if (d.getElementById(id)) {return;}
-                 js = d.createElement(s); js.id = id;
-                 js.src = "//connect.facebook.net/en_US/sdk.js";
-                 fjs.parentNode.insertBefore(js, fjs);
-               }(document, 'script', 'facebook-jssdk'));
-            </script>
-
-
-
+<body>
 <script type="text/javascript">
      function cambiar_postura(id_debate, postura){
      console.log("funciona .. hasta aqui");
@@ -194,21 +142,6 @@
         $('#textarea_feedback1').html(text_remaining + ' characters remaining');
     });
 });
-
-/*<textarea id="field" onkeyup="countChar(this)"></textarea>
-
-function countChar(val){
-     var len = val.value.length;
-     if (len >= 500) {
-              val.value = val.value.substring(0, 500);
-     } else {
-              $('#charNum').text(500 - len);
-     }
-};
-*/
- // Load the Visualization API and the corechart package.
- //console.log(document.getElementById('chart_div').length);
-   //   if (document.getElementById('chart_arg_val') ){
 
     
       google.charts.load('current', {'packages':['corechart','bar']});
@@ -348,8 +281,7 @@ function countChar(val){
 
 
 	<div class="page-header">
-	<!--barra superior-->
-        <div class="container"><h1 id="fb-welcome">hola</h1></div>     
+	<!--barra superior-->   
 	    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
         <div class="container">
             <!-- Brand and toggle get grouped for better mobile display -->
