@@ -7,7 +7,7 @@ urlpatterns = [
     url(r'^$', views.index, name='index'),
     url(r'^post/new/$', views.post_new, name='post_new'),
 
-    url(r'^perfil/(?P<id_usuario>[0-9]+)/$', views.perfil, name='perfil'),
+    url(r'^perfil/$', views.perfil, name='perfil'),
     #url(r'^debate', views.despliega, name='despliega'),
 
 

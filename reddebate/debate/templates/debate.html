@@ -58,27 +58,39 @@
 		<div class="panel panel-default" >
 	  		<!-- Default panel contents --> 
 	 		<div class="panel-heading">A Favor 
-	 				<div style="float:right"><span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
-	 				{{num_post_f}}
-	 				</div>
+	 				<div style="float:right"><div id = "num_postura_favor"> <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span> {{num_post_f}}</div> </div>
 	 		</div>
 
 			<!-- Table -->
 			<table class="table">
 			  
 			{% for arg in argF %}
-			   	<tr><td> {{arg.1}} : {{arg.0}}  
+			   	<tr><td> {{arg.1}} : {{arg.0}}  </td>
+			   	<td>
 			   	{% ifequal arg.4 'no' %}
 			   	<div style="display:none; float:right; margin-right:10px;" id= "{{arg.3}}" > <span  class="glyphicon glyphicon-thumbs-up" aria-hidden="true" ></span></div>
 
 			   	<div style="float:right;" id="num_valoracion1{{arg.3}}"> <button type="submit" class="btn btn-default" onclick='javascript:valorar("{{arg.3}}", "num_valoracion1{{arg.3}}");' >   <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true" ></span>  
-			   	 {{arg.2}}  </button>
-			   			 </div>
+			   	 {{arg.2}}  </button> </div>
 			   			 
 			   	{% else %}
-			   			<div style="float:right" >   <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true" ></span> {{arg.2}} </div>
-			   	{%endifequal%}
-			   	 </td></tr>     
+			   	<div style="float:right; margin-right:10px;"  class="btn btn-default disabled" > <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true" ></span>  {{arg.2}}</div>
+			   	{% endifequal %}
+			   	
+			   	 {% ifequal arg.5 usuario %}
+
+					<div style="float:right"> 
+
+					<button id="bot_editar_afavor" type="submit" class="btn btn-default" onclick='	javascript:formulario_editar_afavor("{{arg.0}}" );'> <span class="glyphicon glyphicon-edit" aria-hidden="true" ></span>  </button>
+
+			   	 	</div>
+
+
+
+			   	{%endifequal%} 
+			   	</td>
+			   	 </tr>     
+			   	
 			{% empty %}
 			   	<tr><td> </td></tr> 
 			{% endfor %}
@@ -86,17 +98,37 @@
 			</table>
 		</div>
 
-		<div id="form_argumento_afavor" style="display: none;" > 
+		<div id="form_editar_afavor" style="display: none;" > 
 			<form method="POST" class="post-form">{% csrf_token %}
 				<form action="/post_arg" id="publicar_form" method="post">{% csrf_token %}
 			  		<div class="form-group">
-			   			<input id="textarea1" maxlength="{{debate.largo}}" name="descripcion" value="" type="text" class="form-big" placeholder="descripcion"> 
+			   			<input id="textarea1" rows="3" maxlength="{{debate.largo}}" name="descripcion" value="" type="text" class="form-big" placeholder="descripcion"> 
 				   		 <div id="textarea_feedback1"></div>
 			   		  	<input type="hidden" value="{{ debate.id_debate }}" name="id_deb">
 			   		 	<input type="hidden"  value="1" name="postura">
 			   		 	<div class="checkbox">
 						    <label>
-						      <input type="checkbox" value="alias" name="alias" > Publicar con Alias {{alias_actual}}
+						      <input type="checkbox" value="alias" name="alias" > Publicar con Alias: {{alias_actual}}
+						    </label>
+						</div>
+				  	</div>
+			  		<button type="submit" class="btn btn-default">Editar</button>
+
+				</form>
+			</form>
+		</div>
+
+		<div id="form_argumento_afavor" style="display: none;" > 
+			<form method="POST" class="post-form">{% csrf_token %}
+				<form action="/post_arg" id="publicar_form" method="post">{% csrf_token %}
+			  		<div class="form-group">
+			   			<input id="textarea1" rows="3" maxlength="{{debate.largo}}" name="descripcion" value="" type="text" class="form-big" placeholder="descripcion"> 
+				   		 <div id="textarea_feedback1"></div>
+			   		  	<input type="hidden" value="{{ debate.id_debate }}" name="id_deb">
+			   		 	<input type="hidden"  value="1" name="postura">
+			   		 	<div class="checkbox">
+						    <label>
+						      <input type="checkbox" value="alias" name="alias" > Publicar con Alias:  {{alias_actual}}
 						    </label>
 						</div>
 				  	</div>
@@ -128,7 +160,7 @@
 		<div class="panel panel-default" >
 			<!-- Default panel contents --> 
 			<div class="panel-heading" >En Contra
-					<div style="float:right"><span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span> {{num_post_c}}</div>
+					<div style="float:right"> <div id = "num_postura_contra"> <span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span> {{num_post_c}}</div></div>
 
 			</div>
 
@@ -137,7 +169,8 @@
 			<!-- Table -->
 			<table class="table" >
 			{% for arg in argC %}
-			    <tr><td>{{ arg.1 }}: {{arg.0}} 
+			    <tr><td>{{ arg.1 }}: {{arg.0}} </td>
+			    <td>
 			    	{% ifequal arg.4 'no' %}
 			    		<div style="display:none; float:right;" id= "{{arg.3}}" > 
 			    	<span  class="glyphicon glyphicon-thumbs-up" aria-hidden="true" ></span></div>
@@ -148,6 +181,17 @@
 			   		{% else %}
 			   			<div style="float:right" >   <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true" ></span> {{arg.2}} </div>
 			   		{%endifequal%}
+			   		 
+			   	 {% ifequal arg.5 usuario %}
+
+					<div style="float:right"> 
+
+					<button id="bot_editar_afavor" type="submit" class="btn btn-default" onclick='	javascript:formulario_editar_encontra("{{arg.0}}" );'> <span class="glyphicon glyphicon-edit" aria-hidden="true" ></span>  </button>
+
+			   	 	</div>
+
+			   	{%endifequal%} 
+			   	
 			     </td></tr> 
  			{% empty %}
 				<tr><td> </td></tr> 
@@ -165,35 +209,59 @@
 			<button id="bot_argumento_encontra" type="submit" class="btn btn-default" onclick='javascript:fomulario_argumento_encontra();' style="display: none;" >Argumentar</button>
 			{%endifequal%}
 		{%endifequal%}
+		<div id="form_editar_encontra" style="display: none;" > 
+			<form method="POST" class="post-form">{% csrf_token %}
+				<form action="/post_arg" id="publicar_form" method="post">{% csrf_token %}
+			  		<div class="form-group">
+			   			<input id="textarea2" rows="3" maxlength="{{debate.largo}}" name="descripcion" value="" type="text" class="form-big" placeholder="descripcion"> 
+				   		 <div id="textarea_feedback1"></div>
+			   		  	<input type="hidden" value="{{ debate.id_debate }}" name="id_deb">
+			   		 	<input type="hidden"  value="0" name="postura">
+			   		 	<div class="checkbox">
+						    <label>
+						      <input type="checkbox" value="alias" name="alias" > Publicar con Alias:  {{alias_actual}}
+						    </label>
+						</div>
+				  	</div>
+			  		<button type="submit" class="btn btn-default">Editar</button>
+
+				</form>
+			</form>
+		</div>
 
 		<div id="form_argumento_encontra" style="display: none;" > 
 
 			<form method="POST" class="post-form">{% csrf_token %}
 				<form action="/post_arg" id="publicar_form" method="post">{% csrf_token %}
 					<div class="form-group">
-				   		 <input id="textarea2" maxlength="{{debate.largo}}" name="descripcion" value="" type="text" class="form-big" placeholder="descripcion"> 
+				   		 <input id="textarea2" rows="3" maxlength="{{debate.largo}}" name="descripcion" value="" type="text" class="form-big" placeholder="descripcion"> 
 				   		 <div id="textarea_feedback2"></div>
 				   		 <input type="hidden" value="{{ debate.id_debate }}" name="id_deb">
 				   		 <input type="hidden" value="0" name="postura">
-				   		 <input type="hidden" value="username" name="alias">
-				  	</div>
+						<div class="checkbox">
+						    <label>
+						      <input type="checkbox" value="alias" name="alias" > Publicar con Alias:  {{alias_actual}}
+						    </label>
+						</div>				  	</div>
 			  		<button type="submit" class="btn btn-default">Publicar</button>
-			  		<input type="hidden" value="alias" name="alias">
-
-			  		<button type="submit" class="btn btn-default">Publicar con alias</button>
 				</form>
 			</form>
-
 		</div>
 	</div>
 	</td>
 	</table>
 
 
+	
+
+
 
 {% ifequal postura_usr_deb 'No definido' %}
 </div>
+
+
 {%endifequal%}
+</div>
 
 	{% endblock content %}
 </html>

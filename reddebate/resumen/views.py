@@ -72,6 +72,11 @@ def post_new(request):
         largo_max = request.POST['largo_m']
         alias = request.POST['alias']
         fecha_fin = request.POST['date']
+        if (fecha_fin):
+            print(fecha_fin)
+        else:
+            fecha_fin= None
+            print("null")
         print(fecha_fin)
         print("valor checkbox 'alias':")
         
@@ -92,7 +97,7 @@ def post_new(request):
     context = {'nombre':usuario.username,'alias': alias_usuario, 'usuario': usuario }
     return render(request, 'post_edit.html', context)
 
-def perfil(request, id_usuario):
+def perfil(request):
     if request.method == 'POST':
         nuevo_alias = request.POST['nuevo_alias']
         usuario = request.user
@@ -100,13 +105,13 @@ def perfil(request, id_usuario):
         publicar= Perfil.objects.get(user=usuario)
         publicar.alias = nuevo_alias
         publicar.save()
-        return redirect('perfil', 2)
+        return redirect('perfil')
 
-    print(id_usuario)
-    usuario = User.objects.get(id= id_usuario)
+    usuario = request.user
+    usuario = User.objects.get(id= usuario.id)
     alias_usuario = Perfil.objects.get(user=usuario)
-    debates_abiertos = Debate.objects.filter(id_usuario_id= id_usuario, estado= 'abierto')
-    debates_cerrados = Debate.objects.filter(id_usuario_id= id_usuario, estado= 'cerrado')
+    debates_abiertos = Debate.objects.filter(id_usuario_id= usuario.id, estado= 'abierto')
+    debates_cerrados = Debate.objects.filter(id_usuario_id= usuario.id, estado= 'cerrado')
     
     print("llega al perfil")
     

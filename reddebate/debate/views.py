@@ -44,6 +44,7 @@ def despliega(request, id_debate): #debate_id
 	tiene_argumento ='no'
 	for argumento in argumentos_aFavor:
 		usuario_debate = User.objects.get(id= argumento.id_usuario_id)
+		usuario_id = usuario_debate.id
 		if (argumento.alias_c == "alias"): 
 			usuario_alias = Perfil.objects.get(user=usuario_debate)
 			usuario_debate = usuario_alias.alias
@@ -54,13 +55,14 @@ def despliega(request, id_debate): #debate_id
 			t_valoracion = "no"
 		print(usuario_debate)
 		valoracion_argF = Valoracion.objects.filter(id_argumento_id= argumento.id_argumento).count()
-		argumentos_F.append([argumento.descripcion, usuario_debate, valoracion_argF, argumento.id_argumento, t_valoracion]) 
+		argumentos_F.append([argumento.descripcion, usuario_debate, valoracion_argF, argumento.id_argumento, t_valoracion, usuario_id]) 
 
 		if (request.user.id == argumento.id_usuario_id):
 			tiene_argumento ='si'
 
 	for argumento in argumentos_enContra:
 		usuario_debate = User.objects.get(id= argumento.id_usuario_id)
+		usuario_id = usuario_debate.id
 		if (argumento.alias_c == "alias"): 
 			usuario_alias = Perfil.objects.get(user=usuario_debate)
 			usuario_debate = usuario_alias.alias
@@ -71,7 +73,7 @@ def despliega(request, id_debate): #debate_id
 			t_valoracion = "no"
 		valoracion_argC = Valoracion.objects.filter(id_argumento_id= argumento.id_argumento).count()
 
-		argumentos_C.append([argumento.descripcion, usuario_debate, valoracion_argC, argumento.id_argumento, t_valoracion] ) 
+		argumentos_C.append([argumento.descripcion, usuario_debate, valoracion_argC, argumento.id_argumento, t_valoracion, usuario_id] ) 
 		if (request.user.id == argumento.id_usuario_id):
 			tiene_argumento = 'si'
 	print("argumentos: ", argumentos_C)
@@ -103,7 +105,7 @@ def despliega(request, id_debate): #debate_id
 	print(numpost_f)
 	print(numpost_c)
 
-	if debate.estado == 'abierto':
+	if debate.estado == 'abierto': 
 		return render(request, 'debate.html', {'debate': debate,
 			'usuario_creador': usuario_creador,
 			'usuario': usuario_actual,
@@ -148,14 +150,23 @@ def publica_argumento(request):
 	usuario = request.user
 	print(request.user)
 	id_debat = request.POST['id_deb']
-	if 'alias' in request.POST:
-		alias_usuario = request.POST['alias']
-		publicar= Argumento(descripcion=descrip, id_usuario_id=usuario.id,
-	 		id_debate_id=id_debat, postura= postura_deb_usr, alias_c=alias_usuario)
-	
-	else :
-		publicar= Argumento(descripcion=descrip, id_usuario_id=usuario.id,
-	 		id_debate_id=id_debat, postura= postura_deb_usr)
+	try:
+		publicar = Argumento.objects.get(id_usuario_id=usuario.id,id_debate_id=id_debat)
+		publicar.descripcion = descrip
+		if 'alias' in request.POST:
+			alias_usuario = request.POST['alias']
+			publicar.alias_c= alias_usuario
+		else:
+			publicar.alias_c= 'username'
+	except: 
+		if 'alias' in request.POST:
+			alias_usuario = request.POST['alias']
+			publicar= Argumento(descripcion=descrip, id_usuario_id=usuario.id,
+		 		id_debate_id=id_debat, postura= postura_deb_usr, alias_c=alias_usuario)
+		
+		else :
+			publicar= Argumento(descripcion=descrip, id_usuario_id=usuario.id,
+		 		id_debate_id=id_debat, postura= postura_deb_usr)
 	
 	publicar.save()
 	print (Argumento.objects.filter(id_debate_id= id_debat))
