@@ -15,7 +15,7 @@
 	<p><b>fecha de ingreso : </b>{{ usuario.date_joined }}</p>
 	
 <div  id="alias"> 
-<b>alias : </b>{{alias.alias}} <button id = 'boton_alias' class="btn btn-default" onclick='javascript:cambiar_alias();' >   cambiar alias <span class="glyphicon glyphicon-user" aria-hidden="true" ></span>  </button></div>
+<b>alias : </b>{{alias.alias}} <button id = 'boton_alias' class="btn btn-default" onclick='javascript:cambiar_alias();' > cambiar alias <span class="glyphicon glyphicon-user" aria-hidden="true" ></span>  </button></div>
 
 <div id='formulario_alias' style="display: none;" > 
 
@@ -91,7 +91,7 @@
     <li>	<a class="link btn-link" href="{% url 'despliega' deb.id_debate %}" > Ver  <span class="glyphicon glyphicon-log-in" aria-hidden="true"></span></a>   
 	</li>
     <li>
-    <form id="id" method="post" action= "{% url 'index' %}" enctype="multipart/form-data" onsubmit="return confirm('¿Seguro que desea cerrar el debate?');">{% csrf_token %}
+            <form id="id" method="post" action= "{% url 'index' %}" enctype="multipart/form-data" onsubmit="return confirm('¿Seguro que desea cerrar el debate?');">{% csrf_token %}
             	 <input type="hidden" value="{{ deb.id_debate }}" name="id_deb">
             	
             	

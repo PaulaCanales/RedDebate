@@ -31,7 +31,8 @@
             type: 'POST',
             data:{  id : id_debate,
                     postu: postura,
-                    csrfmiddlewaretoken: '{{ csrf_token }}'} ,
+                    csrfmiddlewaretoken: '{{ csrf_token }}'
+                  } ,
                   success: function(data) {
                     document.getElementById('tu_postura').innerHTML = ' tu postura actual: ' + data;
                     console.log(data);
@@ -71,23 +72,31 @@
                     }
 
                     if (document.getElementById('argumentos')){
-                      if (data == "En Contra"){
-                        document.getElementById('num_postura_contra').innerHTML = {{num_post_c}} ;
-                      }
-                      else{
-                        document.getElementById('num_postura_favor').innerHTML = {{num_post_f}} ;
-                      }
+                      {% if num_post_c %}
+                            if (data == "En Contra"){
+                              document.getElementById('num_postura_contra').innerHTML = {{num_post_c}} ;
+                            }
+                            else{
+                              document.getElementById('num_postura_favor').innerHTML = {{num_post_f}} ;
+
+                            }
+                      {% endif %}
                       document.getElementById('argumentos').style.display = 'block';
                     }
                     else{
-                      if (data == "En Contra"){
-                        document.getElementById('num_postura_contra').innerHTML = '<span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span> ' + {{num_post_c}};
-                        document.getElementById('num_postura_favor').innerHTML = '<span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span> ' + {{num_post_f}} ;
-                      }
-                      else{
-                        document.getElementById('num_postura_favor').innerHTML = '<span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span> ' + {{num_post_c}} ;
-                        document.getElementById('num_postura_contra').innerHTML = '<span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span> ' + {{num_post_f}} ;
-                      }
+                        {% if num_post_c %}
+                            if (data == "En Contra"){
+                              document.getElementById('num_postura_contra').innerHTML = '<span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span> ' + {{num_post_c}};
+                              document.getElementById('num_postura_favor').innerHTML = '<span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span> ' + {{num_post_f}} ;
+                            }
+                            else{
+                              document.getElementById('num_postura_favor').innerHTML = '<span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span> ' + {{num_post_c}} ;
+                              document.getElementById('num_postura_contra').innerHTML = '<span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span> ' + {{num_post_f}} ;
+                            }
+                        {% else %}
+                        var relleno =0;
+                        {% endif %}
+                      
 
 
                     }
@@ -118,10 +127,6 @@
       console.log("funciona .. hasta aqui editar_contra");
       document.getElementById('textarea2').value = descripcion ;
       document.getElementById('form_editar_encontra').style.display = 'block';
-     
-
-
-
     }
 
 
@@ -130,10 +135,15 @@
       document.getElementById('textarea1').value = descripcion ;
       document.getElementById('form_editar_afavor').style.display = 'block';
      
-
-
-
     }
+    function rebatir_contra(argumento_id){
+      console.log("funciona .. hasta aqui rebatir");
+
+      document.getElementById('argumento_id').value = argumento_id ;
+      document.getElementById('form_rebatir_contra').style.display = 'block';
+     
+    }
+
 
     function fomulario_argumento_afavor(){
      console.log("funciona .. hasta aqui");
@@ -185,12 +195,20 @@
     {% endif %}
     $('#textarea_feedback1').html(text_max + ' characters remaining');
     $('#textarea_feedback2').html(text_max + ' characters remaining');
+    $('#textarea_feedback3').html(text_max + ' characters remaining');
+
 
     $('#textarea2').keyup(function() {
         var text_length = $('#textarea2').val().length;
         var text_remaining = text_max - text_length;
 
         $('#textarea_feedback2').html(text_remaining + ' characters remaining');
+    });
+    $('#textarea3').keyup(function() {
+        var text_length = $('#textarea3').val().length;
+        var text_remaining = text_max - text_length;
+
+        $('#textarea_feedback3').html(text_remaining + ' characters remaining');
     });
 
     $('#textarea1').keyup(function() {

@@ -48,6 +48,8 @@ class Postura(models.Model):
     def __unicode__(self): # __unicode__ on Python 2
         return self.postura
 
+
+
 class Argumento(models.Model):
     #parametros de la tabla. 
     id_argumento = models.AutoField(primary_key=True)
@@ -57,6 +59,17 @@ class Argumento(models.Model):
     id_usuario = models.ForeignKey(User)
     id_debate = models.ForeignKey(Debate)
     
+
+    def __unicode__(self): # __unicode__ on Python 2
+        return self.descripcion
+
+class Respuesta(models.Model):
+    #parametros de la tabla. 
+    id_respuesta = models.AutoField(primary_key=True)
+    descripcion = models.CharField(max_length=300)
+    alias_c = models.CharField(max_length=50, default='username')
+    id_usuario = models.ForeignKey(User)
+    id_argumento = models.ForeignKey(Argumento)
 
     def __unicode__(self): # __unicode__ on Python 2
         return self.descripcion
