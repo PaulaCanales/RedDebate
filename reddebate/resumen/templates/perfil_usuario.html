@@ -10,33 +10,7 @@
 
 <div class="container">
 <div class="col-md-4">
-<<<<<<< Updated upstream
-	<h4>Nombre: {{ usuario.first_name }} {{ usuario.last_name }} </h4>
-	<p><b>usuario: </b>{{ usuario.username}}</p>
-	<p><b>email: </b>{{ usuario.email }}</p>
-	<p><b>fecha de ingreso : </b>{{ usuario.date_joined }}</p>
-	
-<div  id="alias"> 
-<b>alias : </b>{{alias.alias}} <button id = 'boton_alias' class="btn btn-default" onclick='javascript:cambiar_alias();' > cambiar alias <span class="glyphicon glyphicon-user" aria-hidden="true" ></span>  </button></div>
 
-<div id='formulario_alias' style="display: none;" > 
-
-			<form method="POST" class="post-form">{% csrf_token %}
-				<form action="{% url 'perfil' %}" id="publicar_alias" method="post">{% csrf_token %}
-					<div class="form-group">
-				   		 <input name="nuevo_alias" value="" type="text" class="form-control" placeholder="{{alias.alias}}"> 
-
-				  	</div>
-
-
-			  		<button type="submit" class="btn btn-default">Actualizar Alias</button> 
-			  		<label type="button" onclick='cancelar_alias();' class="btn btn-default"> Cancelar </label>
-
-				</form>
-			</form>
-
-
-=======
     <h3>{{ usuario.first_name }} {{ usuario.last_name }} </h3>
     <div class="container-perfil">
     <br>
@@ -55,22 +29,24 @@
         <button id = 'boton_alias' class="btn btn-perfil" onclick='javascript:cambiar_alias();'> Cambiar Alias <span class="glyphicon glyphicon-user" aria-hidden="true" ></span> </button>
     </div>
 
+     </div>
+    <br>
     <div id='formulario_alias' style="display: none;" > 
 
-        <form method="POST" class="post-form">{% csrf_token %}
-            <form action="{% url 'perfil' %}" id="publicar_alias" method="post">{% csrf_token %}
-                <div class="form-group">
+            <form method="POST" class="post-form">{% csrf_token %}
+                <form action="{% url 'perfil' %}" id="publicar_alias" method="post">{% csrf_token %}
+                    <div class="form-group">
                          <input name="nuevo_alias" value="" type="text" class="form-control" placeholder="{{alias.alias}}"> 
-                </div>
-                <button type="submit" class="btn btn-perfil">Actualizar Alias</button> 
-                <label type="button" onclick='cancelar_alias();' class="btn btn-perfil"> Cancelar </label>
-            </form>
-        </form>
-    </div>
-    <br>
 
+                    </div>
+
+
+                    <button type="submit" class="btn btn-perfil">Actualizar Alias</button> 
+                    <label type="button" onclick='cancelar_alias();' class="btn btn-perfil"> Cancelar </label>
+
+                </form>
+            </form>
     </div>
->>>>>>> Stashed changes
 </div>
 
 <div class="col-xs-8">    
@@ -162,92 +138,6 @@
         </div>
     </div>
 </div>
-<<<<<<< Updated upstream
-<div class="col-md-8">		
-<h3> Debates Abiertos </h3>
-<table class="table">
-
-		{% for deb in debates_abiertos %}
-			<tr > 
-				<td><p> {{ deb.titulo }} </p></td>
-				 <td><p> {{ deb.descripcion }} </p></td>
-
-				 <form id="id" method="post" action= "{% url 'index' %}" enctype="multipart/form-data" onsubmit="return confirm('¿Seguro que desea cerrar el debate?');">{% csrf_token %}
-            	 <input type="hidden" value="{{ deb.id_debate }}" name="id_deb">
-            	
-            	<td>
-            	<button type="submit" class="btn btn-default" >Cerrar <span class="glyphicon glyphicon-off" aria-hidden="true"></span></button> </td> 
-
-        	<!--<td><input class="btn btn-primary" type="submit" name="submit" value="A" /></td>-->
-    		</form>
-    		<td> <a class="btn btn-default"  href="{% url 'despliega' deb.id_debate %}" > Ver <span class="glyphicon glyphicon-log-in" aria-hidden="true"></span> </a> </td>
-
-			</tr>
-		{% endfor %}
-</table>
-
-<h3> Debates Cerrados </h3>
-
-<table class="table">
-
-		{% for deb in debates_cerrados %}
-			<tr > 
-				<td><p> {{ deb.titulo }} </p></td>
-				 <td><p> {{ deb.descripcion }} </p></td>
-
-				<td> <div class="dropup">
-  <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-    Opciones
-    <span class="caret"></span>
-  </button>
-  <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
-
-
-    <li>
-   		<form id="id" method="post" action= "{% url 'index' %}" enctype="multipart/form-data" onsubmit="return confirm('¿Seguro que desea cerrar el debate?');">{% csrf_token %}
-            <input type="hidden" value="{{ deb.id_debate }}" name="id_deb"> 
-            
-            <button type="submit" class="btn btn-link" > Editar <span class="glyphicon glyphicon-edit" aria-hidden="true"></span></button>
-
-		</form>
-
-
-
-    </li>
-    <li>	<a class="link btn-link" href="{% url 'despliega' deb.id_debate %}" > Ver  <span class="glyphicon glyphicon-log-in" aria-hidden="true"></span></a>   
-	</li>
-    <li>
-            <form id="id" method="post" action= "{% url 'index' %}" enctype="multipart/form-data" onsubmit="return confirm('¿Seguro que desea cerrar el debate?');">{% csrf_token %}
-            	 <input type="hidden" value="{{ deb.id_debate }}" name="id_deb">
-            	
-            	
-            	<button type="submit" class="link btn-link" > Republicar <span class="glyphicon glyphicon-off" aria-hidden="true"></span></button>
-    		</form>
-    	
-
-    </li>
-    <li role="separator" class="divider"></li>
-    <li>
-
-    <form id="id" method="post" action= "{% url 'index' %}" enctype="multipart/form-data" onsubmit="return confirm('¿Seguro que desea cerrar el debate?');">{% csrf_token %}
-            	 <input type="hidden" value="{{ deb.id_debate }}" name="id_deb"> 
-            	<button type="submit" class="btn btn-link" > Eliminar <span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button> 
-
-    		</form>
-    		
-</li>
-  </ul>
-</div></td>
-<td>
-			
-
-    		
-    	
-			
-		{% endfor %}
-</table>
-=======
->>>>>>> Stashed changes
 
 
 </div>
