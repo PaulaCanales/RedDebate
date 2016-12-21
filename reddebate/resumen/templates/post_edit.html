@@ -7,43 +7,64 @@
 
   	<form method="POST" class="post-form">{% csrf_token %}
 		<form action="/post_new" id="publicar_form" method="post">{% csrf_token %}
-		 <div class="row">
+			
+			<div class="row">
+  			
   			<div class="col-md-6">
-
-<h3>Publicar Debate</h3>
-			  <div class="form-group">
-
-			    <input name="titulo" value="" type="text" class="form-control" placeholder="Titulo">
-			    <br><br>
-			    <input name="descripcion" value="" type="text" class="form-big" placeholder="Descripcion">
-			  </div>
+			<h3>Publicar Debate</h3>
+			<div class="form-group">
+				<h4>Título</h4>
+				<input name="titulo" value="" type="text" class="form-control" placeholder="Título">
+			  	<br>
+			    <h4>Descripción</h4>
+			    <input name="descripcion" value="" type="text" class="form-big" placeholder="Descripción">
+			</div>
+			
+			<button type="submit" class="btn btn-tabla">Publicar</button>
 			 </div>
 
+			<div class="col-md-6">
+			<h3>Reglas del Debate</h3>
+			 	
+			 	<div class="input-group">
+				<h5>Largo máximo de los argumentos:</h5>
+			
+					<div class="funkyradio">
+						<div class="funkyradio-success">
+				            <input type="radio" name="largo_m" id="radio1" value="300" checked/>
+				            <label for="radio1">300 carácteres</label>
+				        </div>
+				        <div class="funkyradio-success">
+				            <input type="radio" name="largo_m" id="radio2" value="200" />
+				            <label for="radio2">200 carácteres</label>
+				        </div>
+				        <div class="funkyradio-success">
+				            <input type="radio" name="largo_m" id="radio3" value="140" />
+				            <label for="radio3">140 carácteres</label>
+				        </div>
+					</div>
+				<br>	
+				<h5>Publicar el debate como:</h5>
 
-			  <div class="col-md-6">
-			  <h3>Reglas del Debate</h3>
-			  	<div class="input-group">
-
-				
-				Largo máximo de los argumentos:<br>
-				<div class="radio">
-				 <label><input type="radio" name="largo_m" value="300" checked> 300</label>
-				 <br>
-				  <label><input type="radio" name="largo_m" value="200"> 200</label><br>
-				  <label><input type="radio" name="largo_m" value="140"> 140</label><br>
-				  <br>
-				  Nombre del creador del debate:
-				  <label><input type="radio" name="alias" value="username" checked>  Publicar el debate con mi usuario: {{nombre}}</label><br>
-				  <label><input type="radio" name="alias" value="alias"> Publicar el debate con mi Alias: {{alias}}</label><br>
-				  <div>
-					fecha finalización: <input class="datepicker" type="text" name="date">
+					<div class="funkyradio">
+						<div class="funkyradio-success">
+				            <input type="radio" name="alias" id="radio4" value="username" checked/>
+				            <label for="radio4">Usuario: {{nombre}}</label>
+				        </div>
+						<div class="funkyradio-success">
+				            <input type="radio" name="alias" id="radio5" value="alias" />
+				            <label for="radio5">Alias: {{alias}}</label>
+				        </div>
+					</div>
+				<br>
+				<h5><div> <span style="color:#18BD9B" class="glyphicon glyphicon-calendar"></span> Fecha Fin: <input class="datepicker" type="text" name="date"> </div></h5>
 				</div>
-
-			  </div>
 			</div>
-		  <button type="submit" class="btn btn-default">Publicar</button>
+
+		 </div> 
 		</form>
 	</form>
 
-</div>
+
+
 {% endblock%}

@@ -7,129 +7,137 @@
 <html>
 
 
+{% block content %}
 
+<div class="container">
+	<div class="blank"><table>
+		<tr> 
+			<td width=120 >
+				<IMG SRC="{% static 'img/RDLogo04.png' %}" height='90' width='115' ALT="RedDebateLogo">
+			</td>
+			
+			<td>
+				<div class="container-titulo">
+					
+					<h3 class="h3-t1"> {{ debate.titulo }}</h3>
+					{% ifequal debate.alias_c 'alias' %}
+						<h5>Creado por {{alias}} en modo anónimo</h5>
+						
+					{%else%}
+						<h5>Creado por {{usuario_creador}}</h5>
+					{%endifequal%}
 
-	{% block content %}
-	<!--tabla de debates-->
-	<div class="container">
+					
+				</div>
+			</td>
+		</tr>
 
-	<h3> {{ debate.titulo }}</h3>
-	
-	<div>
-		<h4>Descripcion: {{ debate.descripcion }}</h4>
-		<p>Fecha inicio: {{ debate.date }}</p>
-		<p>estado: {{ debate.estado }}</p>
-		{% ifequal debate.alias_c 'alias' %}
-		El usuario {{alias}} ha creado este debate en modo anonimo
-		{%else%}
-
-		<p>El usuario {{usuario_creador}} ha creado este debate</p>
-		{%endifequal%}
-		<div id="tu_postura" > tu postura actual: {{postura_usr_deb}} </div>
-		<!--<p>usuario {{ usuario.id_usuario_id }}</p>-->
+	</table>	
 	</div>
+	
+	
+	<div class="blank"><table>
+		<tr> 
+			<td width=120 ><p1>Descripción</p1></td>
+			<td>{{ debate.descripcion }}</td>
+		</tr>
+
+		<tr> 
+			<td width=120 ><p1>Fecha inicio</p1></td>
+			<td>{{ debate.date }}</td>
+		</tr>
+
+		<tr> 
+			<td width=120 ><p1>Estado</p1></td>
+			<td>{{ debate.estado }}</td>
+		</tr>
+
+		<tr> 
+			<td width=120 ><p1>Tu Postura</p1></td>
+			<td><div id="tu_postura" >{{postura_usr_deb}} </div></td>
+		</tr>
+
+	</table>	
+	</div>
+
+	<div id="estadisticas" > 
+		<h3>Estadísticas</h3>	
 		
-	
-	 <!--Div that will hold the pie chart-->
-	 <div class="row">
-		 <div class="col-md-6">
-	    	<div id="chart_div" ></div> 
-	    </div>
-	    <div class="col-md-6">
-			<div id="chart_div2" align = "center"></div>
-		</div> 
+		 <!--Div that will hold the pie chart-->
+		 <div class="row_est">
+			 <div class="col-md-6">
+		    	<div id="chart_div"></div> 
+		    </div>
+		    <div class="col-md-6">
+				<div id="chart_div2"  align = "center"></div>
+			</div> 
+		</div>
+		<h2>  </h2>
+		<div class="container">
+			<div id="chart_arg_val" style="width: 900px; height: 300px;" ></div>
+		</div>
 	</div>
 
-	<div class="row">
-		<div id="chart_arg_val" style="width: 900px; height: 300px;" ></div>
-	</div>
 
 
-	<div id="argumentos" class="row"> 
-	
-	
-	<h2>Argumentos</h2>
-		
-	<table>
-	<td width="50%">
-	<div style="width:500px; height: 500px; padding:8px; float:left; margin-top:10px; margin-right:10px; color:grey" >
-		<div class="panel panel-default" >
-	  		<!-- Default panel contents --> 
-	 		<div class="panel-heading">A Favor 
-	 				<div style="float:right"><span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
-	 				{{num_post_f}}
-	 				</div>
-	 		</div>
+	<div id="argumentos" > 
 
-			<!-- Table -->
-			<table class="table">
-			  
-			{% for arg in argF %}
-			   	<tr><td> {{arg.1}} : {{arg.0}}  
-			   	{% ifequal arg.4 'no' %}
-			   	<div style="display:none; float:right; margin-right:10px;" id= "{{arg.3}}" > <span  class="glyphicon glyphicon-thumbs-up" aria-hidden="true" ></span></div>
- <div style="float:right" >   <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true" ></span> {{arg.2}} </div>
+		<h3>Argumentos</h3>
+		<div class="container">
+		  <div class="row">
+		    <div class="col-xs-6">
+		      <div class="datagrid"><table>
+				<tr>
+					<thead><th>A Favor <div style="float:right"><span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>{{num_post_f}}</div></th></thead>
+				</tr>
+					  
+					{% for arg in argF %}
+					   	<tr><td> {{arg.1}} : {{arg.0}}  
+					   	{% ifequal arg.4 'no' %}
+					   	<div style="display:none; float:right; margin-right:10px;" id= "{{arg.3}}" > <span  class="glyphicon glyphicon-thumbs-up" aria-hidden="true" ></span></div>
+		 				<div style="float:right" >   <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true" ></span> {{arg.2}} </div>
 
 
-			   		{% else %}
-			   			<div style="float:right" >   <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true" ></span> {{arg.2}} </div>
-			   		{%endifequal%}
+					   		{% else %}
+					   			<div style="float:right" >   <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true" ></span> {{arg.2}} </div>
+					   		{%endifequal%}
 
-			   	 </td></tr>     
-			{% empty %}
-			   	<tr><td> </td></tr> 
-			{% endfor %}
+					   	 </td></tr>     
+					{% empty %}
+					   	<tr><td> </td></tr> 
+					{% endfor %}
 
 			</table>
-		</div>
-
-	
-
-
-			
-	</div>
-	</td>
-	<td width="100px"></td>
-	<td width="50%">
-	<div style="width:500px; height: 500px; padding:8px; float:left; margin-top:10px; margin-right:10px; color:grey" >
-		<div class="panel panel-default" >
-			<!-- Default panel contents --> 
-			<div class="panel-heading" >En Contra
-					<div style="float:right"><span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span> {{num_post_c}}</div>
-
 			</div>
+		    </div>
+		    <div class="col-xs-6">
+		      	<div class="datagrid"><table>
+				<tr>
+					<thead><th>En Contra <div style="float:right"><span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span> {{num_post_c}}</div></th></thead>
+				</tr>
+					  
+					{% for arg in argC %}
+					   	<tr><td> {{arg.1}} : {{arg.0}}  
+					   	{% ifequal arg.4 'no' %}
+					   	<div style="display:none; float:right; margin-right:10px;" id= "{{arg.3}}" > <span  class="glyphicon glyphicon-thumbs-up" aria-hidden="true" ></span></div>
+		 				<div style="float:right" >   <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true" ></span> {{arg.2}} </div>
 
-			
 
-			<!-- Table -->
-			<table class="table" >
-			{% for arg in argC %}
-			    <tr><td>{{ arg.1 }}: {{arg.0}} 
-			    	{% ifequal arg.4 'no' %}
-			    		<div style="display:none; float:right;" id= "{{arg.3}}" > 
-			    	<span  class="glyphicon glyphicon-thumbs-up" aria-hidden="true" ></span></div>
+					   		{% else %}
+					   			<div style="float:right" >   <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true" ></span> {{arg.2}} </div>
+					   		{%endifequal%}
 
-			   			 <div style="float:right" >   <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true" ></span> {{arg.2}} </div>
-			   		
+					   	 </td></tr>     
+					{% empty %}
+					   	<tr><td> </td></tr> 
+					{% endfor %}
 
-			   		{% else %}
-			   			<div style="float:right" >   <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true" ></span> {{arg.2}} </div>
-			   		{%endifequal%}
-			     </td></tr> 
- 			{% empty %}
-				<tr><td> </td></tr> 
-			{% endfor %}
-   			</table>
-			  
+			</table>
+			</div>
+		    </div>
+		  </div>
 		</div>
-		
-
 	</div>
-	</td>
-	</table>
-
-
-</div>
 </div>
 	{% endblock content %}
 </html>

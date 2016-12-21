@@ -251,10 +251,10 @@
            var val_argC2 =0;
         {% endif %}
 
-        var data = new google.visualization.arrayToDataTable([
-          ['Argumentos', 'A Favor', 'En Contra'],
-          ['Argumento más valorado', val_argF1 ,val_argC1  ],
-          ['Argumento 2º más valorado', val_argF2  , val_argC2 ],
+        var data = new google.visualization.arrayToDataTable([ 
+          ['Postura', '1º Mejor Valorado','2º Mejor Valorado'],
+          ['A Favor', val_argF1 ,val_argC1],
+          ['En Contra', val_argF2  , val_argC2],
         ]);
 
         var options = {
@@ -265,8 +265,8 @@
           },
           bars: 'horizontal', // Required for Material Bar Charts.
           series: {
-            0: { axis: 'argumento' }, // Bind series 0 to an axis named 'distance'.
-            1: { axis: 'valoracion' } // Bind series 1 to an axis named 'brightness'.
+            0: { color: '18BD9B'}, // Bind series 0 to an axis named 'distance'.
+            1: { color: '2D3E50'} // Bind series 1 to an axis named 'brightness'.
           },
           axes: {
             x: {
@@ -309,7 +309,8 @@
         // Set chart options
         var options = {'title':'Cantidad de Argumentos en el debate',
                        'width':400,
-                       'height':300};
+                       'height':300,
+                       'colors': ['#18BD9B', '#2D3E50']};
 
         // Instantiate and draw our chart, passing in some options.
         var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
@@ -342,7 +343,8 @@
         // Set chart options
         var options = {'title':'Cantidad de Posturas en el debate',
                        'width':400,
-                       'height':300};
+                       'height':300,
+                       'colors': ['#18BD9B', '#2D3E50']};
 
         // Instantiate and draw our chart, passing in some options.
         var chart = new google.visualization.PieChart(document.getElementById('chart_div2'));
@@ -368,7 +370,8 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="{% url 'index' %}">Red Debate</a>
+                
+                <a href="{% url 'index' %}"><IMG SRC="{% static 'img/RDLogo03.png' %}" height='65' ALT="RedDebateLogo"></a>
             </div>
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
