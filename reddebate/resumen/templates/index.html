@@ -19,8 +19,8 @@
 			
 			<tr> 
 				
-				<td width=300 ><p> {{ deb.titulo }} {{deb.id_usuario_id}}</p></td>
-				<td width=600> <p> {{ deb.descripcion }} {{usuario}}</p></td>
+				<td width=300 > {{ deb.titulo }}</td>
+				<td width=600> <p> {{ deb.descripcion }}</p></td>
 
 
 				{% ifequal usuario.id deb.id_usuario_id %}

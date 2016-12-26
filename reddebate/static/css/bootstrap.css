@@ -1087,6 +1087,7 @@ body {
   line-height: 1.42857143;
   color: #333;
   background-color: #fff;
+  text-align: justify;
 }
 input,
 button,
@@ -1095,6 +1096,7 @@ textarea {
   font-family: inherit;
   font-size: inherit;
   line-height: inherit;
+  resize: none;
 }
 a {
   color: #337ab7;
@@ -1303,6 +1305,7 @@ h6,
 }
 p {
   margin: 0 0 10px;
+  text-align: justify;
 }
 p1{
   margin: 0 0 10px;
@@ -1609,6 +1612,7 @@ pre code {
   padding-left: 15px;
   margin-right: auto;
   margin-left: auto;
+  text-align: justify;
 }
 @media (min-width: 768px) {
   .container {
@@ -1647,7 +1651,7 @@ pre code {
   border-radius: 8px;
 }
 .container-titulo {  
-  padding-right: 15px;
+  padding-right: 0px;
   padding-left: 15px;
   padding-bottom: 5px;
   margin-right: auto;
@@ -1672,7 +1676,7 @@ pre code {
   position: relative;
   min-height: 1px;
   padding-right: 15px;
-  padding-left: 15px;
+  padding-left: 0px;
 }
 .col-xs-1, .col-xs-2, .col-xs-3, .col-xs-4, .col-xs-5, .col-xs-6, .col-xs-7, .col-xs-8, .col-xs-9, .col-xs-10, .col-xs-11, .col-xs-12 {
   float: left;
@@ -2348,6 +2352,7 @@ pre code {
  border-collapse: collapse;
  text-align: left;
  width: 100%;
+
  }
 
 .datagrid {
@@ -2357,11 +2362,17 @@ pre code {
  -webkit-border-radius: 8px;
  -moz-border-radius: 8px;
  border-radius: 8px;
- width: 95%;
+ width: 100%;
  }
 
 .datagrid table td, .datagrid table th {
  padding: 10px 10px;
+ vertical-align: middle;
+ }
+ .datagrid table td.rebatir{
+  padding: 5px 30px;
+  border-bottom: 1px solid #DBDBDB;
+  font: normal 10px;
  }
 
 .datagrid table thead th {
@@ -2374,6 +2385,7 @@ pre code {
  font-weight: bold;
  border-left: 0px solid #2D3E50;
  padding: 15px 15px;
+
  }
 
 .datagrid table thead th:first-child {
@@ -2383,8 +2395,9 @@ pre code {
 .datagrid table tbody td {
  color: #2D3E50;
  font-size: 14px;
- border-bottom: 1px solid #DBDBDB;
-font-weight: normal;
+ border-bottom: 1px solid #64D7C0;
+ font-weight: normal;
+ 
  }
 
 .datagrid table tbody td:first-child {
@@ -2394,6 +2407,8 @@ font-weight: normal;
 .datagrid table tbody tr:last-child td {
  border-bottom: none;
  }
+
+
 
 table {
   background-color: transparent;

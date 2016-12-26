@@ -12,9 +12,6 @@
 <div class="container">
 	<div class="blank"><table>
 		<tr> 
-			<td width=120 >
-				<IMG SRC="{% static 'img/RDLogo04.png' %}" height='90' width='115' ALT="RedDebateLogo">
-			</td>
 			
 			<td>
 				<div class="container-titulo">
@@ -92,7 +89,7 @@
 				</tr>
 					  
 					{% for arg in argF %}
-					   	<tr><td> {{arg.1}} : {{arg.0}}  
+					   	<tr><td> <p1>{{arg.1}}:</p1> {{arg.0}}  
 					   	{% ifequal arg.4 'no' %}
 					   	<div style="display:none; float:right; margin-right:10px;" id= "{{arg.3}}" > <span  class="glyphicon glyphicon-thumbs-up" aria-hidden="true" ></span></div>
 		 				<div style="float:right" >   <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true" ></span> {{arg.2}} </div>
@@ -117,7 +114,7 @@
 				</tr>
 					  
 					{% for arg in argC %}
-					   	<tr><td> {{arg.1}} : {{arg.0}}  
+					   	<tr><td> <p1>{{arg.1}}:</p1> {{arg.0}}  
 					   	{% ifequal arg.4 'no' %}
 					   	<div style="display:none; float:right; margin-right:10px;" id= "{{arg.3}}" > <span  class="glyphicon glyphicon-thumbs-up" aria-hidden="true" ></span></div>
 		 				<div style="float:right" >   <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true" ></span> {{arg.2}} </div>

@@ -34,12 +34,14 @@
                     csrfmiddlewaretoken: '{{ csrf_token }}'
                   } ,
                   success: function(data) {
-                    document.getElementById('tu_postura').innerHTML = ' tu postura actual: ' + data;
+                    document.getElementById('tu_postura').innerHTML = data;
                     console.log(data);
                      if (data == "En Contra"){
                       
-                      document.getElementById('bot_ec').style.backgroundColor = '#535353';
+                      document.getElementById('bot_ec').style.backgroundColor = '#18BD9B';
+                      document.getElementById('bot_ec').style.color = 'WHITE';
                       document.getElementById('bot_af').style.backgroundColor = 'WHITE';
+                      document.getElementById('bot_af').style.color = '#18BD9B';
 
                       if (document.getElementById('form_argumento_afavor').style.display=='none'){
                         document.getElementById('bot_argumento_encontra').style.display = 'block';
@@ -54,8 +56,10 @@
                       }            
                     }
                     else{
-                      document.getElementById('bot_af').style.backgroundColor = '#535353';
+                      document.getElementById('bot_af').style.backgroundColor = '#18BD9B';
+                      document.getElementById('bot_af').style.color = 'WHITE';
                       document.getElementById('bot_ec').style.backgroundColor = 'WHITE';
+                      document.getElementById('bot_ec').style.color = '#18BD9B';
 
                       if (document.getElementById('form_argumento_encontra').style.display=='none'){
                         document.getElementById('bot_argumento_afavor').style.display = 'block';
@@ -141,6 +145,13 @@
 
       document.getElementById('argumento_id').value = argumento_id ;
       document.getElementById('form_rebatir_contra').style.display = 'block';
+     
+    }
+    function rebatir_favor(argumento_id){
+      console.log("funciona .. hasta aqui rebatir");
+
+      document.getElementById('argumento_id').value = argumento_id ;
+      document.getElementById('form_rebatir_favor').style.display = 'block';
      
     }
 
@@ -252,15 +263,15 @@
         {% endif %}
 
         var data = new google.visualization.arrayToDataTable([ 
-          ['Postura', '1º Mejor Valorado','2º Mejor Valorado'],
-          ['A Favor', val_argF1 ,val_argC1],
-          ['En Contra', val_argF2  , val_argC2],
+          ['Valoración', 'A Favor','En Contra'],
+          ['1º Mejor Valorado', val_argF1 ,val_argC1],
+          ['2º Mejor Valorado', val_argF2  , val_argC2],
         ]);
 
         var options = {
           width: 800,
           chart: {
-            title: 'Valoracion',
+            title: 'Valoración',
             subtitle: 'Comparación de los argumentos a favor y en contra más valorados'
           },
           bars: 'horizontal', // Required for Material Bar Charts.
@@ -270,7 +281,7 @@
           },
           axes: {
             x: {
-              argumento: {label: 'Valoracion'}, // Bottom x-axis.
+              argumento: {label: 'Valoración'}, // Bottom x-axis.
               valoracion: {side: 'top', label: 'magnitud'} // Top x-axis.
             }
           }
@@ -307,7 +318,7 @@
         ]);
 
         // Set chart options
-        var options = {'title':'Cantidad de Argumentos en el debate',
+        var options = {'title':'Cantidad de Argumentos en el Debate',
                        'width':400,
                        'height':300,
                        'colors': ['#18BD9B', '#2D3E50']};
@@ -341,7 +352,7 @@
         ]);
 
         // Set chart options
-        var options = {'title':'Cantidad de Posturas en el debate',
+        var options = {'title':'Cantidad de Posturas en el Debate',
                        'width':400,
                        'height':300,
                        'colors': ['#18BD9B', '#2D3E50']};
@@ -375,16 +386,16 @@
             </div>
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                <ul class="nav navbar-nav">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="{% url 'index' %}">Todos los Debates</a>
+                    </li>
                     <li>
                         <a href="{% url 'post_new' %}">Nuevo Debate</a>
                     </li>
                     <li>
                         <a href="{% url 'perfil' %}">Perfil</a>
                     </li>
-                    
-                   
-
                 </ul>
             </div>
              
