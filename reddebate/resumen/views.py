@@ -18,7 +18,7 @@ from resumen.models import Perfil, Debate
 
 def index(request):
     if request.method == 'POST':
-        if 'postu' in request.POST:
+        if 'id_deb' in request.POST:
             print("cerrado el debate", request.POST['id_deb'])
             id_deb = request.POST['id_deb']
             deb = Debate.objects.get(pk=id_deb)
