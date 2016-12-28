@@ -16,6 +16,8 @@
 	</div>			
 	<section class="success" id="nuevodebate" style="display:none">
         <div class="container">
+        <form method="POST" class="post-form">{% csrf_token %}
+		<form action="/post_new" id="publicar_form" method="post">{% csrf_token %}
         	<div class="blank"><table>
 				<tr> 
 					<td width=70% vertical-align: top>
@@ -71,7 +73,7 @@
 					</td>
 				</tr>
 			</div></table>
-          
+          </form></form>
         </div>
     </section>
     <div class="container">
