@@ -158,6 +158,7 @@
 
     function fomulario_argumento_afavor(){
      console.log("funciona .. hasta aqui");
+
      document.getElementById('form_argumento_afavor').style.display = 'block';
 
      document.getElementById('bot_argumento_afavor').style.display = 'none';
@@ -168,6 +169,19 @@
      document.getElementById('form_argumento_encontra').style.display = 'block';
 
      document.getElementById('bot_argumento_encontra').style.display = 'none';
+    }
+
+/*    function formulario_nuevo_debate(id){
+      if (document.getElementById(id).style.display=="none"){
+        document.getElementById(id).style.display = "block";
+
+      }  
+      else{
+        document.getElementById(id).style.display = "none";
+      }
+    }*/
+    function formulario_nuevo_debate(){
+      $("#nuevodebate").slideToggle("slow");
     }
 
      function valorar(argumento, id_div){
@@ -390,9 +404,7 @@
                     <li>
                         <a href="{% url 'index' %}">Todos los Debates</a>
                     </li>
-                    <li>
-                        <a href="{% url 'post_new' %}">Nuevo Debate</a>
-                    </li>
+                   
                     <li>
                         <a href="{% url 'perfil' %}">Perfil</a>
                     </li>

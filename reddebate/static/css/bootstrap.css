@@ -1198,6 +1198,8 @@ h6,
   color: #2D3E50;
   padding-top: 2px;
   padding-bottom: 2px;
+  font-weight: bold;
+
 } 
 h1 small,
 h2 small,
@@ -1278,6 +1280,7 @@ h5 .small,
 h6 .small,
 .h6 .small {
   font-size: 75%;
+  font-weight: bold;
 }
 h1,
 .h1 {
@@ -1297,7 +1300,7 @@ h4,
 }
 h5,
 .h5 {
-  font-size: 14px;
+  font-size: 16px;
 }
 h6,
 .h6 {
@@ -1607,6 +1610,7 @@ pre code {
   max-height: 340px;
   overflow-y: scroll;
 }
+
 .container {
   padding-right: 15px;
   padding-left: 15px;
@@ -1635,6 +1639,15 @@ pre code {
   margin-right: auto;
   margin-left: auto;
 }
+.container-form {  
+  padding-right: 0px;
+  padding-left: 0px;
+  padding-bottom: 5px;
+  margin-right: 0px;
+  margin-left: 0px;
+  margin-bottom: 10px;
+  background-color:#18BD9B;
+}
 
 .container-perfil {  
   padding-right: 15px;
@@ -1661,6 +1674,25 @@ pre code {
   -webkit-border-radius: 8px;
   -moz-border-radius: 8px;
   border-radius: 8px;
+}
+section {
+  padding: 10px 0;
+}
+section h2 {
+  margin: 0;
+  font-size: 3em;
+}
+section.success {
+  background: #18BC9C;
+  color: white;
+}
+@media (max-width: 767px) {
+  section {
+    padding: 75px 0;
+  }
+  section.first {
+    padding-top: 75px;
+  }
 }
 
 .row {
@@ -2314,15 +2346,16 @@ pre code {
   width: 100%; 
 }
  .blank {font: normal 12px/150% Arial, Helvetica, sans-serif; 
-  background: #fff; 
+ 
   overflow: hidden; 
-  border: 1px solid #FFFFFF; 
   -webkit-border-radius: 3px; 
   -moz-border-radius: 3px; 
   border-radius: 3px; 
 }
 .blank table td, .blank table th { 
   padding: 7px 0px; 
+  vertical-align: top;
+
 }
 .blank table thead th {
   background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #FFFFFF), color-stop(1, #FFFFFF) );
@@ -2943,7 +2976,8 @@ fieldset[disabled] .checkbox label {
 
 .funkyradio input[type="radio"]:checked ~ label,
 .funkyradio input[type="checkbox"]:checked ~ label {
-  color: #777;
+  color: #2D3E50;
+  font-weight: bold;
 }
 
 .funkyradio input[type="radio"]:checked ~ label:before,
@@ -2968,7 +3002,7 @@ fieldset[disabled] .checkbox label {
 .funkyradio-success input[type="radio"]:checked ~ label:before,
 .funkyradio-success input[type="checkbox"]:checked ~ label:before {
   color: #fff;
-  background-color: #18BD9B;
+  background-color: #2D3E50;
 }
 
 .form-control-static {
@@ -3365,6 +3399,35 @@ fieldset[disabled] a.btn {
   color:#fff;
   border:2px solid #18BC9C;
   background:#18BC9C;
+  transition:all .3s ease-in-out;
+}
+.btn-index {
+  width: auto;
+  color:#fff;
+  background:#2D3E50;
+  border:2px solid #2D3E50;
+  margin-top:15px;
+  margin-bottom:15px;
+}
+.btn-index.active,.btn-index:active,.btn-index:focus,.btn-index:hover {
+  color:#fff;
+  border:2px solid #18BC9C;
+  background:#18BC9C;
+  transition:all .3s ease-in-out;
+}
+.btn-publicar {
+  width: auto;
+  color:#fff;
+  background:#2D3E50;
+  border:2px solid #2D3E50;
+  margin-top:15px;
+  margin-bottom:15px;
+  font-size: 20px;
+}
+.btn-publicar.active,.btn-publicar:active,.btn-publicar:focus,.btn-publicar:hover {
+  color:#fff;
+  border:2px solid #2D3E50;
+  background:#43586D;
   transition:all .3s ease-in-out;
 }
 .btn-outline {

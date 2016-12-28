@@ -18,11 +18,14 @@ from resumen.models import Perfil, Debate
 
 def index(request):
     if request.method == 'POST':
-        print("cerrado el debate", request.POST['id_deb'])
-        id_deb = request.POST['id_deb']
-        deb = Debate.objects.get(pk=id_deb)
-        deb.estado = 'cerrado'
-        deb.save()
+        if 'postu' in request.POST:
+            print("cerrado el debate", request.POST['id_deb'])
+            id_deb = request.POST['id_deb']
+            deb = Debate.objects.get(pk=id_deb)
+            deb.estado = 'cerrado'
+            deb.save()
+        if 'descripcion' in request.POST:
+            resp = post_new(request)
     usuario = request.user
     u = User.objects.get(username= usuario.username)
     iniciando_alias(request, u)
@@ -39,7 +42,9 @@ def index(request):
             print(debate)
     usuario = request.user #usuario actual id
     print("el usuario activo es_: ", usuario.id)
-    context = {'object_list': category_list, 'usuario': usuario}
+    usuario_2 = Perfil.objects.get(user= u)
+    alias_usuario = usuario_2.alias
+    context = {'object_list': category_list, 'usuario': usuario, 'alias': alias_usuario}
     return render(request, 'index.html', context)
 
 def iniciando_alias(request, u):
@@ -93,9 +98,8 @@ def post_new(request):
     u = User.objects.get(username= usuario.username)
     usuario_2 = Perfil.objects.get(user= u)
     alias_usuario = usuario_2.alias
-#alias_usuario = u.Usuario.alias
     context = {'nombre':usuario.username,'alias': alias_usuario, 'usuario': usuario }
-    return render(request, 'post_edit.html', context)
+    return render(request, 'index.html', context)
 
 def perfil(request):
     if request.method == 'POST':
