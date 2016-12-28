@@ -1,6 +1,6 @@
   <!DOCTYPE html>
 {% load static %}
-<html>
+<html> 
 	<head>
 
 
@@ -143,15 +143,15 @@
     function rebatir_contra(argumento_id){
       console.log("funciona .. hasta aqui rebatir");
 
-      document.getElementById('argumento_id').value = argumento_id ;
+      document.getElementById('argumento_id_rebate_contra').value = argumento_id ;
       document.getElementById('form_rebatir_contra').style.display = 'block';
      
     }
     function rebatir_favor(argumento_id){
       console.log("funciona .. hasta aqui rebatir");
 
-      document.getElementById('argumento_id').value = argumento_id ;
-      document.getElementById('form_rebatir_favor').style.display = 'block';
+      document.getElementById('argumento_id_rebate_favor').value = argumento_id ;
+      document.getElementById('form_rebatir_afavor').style.display = 'block';
      
     }
 
@@ -218,29 +218,50 @@
     {% else %}
       var text_max = 0;
     {% endif %}
-    $('#textarea_feedback1').html(text_max + ' characters remaining');
-    $('#textarea_feedback2').html(text_max + ' characters remaining');
-    $('#textarea_feedback3').html(text_max + ' characters remaining');
+    $('#textarea_feedback1').html(text_max + ' caracteres restantes');
+    $('#textarea_feedback2').html(text_max + ' caracteres restantes');
+    $('#textarea_feedback3').html(text_max + ' caracteres restantes');
+    $('#textarea_feedback4').html(text_max + ' caracteres restantes');
+    $('#textarea_feedback5').html(text_max + ' caracteres restantes');
+    $('#textarea_feedback6').html(text_max + ' caracteres restantes');
 
-
-    $('#textarea2').keyup(function() {
-        var text_length = $('#textarea2').val().length;
+    $('#textarea6').keyup(function() {
+        var text_length = $('#textarea6').val().length;
         var text_remaining = text_max - text_length;
 
-        $('#textarea_feedback2').html(text_remaining + ' characters remaining');
+        $('#textarea_feedback6').html(text_remaining + ' caracteres restantes');
+    });
+
+    $('#textarea5').keyup(function() {
+        var text_length = $('#textarea5').val().length;
+        var text_remaining = text_max - text_length;
+
+        $('#textarea_feedback5').html(text_remaining + ' caracteres restantes');
+    });
+    $('#textarea4').keyup(function() {
+        var text_length = $('#textarea4').val().length;
+        var text_remaining = text_max - text_length;
+
+        $('#textarea_feedback4').html(text_remaining + ' caracteres restantes');
     });
     $('#textarea3').keyup(function() {
         var text_length = $('#textarea3').val().length;
         var text_remaining = text_max - text_length;
 
-        $('#textarea_feedback3').html(text_remaining + ' characters remaining');
+        $('#textarea_feedback3').html(text_remaining + ' caracteres restantes');
+    });
+    $('#textarea2').keyup(function() {
+        var text_length = $('#textarea2').val().length;
+        var text_remaining = text_max - text_length;
+
+        $('#textarea_feedback2').html(text_remaining + ' caracteres restantes');
     });
 
     $('#textarea1').keyup(function() {
         var text_length = $('#textarea1').val().length;
         var text_remaining = text_max - text_length;
 
-        $('#textarea_feedback1').html(text_remaining + ' characters remaining');
+        $('#textarea_feedback1').html(text_remaining + ' caracteres restantes');
     });
 });
 

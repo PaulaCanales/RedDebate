@@ -45,6 +45,14 @@ def despliega(request, id_debate): #debate_id
 	tiene_argumento ='no'
 	for argumento in argumentos_aFavor:
 		redebates = Respuesta.objects.filter(id_argumento_id= argumento.id_argumento)
+		redebates_lista = []
+		tiene_comentario = "no_comentario"
+		for redebate in redebates:
+			descripcion_redebate = redebate.descripcion
+			usuario_redebate = User.objects.get(id=redebate.id_usuario_id)
+			redebates_lista.append([descripcion_redebate, usuario_redebate])
+			if tiene_comentario == "no_comentario" and usuario_redebate == request.user:
+				tiene_comentario = "si_comentario"
 		usuario_debate = User.objects.get(id= argumento.id_usuario_id)
 		usuario_id = usuario_debate.id
 		if (argumento.alias_c == "alias"): 
@@ -58,13 +66,22 @@ def despliega(request, id_debate): #debate_id
 		print(usuario_debate)
 		valoracion_argF = Valoracion.objects.filter(id_argumento_id= argumento.id_argumento).count()
 		argumentos_F.append([argumento.descripcion, usuario_debate, 
-			valoracion_argF, argumento.id_argumento, t_valoracion, usuario_id, redebates ]) 
+			valoracion_argF, argumento.id_argumento, t_valoracion, usuario_id, redebates_lista , tiene_comentario]) 
 
 		if (request.user.id == argumento.id_usuario_id):
 			tiene_argumento ='si'
 
 	for argumento in argumentos_enContra:
+
 		redebates = Respuesta.objects.filter(id_argumento_id= argumento.id_argumento)
+		redebates_lista = []
+		tiene_comentario = "no_comentario"
+		for redebate in redebates:
+			descripcion_redebate = redebate.descripcion
+			usuario_redebate = User.objects.get(id=redebate.id_usuario_id)
+			redebates_lista.append([descripcion_redebate, usuario_redebate])
+			if tiene_comentario == "no_comentario" and usuario_redebate == request.user:
+				tiene_comentario = "si_comentario"
 		usuario_debate = User.objects.get(id= argumento.id_usuario_id)
 		usuario_id = usuario_debate.id
 
@@ -79,7 +96,7 @@ def despliega(request, id_debate): #debate_id
 		valoracion_argC = Valoracion.objects.filter(id_argumento_id= argumento.id_argumento).count()
 
 		argumentos_C.append([argumento.descripcion, usuario_debate,
-		 valoracion_argC, argumento.id_argumento, t_valoracion, usuario_id, redebates ]) 
+		 valoracion_argC, argumento.id_argumento, t_valoracion, usuario_id, redebates_lista, tiene_comentario ]) 
 		if (request.user.id == argumento.id_usuario_id):
 			tiene_argumento = 'si'
 	print("argumentos: ", argumentos_C)
@@ -181,10 +198,12 @@ def publica_argumento(request):
 def publica_redate(request):
 	descrip = request.POST['descripcion_rebate']
 	argumento_debate = request.POST['id_arg_rebate']
+	print(argumento_debate)
 	id_debat = request.POST['id_deb']
 	usuario = request.user
 	if 'alias' in request.POST:
 		alias_usuario = request.POST['alias']
+
 		publicar= Respuesta(descripcion=descrip, id_usuario_id=usuario.id,
 		 		id_argumento_id=argumento_debate, alias_c=alias_usuario)
 	else :
