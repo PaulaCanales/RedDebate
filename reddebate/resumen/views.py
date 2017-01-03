@@ -2,6 +2,7 @@ from django.shortcuts import render, render_to_response
 from django.views.generic import ListView, DetailView
 from django.contrib.auth.models import User
 import datetime
+from django.contrib.auth.decorators import login_required
 
 #from .forms import PostForm
 from django.http import HttpResponse
@@ -15,7 +16,7 @@ import requests
 from django.http import HttpResponse
 from resumen.models import Perfil, Debate
 
-
+@login_required
 def index(request):
     if request.method == 'POST':
         if 'id_deb' in request.POST:
@@ -47,6 +48,7 @@ def index(request):
     context = {'object_list': category_list, 'usuario': usuario, 'alias': alias_usuario}
     return render(request, 'index.html', context)
 
+@login_required
 def iniciando_alias(request, u):
     try:
         usuario_2 = Perfil.objects.get(user= u)
@@ -69,6 +71,7 @@ def iniciando_alias(request, u):
 #         form = PostForm()
 #         return render(request, 'post_edit.html', {'form': form})
 
+@login_required
 def post_new(request):
 
     if request.method == 'POST':
@@ -101,6 +104,7 @@ def post_new(request):
     context = {'nombre':usuario.username,'alias': alias_usuario, 'usuario': usuario }
     return render(request, 'index.html', context)
 
+@login_required
 def perfil(request):
     if request.method == 'POST':
         nuevo_alias = request.POST['nuevo_alias']

@@ -4,8 +4,11 @@ from resumen.models import Perfil, Debate, Postura, Argumento, Valoracion, Respu
 
 from django.http import HttpResponse
 from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required
+
 
 # Create your views here.
+@login_required
 def despliega(request, id_debate): #debate_id
 	if request.method == 'POST':
 		if 'postu' in request.POST:
@@ -148,6 +151,8 @@ def despliega(request, id_debate): #debate_id
 			'num_post_f': numpost_f, 'num_post_c': numpost_c })
 	#return render_to_response('debate.html', context)
 
+
+@login_required
 def define_postura(request):
 	post_usuario= request.POST['postu'] 
 	print (post_usuario)
@@ -166,6 +171,7 @@ def define_postura(request):
 		resp= "En Contra"
 	return (resp)
 
+@login_required
 def publica_argumento(request):
 	print("post_arg de despliega")
 	descrip = request.POST['descripcion']
@@ -195,6 +201,7 @@ def publica_argumento(request):
 	print (Argumento.objects.filter(id_debate_id= id_debat))
 	return(id_debat)
 
+@login_required
 def publica_redate(request):
 	descrip = request.POST['descripcion_rebate']
 	argumento_debate = request.POST['id_arg_rebate']
@@ -213,7 +220,7 @@ def publica_redate(request):
 	return(id_debat)
 
 
-
+@login_required
 def publica_valoracion(request):
 	val_argumento= request.POST['id_arg'] 
 	usuario = request.user
