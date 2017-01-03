@@ -16,6 +16,8 @@ Including another URLconf
 from django.conf.urls import include, url
 from django.contrib import admin
 from django.views.generic import TemplateView
+from django.contrib.auth.views import logout as logout_social
+
 
 
 urlpatterns = [
@@ -26,6 +28,11 @@ urlpatterns = [
     
     #Python social auth
     url('social/', include('social.apps.django_app.urls', namespace='social')),
-	# Home URL
+	# Home URL Fuente: "https://platzi.com/blog/login-redes-sociales-django/"
 	url(r'^$', TemplateView.as_view(template_name="home.html"), name='social'),
+    
+    # Logout URL
+    url( r'^users/logout/$',logout_social,
+    {'next_page': '/'}, name="user-logout"),
+
 ]

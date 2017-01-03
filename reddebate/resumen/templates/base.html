@@ -76,6 +76,8 @@
                     }
 
                     if (document.getElementById('argumentos')){
+                      // document.getElementById('argumentos').style.display = 'block';
+                       $("#argumentos").slideDown("slow");
                       {% if num_post_c %}
                             if (data == "En Contra"){
                               document.getElementById('num_postura_contra').innerHTML = {{num_post_c}} ;
@@ -85,7 +87,6 @@
 
                             }
                       {% endif %}
-                      document.getElementById('argumentos').style.display = 'block';
                     }
                     else{
                         {% if num_post_c %}
@@ -127,9 +128,9 @@
       
 
     }
-    function formulario_editar_encontra(descripcion ){
+    function formulario_editar_encontra(descripcion){
       console.log("funciona .. hasta aqui editar_contra");
-      document.getElementById('textarea2').value = descripcion ;
+      document.getElementById('textarea4').value = descripcion ;
       document.getElementById('form_editar_encontra').style.display = 'block';
     }
 
@@ -429,6 +430,8 @@
                     <li>
                         <a href="{% url 'perfil' %}">Perfil</a>
                     </li>
+                     
+                    
                 </ul>
             </div>
              
@@ -443,6 +446,11 @@
 
 
 
+    </div>
+     <div align="right" style="padding-right: 30px;">
+     </br>
+        Hola {{ user.get_full_name }}! 
+        <a href="{% url 'user-logout' %}">Logout</a>
     </div>
 	{% block content %}
 	{% endblock content %}
