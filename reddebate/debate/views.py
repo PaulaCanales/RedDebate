@@ -1,11 +1,14 @@
 from django.shortcuts import render, redirect
 
-from resumen.models import Perfil, Debate, Postura, Argumento, Valoracion, Respuesta
+from resumen.models import Perfil, Debate, Postura, Argumento, Valoracion, Respuesta, Edicion
 
 from django.http import HttpResponse
 from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required
+
 
 # Create your views here.
+@login_required
 def despliega(request, id_debate): #debate_id
 	if request.method == 'POST':
 		if 'postu' in request.POST:
@@ -44,6 +47,7 @@ def despliega(request, id_debate): #debate_id
 
 	tiene_argumento ='no'
 	for argumento in argumentos_aFavor:
+		ediciones = Edicion.objects.filter(id_argumento_id= argumento.id_argumento)
 		redebates = Respuesta.objects.filter(id_argumento_id= argumento.id_argumento)
 		redebates_lista = []
 		tiene_comentario = "no_comentario"
@@ -66,13 +70,15 @@ def despliega(request, id_debate): #debate_id
 		print(usuario_debate)
 		valoracion_argF = Valoracion.objects.filter(id_argumento_id= argumento.id_argumento).count()
 		argumentos_F.append([argumento.descripcion, usuario_debate, 
-			valoracion_argF, argumento.id_argumento, t_valoracion, usuario_id, redebates_lista , tiene_comentario]) 
+			valoracion_argF, argumento.id_argumento, t_valoracion, 
+			usuario_id, redebates_lista , tiene_comentario, ediciones]) 
 
 		if (request.user.id == argumento.id_usuario_id):
 			tiene_argumento ='si'
 
 	for argumento in argumentos_enContra:
 
+		ediciones = Edicion.objects.filter(id_argumento_id= argumento.id_argumento)
 		redebates = Respuesta.objects.filter(id_argumento_id= argumento.id_argumento)
 		redebates_lista = []
 		tiene_comentario = "no_comentario"
@@ -96,7 +102,8 @@ def despliega(request, id_debate): #debate_id
 		valoracion_argC = Valoracion.objects.filter(id_argumento_id= argumento.id_argumento).count()
 
 		argumentos_C.append([argumento.descripcion, usuario_debate,
-		 valoracion_argC, argumento.id_argumento, t_valoracion, usuario_id, redebates_lista, tiene_comentario ]) 
+		 valoracion_argC, argumento.id_argumento, t_valoracion,
+		 usuario_id, redebates_lista, tiene_comentario, ediciones ]) 
 		if (request.user.id == argumento.id_usuario_id):
 			tiene_argumento = 'si'
 	print("argumentos: ", argumentos_C)
@@ -148,6 +155,8 @@ def despliega(request, id_debate): #debate_id
 			'num_post_f': numpost_f, 'num_post_c': numpost_c })
 	#return render_to_response('debate.html', context)
 
+
+@login_required
 def define_postura(request):
 	post_usuario= request.POST['postu'] 
 	print (post_usuario)
@@ -166,6 +175,7 @@ def define_postura(request):
 		resp= "En Contra"
 	return (resp)
 
+@login_required
 def publica_argumento(request):
 	print("post_arg de despliega")
 	descrip = request.POST['descripcion']
@@ -175,6 +185,10 @@ def publica_argumento(request):
 	id_debat = request.POST['id_deb']
 	try:
 		publicar = Argumento.objects.get(id_usuario_id=usuario.id,id_debate_id=id_debat)
+		
+		editado = Edicion(descripcion_edicion= publicar.descripcion, id_argumento_id = publicar.id_argumento)
+		editado.save()
+
 		publicar.descripcion = descrip
 		if 'alias' in request.POST:
 			alias_usuario = request.POST['alias']
@@ -195,6 +209,7 @@ def publica_argumento(request):
 	print (Argumento.objects.filter(id_debate_id= id_debat))
 	return(id_debat)
 
+@login_required
 def publica_redate(request):
 	descrip = request.POST['descripcion_rebate']
 	argumento_debate = request.POST['id_arg_rebate']
@@ -213,7 +228,7 @@ def publica_redate(request):
 	return(id_debat)
 
 
-
+@login_required
 def publica_valoracion(request):
 	val_argumento= request.POST['id_arg'] 
 	usuario = request.user

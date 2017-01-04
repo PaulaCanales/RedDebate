@@ -7,6 +7,70 @@
 <html>
 
 {% block content %}
+<section class="success" id="editardebate" style="display:none">
+    <div class="container">
+    <form method="POST" class="post-form">{% csrf_token %}
+    <form action="/post_new" id="publicar_form" method="post">{% csrf_token %}
+        <div class="blank"><table>
+            <tr> 
+                <td width=70% vertical-align: top>
+                    <!-- <h4><strong>Publicar Debate</strong></h4> -->
+                    <br>
+                    <div class="form-group">
+                        <h4>Título</h4>
+                        <input name="titulo" id="tituloeditar" value="" type="text" class="form-control" placeholder="Título">
+                        <br>
+                        <input name="id_debate_editar" id="iddbteditar" value="" type="hidden" class="form-control">
+                        <h4>Descripción</h4>
+                        <textarea name="descripcion" id="desceditar" value="" rows="8" type="text" class="form-control" placeholder="Descripción"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-publicar">Editar</button>
+                </td>
+                <td width=10% ></td>
+                <td>
+                    <!-- <h4><strong>Reglas del Debate</strong></h4> -->
+                    <br>
+                    <div class="input-group">
+                        <h5>Fecha Fin</h5>
+                        <h5><div> <span class="glyphicon glyphicon-calendar"></span> <input class="datepicker" id="fechaeditar" type="text" name="date"> </div></h5>
+                        <br>
+                        <h5>Largo máximo de los argumentos</h5>
+                            <div class="funkyradio">
+                                <div class="funkyradio-success">
+                                    <input type="radio" name="largo_m" id="radio1e" value="300" checked/>
+                                    <label for="radio1e">300 carácteres</label>
+                                </div>
+                                <div class="funkyradio-success">
+                                    <input type="radio" name="largo_m" id="radio2e" value="200" />
+                                    <label for="radio2e">200 carácteres</label>
+                                </div>
+                                <div class="funkyradio-success">
+                                    <input type="radio" name="largo_m" id="radio3e" value="140" />
+                                    <label for="radio3e">140 carácteres</label>
+                                </div>
+                            </div>
+                        <br>    
+                        <h5>Publicar el debate como</h5>
+                            <div class="funkyradio">
+                                <div class="funkyradio-success">
+                                    <input type="radio" name="alias" id="radio4e" value="username" checked/>
+                                    <label for="radio4e">Usuario: {{usuario.username}}</label>
+                                </div>
+                                <div class="funkyradio-success">
+                                    <input type="radio" name="alias" id="radio5e" value="alias" />
+                                    <label for="radio5e">Alias: {{alias.alias}}</label>
+                                </div>
+                            </div>
+                        <br>
+                        
+                    </div>
+                </td>
+            </tr>
+        </table></div>
+      </form></form>
+    <button onclick="cierra_formulario('#editardebate')" type="submit" class="btn btn-index" > cancelar</button>
+    </div>
+</section>
 
 <div class="container">
 <div class="col-md-4">
@@ -60,13 +124,38 @@
     			<tr > 
     				<td><p> {{ deb.titulo }} </p></td>
     				<td><p> {{ deb.descripcion }} </p></td>
+                    <td>
+                        <div class="dropdown">
+                            <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Opciones
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
 
-    				<form id="id" method="post" action= "{% url 'index' %}" enctype="multipart/form-data" onsubmit="return confirm('¿Seguro que desea cerrar el debate?');">{% csrf_token %}
-                	<input type="hidden" value="{{ deb.id_debate }}" name="id_deb">
-                	
-                	<td> <button type="submit" class="btn btn-outline" ><span class="glyphicon glyphicon-remove-circle"></span> Cerrar </button> </td> 
-                    </form>
-        		<td> <a class="btn btn-tabla"  href="{% url 'despliega' deb.id_debate %}" > <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span> Ver </a> </td>
+
+                            <li>
+                                    
+                                <button type="submit" onclick="formulario_editar_debate('#editardebate','{{deb.id_debate}}','{{deb.titulo}}','{{deb.descripcion}}','{{deb.date_fin.year}}','{{deb.date_fin.month}}','{{deb.date_fin.day}}','{{deb.alias_c}}','{{deb.largo}}')" class="btn btn-link" > Editar <span class="glyphicon glyphicon-edit" aria-hidden="true"></span></button>
+
+                            </li>
+                            <li>
+                                <button type="submit" onclick=location.href="{% url 'despliega' deb.id_debate %}" class="btn btn-link" > Ver  <span class="glyphicon glyphicon-log-in" aria-hidden="true"></span></button>   
+                                
+                            </li>
+
+                            <li>
+                               <form id="id" method="post" action= "{% url 'index' %}" enctype="multipart/form-data" onsubmit="return confirm('¿Seguro que desea cerrar el debate?');">{% csrf_token %}
+                                    <input type="hidden" value="{{ deb.id_debate }}" name="id_deb">
+                                    
+                                    <button type="submit" class="btn btn-link" ><span class="glyphicon glyphicon-remove-circle"></span> Cerrar </button>
+                                </form>
+
+                            </li>
+
+                            </ul>
+                        </div>
+
+                    </td>
 
     			</tr>
     		{% endfor %}
@@ -85,7 +174,7 @@
             				<td><p> {{ deb.titulo }} </p></td>
             				 <td><p> {{ deb.descripcion }} </p></td>
 
-            				<td> <div class="dropup">
+            				<td> <div class="dropdown">
                                 <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     Opciones
                                     <span class="caret"></span>
@@ -94,7 +183,7 @@
 
 
                                 <li>
-                               		<form id="id" method="post" action= "{% url 'index' %}" enctype="multipart/form-data" onsubmit="return confirm('¿Seguro que desea cerrar el debate?');">{% csrf_token %}
+                               		<form id="id" method="post" action= "{% url 'perfil' %}">{% csrf_token %}
                                     
                                     <input type="hidden" value="{{ deb.id_debate }}" name="id_deb"> 
                                         

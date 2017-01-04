@@ -2,6 +2,7 @@ from django.shortcuts import render, render_to_response
 from django.views.generic import ListView, DetailView
 from django.contrib.auth.models import User
 import datetime
+from django.contrib.auth.decorators import login_required
 
 #from .forms import PostForm
 from django.http import HttpResponse
@@ -15,7 +16,7 @@ import requests
 from django.http import HttpResponse
 from resumen.models import Perfil, Debate
 
-
+@login_required
 def index(request):
     if request.method == 'POST':
         if 'id_deb' in request.POST:
@@ -26,27 +27,28 @@ def index(request):
             deb.save()
         if 'descripcion' in request.POST:
             resp = post_new(request)
+            return redirect('index')
+
     usuario = request.user
-    u = User.objects.get(username= usuario.username)
-    iniciando_alias(request, u)
+    #u = User.objects.get(username= usuario.username)
+    iniciando_alias(request, usuario)
     category_list = Debate.objects.all()
     for debate in category_list:
         ahora = datetime.date.today()
         print("ahora: ")
         print(ahora)
         print (debate.date_fin)
-        if debate.date_fin!= None and debate.date_fin <= ahora :
-           
+        if debate.estado != 'cerrado' and debate.date_fin!= None and debate.date_fin <= ahora :
             debate.estado = 'cerrado'
             debate.save()
             print(debate)
-    usuario = request.user #usuario actual id
     print("el usuario activo es_: ", usuario.id)
-    usuario_2 = Perfil.objects.get(user= u)
+    usuario_2 = Perfil.objects.get(user= usuario)
     alias_usuario = usuario_2.alias
     context = {'object_list': category_list, 'usuario': usuario, 'alias': alias_usuario}
     return render(request, 'index.html', context)
 
+@login_required
 def iniciando_alias(request, u):
     try:
         usuario_2 = Perfil.objects.get(user= u)
@@ -63,12 +65,7 @@ def iniciando_alias(request, u):
         print(alias_usuario)
 
 
-
-#Formulario
-# def post_new(request):
-#         form = PostForm()
-#         return render(request, 'post_edit.html', {'form': form})
-
+@login_required
 def post_new(request):
 
     if request.method == 'POST':
@@ -86,30 +83,39 @@ def post_new(request):
         print("valor checkbox 'alias':")
         
         print(alias)
+    try:
+        id_deb=request.POST['id_debate_editar']
+        publicar = Debate.objects.get(id_debate=id_deb)
+        publicar.titulo=ti
+        publicar.descripcion=des
+        publicar.alias_c=alias
+        publicar.date_fin=fecha_fin
+        publicar.largo=largo_max
 
+    except:
         usuario = request.user
         print (usuario.id)
         publicar= Debate(titulo=ti, descripcion=des, id_usuario_id=usuario.id,
             largo=largo_max, alias_c=alias, date_fin= fecha_fin)
-        publicar.save()
-        return redirect('index')
+    publicar.save()
 
-    usuario = request.user
-    u = User.objects.get(username= usuario.username)
-    usuario_2 = Perfil.objects.get(user= u)
-    alias_usuario = usuario_2.alias
-    context = {'nombre':usuario.username,'alias': alias_usuario, 'usuario': usuario }
-    return render(request, 'index.html', context)
 
+@login_required
 def perfil(request):
     if request.method == 'POST':
-        nuevo_alias = request.POST['nuevo_alias']
-        usuario = request.user
-        print (usuario.id)
-        publicar= Perfil.objects.get(user=usuario)
-        publicar.alias = nuevo_alias
-        publicar.save()
-        return redirect('perfil')
+        if 'nuevo_alias' in request.POST:
+            nuevo_alias = request.POST['nuevo_alias']
+            usuario = request.user
+            print (usuario.id)
+            publicar= Perfil.objects.get(user=usuario)
+            publicar.alias = nuevo_alias
+            publicar.save()
+            return redirect('perfil')
+        if 'id_debate_editar' in request.POST:
+            post_new(request)
+            return redirect('perfil')
+
+
 
     usuario = request.user
     usuario = User.objects.get(id= usuario.id)
