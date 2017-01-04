@@ -20,11 +20,8 @@ from resumen.models import Perfil, Debate
 def index(request):
     if request.method == 'POST':
         if 'id_deb' in request.POST:
-            print("cerrado el debate", request.POST['id_deb'])
-            id_deb = request.POST['id_deb']
-            deb = Debate.objects.get(pk=id_deb)
-            deb.estado = 'cerrado'
-            deb.save()
+            cerrar_debate(request)
+            return redirect('index')
         if 'descripcion' in request.POST:
             resp = post_new(request)
             return redirect('index')
@@ -64,6 +61,14 @@ def iniciando_alias(request, u):
         print("en el except: alias_usuario")
         print(alias_usuario)
 
+@login_required
+def cerrar_debate(request):
+    print("cerrado el debate", request.POST['id_deb'])
+    id_deb = request.POST['id_deb']
+    deb = Debate.objects.get(pk=id_deb)
+    deb.estado = 'cerrado'
+    deb.save()
+
 
 @login_required
 def post_new(request):
@@ -99,10 +104,24 @@ def post_new(request):
             largo=largo_max, alias_c=alias, date_fin= fecha_fin)
     publicar.save()
 
+@login_required
+def republicar_debate(request):
+    id_deb=request.POST['id_deb_republicar']
+    deb = Debate.objects.get(pk=id_deb)
+    deb.estado = 'abierto'
+    deb.save()
+@login_required
+def eliminar_debate(request):
+    id_deb=request.POST['id_deb_eliminar']
+    deb = Debate.objects.get(pk=id_deb)
+    deb.delete()
 
 @login_required
 def perfil(request):
     if request.method == 'POST':
+        if 'id_deb' in request.POST:
+            cerrar_debate(request)
+            return redirect('perfil')
         if 'nuevo_alias' in request.POST:
             nuevo_alias = request.POST['nuevo_alias']
             usuario = request.user
@@ -114,7 +133,12 @@ def perfil(request):
         if 'id_debate_editar' in request.POST:
             post_new(request)
             return redirect('perfil')
-
+        if 'id_deb_eliminar' in request.POST:
+            eliminar_debate(request)
+            return redirect('perfil')
+        if 'id_deb_republicar' in request.POST:
+            republicar_debate(request)
+            return redirect('perfil')
 
 
     usuario = request.user

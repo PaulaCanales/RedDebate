@@ -8,79 +8,69 @@
 
 <html>
 
-	{% block content %}
-	<!--tabla de debates-->
-	<div class="container">
-		<div class="blank"><table>
-			<tr> 
+{% block content %}
+<!--tabla de debates-->
+<div class="container">
+	<div class="blank"><table>
+		<tr> 
 
-				<td>
-					<div class="container-titulo">
-						
-						<h3 class="h3-t1"> {{ debate.titulo }}</h3>
-						{% ifequal debate.alias_c 'alias' %}
-							<h5>Creado por {{alias}} en modo anónimo</h5>
-							
-						{%else%}
-							<h5>Debate creado por {{usuario_creador}}</h5>
-						{%endifequal%}
-
-						
-					</div>
+			<td>
+				<div class="container-titulo">
 					
-				</td>
-
-			</tr>
-		</table></div>
-
-		{% ifequal debate.estado 'abierto'%}
-			{% ifequal postura_usr_deb 'No definido' %}
-				<button id = "bot_af" type="submit" class="btn btn-outline" onclick='javascript:cambiar_postura("{{ debate.id_debate }}", "1");'>A favor  <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></button>
-
-				<button id = "bot_ec" type="submit" class="btn btn-outline" onclick='javascript:cambiar_postura("{{ debate.id_debate }}", "0");' >En contra  <span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></button>
-				{%else%}
-					{% ifequal postura_usr_deb 'A Favor' %}
-						<button id = "bot_af" type="submit" class="btn btn-tabla" onclick='javascript:cambiar_postura("{{ debate.id_debate }}", "1");'>A favor  <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></button>
-						<button id = "bot_ec" type="submit" class="btn btn-outline" onclick='javascript:cambiar_postura("{{ debate.id_debate }}", "0");' >En contra <span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></button>
-					{% else %}
-						<button id = "bot_af" type="submit" class="btn btn-outline" onclick='javascript:cambiar_postura("{{ debate.id_debate }}", "1");'>A favor  <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></button>
-						<button id = "bot_ec" type="submit" class="btn btn-tabla" onclick='javascript:cambiar_postura("{{ debate.id_debate }}", "0");' >En contra <span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></button>
+					<h3 class="h3-t1"> {{ debate.titulo }}</h3>
+					{% ifequal debate.alias_c 'alias' %}
+						<h5>Creado por {{alias}} en modo anónimo</h5>
+						
+					{%else%}
+						<h5>Debate creado por {{usuario_creador}}</h5>
 					{%endifequal%}
+
+					
+				</div>
+				
+			</td>
+
+		</tr>
+	</table></div>
+	{% ifequal debate.estado 'abierto'%}
+		{% ifequal postura_usr_deb 'No definido' %}
+			<button id = "bot_af" type="submit" class="btn btn-outline" onclick='javascript:cambiar_postura("{{ debate.id_debate }}", "1");'>A favor  <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></button>
+
+			<button id = "bot_ec" type="submit" class="btn btn-outline" onclick='javascript:cambiar_postura("{{ debate.id_debate }}", "0");' >En contra  <span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></button>
+		{%else%}
+			{% ifequal postura_usr_deb 'A Favor' %}
+				<button id = "bot_af" type="submit" class="btn btn-tabla" onclick='javascript:cambiar_postura("{{ debate.id_debate }}", "1");'>A favor  <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></button>
+				<button id = "bot_ec" type="submit" class="btn btn-outline" onclick='javascript:cambiar_postura("{{ debate.id_debate }}", "0");' >En contra <span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></button>
+			{% else %}
+				<button id = "bot_af" type="submit" class="btn btn-outline" onclick='javascript:cambiar_postura("{{ debate.id_debate }}", "1");'>A favor  <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></button>
+				<button id = "bot_ec" type="submit" class="btn btn-tabla" onclick='javascript:cambiar_postura("{{ debate.id_debate }}", "0");' >En contra <span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></button>
 			{%endifequal%}
 		{%endifequal%}
+	{%endifequal%}
 	<div class="blank"><table>
 		<tr> 
 			<td width=120 ><p1>Descripción</p1></td>
 			<td>{{ debate.descripcion }}</td>
 		</tr>
-
 		<tr> 
 			<td width=120 ><p1>Fecha inicio</p1></td>
 			<td>{{ debate.date }}</td>
 		</tr>
-
 		<tr> 
 			<td width=120 ><p1>Estado</p1></td>
 			<td>{{ debate.estado }}</td>
 		</tr>
-
 		<tr> 
 			<td width=120 ><p1>Tu Postura</p1></td>
 			<td><div id="tu_postura" >{{postura_usr_deb}} </div></td>
 		</tr>
-
-	</table>	
-	</div>
-
+	</table></div>
 	{% ifequal postura_usr_deb 'No definido' %}
-		
 		<div id="argumentos" style="display: none;" > 
-	
 	{%endifequal%}
-	
+<div class="container">
 	<h2>Argumentos</h2>
-	<div class="container">
-	  <div class="row">
+	<div class="row">
 	    <div class="col-xs-6">
 	          <div class="datagrid"><table>
 	            <tr>
@@ -338,11 +328,8 @@
 	            </form>
 	          </div>    
 	    </div> <!-- col2 -->
-	  </div> <!-- row -->
-	</div> <!-- container -->
-
-	
-
+	</div> <!-- row -->
+</div> <!-- container -->
 
 
 {% ifequal postura_usr_deb 'No definido' %}
@@ -352,5 +339,6 @@
 {%endifequal%}
 </div>
 
-	{% endblock content %}
+
+{% endblock content %}
 </html>

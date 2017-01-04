@@ -2438,9 +2438,13 @@ section.success {
  }
 
 .datagrid table tbody tr:last-child td {
- border-bottom: none;
- }
+ border-bottom: 1px solid:#18BD9B;
 
+ }
+.bottom-three {
+  margin-bottom: 3cm;
+  color:#fff;
+}
 
 
 table {
@@ -2685,6 +2689,12 @@ table th[class*="col-"] {
 }
 footer {
     display: block;
+}
+.footer-bottom {
+    background-color: #2D3E50;
+    color: #fff;
+    min-height: 30px;
+    width: 100%;
 }
 fieldset {
   min-width: 0;
@@ -3425,6 +3435,21 @@ fieldset[disabled] a.btn {
   font-size: 20px;
 }
 .btn-publicar.active,.btn-publicar:active,.btn-publicar:focus,.btn-publicar:hover {
+  color:#fff;
+  border:2px solid #2D3E50;
+  background:#43586D;
+  transition:all .3s ease-in-out;
+}
+.btn-cancelar {
+  width: auto;
+  color:#fff;
+  background:#2D3E50;
+  border:2px solid #2D3E50;
+  margin-top:15px;
+  margin-bottom:15px;
+  font-size: 12px;
+}
+.btn-cancelar.active,.btn-cancelar:active,.btn-cancelar:focus,.btn-cancelar:hover {
   color:#fff;
   border:2px solid #2D3E50;
   background:#43586D;

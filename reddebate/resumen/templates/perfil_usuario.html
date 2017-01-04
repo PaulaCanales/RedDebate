@@ -68,169 +68,150 @@
             </tr>
         </table></div>
       </form></form>
-    <button onclick="cierra_formulario('#editardebate')" type="submit" class="btn btn-index" > cancelar</button>
+    <button onclick="cierra_formulario('#editardebate')" type="submit" class="btn btn-cancelar" > Cancelar</button>
     </div>
 </section>
 
 <div class="container">
-<div class="col-md-4">
+    <div class="col-md-4">
 
-    <h3>{{ usuario.first_name }} {{ usuario.last_name }} </h3>
-    <div class="container-perfil">
-    <br>
-    
-    <p1>Usuario: </p1>{{ usuario.username}}
-    <br>
-    <br>
-    <p1>Email: </p1>{{ usuario.email }}
-    <br>
-    <br>
-    <p1>Fecha de ingreso : </p1>{{ usuario.date_joined }} 
-    <br>
-    <br>
-    <div id="alias"> 
-        <p1>Alias : </p1>{{alias.alias}} 
-        <button id = 'boton_alias' class="btn btn-perfil" onclick='javascript:cambiar_alias();'> Cambiar Alias <span class="glyphicon glyphicon-user" aria-hidden="true" ></span> </button>
-    </div>
+        <h3>{{ usuario.first_name }} {{ usuario.last_name }} </h3>
+        <div class="container-perfil">
+        <br>
+        
+        <p1>Usuario: </p1>{{ usuario.username}}
+        <br>
+        <br>
+        <p1>Email: </p1>{{ usuario.email }}
+        <br>
+        <br>
+        <p1>Fecha de ingreso : </p1>{{ usuario.date_joined }} 
+        <br>
+        <br>
+        <div id="alias"> 
+            <p1>Alias : </p1>{{alias.alias}} 
+            <button id = 'boton_alias' class="btn btn-perfil" onclick='javascript:cambiar_alias();'> Cambiar Alias <span class="glyphicon glyphicon-user" aria-hidden="true" ></span> </button>
+        </div>
 
-     </div>
-    <br>
-    <div id='formulario_alias' style="display: none;" > 
+         </div>
+        <br>
+        <div id='formulario_alias' style="display: none;" > 
 
-            <form method="POST" class="post-form">{% csrf_token %}
-                <form action="{% url 'perfil' %}" id="publicar_alias" method="post">{% csrf_token %}
-                    <div class="form-group">
-                         <input name="nuevo_alias" value="" type="text" class="form-control" placeholder="{{alias.alias}}"> 
+                <form method="POST" class="post-form">{% csrf_token %}
+                    <form action="{% url 'perfil' %}" id="publicar_alias" method="post">{% csrf_token %}
+                        <div class="form-group">
+                             <input name="nuevo_alias" value="" type="text" class="form-control" placeholder="{{alias.alias}}"> 
 
-                    </div>
-
-
-                    <button type="submit" class="btn btn-perfil">Actualizar Alias</button> 
-                    <label type="button" onclick='cancelar_alias();' class="btn btn-perfil"> Cancelar </label>
-
-                </form>
-            </form>
-    </div>
-</div>
-
-<div class="col-xs-8">    
-    <h3> Tus Debates Abiertos </h3>
-    <div class="datagrid"><table>
-        <tr>
-            <thead><tr><th>Título</th><th>Descripción</th><th> </th><th> </th></tr></thead>
-        </tr>
-        <tbody>
-    		{% for deb in debates_abiertos %}
-    			<tr > 
-    				<td><p> {{ deb.titulo }} </p></td>
-    				<td><p> {{ deb.descripcion }} </p></td>
-                    <td>
-                        <div class="dropdown">
-                            <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Opciones
-                                <span class="caret"></span>
-                            </button>
-                            <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
-
-
-                            <li>
-                                    
-                                <button type="submit" onclick="formulario_editar_debate('#editardebate','{{deb.id_debate}}','{{deb.titulo}}','{{deb.descripcion}}','{{deb.date_fin.year}}','{{deb.date_fin.month}}','{{deb.date_fin.day}}','{{deb.alias_c}}','{{deb.largo}}')" class="btn btn-link" > Editar <span class="glyphicon glyphicon-edit" aria-hidden="true"></span></button>
-
-                            </li>
-                            <li>
-                                <button type="submit" onclick=location.href="{% url 'despliega' deb.id_debate %}" class="btn btn-link" > Ver  <span class="glyphicon glyphicon-log-in" aria-hidden="true"></span></button>   
-                                
-                            </li>
-
-                            <li>
-                               <form id="id" method="post" action= "{% url 'index' %}" enctype="multipart/form-data" onsubmit="return confirm('¿Seguro que desea cerrar el debate?');">{% csrf_token %}
-                                    <input type="hidden" value="{{ deb.id_debate }}" name="id_deb">
-                                    
-                                    <button type="submit" class="btn btn-link" ><span class="glyphicon glyphicon-remove-circle"></span> Cerrar </button>
-                                </form>
-
-                            </li>
-
-                            </ul>
                         </div>
 
-                    </td>
 
-    			</tr>
-    		{% endfor %}
-        </tbody>
-        </table>
+                        <button type="submit" class="btn btn-perfil">Actualizar Alias</button> 
+                        <label type="button" onclick='cancelar_alias();' class="btn btn-perfil"> Cancelar </label>
 
-        <h3> Tus Debates Cerrados </h3>
+                    </form>
+                </form>
+        </div>
+    </div>
+
+    <div class="col-xs-8">    
+        <h3> Tus Debates Abiertos </h3>
         <div class="datagrid"><table>
-                <tr>
-                    <thead><tr><th>Título</th><th>Descripción</th><th> </th><th> </th></tr></thead>
-                </tr>
-                <tbody>
-                <table class="table">
-            		{% for deb in debates_cerrados %}
-            			<tr > 
-            				<td><p> {{ deb.titulo }} </p></td>
-            				 <td><p> {{ deb.descripcion }} </p></td>
-
-            				<td> <div class="dropdown">
-                                <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <tr>
+                <thead><tr><th>Título</th><th>Descripción</th><th> </th><th> </th></tr></thead>
+            </tr>
+            <tbody>
+        		{% for deb in debates_abiertos %} 
+                    <tr>
+        				<td> {{ deb.titulo }} </td>
+        				<td><p> {{ deb.descripcion }} </p></td>
+                        <td>
+                            <div class="dropdown">
+                                <button class="btn btn-tabla dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     Opciones
                                     <span class="caret"></span>
                                 </button>
                                 <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
-
-
                                 <li>
-                               		<form id="id" method="post" action= "{% url 'perfil' %}">{% csrf_token %}
+                                    <button type="submit" onclick=location.href="{% url 'despliega' deb.id_debate %}" class="btn btn-link" > Ver  <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span></button>   
                                     
-                                    <input type="hidden" value="{{ deb.id_debate }}" name="id_deb"> 
+                                </li>
+                                 <li>
                                         
-                                    <button type="submit" class="btn btn-link" > Editar <span class="glyphicon glyphicon-edit" aria-hidden="true"></span></button>
+                                    <button type="submit" onclick="formulario_editar_debate('#editardebate','{{deb.id_debate}}','{{deb.titulo}}','{{deb.descripcion}}','{{deb.date_fin.year}}','{{deb.date_fin.month}}','{{deb.date_fin.day}}','{{deb.alias_c}}','{{deb.largo}}')" class="btn btn-link" > Editar <span class="glyphicon glyphicon-edit" aria-hidden="true"></span></button>
 
-                            		</form>
                                 </li>
-                                <li>	
-                                    <a class="link btn-link" href="{% url 'despliega' deb.id_debate %}" > Ver  <span class="glyphicon glyphicon-log-in" aria-hidden="true"></span></a>   
-            	                </li>
-
                                 <li>
-                                <form id="id" method="post" action= "{% url 'index' %}" enctype="multipart/form-data" onsubmit="return confirm('¿Seguro que desea cerrar el debate?');">{% csrf_token %}
-                        	   
-                                <input type="hidden" value="{{ deb.id_debate }}" name="id_deb">
-                        	    
-                                <button type="submit" class="link btn-link" > Republicar <span class="glyphicon glyphicon-off" aria-hidden="true"></span></button>
-                		        </form>
+                                   <form id="id" method="post" action= "{% url 'perfil' %}" enctype="multipart/form-data" onsubmit="return confirm('¿Seguro que desea cerrar el debate?');">{% csrf_token %}
+                                        <input type="hidden" value="{{ deb.id_debate }}" name="id_deb">
+                                        
+                                        <button type="submit" class="btn btn-link" ><span class="glyphicon glyphicon-remove-circle"></span> Cerrar </button>
+                                    </form>
 
                                 </li>
-                
-                                <li role="separator" class="divider"></li>
-                                
-                                <li>
 
-                                    <form id="id" method="post" action= "{% url 'index' %}" enctype="multipart/form-data" onsubmit="return confirm('¿Seguro que desea cerrar el debate?');">{% csrf_token %}
-                        	       
-                                    <input type="hidden" value="{{ deb.id_debate }}" name="id_deb"> 
-                        	
-                                    <button type="submit" class="btn btn-link" > Eliminar <span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button> 
-
-                		            </form>
-                		
-                                </li>
                                 </ul>
-                                </div></td> 	
-            			
-            		{% endfor %}
-                    </tbody>
+                            </div>
+
+                        </td>
+                    </tr>
+        		{% endfor %}
+            </tbody>
             </table>
+
+            <h3> Tus Debates Cerrados </h3>
+            <div class="datagrid"><table>
+                    <tr>
+                        <thead><tr><th>Título</th><th>Descripción</th><th> </th><th> </th></tr></thead>
+                    </tr>
+                    <tbody>
+                		{% for deb in debates_cerrados %}
+                            <tr>
+                				<td> {{ deb.titulo }} </td>
+                				 <td><p> {{ deb.descripcion }} </p></td>
+
+                				<td> <div class="dropdown">
+                                    <button class="btn btn-tabla dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        Opciones
+                                        <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                                    <li>	
+                                        <button type="submit" onclick=location.href="{% url 'despliega' deb.id_debate %}" class="btn btn-link" > Ver  <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span></button>  
+                	                </li>
+
+                                    <li>
+                                    <form id="id" method="post" action= "{% url 'perfil' %}" enctype="multipart/form-data" onsubmit="return confirm('¿Seguro que desea republicar el debate?');">{% csrf_token %}
+                            	   
+                                    <input type="hidden" value="{{ deb.id_debate }}" name="id_deb_republicar">
+                            	    
+                                    <button type="submit" class="btn btn-link" > Republicar <span class="glyphicon glyphicon-off" aria-hidden="true"></span></button>
+                    		        </form>
+
+                                    </li>
+                    
+                                    <li role="separator" class="divider"></li>
+                                    
+                                    <li>
+
+                                        <form id="id" method="post" action= "{% url 'perfil' %}" enctype="multipart/form-data" onsubmit="return confirm('¿Seguro que desea eliminar el debate?');">{% csrf_token %}
+                            	       
+                                        <input type="hidden" value="{{ deb.id_debate }}" name="id_deb_eliminar"> 
+                            	
+                                        <button type="submit" class="btn btn-link" > Eliminar <span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button> 
+
+                    		            </form>
+                                    </li>
+                                    </ul>
+                                    </div>
+                                </td>
+                            </tr> 	
+                		{% endfor %}
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>
-
-
-</div>
-
 
 {% endblock content %}
 
