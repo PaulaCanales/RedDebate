@@ -99,7 +99,10 @@
 	                
 	              {% for arg in argF %}
 	                  <tr><td> <p><p1>{{arg.1}}:</p1> {{arg.0}}</p>
-
+	                  historial:
+						{% for edicion in arg.8 %}
+							<p><p1>{{edicion.descripcion_edicion}}:</p1> {{edicion.date_edicion}}</p>
+						{% endfor %}
 	                  <td>
 	                  {% ifequal arg.5 usuario %} <!-- editar -->
 	                    <div style="float:right"> <button id="bot_editar_afavor" type="submit" class="btn btn-perfil" onclick='  javascript:formulario_editar_afavor("{{arg.0}}" );'> <span class="glyphicon glyphicon-edit" aria-hidden="true" ></span> </button> </div>
@@ -108,9 +111,11 @@
 	                    <div style="float:right"> <button id="bot_rebatir_afavor" type="submit" class="btn btn-perfil" onclick='javascript:rebatir_favor("{{arg.3}}");' > Rebatir <span class="glyphicon glyphicon-comment"  ></span></button></div>
 	                  {%endifequal%} 
 	                  {%endifequal%} 
+
 	              	  </td>
 
 	                  <td>
+
 	                  {% ifequal arg.4 'no' %} <!-- valorar habilitado -->
 	                    <div style="display:none; float:right; margin-right:10px;" id= "{{arg.3}}" > <span  class="glyphicon glyphicon-thumbs-up" aria-hidden="true" ></span></div>
 
@@ -124,7 +129,9 @@
 	              	  
 
 	                  </td></tr>
+
 	                  <tr><td>
+
 	                    {% for respuesta in arg.6 %}
 	                      <p>{{respuesta.1}}: {{respuesta.0}}</p>
 	                    {% endfor %}
@@ -220,6 +227,10 @@
 	            
 	          {% for arg in argC %}
 	              <tr valign="middle"><td><p> <p1>{{arg.1}}: </p1> {{arg.0}} </p> 
+	               historial:
+						{% for edicion in arg.8 %}
+							<p><p1>{{edicion.descripcion_edicion}}:</p1> {{edicion.date_edicion}}</p>
+						{% endfor %}
 
 	              <td>
 	              {% ifequal arg.5 usuario %} <!-- editar -->

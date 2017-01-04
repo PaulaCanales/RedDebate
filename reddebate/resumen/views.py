@@ -28,22 +28,20 @@ def index(request):
         if 'descripcion' in request.POST:
             resp = post_new(request)
     usuario = request.user
-    u = User.objects.get(username= usuario.username)
-    iniciando_alias(request, u)
+    #u = User.objects.get(username= usuario.username)
+    iniciando_alias(request, usuario)
     category_list = Debate.objects.all()
     for debate in category_list:
         ahora = datetime.date.today()
         print("ahora: ")
         print(ahora)
         print (debate.date_fin)
-        if debate.date_fin!= None and debate.date_fin <= ahora :
-           
+        if debate.estado != 'cerrado' and debate.date_fin!= None and debate.date_fin <= ahora :
             debate.estado = 'cerrado'
             debate.save()
             print(debate)
-    usuario = request.user #usuario actual id
     print("el usuario activo es_: ", usuario.id)
-    usuario_2 = Perfil.objects.get(user= u)
+    usuario_2 = Perfil.objects.get(user= usuario)
     alias_usuario = usuario_2.alias
     context = {'object_list': category_list, 'usuario': usuario, 'alias': alias_usuario}
     return render(request, 'index.html', context)
