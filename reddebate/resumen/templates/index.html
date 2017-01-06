@@ -5,13 +5,10 @@
 
 
 	{% block content %}
-	<!--tabla de debates  onclick='javascript:despliega_debate("{{ deb.id_debate }}");'  -->
 
 	<div class="container">
 		<div align="right" >
 			<button onclick="despliega_formulario('#nuevodebate')" type="submit" class="btn btn-index" > Nuevo Debate</button>
-			<!-- <button onclick="#" type="submit" class="btn btn-index" > Debates Cerrados</button>
-			<button onclick="#" type="submit" class="btn btn-index" > Debates Abiertos</button> -->
 		</div>
 	</div>			
 	<section class="success" id="nuevodebate" style="display:none">
@@ -78,9 +75,20 @@
         </div>
     </section>
     <div class="container">
-		<div id="deb_abiertos" class="container">
-			<h2> Debates Abiertos </h2>
-			<div class="datagrid"><table>
+    	<ul class="tab">
+		  <li><a href="javascript:void(0)" class="tablinks" onclick="debate_estado(event, 'deb_abiertos')" id="dbt_abiertos">Debates Abiertos</a></li>
+		  <li><a href="javascript:void(0)" class="tablinks" onclick="debate_estado(event, 'deb_cerrados')">Debates Cerrados</a></li>
+		</ul>
+
+		<div id="deb_abiertos" class="tabcontent">
+			<br>
+			<div class="row">
+				<div class="col-md-6"></div>
+			</div>
+			<div class="row">
+				<div class="col-md-6"><input type="text" id="myInput" onkeyup="filtrar_debate('myInput','Tabla_DbtAbiertos')" placeholder="Buscar por Título..." title="Escribe un Título"></div>
+			</div>
+			<div class="datagrid"><table id="Tabla_DbtAbiertos">
 				<tr>
 					<thead><tr><th>Título</th><th>Descripción</th><th> </th><th> </th></tr></thead>
 				</tr>
@@ -114,9 +122,15 @@
 			</table></div>
 		</div>
 
-		<div id="deb_cerrados" class="container">
-			<h2> Debates Cerrados</h2>
-			<div class="datagrid"><table>
+		<div id="deb_cerrados" class="tabcontent">
+			<br>
+			<div class="row">
+				<div class="col-md-6"></div>
+			</div>
+			<div class="row">
+				<div class="col-md-6"><input type="text" id="myInput2" onkeyup="filtrar_debate('myInput2','Tabla_DbtCerrados')" placeholder="Buscar por Título..." title="Escribe un Título"></div>
+			</div>
+			<div class="datagrid"><table id="Tabla_DbtCerrados">
 				<tr>
 					<thead><tr><th>Título</th><th>Descripción</th><th> </th><th> </th></tr></thead>
 				</tr>

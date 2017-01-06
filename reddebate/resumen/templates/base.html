@@ -208,18 +208,53 @@
       }
       else{
         document.getElementById('radio3e').checked= true;
-
       }
-
-
     }
-     function valorar(argumento, id_div){
-     console.log("llega al valorar");
+    function filtrar_debate(myinput,tabla) {
+      var input, filter, table, tr, td, i;
+      input = document.getElementById(myinput);
+      filter = input.value.toUpperCase();
+      table = document.getElementById(tabla);
+      tr = table.getElementsByTagName("tr");
+      for (i = 0; i < tr.length; i++) {
+        td = tr[i].getElementsByTagName("td")[0];
+        if (td) {
+          if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+            tr[i].style.display = "";
+          } else {
+            tr[i].style.display = "none";
+          }
+        }       
+      }
+    }
 
-     console.log(argumento);
+    function debate_estado(evt, estadoDbt) {
+      var i, tabcontent, tablinks;
+      tabcontent = document.getElementsByClassName("tabcontent");
+      for (i = 0; i < tabcontent.length; i++) {
+          tabcontent[i].style.display = "none";
+      }
+      tablinks = document.getElementsByClassName("tablinks");
+      for (i = 0; i < tablinks.length; i++) {
+          tablinks[i].className = tablinks[i].className.replace(" active", "");
+      }
+      document.getElementById(estadoDbt).style.display = "block";
+      evt.currentTarget.className += " active";
+    }
 
-        $.ajax({
+    $(document).ready(
+        function()
+        {
+          document.getElementById("dbt_abiertos").click();         
+        }
+    );
+
     
+
+    function valorar(argumento, id_div){
+     console.log("llega al valorar");
+     console.log(argumento);
+        $.ajax({
             url: "{% url 'despliega' 15 %}" , 
             type: 'POST',
             data:{  id_arg : argumento,
@@ -227,7 +262,6 @@
                   success: function(data) { // id
                     document.getElementById(id_div).innerHTML = data;
                     document.getElementById(argumento).style.display = 'block';
-                    
                     console.log("div: ");
                     console.log(id_div);
                     },
@@ -431,6 +465,7 @@
  
 
 </script>
+
 
 
 	<div class="page-header">
