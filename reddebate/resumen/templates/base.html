@@ -249,7 +249,12 @@
         }
     );
 
-    
+    function mostrar_historial(modal){
+      document.getElementById(modal).style.display="block";
+    }
+    function cerrar_historial(modal){
+      document.getElementById(modal).style.display="none";
+    }
 
     function valorar(argumento, id_div){
      console.log("llega al valorar");
@@ -519,7 +524,7 @@
 	{% endblock content %}
 
   <div class="container">
-    <p class="bottom-three">.</p>
+    
     <div align="right">
       <button onclick=window.open("http://146.83.216.163/mantisbt/login_page.php") type="submit" class="btn btn-index" > Reportar Problema</button>
     </div>

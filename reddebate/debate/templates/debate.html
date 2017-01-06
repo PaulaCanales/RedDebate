@@ -89,10 +89,18 @@
 	                
 	              {% for arg in argF %}
 	                  <tr><td> <p><p1>{{arg.1}}:</p1> {{arg.0}}</p>
-	                  historial:
-						{% for edicion in arg.8 %}
-							<p><p1>{{edicion.descripcion_edicion}}:</p1> {{edicion.date_edicion}}</p>
-						{% endfor %}
+	                  <button id="historialF" onclick="mostrar_historial('myModal1')" class="btn btn-link">Historial <span class="glyphicon glyphicon-time"></span></button>
+	                  <!-- The Modal -->
+						<div id="myModal1" class="modal">
+						  <!-- Modal content -->
+						  <div class="modal-content">
+						    <span class="close" onclick="cerrar_historial('myModal1')">&times;</span>
+						    <h3>Historial <span class="glyphicon glyphicon-time"></span></h3>
+							{% for edicion in arg.8 %}
+								<p><p1> {{edicion.date_edicion}}:</p1> {{edicion.descripcion_edicion}}</p>
+							{% endfor %}
+						  </div>
+						</div>
 	                  <td>
 	                  {% ifequal arg.5 usuario %} <!-- editar -->
 	                    <div style="float:right"> <button id="bot_editar_afavor" type="submit" class="btn btn-perfil" onclick='  javascript:formulario_editar_afavor("{{arg.0}}" );'> <span class="glyphicon glyphicon-edit" aria-hidden="true" ></span> </button> </div>
@@ -217,11 +225,18 @@
 	            
 	          {% for arg in argC %}
 	              <tr valign="middle"><td><p> <p1>{{arg.1}}: </p1> {{arg.0}} </p> 
-	               historial:
+             		<button id="historialF" onclick="mostrar_historial('myModal2')" class="btn btn-link">Historial <span class="glyphicon glyphicon-time"></span></button>
+	                <!-- The Modal -->
+					<div id="myModal2" class="modal">
+					  <!-- Modal content -->
+					  <div class="modal-content">
+					    <span class="close" onclick="cerrar_historial('myModal2')">&times;</span>
+					    <h3>Historial <span class="glyphicon glyphicon-time"></span></h3>
 						{% for edicion in arg.8 %}
-							<p><p1>{{edicion.descripcion_edicion}}:</p1> {{edicion.date_edicion}}</p>
+							<p><p1>{{edicion.date_edicion}}:</p1> {{edicion.descripcion_edicion}}</p>
 						{% endfor %}
-
+					  </div>
+					</div>	
 	              <td>
 	              {% ifequal arg.5 usuario %} <!-- editar -->
 	                <div style="float:right"> <button id="bot_editar_afavor" type="submit" class="btn btn-perfil" onclick='  javascript:formulario_editar_encontra("{{arg.0}}" );'> <span class="glyphicon glyphicon-edit" aria-hidden="true" ></span>  </button> </div>
@@ -330,6 +345,7 @@
 	    </div> <!-- col2 -->
 	</div> <!-- row -->
 </div> <!-- container -->
+<p class="bottom-three">.</p>
 
 
 {% ifequal postura_usr_deb 'No definido' %}
