@@ -2503,27 +2503,33 @@ ul.tab li a:focus, .active {
  padding: 10px 10px;
  vertical-align: middle;
  }
- .datagrid table td.rebatir{
-  padding: 5px 30px;
-  border-bottom: 1px solid #DBDBDB;
-  font: normal 10px;
+ .datagrid table td.vacio{
+  border-bottom: none;
  }
-
+.datagrid table td.rebatir{
+  border-bottom: 1px solid #DBDBDB;
+  font-size: 12px;
+ }
+.datagrid table tbody td.rebatir:first-child {
+  border-bottom: 1px solid white;
+ }
+.datagrid table td.argumento{
+  border-top: 2px solid #64D7C0;
+ }
+ .datagrid table td.valoracion{
+  border-top: 2px solid #64D7C0;
+  color:#2D3E50;
+  font-weight: bold;
+  font-size: 15px;
+ }
 .datagrid table thead th {
- background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #18BD9B), color-stop(1, #18BD9B) );
- background:-moz-linear-gradient( center top, #18BD9B 5%, #18BD9B 100% );
- filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#18BD9B', endColorstr='#18BD9B');
  background-color:#18BD9B;
  color:#FFFFFF;
  font-size: 16px;
  font-weight: bold;
  border-left: 0px solid #2D3E50;
+ border-bottom: 3px solid white;
  padding: 15px 15px;
-
- }
-
-.datagrid table thead th:first-child {
- border: none;
  }
 
 .datagrid table tbody td {
@@ -3915,6 +3921,7 @@ fieldset[disabled] .btn-danger.focus {
   font-weight: normal;
   color: #337ab7;
   border-radius: 0;
+  margin-left: -8px;
 }
 .btn-link,
 .btn-link:active,

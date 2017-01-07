@@ -133,6 +133,7 @@
       console.log("funciona .. hasta aqui editar_contra");
       document.getElementById('textarea4').value = descripcion ;
       document.getElementById('form_editar_encontra').style.display = 'block';
+      $("html, body").animate({ scrollTop: $(document).height() }, 1000);
     }
 
 
@@ -140,6 +141,7 @@
       console.log("funciona .. hasta aqui editar");
       document.getElementById('textarea1').value = descripcion ;
       document.getElementById('form_editar_afavor').style.display = 'block';
+      $("html, body").animate({ scrollTop: $(document).height() }, 1000);
      
     }
     function rebatir_contra(argumento_id){
@@ -147,6 +149,7 @@
 
       document.getElementById('argumento_id_rebate_contra').value = argumento_id ;
       document.getElementById('form_rebatir_contra').style.display = 'block';
+      $("html, body").animate({ scrollTop: $(document).height() }, 1000);
      
     }
     function rebatir_favor(argumento_id){
@@ -154,7 +157,8 @@
 
       document.getElementById('argumento_id_rebate_favor').value = argumento_id ;
       document.getElementById('form_rebatir_afavor').style.display = 'block';
-     
+      $("html, body").animate({ scrollTop: $(document).height() }, 1000);
+      
     }
 
 
@@ -245,7 +249,11 @@
     $(document).ready(
         function()
         {
-          document.getElementById("dbt_abiertos").click();         
+          try{
+            document.getElementById("dbt_abiertos").click();
+          }
+          catch(err){}
+
         }
     );
 
@@ -256,7 +264,7 @@
       document.getElementById(modal).style.display="none";
     }
 
-    function valorar(argumento, id_div){
+    function valorar(argumento, id_div, val){
      console.log("llega al valorar");
      console.log(argumento);
         $.ajax({
@@ -266,6 +274,8 @@
                     csrfmiddlewaretoken: '{{ csrf_token }}'} ,
                   success: function(data) { // id
                     document.getElementById(id_div).innerHTML = data;
+                    document.getElementById(id_div).style.display = "none";
+                    document.getElementById(val).innerHTML = data;
                     document.getElementById(argumento).style.display = 'block';
                     console.log("div: ");
                     console.log(id_div);

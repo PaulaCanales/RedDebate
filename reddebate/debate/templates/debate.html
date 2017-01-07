@@ -9,27 +9,20 @@
 <html>
 
 {% block content %}
-<!--tabla de debates-->
+
 <div class="container">
 	<div class="blank"><table>
 		<tr> 
-
 			<td>
 				<div class="container-titulo">
-					
 					<h3 class="h3-t1"> {{ debate.titulo }}</h3>
 					{% ifequal debate.alias_c 'alias' %}
 						<h5>Creado por {{alias}} en modo anónimo</h5>
-						
 					{%else%}
 						<h5>Debate creado por {{usuario_creador}}</h5>
 					{%endifequal%}
-
-					
 				</div>
-				
 			</td>
-
 		</tr>
 	</table></div>
 	{% ifequal debate.estado 'abierto'%}
@@ -68,77 +61,83 @@
 	{% ifequal postura_usr_deb 'No definido' %}
 		<div id="argumentos" style="display: none;" > 
 	{%endifequal%}
-<div class="container">
 	<h2>Argumentos</h2>
+<div class="container" name="arg_afavor">
 	<div class="row">
-	    <div class="col-xs-6">
+	    <div class="col-md-6">
 	          <div class="datagrid"><table>
 	            <tr>
 	              <thead>
 	              	<th>
+	              		#
+	              	</th>
+	              	<th>
 	              		A Favor
 	              	</th>
 	              	<th>
-	              		
 	              	</th>
 	              	<th>
 						<div style="float:right"><span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>{{num_post_f}}</div>
 	              	</th>
 	              </thead>
 	            </tr>
-	                
-	              {% for arg in argF %}
-	                  <tr><td> <p><p1>{{arg.1}}:</p1> {{arg.0}}</p>
-	                  <button id="historialF" onclick="mostrar_historial('myModal1')" class="btn btn-link">Historial <span class="glyphicon glyphicon-time"></span></button>
-	                  <!-- The Modal -->
-						<div id="myModal1" class="modal">
-						  <!-- Modal content -->
-						  <div class="modal-content">
-						    <span class="close" onclick="cerrar_historial('myModal1')">&times;</span>
-						    <h3>Historial <span class="glyphicon glyphicon-time"></span></h3>
-							{% for edicion in arg.8 %}
-								<p><p1> {{edicion.date_edicion}}:</p1> {{edicion.descripcion_edicion}}</p>
-							{% endfor %}
-						  </div>
-						</div>
-	                  <td>
-	                  {% ifequal arg.5 usuario %} <!-- editar -->
-	                    <div style="float:right"> <button id="bot_editar_afavor" type="submit" class="btn btn-perfil" onclick='  javascript:formulario_editar_afavor("{{arg.0}}" );'> <span class="glyphicon glyphicon-edit" aria-hidden="true" ></span> </button> </div>
-	                  {% else %}  <!-- rebatir -->
-	                  {% ifequal arg.7 'no_comentario' %} 
-	                    <div style="float:right"> <button id="bot_rebatir_afavor" type="submit" class="btn btn-perfil" onclick='javascript:rebatir_favor("{{arg.3}}");' > Rebatir <span class="glyphicon glyphicon-comment"  ></span></button></div>
-	                  {%endifequal%} 
-	                  {%endifequal%} 
+	            {% for arg in argF %}
+					<tr>
+						<td id="val{{arg.3}}" class="valoracion"> <!-- valoracion -->
+							{{arg.2}}
+						</td>
+						<td class="argumento"> <!-- argumento -->
+							<p><p1>{{arg.1}}:</p1> {{arg.0}}</p>
+							{% if arg.8 %}
+		                  	<button id="historialF" onclick="mostrar_historial('myModal1')" class="link btn-link">Editado</button>
+		                  	{% endif %}
+		                  	<!-- The Modal -->
+							<div id="myModal1" class="modal">
+							  <!-- Modal content -->
+							  <div class="modal-content">
+							    <span class="close" onclick="cerrar_historial('myModal1')">&times;</span>
+							    <h3>Historial <span class="glyphicon glyphicon-time"></span></h3>
+								{% for edicion in arg.8 %}
+									<p><p1> {{edicion.date_edicion}}:</p1> {{edicion.descripcion_edicion}}</p>
+								{% endfor %}
+							  </div>
+							</div>
+						</td>
+			            <td class="argumento"> <!-- boton editar/rebatir-->
+			                {% ifequal arg.5 usuario %} <!-- editar -->
+			                	<div style="float:right"> <button id="bot_editar_afavor" type="submit" class="btn btn-perfil" onclick='  javascript:formulario_editar_afavor("{{arg.0}}" );'> <span class="glyphicon glyphicon-edit" aria-hidden="true" ></span> </button> </div>
+			                {% else %}  <!-- rebatir -->
+			                	{% ifequal arg.7 'no_comentario' %} 
+			                		<div style="float:right"> <button id="bot_rebatir_afavor" type="submit" class="btn btn-perfil" onclick='javascript:rebatir_favor("{{arg.3}}");' ><span class="glyphicon glyphicon-comment"  ></span></button></div>
+			                  	{%endifequal%} 
+			                {%endifequal%} 
+		              	</td>
+						<td class="argumento"> <!-- boton valorar -->
+							{% ifequal arg.4 'no' %} <!-- valorar habilitado -->
+								<div style="display:none" id= "{{arg.3}}" class="btn btn-perfil disabled"> <span  class="glyphicon glyphicon-thumbs-up" aria-hidden="true" ></span></div>
 
-	              	  </td>
+								<div id="num_valoracion1{{arg.3}}"> <button type="submit" class="btn btn-perfil" onclick='javascript:valorar("{{arg.3}}", "num_valoracion1{{arg.3}}","val{{arg.3}}");' >   <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true" ></span></button> </div>
 
-	                  <td>
-
-	                  {% ifequal arg.4 'no' %} <!-- valorar habilitado -->
-	                    <div style="display:none; float:right; margin-right:10px;" id= "{{arg.3}}" > <span  class="glyphicon glyphicon-thumbs-up" aria-hidden="true" ></span></div>
-
-	                    <div style="float:right;" id="num_valoracion1{{arg.3}}"> <button type="submit" class="btn btn-perfil" onclick='javascript:valorar("{{arg.3}}", "num_valoracion1{{arg.3}}");' >   <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true" ></span> {{arg.2}}  </button> </div>
-
-	                  {% else %}<!-- valorar deshabilitado -->
-	                    <div style="float:right; margin-right:10px;"  class="btn btn-perfil disabled" > <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true" ></span>  {{arg.2}}</div>
-	                  {%endifequal%}
-	              	  </td>
-
-	              	  
-
-	                  </td></tr>
-
-	                  <tr><td>
-
-	                    {% for respuesta in arg.6 %}
-	                      <p>{{respuesta.1}}: {{respuesta.0}}</p>
-	                    {% endfor %}
-	                  </td></tr>      
+							{% else %}<!-- valorar deshabilitado -->
+								<div class="btn btn-perfil disabled" > <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true" ></span></div>
+							{%endifequal%}
+						</td> 	
+	            	</tr>
+	            	{% if arg.6 %}
+	            	{% for respuesta in arg.6 %}
+	            	<tr>
+	            		<td class="rebatir"></td>
+	            		<td class="rebatir">
+				        <p>{{respuesta.1}}: {{respuesta.0}}</p>
+				        </td>
+				        <td class="rebatir"></td><td class="rebatir"></td>
+		            </tr>
+		            {% endfor %} 
+	              	{% endif %}     
 	              {% empty %}
-	                  <tr><td> </td></tr> 
+	                  <tr><td class="vacio"> </td></tr> 
 	              {% endfor %}
 	          </table> </div> <!-- datagrid -->
-
 	          {% ifequal postura_usr_deb 'A Favor'  %}
 	            {% ifequal t_arg 'no' %}
 	              <button id="bot_argumento_afavor" type="submit" class="btn btn-perfil" onclick=' javascript:fomulario_argumento_afavor();'  style="display: block;" >Da tu Argumento</button>
@@ -203,81 +202,86 @@
 	            </form>
 	          </div>
 	    </div> <!-- col1 -->
-
-	        
-
-	    <div class="col-xs-6">
+	</div> <!-- row -->
+</div> <!-- container -->
+<div class="container" name="arg_encontra">
+	<div class="row">
+	    <div class="col-md-6">
 	      <div class="datagrid"><table>
 	        <tr>
 	          <thead>
 	          	<th>
+	          		#
+	          	</th>
+	          	<th>
 	          		En Contra
 	          	</th>
 	          	<th>
-
 	          	</th>
 	          	<th>
 	          		<div style="float:right"><span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span> {{num_post_c}}</div>
 	          	</th>
 	          </thead>
-
 	        </tr>
-	            
 	          {% for arg in argC %}
-	              <tr valign="middle"><td><p> <p1>{{arg.1}}: </p1> {{arg.0}} </p> 
-             		<button id="historialF" onclick="mostrar_historial('myModal2')" class="btn btn-link">Historial <span class="glyphicon glyphicon-time"></span></button>
-	                <!-- The Modal -->
-					<div id="myModal2" class="modal">
-					  <!-- Modal content -->
-					  <div class="modal-content">
-					    <span class="close" onclick="cerrar_historial('myModal2')">&times;</span>
-					    <h3>Historial <span class="glyphicon glyphicon-time"></span></h3>
-						{% for edicion in arg.8 %}
-							<p><p1>{{edicion.date_edicion}}:</p1> {{edicion.descripcion_edicion}}</p>
-						{% endfor %}
-					  </div>
-					</div>	
-	              <td>
-	              {% ifequal arg.5 usuario %} <!-- editar -->
-	                <div style="float:right"> <button id="bot_editar_afavor" type="submit" class="btn btn-perfil" onclick='  javascript:formulario_editar_encontra("{{arg.0}}" );'> <span class="glyphicon glyphicon-edit" aria-hidden="true" ></span>  </button> </div>
+	            <tr>
+	            	<td id="valc{{arg.3}}" class="valoracion"> <!-- valoracion -->
+						{{arg.2}}
+					</td>
+	              	<td class="argumento"> <!-- argumento -->
+	              		<p> <p1>{{arg.1}}: </p1> {{arg.0}} </p> 
+		              	{% if arg.8 %}
+	             		<button id="historialF" onclick="mostrar_historial('myModal2')" class="link btn-link">Editado</button>
+	             		{% endif %}
+		                <!-- The Modal -->
+						<div id="myModal2" class="modal">
+						  <!-- Modal content -->
+						  <div class="modal-content">
+						    <span class="close" onclick="cerrar_historial('myModal2')">&times;</span>
+						    <h3>Historial <span class="glyphicon glyphicon-time"></span></h3>
+							{% for edicion in arg.8 %}
+								<p><p1>{{edicion.date_edicion}}:</p1> {{edicion.descripcion_edicion}}</p>
+							{% endfor %}
+						  </div>
+						</div>
+					</td>	
+		            <td class="argumento"> <!-- boton editar/rebatir-->
+		            	{% ifequal arg.5 usuario %} <!-- editar -->
+							<div style="float:right"> <button id="bot_editar_afavor" type="submit" class="btn btn-perfil" onclick='  javascript:formulario_editar_encontra("{{arg.0}}" );'> <span class="glyphicon glyphicon-edit" aria-hidden="true" ></span>  </button> </div>
 
-	              {% else %}
-	              	{% ifequal arg.7 'no_comentario' %} 
-	                 <div style="float:right"> <!-- rebatir -->
-	                <button id="bot_rebatir_contra" type="submit" class="btn btn-perfil" onclick='javascript:rebatir_contra("{{arg.3}}");' > Rebatir <span class="glyphicon glyphicon-comment"  ></span></button>
-	                </div>
-					{%endifequal%}
-	              {%endifequal%} 
-	          	  </td>
-	          	  
-	              <td>
-	              {% ifequal arg.4 'no' %} <!-- valorar habilitado -->
-	                <div style="display:none; float:right;" id= "{{arg.3}}" > 
-	                <span  class="glyphicon glyphicon-thumbs-up" aria-hidden="true" ></span></div>
-	                <div style="float:right" id = "num_valoracion2{{arg.3}}"> <button type="submit" class="btn btn-perfil" onclick='javascript:valorar("{{arg.3}}", "num_valoracion2{{arg.3}}");' >   <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true" ></span> {{arg.2}} </button> </div>
+						{% else %}
+							{% ifequal arg.7 'no_comentario' %} 
+								<div style="float:right"> <!-- rebatir -->
+								<button id="bot_rebatir_contra" type="submit" class="btn btn-perfil" onclick='javascript:rebatir_contra("{{arg.3}}");' > Rebatir <span class="glyphicon glyphicon-comment"  ></span></button>
+								</div>
+							{%endifequal%}
+						{%endifequal%} 
+		          	</td>
+		            <td class="argumento"> <!-- boton valorar -->
+						{% ifequal arg.4 'no' %} <!-- valorar habilitado -->
+							<div style="display:none;" id= "{{arg.3}}" class="btn btn-perfil disabled" ><span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span></div>
 
-	              {% else %} <!-- valorar deshabilitado -->
-	                <div style="float:right" class="btn btn-perfil disabled" >   <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true" ></span> {{arg.2}} </div>
-
-	              {%endifequal%}
-	              </td>
-	             
-	              
-	               </td></tr> 
-	               
-	            	{% for respuesta in arg.6 %}
-	                 	<tr><td class="rebatir">
-	                		{{respuesta.1}}: {{respuesta.0}}
-	                 	</td></tr>
-	                {% endfor %}
-	                
+							<div id = "num_valoracion2{{arg.3}}"> <button type="submit" class="btn btn-perfil" onclick='javascript:valorar("{{arg.3}}", "num_valoracion2{{arg.3}}", "valc{{arg.3}}");' ><span class="glyphicon glyphicon-thumbs-up" aria-hidden="true" ></span></button> </div>
+						{% else %} <!-- valorar deshabilitado -->
+							<div style="float:right" class="btn btn-perfil disabled" >   <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true" ></span></div>
+						{%endifequal%}
+		            </td>
+	        	</tr> 
+	            {% if arg.6 %} 
+	            {% for respuesta in arg.6 %}
+	            <tr>
+	            	<td class="rebatir"></td>
+                 	<td class="rebatir">
+                		<p>{{respuesta.1}}: {{respuesta.0}}</p>
+                 	</td>
+				    <td class="rebatir"></td><td class="rebatir"></td>
+				</tr>
+	            {% endfor %}
+	            {% endif %}
 	          {% empty %}
-	              <tr><td> </td></tr> 
+	              <tr><td class="vacio"> </td></tr> 
 	          {% endfor %}
-	          
-
 	      </table></div> <!-- datagrid -->
-
 	      {% ifequal postura_usr_deb 'En Contra' %}
 	            {% ifequal t_arg 'no' %}
 	              <button id="bot_argumento_encontra" type="submit" class="btn btn-perfil" onclick='javascript:fomulario_argumento_encontra();' style="display: block;" >Da tu Argumento</button>
