@@ -4,24 +4,23 @@ from django.contrib.auth.models import User
 import datetime
 from django.contrib.auth.decorators import login_required
 
-#from .forms import PostForm
-from django.http import HttpResponse
-#
 
-#from .forms import PostForm
+from django.http import HttpResponse
 from django.shortcuts import redirect
 import requests
 
-# Create your views here.
 from django.http import HttpResponse
 from resumen.models import Perfil, Debate
 
+##@brief Funcion que despliega todos los debates
+##@param request solicitud web
+##@return render redirecciona a "index.html" con la lista de todos los debates
+##@warning Login is required
 @login_required
 def index(request):
     if request.method == 'POST':
         if 'id_deb' in request.POST:
             cerrar_debate(request)
-            return redirect('index')
         if 'descripcion' in request.POST:
             resp = post_new(request)
             return redirect('index')
@@ -45,6 +44,10 @@ def index(request):
     context = {'object_list': category_list, 'usuario': usuario, 'alias': alias_usuario}
     return render(request, 'index.html', context)
 
+##@brief Funcion que inicializa el alias del usuario actual, en caso de no tener alias sera "anonimo".
+##@param request solicitud web
+##@param u usuario a crear alias. 
+##@warning Login is required
 @login_required
 def iniciando_alias(request, u):
     try:
@@ -61,6 +64,10 @@ def iniciando_alias(request, u):
         print("en el except: alias_usuario")
         print(alias_usuario)
 
+##@brief Funcion que cierra el debate
+##@param request solicitud web
+##@return redirect redirecciona a la vista "index"
+##@warning Login is required
 @login_required
 def cerrar_debate(request):
     print("cerrado el debate", request.POST['id_deb'])
@@ -68,11 +75,13 @@ def cerrar_debate(request):
     deb = Debate.objects.get(pk=id_deb)
     deb.estado = 'cerrado'
     deb.save()
+    return redirect('index')
 
-
+##@brief Funcion que guarda un nuevo debate, también lo edita
+##@param request solicitud web
+##@warning Login is required
 @login_required
 def post_new(request):
-
     if request.method == 'POST':
         ti = request.POST['titulo']
         des = request.POST['descripcion']
@@ -103,25 +112,42 @@ def post_new(request):
         publicar= Debate(titulo=ti, descripcion=des, id_usuario_id=usuario.id,
             largo=largo_max, alias_c=alias, date_fin= fecha_fin)
     publicar.save()
+    
 
+##@brief Funcion que actualiza el debate "cerrado" a "abierto"
+##@param request solicitud web
+##@return redirect redirecciona a la vista "perfil"
+##@warning Login is required
 @login_required
 def republicar_debate(request):
     id_deb=request.POST['id_deb_republicar']
     deb = Debate.objects.get(pk=id_deb)
     deb.estado = 'abierto'
     deb.save()
+    return redirect('perfil')
+
+##@brief Funcion que elimina un debate
+##@param request solicitud web
+##@return redirect redirecciona a la vista "perfil"
+##@warning Login is required
 @login_required
 def eliminar_debate(request):
     id_deb=request.POST['id_deb_eliminar']
     deb = Debate.objects.get(pk=id_deb)
     deb.delete()
+    return redirect('perfil')
 
+##@brief Funcion que despliega los datos del usuario, debates abiertos, cerrados y opciones para cada uno.
+##@param request solicitud web
+##@return redirect redirecciona a la vista "perfil"
+##@warning Login is required
 @login_required
 def perfil(request):
     if request.method == 'POST':
         if 'id_deb' in request.POST:
             cerrar_debate(request)
             return redirect('perfil')
+
         if 'nuevo_alias' in request.POST:
             nuevo_alias = request.POST['nuevo_alias']
             usuario = request.user
@@ -130,15 +156,16 @@ def perfil(request):
             publicar.alias = nuevo_alias
             publicar.save()
             return redirect('perfil')
+
         if 'id_debate_editar' in request.POST:
             post_new(request)
             return redirect('perfil')
+
         if 'id_deb_eliminar' in request.POST:
             eliminar_debate(request)
-            return redirect('perfil')
+            
         if 'id_deb_republicar' in request.POST:
             republicar_debate(request)
-            return redirect('perfil')
 
 
     usuario = request.user

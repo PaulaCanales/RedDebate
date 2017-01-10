@@ -7,7 +7,11 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 
 
-# Create your views here.
+##@brief Funcion que despliega el debate
+##@param request solicitud web
+##@param id_debate id del debate solicitado por la url dinámica
+##@return render redirecciona a "Debate" si el debate está abierto y "debate_cerrado" si no
+##@warning Login is required
 @login_required
 def despliega(request, id_debate): #debate_id
 	if request.method == 'POST':
@@ -153,9 +157,12 @@ def despliega(request, id_debate): #debate_id
 			'postura_usr_deb': postura_debate_usuario,
 			'argF': argumentos_F, 'argC': argumentos_C, 't_arg': tiene_argumento,
 			'num_post_f': numpost_f, 'num_post_c': numpost_c })
-	#return render_to_response('debate.html', context)
 
 
+##@brief Funcion que guarda la postura del usuario en el debate, si esta ya existe la cambia, sino la crea.
+##@param request solicitud web, entrega los datos del usuario actual
+##@return resp que se ingresa en el HttpResponse para indicar la postura actualizada del usuario
+##@warning Login is required
 @login_required
 def define_postura(request):
 	post_usuario= request.POST['postu'] 
@@ -175,6 +182,10 @@ def define_postura(request):
 		resp= "En Contra"
 	return (resp)
 
+##@brief Funcion que guarda el argumento del usuario en el debate, también edita el argumento.
+##@param request solicitud web, entrega los datos del usuario actual
+##@return id_debat para redireccionar a la vista "despliega" con este id de debate 
+##@warning Login is required
 @login_required
 def publica_argumento(request):
 	print("post_arg de despliega")
@@ -209,6 +220,10 @@ def publica_argumento(request):
 	print (Argumento.objects.filter(id_debate_id= id_debat))
 	return(id_debat)
 
+##@brief Funcion que guarda el comentario del usuario de un argumento.
+##@param request solicitud web, entrega los datos del usuario actual
+##@return id_debat para redireccional a la vista "despliega" con este id de debate 
+##@warning Login is required
 @login_required
 def publica_redate(request):
 	descrip = request.POST['descripcion_rebate']
@@ -227,7 +242,10 @@ def publica_redate(request):
 	publicar.save()
 	return(id_debat)
 
-
+##@brief Funcion que guarda la valoracion del usuario al argumento
+##@param request solicitud web, entrega los datos del usuario actual
+##@return respuesta se ingresa en el HttpResponse para indicar la valoracion actualizada del argumento
+##@warning Login is required
 @login_required
 def publica_valoracion(request):
 	val_argumento= request.POST['id_arg'] 
