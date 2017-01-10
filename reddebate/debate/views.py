@@ -9,8 +9,8 @@ from django.contrib.auth.decorators import login_required
 
 ##@brief Funcion que despliega el debate
 ##@param request solicitud web
-##@param id_debate id del debate solicitado por la url dinámica
-##@return render redirecciona a "Debate" si el debate está abierto y "debate_cerrado" si no
+##@param id_debate id del debate solicitado por la url dinamica
+##@return render redirecciona a "Debate" si el debate esta abierto y "debate_cerrado" si no
 ##@warning Login is required
 @login_required
 def despliega(request, id_debate): #debate_id
@@ -182,7 +182,7 @@ def define_postura(request):
 		resp= "En Contra"
 	return (resp)
 
-##@brief Funcion que guarda el argumento del usuario en el debate, también edita el argumento.
+##@brief Funcion que guarda el argumento del usuario en el debate, tambien edita el argumento.
 ##@param request solicitud web, entrega los datos del usuario actual
 ##@return id_debat para redireccionar a la vista "despliega" con este id de debate 
 ##@warning Login is required
