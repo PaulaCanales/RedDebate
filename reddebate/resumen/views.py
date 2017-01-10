@@ -77,7 +77,7 @@ def cerrar_debate(request):
     deb.save()
     return redirect('index')
 
-##@brief Funcion que guarda un nuevo debate, también lo edita
+##@brief Funcion que guarda un nuevo debate, tambien lo edita
 ##@param request solicitud web
 ##@warning Login is required
 @login_required
