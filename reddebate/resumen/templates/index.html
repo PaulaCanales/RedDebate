@@ -28,6 +28,7 @@
 						    <textarea name="descripcion" value="" rows="8" type="text" class="form-control" placeholder="Descripción"></textarea>
 						</div>
 						<button type="submit" class="btn btn-publicar">Publicar</button>
+						<a onclick="cierra_formulario('#nuevodebate')" class="btn btn-cancelar" > Cancelar</a>
 					</td>
 					<td width=10% ></td>
 					<td>
@@ -71,9 +72,9 @@
 				</tr>
 			</table></div>
           </form></form>
-		<button onclick="cierra_formulario('#nuevodebate')" type="submit" class="btn btn-cancelar" > Cancelar</button>
         </div>
     </section>
+    <br><br>
     <div class="container">
     	<ul class="tab">
 		  <li><a href="javascript:void(0)" class="tablinks" onclick="debate_estado(event, 'deb_abiertos')" id="dbt_abiertos">Debates Abiertos</a></li>
