@@ -32,11 +32,47 @@
 			<button id = "bot_ec" type="submit" class="btn btn-outline" onclick='javascript:cambiar_postura("{{ debate.id_debate }}", "0");' >En contra  <span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></button>
 		{%else%}
 			{% ifequal postura_usr_deb 'A Favor' %}
-				<button id = "bot_af" type="submit" class="btn btn-tabla" onclick='javascript:cambiar_postura("{{ debate.id_debate }}", "1");'>A favor  <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></button>
-				<button id = "bot_ec" type="submit" class="btn btn-outline" onclick='javascript:cambiar_postura("{{ debate.id_debate }}", "0");' >En contra <span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></button>
+			<table><tr><td>
+			<form id="bot_af" method="post" action= "{% url 'despliega' debate.id_debate %}" enctype="multipart/form-data" onsubmit="return confirm('¿Seguro que desea cambiar de postura?, si escribió un argumento este se eliminará');">{% csrf_token %}
+                <input type="hidden" value="{{ debate.id_debate }}" name="id">
+                <input type="hidden" value="1" name="postura_debate">
+                                        
+                <button type="submit" class="btn btn-tabla" ><span class="glyphicon glyphicon-thumbs-up"></span> A Favor </button>
+            </form>
+			</td>
+			<td></td>
+			<td>
+			<form id="bot_ec" method="post" action= "{% url 'despliega' debate.id_debate %}" enctype="multipart/form-data" onsubmit="return confirm('¿Seguro que desea cambiar de postura?, si escribió un argumento este se eliminará');">{% csrf_token %}
+                <input type="hidden" value="{{ debate.id_debate }}" name="id">
+                <input type="hidden" value="0" name="postura_debate">
+                                        
+                <button type="submit" class="btn btn-outline" ><span class="glyphicon glyphicon-thumbs-down"></span> En Contra </button>
+            </form>
+				
+			</td>
+		</tr>
+	</table>
+			
+
+            
+
 			{% else %}
-				<button id = "bot_af" type="submit" class="btn btn-outline" onclick='javascript:cambiar_postura("{{ debate.id_debate }}", "1");'>A favor  <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></button>
-				<button id = "bot_ec" type="submit" class="btn btn-tabla" onclick='javascript:cambiar_postura("{{ debate.id_debate }}", "0");' >En contra <span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></button>
+			<table><tr><td>
+				<form id="bot_af" method="post" action= "{% url 'despliega' debate.id_debate %}" enctype="multipart/form-data" onsubmit="return confirm('¿Seguro que desea cambiar de postura?, si escribió un argumento este se eliminará');">{% csrf_token %}
+                <input type="hidden" value="{{ debate.id_debate }}" name="id">
+                <input type="hidden" value="1" name="postura_debate">
+                                        
+                <button type="submit" class="btn btn-outline" ><span class="glyphicon glyphicon-thumbs-up"></span> A Favor </button>
+            </form></td>
+            <td></td>
+<td>
+            <form id="bot_ec" method="post" action= "{% url 'despliega' debate.id_debate %}" enctype="multipart/form-data" onsubmit="return confirm('¿Seguro que desea cambiar de postura?, si escribió un argumento este se eliminará');">{% csrf_token %}
+                <input type="hidden" value="{{ debate.id_debate }}" name="id">
+                <input type="hidden" value="0" name="postura_debate">
+                                        
+                <button type="submit" class="btn btn-tabla" ><span class="glyphicon glyphicon-thumbs-down"></span> En Contra </button></form>
+
+</td></tr></table>
 			{%endifequal%}
 		{%endifequal%}
 	{%endifequal%}
@@ -161,7 +197,7 @@
 	                      </label>
 	                    </div>
 	                  </div>
-	                <button type="submit" class="btn btn-perfil">Rebatir</button>
+	                <button type="submit" class="btn btn-perfil">Comentar</button>
 	              </form>
 	            </form>
 	          </div>
@@ -305,7 +341,7 @@
 	                      </label>
 	                    </div>
 	                  </div>
-	                <button type="submit" class="btn btn-perfil">Rebatir</button>
+	                <button type="submit" class="btn btn-perfil">Comentar</button>
 	              </form>
 	            </form>
 	          </div>

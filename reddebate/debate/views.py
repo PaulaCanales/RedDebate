@@ -15,13 +15,16 @@ from django.contrib.auth.decorators import login_required
 @login_required
 def despliega(request, id_debate): #debate_id
 	if request.method == 'POST':
-		if 'postu' in request.POST:
+		if 'postura_debate_ajax' in request.POST:
 			resp = define_postura(request)
 			return HttpResponse(resp)
+		if 'postura_debate' in request.POST:
+			id_debate = define_postura(request)
+			return redirect(despliega,id_debate)
 
 		if 'descripcion' in request.POST:
-			id_debat = publica_argumento(request)
-			return redirect(despliega,id_debat)
+			id_debate_argumento = publica_argumento(request)
+			return redirect(despliega,id_debate_argumento)
 
 		if 'id_arg' in request.POST:
 			respuesta = publica_valoracion(request)
@@ -58,6 +61,12 @@ def despliega(request, id_debate): #debate_id
 		for redebate in redebates:
 			descripcion_redebate = redebate.descripcion
 			usuario_redebate = User.objects.get(id=redebate.id_usuario_id)
+			if redebate.alias_c == "alias":
+				usuario_alias = Perfil.objects.get(user= usuario_redebate)
+				usuario_redebate = usuario_alias.alias
+			else:
+				usuario_redebate = usuario_redebate.username
+
 			redebates_lista.append([descripcion_redebate, usuario_redebate])
 			if tiene_comentario == "no_comentario" and usuario_redebate == request.user:
 				tiene_comentario = "si_comentario"
@@ -89,6 +98,12 @@ def despliega(request, id_debate): #debate_id
 		for redebate in redebates:
 			descripcion_redebate = redebate.descripcion
 			usuario_redebate = User.objects.get(id=redebate.id_usuario_id)
+			if redebate.alias_c == "alias":
+				usuario_alias = Perfil.objects.get(user= usuario_redebate)
+				usuario_redebate = usuario_alias.alias
+			else:
+				usuario_redebate = usuario_redebate.username
+
 			redebates_lista.append([descripcion_redebate, usuario_redebate])
 			if tiene_comentario == "no_comentario" and usuario_redebate == request.user:
 				tiene_comentario = "si_comentario"
@@ -165,22 +180,39 @@ def despliega(request, id_debate): #debate_id
 ##@warning Login is required
 @login_required
 def define_postura(request):
-	post_usuario= request.POST['postu'] 
-	print (post_usuario)
 	id_debat= request.POST['id'] 
 	usuario = request.user
-	try:
-		publicar_postura = Postura.objects.get(id_debate_id=id_debat, id_usuario_id=usuario.id)
-		publicar_postura.postura=post_usuario
-	except:
-		publicar_postura = Postura(postura=post_usuario, id_debate_id=id_debat, id_usuario_id=usuario.id)
+
+	if 'postura_debate_ajax' in request.POST:
+		post_usuario= request.POST['postura_debate_ajax'] 
+		print (post_usuario)
+		if (Postura.objects.filter(id_debate_id=id_debat, id_usuario_id=usuario.id).count() >0):
+			publicar_postura = Postura.objects.get(id_debate_id=id_debat, id_usuario_id=usuario.id)
+			publicar_postura.postura=post_usuario
+		else:
+			publicar_postura = Postura(postura=post_usuario, id_debate_id=id_debat, id_usuario_id=usuario.id)
 		print(publicar_postura)
-	publicar_postura.save() 
-	if post_usuario=='1' :
-		resp= "A Favor"
-	else:
-		resp= "En Contra"
-	return (resp)
+		publicar_postura.save() 
+		if post_usuario=='1' :
+			resp= "A Favor"
+		else:
+			resp= "En Contra"
+		return (resp)
+	if 'postura_debate' in request.POST:
+		post_usuario= request.POST['postura_debate'] 
+		print (post_usuario)
+		try:
+			publicar_postura = Postura.objects.get(id_debate_id=id_debat, id_usuario_id=usuario.id)
+			publicar_postura.postura=post_usuario
+		except:
+			print("error en publicar_postura")
+		publicar_postura.save()
+		if (Argumento.objects.filter(id_debate_id=id_debat, id_usuario_id=usuario.id).count() >0):
+			argumento_eliminar =Argumento.objects.get(id_debate_id=id_debat, id_usuario_id =usuario.id)
+			argumento_eliminar.delete()
+		#eliminar argumento:
+
+		return (id_debat)
 
 ##@brief Funcion que guarda el argumento del usuario en el debate, tambien edita el argumento.
 ##@param request solicitud web, entrega los datos del usuario actual

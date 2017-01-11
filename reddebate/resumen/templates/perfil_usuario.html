@@ -123,8 +123,8 @@
             <tbody>
         		{% for deb in debates_abiertos %} 
                     <tr>
-        				<td> {{ deb.titulo }} </td>
-        				<td><p> {{ deb.descripcion }} </p></td>
+        				<td> {{ deb.0.titulo }} </td>
+        				<td><p> {{ deb.0.descripcion }} </p></td>
                         <td>
                             <div class="dropdown">
                                 <button class="btn btn-tabla dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -133,17 +133,27 @@
                                 </button>
                                 <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
                                 <li>
-                                    <button type="submit" onclick=location.href="{% url 'despliega' deb.id_debate %}" class="btn btn-link" > Ver  <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span></button>   
+                                    <button type="submit" onclick=location.href="{% url 'despliega' deb.0.id_debate %}" class="btn btn-link" > Ver  <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span></button>   
                                     
                                 </li>
+
+                                {% ifequal deb.1 'no' %}
                                  <li>
                                         
-                                    <button type="submit" onclick="formulario_editar_debate('#editardebate','{{deb.id_debate}}','{{deb.titulo}}','{{deb.descripcion}}','{{deb.date_fin.year}}','{{deb.date_fin.month}}','{{deb.date_fin.day}}','{{deb.alias_c}}','{{deb.largo}}')" class="btn btn-link" > Editar <span class="glyphicon glyphicon-edit" aria-hidden="true"></span></button>
+                                    <button > no puede editar <span class="glyphicon glyphicon-edit" aria-hidden="true"></span></button>
 
                                 </li>
+                                {%else%}
+                                 <li>
+                                        
+                                    <button type="submit" onclick="formulario_editar_debate('#editardebate','{{deb.0.id_debate}}','{{deb.0.titulo}}','{{deb.0.descripcion}}','{{deb.0.date_fin.year}}','{{deb.0.date_fin.month}}','{{deb.0.date_fin.day}}','{{deb.0.alias_c}}','{{deb.0.largo}}')" class="btn btn-link" > Editar <span class="glyphicon glyphicon-edit" aria-hidden="true"></span></button>
+
+                                </li>
+                                {%endifequal%}
+                                
                                 <li>
                                    <form id="id" method="post" action= "{% url 'perfil' %}" enctype="multipart/form-data" onsubmit="return confirm('¿Seguro que desea cerrar el debate?');">{% csrf_token %}
-                                        <input type="hidden" value="{{ deb.id_debate }}" name="id_deb">
+                                        <input type="hidden" value="{{ deb.0.id_debate }}" name="id_deb">
                                         
                                         <button type="submit" class="btn btn-link" ><span class="glyphicon glyphicon-remove-circle"></span> Cerrar </button>
                                     </form>

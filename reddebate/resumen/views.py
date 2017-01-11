@@ -10,7 +10,7 @@ from django.shortcuts import redirect
 import requests
 
 from django.http import HttpResponse
-from resumen.models import Perfil, Debate
+from resumen.models import Perfil, Debate, Postura
 
 ##@brief Funcion que despliega todos los debates
 ##@param request solicitud web
@@ -28,12 +28,9 @@ def index(request):
     usuario = request.user
     #u = User.objects.get(username= usuario.username)
     iniciando_alias(request, usuario)
-    category_list = Debate.objects.all()
+    category_list = Debate.objects.all().order_by('-date')
     for debate in category_list:
         ahora = datetime.date.today()
-        print("ahora: ")
-        print(ahora)
-        print (debate.date_fin)
         if debate.estado != 'cerrado' and debate.date_fin!= None and debate.date_fin <= ahora :
             debate.estado = 'cerrado'
             debate.save()
@@ -41,7 +38,7 @@ def index(request):
     print("el usuario activo es_: ", usuario.id)
     usuario_2 = Perfil.objects.get(user= usuario)
     alias_usuario = usuario_2.alias
-    context = {'object_list': category_list, 'usuario': usuario, 'alias': alias_usuario}
+    context = {'object_list': category_list, 'usuario': usuario, 'alias': alias_usuario, }
     return render(request, 'index.html', context)
 
 ##@brief Funcion que inicializa el alias del usuario actual, en caso de no tener alias sera "anonimo".
@@ -122,6 +119,9 @@ def post_new(request):
 def republicar_debate(request):
     id_deb=request.POST['id_deb_republicar']
     deb = Debate.objects.get(pk=id_deb)
+    ahora = datetime.date.today()
+    if (deb.date_fin != None) and deb.date_fin <= ahora :
+        deb.date_fin = None
     deb.estado = 'abierto'
     deb.save()
     return redirect('perfil')
@@ -171,14 +171,25 @@ def perfil(request):
     usuario = request.user
     usuario = User.objects.get(id= usuario.id)
     alias_usuario = Perfil.objects.get(user=usuario)
-    debates_abiertos = Debate.objects.filter(id_usuario_id= usuario.id, estado= 'abierto')
-    debates_cerrados = Debate.objects.filter(id_usuario_id= usuario.id, estado= 'cerrado')
+
+    debates_abiertos = Debate.objects.filter(id_usuario_id= usuario.id, estado= 'abierto').order_by('-date')
+    debates_cerrados = Debate.objects.filter(id_usuario_id= usuario.id, estado= 'cerrado').order_by('-date')
+    lista_debates_abiertos = []
+
+    for debate in debates_abiertos:
+        num_posturas_debate = Postura.objects.filter(id_debate_id = debate.id_debate).count()
+        if num_posturas_debate>0:
+            puede_editar = "no"
+        else: 
+            puede_editar = "si"
+        lista_debates_abiertos.append([debate, puede_editar])
+
     
-    print("llega al perfil")
+
     
     return render(request, 'perfil_usuario.html', {'usuario': usuario,
         'alias': alias_usuario,
-        'debates_abiertos': debates_abiertos,
+        'debates_abiertos': lista_debates_abiertos,
         'debates_cerrados': debates_cerrados,
         })
 

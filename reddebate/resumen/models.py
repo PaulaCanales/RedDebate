@@ -8,24 +8,12 @@ from django.db import models
 class Perfil(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
     alias = models.CharField(max_length=30, default="anonimo")
-#Como acceder al alias?
-#u = User.objects.get(username='fsmith')
-#alias_usuario = u.Usuario.alias
-#class Usuario(models.Model):
-#    parametros de la tabla. 
-#    class UserProfile(models.Model):
-#        id_usuario = models.ForeignKey(User)
-#   id_usuario = models.AutoField(primary_key=True)
-#   nombre = models.CharField(max_length=30)
-#   alias = models.CharField(max_length=30)
-#   def __unicode__(self): # __unicode__ on Python 2
-#       return self.nombre
 
 
 class Debate(models.Model):
     #parametros de la tabla. 
     id_debate = models.AutoField(primary_key=True)
-    titulo = models.CharField(max_length=50)
+    titulo = models.CharField(max_length=100)
     descripcion = models.CharField(max_length=300)
     date = models.DateField(default=datetime.now, blank=True)
     date_fin = models.DateField(default=None, blank=True, null=True)
@@ -91,7 +79,7 @@ class Edicion(models.Model):
     #parametros de la tabla. 
     id_edicion = models.AutoField(primary_key=True)
     descripcion_edicion = models.CharField(max_length=300)
-    date_edicion = models.DateField(default=datetime.now)
+    date_edicion = models.DateTimeField(default=datetime.now)
     id_argumento = models.ForeignKey(Argumento)
     
 
