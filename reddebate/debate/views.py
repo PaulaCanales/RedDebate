@@ -282,9 +282,13 @@ def publica_redate(request):
 def publica_valoracion(request):
 	val_argumento= request.POST['id_arg'] 
 	usuario = request.user
-	publicar_valoracion = Valoracion(id_argumento_id=val_argumento, id_usuario_id=usuario.id)
-	
-	publicar_valoracion.save() 
+	val=request.POST['opcion']
+	if val=="sumar":
+		publicar_valoracion = Valoracion(id_argumento_id=val_argumento, id_usuario_id=usuario.id)
+		publicar_valoracion.save() 
+	elif val=="quitar":
+		quitar_valoracion = Valoracion.objects.get(id_argumento_id=val_argumento, id_usuario_id=usuario.id);
+		quitar_valoracion.delete()
 	respuesta = Valoracion.objects.filter(id_argumento_id = val_argumento).count()
 	return(respuesta)
 

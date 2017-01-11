@@ -264,13 +264,14 @@
       document.getElementById(modal).style.display="none";
     }
 
-    function valorar(argumento, id_div, val){
+    function valorar(argumento, id_div, val, opcionusr){
      console.log("llega al valorar");
      console.log(argumento);
         $.ajax({
             url: "{% url 'despliega' 15 %}" , 
             type: 'POST',
             data:{  id_arg : argumento,
+                    opcion: opcionusr,
                     csrfmiddlewaretoken: '{{ csrf_token }}'} ,
                   success: function(data) { // id
                     document.getElementById(id_div).innerHTML = data;

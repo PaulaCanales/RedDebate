@@ -94,9 +94,13 @@
 			<td><div id="tu_postura" >{{postura_usr_deb}} </div></td>
 		</tr>
 	</table></div>
-	{% ifequal postura_usr_deb 'No definido' %}
-		<div id="argumentos" style="display: none;" > 
-	{%endifequal%}
+	{% ifequal usuario_creador.id usuario %}
+		<div id="argumentos" style="display: block;" > 
+	{% else %}
+		{% ifequal postura_usr_deb 'No definido' %}
+			<div id="argumentos" style="display: none;" > 
+		{%endifequal%}
+	{% endifequal %}
 	<h2>Argumentos</h2>
 <div class="container" name="arg_afavor">
 	<div class="row">
@@ -148,14 +152,18 @@
 			                  	{%endifequal%} 
 			                {%endifequal%} 
 		              	</td>
+		     
+		              	
 						<td class="argumento"> <!-- boton valorar -->
 							{% ifequal arg.4 'no' %} <!-- valorar habilitado -->
-								<div style="display:none" id= "{{arg.3}}" class="btn btn-perfil disabled"> <span  class="glyphicon glyphicon-thumbs-up" aria-hidden="true" ></span></div>
+								<div style="display:none" id= "{{arg.3}}"> <button type="submit" class="btn btn-perfil" onclick='javascript:valorar("{{arg.3}}", "num_valoracion1{{arg.3}}","val{{arg.3}}","quitar");' > <span  class="glyphicon glyphicon-thumbs-down" aria-hidden="true" ></span></button></div>
 
-								<div id="num_valoracion1{{arg.3}}"> <button type="submit" class="btn btn-perfil" onclick='javascript:valorar("{{arg.3}}", "num_valoracion1{{arg.3}}","val{{arg.3}}");' >   <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true" ></span></button> </div>
+								<div id="num_valoracion1{{arg.3}}"> <button type="submit" class="btn btn-perfil" onclick='javascript:valorar("{{arg.3}}", "num_valoracion1{{arg.3}}","val{{arg.3}}","sumar");' >   <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true" ></span></button> </div>
 
 							{% else %}<!-- valorar deshabilitado -->
-								<div class="btn btn-perfil disabled" > <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true" ></span></div>
+								<div id= "{{arg.3}}"> <button type="submit" class="btn btn-perfil" onclick='javascript:valorar("{{arg.3}}", "num_valoracion1{{arg.3}}","val{{arg.3}}","quitar");' > <span  class="glyphicon glyphicon-thumbs-down" aria-hidden="true" ></span></button></div>
+
+								<div style="display:none" id="num_valoracion1{{arg.3}}"> <button type="submit" class="btn btn-perfil" onclick='javascript:valorar("{{arg.3}}", "num_valoracion1{{arg.3}}","val{{arg.3}}","sumar");' >   <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true" ></span></button> </div>
 							{%endifequal%}
 						</td> 	
 	            	</tr>

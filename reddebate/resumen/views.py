@@ -28,7 +28,7 @@ def index(request):
     usuario = request.user
     #u = User.objects.get(username= usuario.username)
     iniciando_alias(request, usuario)
-    category_list = Debate.objects.all().order_by('-date')
+    category_list = Debate.objects.all().order_by('-id_debate')
     for debate in category_list:
         ahora = datetime.date.today()
         if debate.estado != 'cerrado' and debate.date_fin!= None and debate.date_fin <= ahora :
@@ -172,8 +172,8 @@ def perfil(request):
     usuario = User.objects.get(id= usuario.id)
     alias_usuario = Perfil.objects.get(user=usuario)
 
-    debates_abiertos = Debate.objects.filter(id_usuario_id= usuario.id, estado= 'abierto').order_by('-date')
-    debates_cerrados = Debate.objects.filter(id_usuario_id= usuario.id, estado= 'cerrado').order_by('-date')
+    debates_abiertos = Debate.objects.filter(id_usuario_id= usuario.id, estado= 'abierto').order_by('-id_debate')
+    debates_cerrados = Debate.objects.filter(id_usuario_id= usuario.id, estado= 'cerrado').order_by('-id_debate')
     lista_debates_abiertos = []
 
     for debate in debates_abiertos:
