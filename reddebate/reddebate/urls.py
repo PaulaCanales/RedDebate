@@ -33,6 +33,6 @@ urlpatterns = [
     
     # Logout URL
     url( r'^users/logout/$',logout_social,
-    {'next_page': '/'}, name="user-logout"),
+    {'next_page': '/reddebate'}, name="user-logout"),
 
 ]
