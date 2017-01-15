@@ -92,11 +92,10 @@ def post_new(request):
             print("null")
         print(fecha_fin)
         print("valor checkbox 'alias':")
-        
-        print(alias)
+        usuario = request.user
     try:
         id_deb=request.POST['id_debate_editar']
-        publicar = Debate.objects.get(id_debate=id_deb)
+        publicar = Debate.objects.get(id_debate=id_deb,id_usuario_id=usuario)
         publicar.titulo=ti
         publicar.descripcion=des
         publicar.alias_c=alias
@@ -104,8 +103,6 @@ def post_new(request):
         publicar.largo=largo_max
 
     except:
-        usuario = request.user
-        print (usuario.id)
         publicar= Debate(titulo=ti, descripcion=des, id_usuario_id=usuario.id,
             largo=largo_max, alias_c=alias, date_fin= fecha_fin)
     publicar.save()
@@ -169,7 +166,6 @@ def perfil(request):
 
 
     usuario = request.user
-    usuario = User.objects.get(id= usuario.id)
     alias_usuario = Perfil.objects.get(user=usuario)
 
     debates_abiertos = Debate.objects.filter(id_usuario_id= usuario.id, estado= 'abierto').order_by('-id_debate')

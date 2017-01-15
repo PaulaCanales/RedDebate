@@ -145,12 +145,8 @@ def despliega(request, id_debate): #debate_id
 			postura_debate_usuario = "En Contra"
 	posturas_f=Postura.objects.filter(id_debate_id=id_debate, postura=1)
 	posturas_c=Postura.objects.filter(id_debate_id=id_debate, postura=0)
-	numpost_f=0
-	numpost_c=0
-	for postura in posturas_f:
-		numpost_f+=1
-	for postura in posturas_c:
-		numpost_c+=1
+	numpost_f=posturas_f.count()
+	numpost_c=posturas_c.count()
 	print(numpost_f)
 	print(numpost_c)
 
