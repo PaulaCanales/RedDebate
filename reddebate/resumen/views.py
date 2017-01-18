@@ -22,7 +22,7 @@ def index(request):
         if 'id_deb' in request.POST:
             cerrar_debate(request)
         if 'descripcion' in request.POST:
-            resp = post_new(request)
+            resp = crear_debate(request)
             return redirect('index')
 
     usuario = request.user
@@ -36,8 +36,8 @@ def index(request):
             debate.save()
             print(debate)
     print("el usuario activo es_: ", usuario.id)
-    usuario_2 = Perfil.objects.get(user= usuario)
-    alias_usuario = usuario_2.alias
+    perfil_usuario = Perfil.objects.get(user_id= usuario.id)
+    alias_usuario = perfil_usuario.alias
     context = {'object_list': category_list, 'usuario': usuario, 'alias': alias_usuario, }
     return render(request, 'index.html', context)
 
@@ -78,7 +78,7 @@ def cerrar_debate(request):
 ##@param request solicitud web
 ##@warning Login is required
 @login_required
-def post_new(request):
+def crear_debate(request):
     if request.method == 'POST':
         ti = request.POST['titulo']
         des = request.POST['descripcion']
@@ -155,7 +155,7 @@ def perfil(request):
             return redirect('perfil')
 
         if 'id_debate_editar' in request.POST:
-            post_new(request)
+            crear_debate(request)
             return redirect('perfil')
 
         if 'id_deb_eliminar' in request.POST:

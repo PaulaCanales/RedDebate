@@ -159,6 +159,18 @@
                                     </form>
 
                                 </li>
+                                <li role="separator" class="divider"></li>
+                                    
+                                    <li>
+
+                                        <form id="id" method="post" action= "{% url 'perfil' %}" enctype="multipart/form-data" onsubmit="return confirm('¿Seguro que desea eliminar el debate?');">{% csrf_token %}
+                                       
+                                        <input type="hidden" value="{{ deb.0.id_debate }}" name="id_deb_eliminar"> 
+                                
+                                        <button type="submit" class="btn btn-link" > Eliminar <span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button> 
+
+                                        </form>
+                                    </li>
 
                                 </ul>
                             </div>
