@@ -1,6 +1,6 @@
   <!DOCTYPE html>
 {% load static %}
-<html> 
+<html>
 	<head>
 
 
@@ -13,7 +13,7 @@
       <link rel="stylesheet" href="{% static 'css/datepicker.css' %}"/>
       <script src="{% static 'js/bootstrap-datepicker.js' %}"></script>
       <script src="{% static 'js/bootstrap.js' %}"></script>
-      <script> 
+      <script>
         $(function() {
           $('.datepicker').datepicker();
         });
@@ -27,8 +27,8 @@
      console.log("funciona .. hasta aqui");
 
         $.ajax({
- 
-            url: "{% url 'despliega' 1 %}" , 
+
+            url: "{% url 'despliega' 1 %}" ,
             type: 'POST',
             data:{  id : id_debate,
                     postura_debate_ajax: postura,
@@ -38,7 +38,7 @@
                     document.getElementById('tu_postura').innerHTML = data;
                     console.log(data);
                      if (data == "En Contra"){
-                      
+
                       document.getElementById('bot_ec').style.backgroundColor = '#18BD9B';
                       document.getElementById('bot_ec').style.color = 'WHITE';
                       document.getElementById('bot_af').style.backgroundColor = 'WHITE';
@@ -54,7 +54,7 @@
 
                         document.getElementById('bot_argumento_encontra').style.display = 'block';
 
-                      }            
+                      }
                     }
                     else{
                       document.getElementById('bot_af').style.backgroundColor = '#18BD9B';
@@ -72,7 +72,7 @@
 
                         document.getElementById('bot_argumento_afavor').style.display = 'block';
 
-                      }  
+                      }
 
                     }
 
@@ -102,7 +102,7 @@
                         {% else %}
                         var relleno =0;
                         {% endif %}
-                      
+
 
 
                     }
@@ -126,7 +126,7 @@
       document.getElementById('formulario_alias').style.display = 'none';
       document.getElementById('boton_alias').style.display = 'block';
 
-      
+
 
     }
     function formulario_editar_encontra(descripcion){
@@ -142,7 +142,7 @@
       document.getElementById('textarea1').value = descripcion ;
       document.getElementById('form_editar_afavor').style.display = 'block';
       $("html, body").animate({ scrollTop: $(document).height() }, 1000);
-     
+
     }
     function rebatir_contra(argumento_id){
       console.log("funciona .. hasta aqui rebatir");
@@ -150,7 +150,7 @@
       document.getElementById('argumento_id_rebate_contra').value = argumento_id ;
       document.getElementById('form_rebatir_contra').style.display = 'block';
       $("html, body").animate({ scrollTop: $(document).height() }, 1000);
-     
+
     }
     function rebatir_favor(argumento_id){
       console.log("funciona .. hasta aqui rebatir");
@@ -158,7 +158,7 @@
       document.getElementById('argumento_id_rebate_favor').value = argumento_id ;
       document.getElementById('form_rebatir_afavor').style.display = 'block';
       $("html, body").animate({ scrollTop: $(document).height() }, 1000);
-      
+
     }
 
 
@@ -228,7 +228,7 @@
           } else {
             tr[i].style.display = "none";
           }
-        }       
+        }
       }
     }
 
@@ -268,7 +268,7 @@
      console.log("llega al valorar");
      console.log(argumento);
         $.ajax({
-            url: "{% url 'despliega' 15 %}" , 
+            url: "{% url 'despliega' 15 %}" ,
             type: 'POST',
             data:{  id_arg : argumento,
                     opcion: opcionusr,
@@ -288,7 +288,7 @@
               });
     }
 
-    
+
 
 
    $(document).ready(function() {
@@ -344,12 +344,12 @@
     });
 });
 
-    
+
       google.charts.load('current', {'packages':['corechart','bar']});
 
 
       // Set a callback to run when the Google Visualization API is loaded.
-      
+
   //if ($('#chart_div').length) {
       google.charts.setOnLoadCallback(drawChart_argumento);
       google.charts.setOnLoadCallback(drawChart_postura);
@@ -376,7 +376,7 @@
            var val_argC2 =0;
         {% endif %}
 
-        var data = new google.visualization.arrayToDataTable([ 
+        var data = new google.visualization.arrayToDataTable([
           ['Valoración', 'A Favor','En Contra'],
           ['1º Mejor Valorado', val_argF1 ,val_argC1],
           ['2º Mejor Valorado', val_argF2  , val_argC2],
@@ -477,15 +477,15 @@
       };
 
  // }
-     
- 
+
+
 
 </script>
 
 
 
 	<div class="page-header">
-	<!--barra superior-->   
+	<!--barra superior-->
 	    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
         <div class="container">
             <!-- Brand and toggle get grouped for better mobile display -->
@@ -496,7 +496,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                
+
                 <a href="{% url 'index' %}"><IMG SRC="{% static 'img/RDLogo03.png' %}" height='65' ALT="RedDebateLogo"></a>
             </div>
             <!-- Collect the nav links, forms, and other content for toggling -->
@@ -505,20 +505,20 @@
                     <li>
                         <a href="{% url 'index' %}">Todos los Debates</a>
                     </li>
-                   
+
                     <li>
                         <a href="{% url 'perfil' %}">Perfil</a>
                     </li>
-                     
-                    
+
+
                 </ul>
             </div>
-             
-                  
+
+
 
             <!-- /.navbar-collapse -->
         </div>
-       
+
 
         <!-- /.container -->
     </nav>
@@ -528,14 +528,15 @@
     </div>
      <div align="right" style="padding-right: 30px;">
      </br>
-        Hola {{ user.get_full_name }}! 
-        <a href="{% url 'user-logout' %}">Logout</a>
+        Hola {{ user.get_full_name }}!
+    </br>
+        <a href="{% url 'user-logout' %}"> Cerrar sesión</a>
     </div>
 	{% block content %}
 	{% endblock content %}
 
   <div class="container">
-    
+
     <div align="right">
       <button onclick=window.open("http://146.83.216.163/mantisbt/login_page.php") type="submit" class="btn btn-index" > Reportar Problema</button>
     </div>
