@@ -91,7 +91,7 @@ DATABASES = {
         'NAME': 'reddebate',
         'USER': 'redusuario',
         'PASSWORD': 'redpass',
-        'HOST': '146.83.216.163',
+        'HOST': '146.83.216.233',
         'PORT': '',
     }
 }
@@ -130,7 +130,7 @@ SOCIAL_AUTH_FACEBOOK_SECRET = '84c5cbb25d73be84f4f4d050b9877a78'
 
 SOCIAL_AUTH_URL_NAMESPACE = 'social'
 
-#luego de la autentificacion del usuario redirecciona a la URL, entonces solo será necesario el decorador @login_required. 
+#luego de la autentificacion del usuario redirecciona a la URL, entonces solo será necesario el decorador @login_required.
 SOCIAL_AUTH_LOGIN_REDIRECT_URL =  '/reddebate/resumen/'
 LOGIN_URL = '/reddebate/'
 SOCIAL_AUTH_FACEBOOK_SCOPE =['email']
@@ -151,7 +151,7 @@ SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {
 #Recibe según el user.email la instancia del usuario y lo reemplaza con uno que recibió anteriormente
 #'social.pipeline.social_auth.social_user',
 #'social.pipeline.social_auth.associate_by_email',
-#Intenta crear un username válido 
+#Intenta crear un username válido
 #'social.pipeline.user.get_username',
 #Crea un nuevo usuario si todavía no existe
 #'social.pipeline.user.create_user',
