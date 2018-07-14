@@ -91,8 +91,8 @@ DATABASES = {
         'NAME': 'reddebate',
         'USER': 'redusuario',
         'PASSWORD': 'redpass',
-        'HOST': '146.83.216.233',
-        'PORT': '',
+        'HOST': '127.0.0.1',
+        #'PORT': '',
     }
 }
 
