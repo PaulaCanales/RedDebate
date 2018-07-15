@@ -1,4 +1,4 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 {% extends 'base.html' %}
 {% load static %}
 
@@ -12,7 +12,7 @@
 
 <div class="container">
 	<div class="blank"><table>
-		<tr> 
+		<tr>
 			<td>
 				<div class="container-titulo">
 					<h3 class="h3-t1"> {{ debate.titulo }}</h3>
@@ -36,7 +36,7 @@
 			<form id="bot_af" method="post" action= "{% url 'despliega' debate.id_debate %}" enctype="multipart/form-data" onsubmit="return confirm('¿Seguro que desea cambiar de postura?, si escribió un argumento este se eliminará');">{% csrf_token %}
                 <input type="hidden" value="{{ debate.id_debate }}" name="id">
                 <input type="hidden" value="1" name="postura_debate">
-                                        
+
                 <button type="submit" class="btn btn-tabla" ><span class="glyphicon glyphicon-thumbs-up"></span> A Favor </button>
             </form>
 			</td>
@@ -45,23 +45,23 @@
 			<form id="bot_ec" method="post" action= "{% url 'despliega' debate.id_debate %}" enctype="multipart/form-data" onsubmit="return confirm('¿Seguro que desea cambiar de postura?, si escribió un argumento este se eliminará');">{% csrf_token %}
                 <input type="hidden" value="{{ debate.id_debate }}" name="id">
                 <input type="hidden" value="0" name="postura_debate">
-                                        
+
                 <button type="submit" class="btn btn-outline" ><span class="glyphicon glyphicon-thumbs-down"></span> En Contra </button>
             </form>
-				
+
 			</td>
 		</tr>
 	</table>
-			
 
-            
+
+
 
 			{% else %}
 			<table><tr><td>
 				<form id="bot_af" method="post" action= "{% url 'despliega' debate.id_debate %}" enctype="multipart/form-data" onsubmit="return confirm('¿Seguro que desea cambiar de postura?, si escribió un argumento este se eliminará');">{% csrf_token %}
                 <input type="hidden" value="{{ debate.id_debate }}" name="id">
                 <input type="hidden" value="1" name="postura_debate">
-                                        
+
                 <button type="submit" class="btn btn-outline" ><span class="glyphicon glyphicon-thumbs-up"></span> A Favor </button>
             </form></td>
             <td></td>
@@ -69,7 +69,7 @@
             <form id="bot_ec" method="post" action= "{% url 'despliega' debate.id_debate %}" enctype="multipart/form-data" onsubmit="return confirm('¿Seguro que desea cambiar de postura?, si escribió un argumento este se eliminará');">{% csrf_token %}
                 <input type="hidden" value="{{ debate.id_debate }}" name="id">
                 <input type="hidden" value="0" name="postura_debate">
-                                        
+
                 <button type="submit" class="btn btn-tabla" ><span class="glyphicon glyphicon-thumbs-down"></span> En Contra </button></form>
 
 </td></tr></table>
@@ -77,28 +77,28 @@
 		{%endifequal%}
 	{%endifequal%}
 	<div class="blank"><table>
-		<tr> 
+		<tr>
 			<td width=120 ><p1>Descripción</p1></td>
 			<td>{{ debate.descripcion }}</td>
 		</tr>
-		<tr> 
+		<tr>
 			<td width=120 ><p1>Fecha inicio</p1></td>
 			<td>{{ debate.date }}</td>
 		</tr>
-		<tr> 
+		<tr>
 			<td width=120 ><p1>Estado</p1></td>
 			<td>{{ debate.estado }}</td>
 		</tr>
-		<tr> 
+		<tr>
 			<td width=120 ><p1>Tu Postura</p1></td>
 			<td><div id="tu_postura" >{{postura_usr_deb}} </div></td>
 		</tr>
 	</table></div>
 	{% ifequal usuario_creador.id usuario %}
-		<div id="argumentos" style="display: block;" > 
+		<div id="argumentos" style="display: block;" >
 	{% else %}
 		{% ifequal postura_usr_deb 'No definido' %}
-			<div id="argumentos" style="display: none;" > 
+			<div id="argumentos" style="display: none;" >
 		{%endifequal%}
 	{% endifequal %}
 	<h2>Argumentos</h2>
@@ -127,7 +127,7 @@
 							{{arg.2}}
 						</td>
 						<td class="argumento"> <!-- argumento -->
-							<p><p1>{{arg.1}}:</p1> {{arg.0}}</p>
+							<p><a href="{% url 'perfiles' arg.3 %}"><p1>{{arg.1}}:</p1></a> {{arg.0}}</p>
 							{% if arg.8 %}
 		                  	<button id="historialF" onclick="mostrar_historial('myModal1')" class="link btn-link">Editado</button>
 		                  	{% endif %}
@@ -147,13 +147,13 @@
 			                {% ifequal arg.5 usuario %} <!-- editar -->
 			                	<div style="float:right"> <button id="bot_editar_afavor" type="submit" class="btn btn-perfil" onclick='  javascript:formulario_editar_afavor("{{arg.0}}" );'> <span class="glyphicon glyphicon-edit" aria-hidden="true" ></span> </button> </div>
 			                {% else %}  <!-- rebatir -->
-			                	{% ifequal arg.7 'no_comentario' %} 
+			                	{% ifequal arg.7 'no_comentario' %}
 			                		<div style="float:right"> <button id="bot_rebatir_afavor" type="submit" class="btn btn-perfil" onclick='javascript:rebatir_favor("{{arg.3}}");' ><span class="glyphicon glyphicon-comment"  ></span></button></div>
-			                  	{%endifequal%} 
-			                {%endifequal%} 
+			                  	{%endifequal%}
+			                {%endifequal%}
 		              	</td>
-		     
-		              	
+
+
 						<td class="argumento"> <!-- boton valorar -->
 							{% ifequal arg.4 'no' %} <!-- valorar habilitado -->
 								<div style="display:none" id= "{{arg.3}}"> <button type="submit" class="btn btn-perfil" onclick='javascript:valorar("{{arg.3}}", "num_valoracion1{{arg.3}}","val{{arg.3}}","quitar");' > <span  class="glyphicon glyphicon-thumbs-down" aria-hidden="true" ></span></button></div>
@@ -165,7 +165,7 @@
 
 								<div style="display:none" id="num_valoracion1{{arg.3}}"> <button type="submit" class="btn btn-perfil" onclick='javascript:valorar("{{arg.3}}", "num_valoracion1{{arg.3}}","val{{arg.3}}","sumar");' >   <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true" ></span></button> </div>
 							{%endifequal%}
-						</td> 	
+						</td>
 	            	</tr>
 	            	{% if arg.6 %}
 	            	{% for respuesta in arg.6 %}
@@ -176,10 +176,10 @@
 				        </td>
 				        <td class="rebatir"></td><td class="rebatir"></td>
 		            </tr>
-		            {% endfor %} 
-	              	{% endif %}     
+		            {% endfor %}
+	              	{% endif %}
 	              {% empty %}
-	                  <tr><td class="vacio"> </td></tr> 
+	                  <tr><td class="vacio"> </td></tr>
 	              {% endfor %}
 	          </table> </div> <!-- datagrid -->
 	          {% ifequal postura_usr_deb 'A Favor'  %}
@@ -191,7 +191,7 @@
 	              <button id="bot_argumento_afavor" type="submit" class="btn btn-perfil" onclick=' javascript:fomulario_argumento_afavor();'  style="display: none;" >Da tu Argumento</button>
 	            {%endifequal%}
 	          {%endifequal%}
-	          <div id="form_rebatir_afavor" style="display: none;" > 
+	          <div id="form_rebatir_afavor" style="display: none;" >
 	            <form method="POST" class="post-form">{% csrf_token %}
 	              <form action="/post_arg" id="publicar_form" method="post">{% csrf_token %}
 	                  <div class="form-group">
@@ -209,7 +209,7 @@
 	              </form>
 	            </form>
 	          </div>
-	          <div id="form_editar_afavor" style="display: none;" > 
+	          <div id="form_editar_afavor" style="display: none;" >
 	            <form method="POST" class="post-form">{% csrf_token %}
 	              <form action="/post_arg" id="publicar_form" method="post">{% csrf_token %}
 	                  <div class="form-group">
@@ -227,7 +227,7 @@
 	              </form>
 	            </form>
 	          </div>
-	          <div id="form_argumento_afavor" style="display: none;" > 
+	          <div id="form_argumento_afavor" style="display: none;" >
 	            <form method="POST" class="post-form">{% csrf_token %}
 	              <form action="/post_arg" id="publicar_form" method="post">{% csrf_token %}
 	                  <div class="form-group">
@@ -273,7 +273,7 @@
 						{{arg.2}}
 					</td>
 	              	<td class="argumento"> <!-- argumento -->
-	              		<p> <p1>{{arg.1}}: </p1> {{arg.0}} </p> 
+	              		<p> <a href="{% url 'perfiles' arg.3 %}"><p1>{{arg.1}}: </p1></a> {{arg.0}} </p>
 		              	{% if arg.8 %}
 	             		<button id="historialF" onclick="mostrar_historial('myModal2')" class="link btn-link">Editado</button>
 	             		{% endif %}
@@ -288,18 +288,18 @@
 							{% endfor %}
 						  </div>
 						</div>
-					</td>	
+					</td>
 		            <td class="argumento"> <!-- boton editar/rebatir-->
 		            	{% ifequal arg.5 usuario %} <!-- editar -->
 							<div style="float:right"> <button id="bot_editar_afavor" type="submit" class="btn btn-perfil" onclick='  javascript:formulario_editar_encontra("{{arg.0}}" );'> <span class="glyphicon glyphicon-edit" aria-hidden="true" ></span>  </button> </div>
 
 						{% else %}
-							{% ifequal arg.7 'no_comentario' %} 
+							{% ifequal arg.7 'no_comentario' %}
 								<div style="float:right"> <!-- rebatir -->
 								<button id="bot_rebatir_contra" type="submit" class="btn btn-perfil" onclick='javascript:rebatir_contra("{{arg.3}}");' ><span class="glyphicon glyphicon-comment"  ></span></button>
 								</div>
 							{%endifequal%}
-						{%endifequal%} 
+						{%endifequal%}
 		          	</td>
 		            <td class="argumento"> <!-- boton valorar -->
 						{% ifequal arg.4 'no' %} <!-- valorar habilitado -->
@@ -310,8 +310,8 @@
 							<div style="float:right" class="btn btn-perfil disabled" >   <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true" ></span></div>
 						{%endifequal%}
 		            </td>
-	        	</tr> 
-	            {% if arg.6 %} 
+	        	</tr>
+	            {% if arg.6 %}
 	            {% for respuesta in arg.6 %}
 	            <tr>
 	            	<td class="rebatir"></td>
@@ -323,7 +323,7 @@
 	            {% endfor %}
 	            {% endif %}
 	          {% empty %}
-	              <tr><td class="vacio"> </td></tr> 
+	              <tr><td class="vacio"> </td></tr>
 	          {% endfor %}
 	      </table></div> <!-- datagrid -->
 	      {% ifequal postura_usr_deb 'En Contra' %}
@@ -335,7 +335,7 @@
 	              <button id="bot_argumento_encontra" type="submit" class="btn btn-perfil" onclick='javascript:fomulario_argumento_encontra();' style="display: none;" >Da tu Argumento</button>
 	            {%endifequal%}
 	          {%endifequal%}
-	          <div id="form_rebatir_contra" style="display: none;" > 
+	          <div id="form_rebatir_contra" style="display: none;" >
 	            <form method="POST" class="post-form">{% csrf_token %}
 	              <form action="/post_arg" id="publicar_form" method="post">{% csrf_token %}
 	                  <div class="form-group">
@@ -353,7 +353,7 @@
 	              </form>
 	            </form>
 	          </div>
-	          <div id="form_editar_encontra" style="display: none;" > 
+	          <div id="form_editar_encontra" style="display: none;" >
 	            <form method="POST" class="post-form">{% csrf_token %}
 	              <form action="/post_arg" id="publicar_form" method="post">{% csrf_token %}
 	                  <div class="form-group">
@@ -373,7 +373,7 @@
 	            </form>
 	          </div>
 
-	          <div id="form_argumento_encontra" style="display: none;" > 
+	          <div id="form_argumento_encontra" style="display: none;" >
 	            <form method="POST" class="post-form">{% csrf_token %}
 	              <form action="/post_arg" id="publicar_form" method="post">{% csrf_token %}
 	                <div class="form-group">
@@ -389,7 +389,7 @@
 	                  <button type="submit" class="btn btn-perfil">Publicar</button>
 	              </form>
 	            </form>
-	          </div>    
+	          </div>
 	    </div> <!-- col2 -->
 	</div> <!-- row -->
 </div> <!-- container -->

@@ -35,20 +35,20 @@ def despliega(request, id_debate): #debate_id
 			return redirect(despliega,id_debat)
 
 	debate = Debate.objects.get(id_debate= id_debate)
-	usuario_id = debate.id_usuario_id #usuario creador 
-	usuario_creador = User.objects.get(id= usuario_id) 
+	usuario_id = debate.id_usuario_id #usuario creador
+	usuario_creador = User.objects.get(id= usuario_id)
 	try:
-		perfil_creador = Perfil.objects.get(user= usuario_creador) 
+		perfil_creador = Perfil.objects.get(user= usuario_creador)
 		perfil_creador = perfil_creador.alias
 	except:
 		perfil_creador = 'username'
-	
+
 	usuario_actual = request.user
 	usuario_actual_alias = Perfil.objects.get(user= usuario_actual)
 	usuario_actual = usuario_actual.id
 
-	argumentos_aFavor = Argumento.objects.filter(id_debate_id= id_debate, postura= 1) 
-	argumentos_enContra = Argumento.objects.filter(id_debate_id= id_debate, postura= 0) 
+	argumentos_aFavor = Argumento.objects.filter(id_debate_id= id_debate, postura= 1)
+	argumentos_enContra = Argumento.objects.filter(id_debate_id= id_debate, postura= 0)
 	argumentos_F = []
 	argumentos_C = []
 
@@ -72,19 +72,19 @@ def despliega(request, id_debate): #debate_id
 				tiene_comentario = "si_comentario"
 		usuario_debate = User.objects.get(id= argumento.id_usuario_id)
 		usuario_id = usuario_debate.id
-		if (argumento.alias_c == "alias"): 
+		if (argumento.alias_c == "alias"):
 			usuario_alias = Perfil.objects.get(user=usuario_debate)
 			usuario_debate = usuario_alias.alias
-		try: 
+		try:
 			valoracion = Valoracion.objects.get(id_argumento_id= argumento.id_argumento, id_usuario_id = usuario_actual)
 			t_valoracion = "si"
 		except:
 			t_valoracion = "no"
 		print(usuario_debate)
 		valoracion_argF = Valoracion.objects.filter(id_argumento_id= argumento.id_argumento).count()
-		argumentos_F.append([argumento.descripcion, usuario_debate, 
-			valoracion_argF, argumento.id_argumento, t_valoracion, 
-			usuario_id, redebates_lista , tiene_comentario, ediciones]) 
+		argumentos_F.append([argumento.descripcion, usuario_debate,
+			valoracion_argF, argumento.id_argumento, t_valoracion,
+			usuario_id, redebates_lista , tiene_comentario, ediciones, argumento.alias_c])
 
 		if (request.user.id == argumento.id_usuario_id):
 			tiene_argumento ='si'
@@ -110,10 +110,10 @@ def despliega(request, id_debate): #debate_id
 		usuario_debate = User.objects.get(id= argumento.id_usuario_id)
 		usuario_id = usuario_debate.id
 
-		if (argumento.alias_c == "alias"): 
+		if (argumento.alias_c == "alias"):
 			usuario_alias = Perfil.objects.get(user=usuario_debate)
 			usuario_debate = usuario_alias.alias
-		try: 
+		try:
 			valoracion = Valoracion.objects.get(id_argumento_id= argumento.id_argumento, id_usuario_id = request.user.id)
 			t_valoracion = "si"
 		except:
@@ -122,7 +122,7 @@ def despliega(request, id_debate): #debate_id
 
 		argumentos_C.append([argumento.descripcion, usuario_debate,
 		 valoracion_argC, argumento.id_argumento, t_valoracion,
-		 usuario_id, redebates_lista, tiene_comentario, ediciones ]) 
+		 usuario_id, redebates_lista, tiene_comentario, ediciones, argumento.alias_c ])
 		if (request.user.id == argumento.id_usuario_id):
 			tiene_argumento = 'si'
 	print("argumentos: ", argumentos_C)
@@ -130,12 +130,12 @@ def despliega(request, id_debate): #debate_id
 	print("argumentos: ", argumentos_C)
 	argumentos_F = sorted(argumentos_F, key=lambda valoracion: valoracion[2], reverse=True)
 	print("argumentos: ", argumentos_F)
-	
+
 
 	try:
 		postura_debate_usuario = Postura.objects.get(id_usuario_id= usuario_actual, id_debate_id=id_debate)
 		tiene_postura = True
-	except: 
+	except:
 		postura_debate_usuario = "No definido"
 		tiene_postura = False
 	if tiene_postura:
@@ -150,7 +150,7 @@ def despliega(request, id_debate): #debate_id
 	print(numpost_f)
 	print(numpost_c)
 
-	if debate.estado == 'abierto': 
+	if debate.estado == 'abierto':
 		return render(request, 'debate.html', {'debate': debate,
 			'usuario_creador': usuario_creador,
 			'usuario': usuario_actual,
@@ -176,11 +176,11 @@ def despliega(request, id_debate): #debate_id
 ##@warning Login is required
 @login_required
 def define_postura(request):
-	id_debat= request.POST['id'] 
+	id_debat= request.POST['id']
 	usuario = request.user
 
 	if 'postura_debate_ajax' in request.POST:
-		post_usuario= request.POST['postura_debate_ajax'] 
+		post_usuario= request.POST['postura_debate_ajax']
 		print (post_usuario)
 		if (Postura.objects.filter(id_debate_id=id_debat, id_usuario_id=usuario.id).count() >0):
 			publicar_postura = Postura.objects.get(id_debate_id=id_debat, id_usuario_id=usuario.id)
@@ -188,14 +188,14 @@ def define_postura(request):
 		else:
 			publicar_postura = Postura(postura=post_usuario, id_debate_id=id_debat, id_usuario_id=usuario.id)
 		print(publicar_postura)
-		publicar_postura.save() 
+		publicar_postura.save()
 		if post_usuario=='1' :
 			resp= "A Favor"
 		else:
 			resp= "En Contra"
 		return (resp)
 	if 'postura_debate' in request.POST:
-		post_usuario= request.POST['postura_debate'] 
+		post_usuario= request.POST['postura_debate']
 		print (post_usuario)
 		try:
 			publicar_postura = Postura.objects.get(id_debate_id=id_debat, id_usuario_id=usuario.id)
@@ -212,7 +212,7 @@ def define_postura(request):
 
 ##@brief Funcion que guarda el argumento del usuario en el debate, tambien edita el argumento.
 ##@param request solicitud web, entrega los datos del usuario actual
-##@return id_debat para redireccionar a la vista "despliega" con este id de debate 
+##@return id_debat para redireccionar a la vista "despliega" con este id de debate
 ##@warning Login is required
 @login_required
 def publica_argumento(request):
@@ -224,7 +224,7 @@ def publica_argumento(request):
 	id_debat = request.POST['id_deb']
 	try:
 		publicar = Argumento.objects.get(id_usuario_id=usuario.id,id_debate_id=id_debat)
-		
+
 		editado = Edicion(descripcion_edicion= publicar.descripcion, id_argumento_id = publicar.id_argumento)
 		editado.save()
 
@@ -234,23 +234,23 @@ def publica_argumento(request):
 			publicar.alias_c= alias_usuario
 		else:
 			publicar.alias_c= 'username'
-	except: 
+	except:
 		if 'alias' in request.POST:
 			alias_usuario = request.POST['alias']
 			publicar= Argumento(descripcion=descrip, id_usuario_id=usuario.id,
 		 		id_debate_id=id_debat, postura= postura_deb_usr, alias_c=alias_usuario)
-		
+
 		else :
 			publicar= Argumento(descripcion=descrip, id_usuario_id=usuario.id,
 		 		id_debate_id=id_debat, postura= postura_deb_usr)
-	
+
 	publicar.save()
 	print (Argumento.objects.filter(id_debate_id= id_debat))
 	return(id_debat)
 
 ##@brief Funcion que guarda el comentario del usuario de un argumento.
 ##@param request solicitud web, entrega los datos del usuario actual
-##@return id_debat para redireccional a la vista "despliega" con este id de debate 
+##@return id_debat para redireccional a la vista "despliega" con este id de debate
 ##@warning Login is required
 @login_required
 def publica_redate(request):
@@ -276,15 +276,29 @@ def publica_redate(request):
 ##@warning Login is required
 @login_required
 def publica_valoracion(request):
-	val_argumento= request.POST['id_arg'] 
+	val_argumento= request.POST['id_arg']
 	usuario = request.user
 	val=request.POST['opcion']
 	if val=="sumar":
 		publicar_valoracion = Valoracion(id_argumento_id=val_argumento, id_usuario_id=usuario.id)
-		publicar_valoracion.save() 
+		publicar_valoracion.save()
+		reputacion = 10
 	elif val=="quitar":
 		quitar_valoracion = Valoracion.objects.get(id_argumento_id=val_argumento, id_usuario_id=usuario.id);
 		quitar_valoracion.delete()
+		reputacion = -10
 	respuesta = Valoracion.objects.filter(id_argumento_id = val_argumento).count()
+	val_reputacion = request.POST['id_arg']
+	usuario_argumento = Argumento.objects.get(id_argumento=val_reputacion).id_usuario_id
+	usuario_reputacion = Perfil.objects.get(user_id=usuario_argumento).reputacion
+	usuario_reputacion = usuario_reputacion + reputacion
+	aumentar_reputacion = Perfil(user_id=usuario_argumento, reputacion=usuario_reputacion)
+	aumentar_reputacion.save()
 	return(respuesta)
 
+def actualiza_reputacion(request):
+	val_reputacion = request.POST['id_arg']
+	usuario_argumento = Argumento.objects.get(id_argumento=val_reputacion).id_usuario_id
+	usuario_reputacion = Perfil.objects.get(user_id=usuario_argumento)
+	respuesta = Valoracion.objects.filter(id_argumento_id = val_argumento).count()
+	aumentar_reputacion = Perfil(user=usuario_reputacion, reputacion=respuesta)

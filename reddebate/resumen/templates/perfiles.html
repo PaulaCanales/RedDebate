@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+{% extends 'base.html' %}
+{% load static %}
+
+
+
+<html>
+
+{% block content %}
+
+<div class="container">
+    <div class="col-md-4">
+      {% ifequal usa_alias 'username' %}
+        <h3>{{ usuario.first_name }} {{ usuario.last_name }} </h3>
+        <div class="container-perfil">
+        <br>
+
+        <p1>Usuario: </p1>{{ usuario.username}}
+        <br>
+        <br>
+        <p1>Email: </p1>{{ usuario.email }}
+        <br>
+        <br>
+        <p1>Reputación: </p1>{{alias.reputacion}}
+        <br>
+        <br>
+        <p1>Fecha de ingreso : </p1>{{ usuario.date_joined }}
+        <br>
+        <br>
+         </div>
+        <br>
+      {% else %}
+        <h3>{{ alias.alias }}</h3>
+        <div class="container-perfil">
+        <br>
+        <p1>Reputación: </p1>{{alias.reputacion}}
+        <br>
+        <br>
+        <p1>Fecha de ingreso : </p1>{{ usuario.date_joined }}
+        <br>
+        <br>
+         </div>
+        <br>
+      {%endifequal%}
+    </div>
+</div>
+
+{% endblock content %}
+
+</html>

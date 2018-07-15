@@ -10,7 +10,7 @@ from django.shortcuts import redirect
 import requests
 
 from django.http import HttpResponse
-from resumen.models import Perfil, Debate, Postura
+from resumen.models import Perfil, Debate, Postura, Argumento
 
 ##@brief Funcion que despliega todos los debates
 ##@param request solicitud web
@@ -43,7 +43,7 @@ def index(request):
 
 ##@brief Funcion que inicializa el alias del usuario actual, en caso de no tener alias sera "anonimo".
 ##@param request solicitud web
-##@param u usuario a crear alias. 
+##@param u usuario a crear alias.
 ##@warning Login is required
 @login_required
 def iniciando_alias(request, u):
@@ -106,7 +106,7 @@ def crear_debate(request):
         publicar= Debate(titulo=ti, descripcion=des, id_usuario_id=usuario.id,
             largo=largo_max, alias_c=alias, date_fin= fecha_fin)
     publicar.save()
-    
+
 
 ##@brief Funcion que actualiza el debate "cerrado" a "abierto"
 ##@param request solicitud web
@@ -139,6 +139,21 @@ def eliminar_debate(request):
 ##@return redirect redirecciona a la vista "perfil"
 ##@warning Login is required
 @login_required
+def perfiles(request, id_argumento):
+    argumento = Argumento.objects.get(id_argumento=id_argumento)
+    usa_alias = argumento.alias_c
+    usuario = User.objects.get(id=argumento.id_usuario_id)
+    alias_usuario = Perfil.objects.get(user_id=usuario)
+    print(alias_usuario.alias)
+
+    return render(request, 'perfiles.html', {'usuario': usuario,
+        'alias': alias_usuario, 'usa_alias': usa_alias})
+
+##@brief Funcion que despliega los datos del usuario, debates abiertos, cerrados y opciones para cada uno.
+##@param request solicitud web
+##@return redirect redirecciona a la vista "perfil"
+##@warning Login is required
+@login_required
 def perfil(request):
     if request.method == 'POST':
         if 'id_deb' in request.POST:
@@ -160,7 +175,7 @@ def perfil(request):
 
         if 'id_deb_eliminar' in request.POST:
             eliminar_debate(request)
-            
+
         if 'id_deb_republicar' in request.POST:
             republicar_debate(request)
 
@@ -176,16 +191,15 @@ def perfil(request):
         num_posturas_debate = Postura.objects.filter(id_debate_id = debate.id_debate).count()
         if num_posturas_debate>0:
             puede_editar = "no"
-        else: 
+        else:
             puede_editar = "si"
         lista_debates_abiertos.append([debate, puede_editar])
 
-    
 
-    
+
+
     return render(request, 'perfil_usuario.html', {'usuario': usuario,
         'alias': alias_usuario,
         'debates_abiertos': lista_debates_abiertos,
         'debates_cerrados': debates_cerrados,
         })
-
