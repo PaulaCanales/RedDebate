@@ -84,3 +84,13 @@ def perfil(request):
         'debates_abiertos': lista_debates_abiertos,
         'debates_cerrados': debates_cerrados,
         })
+##@brief Funcion que elimina un debate
+##@param request solicitud web
+##@return redirect redirecciona a la vista "perfil"
+##@warning Login is required
+@login_required
+def eliminar_debate(request):
+    id_deb=request.POST['id_deb_eliminar']
+    deb = Debate.objects.get(pk=id_deb)
+    deb.delete()
+    return redirect('perfil')
