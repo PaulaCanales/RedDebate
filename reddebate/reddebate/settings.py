@@ -38,6 +38,7 @@ TEMPLATE_DIRS=(
 INSTALLED_APPS = [
     'resumen',
     'debate', #aplicación de "Ver debate"
+    'perfil',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

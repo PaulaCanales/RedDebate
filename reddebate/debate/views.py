@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect
 
-from resumen.models import Perfil, Debate, Postura, Argumento, Valoracion, Respuesta, Edicion
+from resumen.models import Debate
+from debate.models import Postura, Argumento, Valoracion, Respuesta, Edicion
+from perfil.models import Perfil
 
 from django.http import HttpResponse
 from django.contrib.auth.models import User
@@ -295,10 +297,3 @@ def publica_valoracion(request):
 	aumentar_reputacion = Perfil(user_id=usuario_argumento, reputacion=usuario_reputacion)
 	aumentar_reputacion.save()
 	return(respuesta)
-
-def actualiza_reputacion(request):
-	val_reputacion = request.POST['id_arg']
-	usuario_argumento = Argumento.objects.get(id_argumento=val_reputacion).id_usuario_id
-	usuario_reputacion = Perfil.objects.get(user_id=usuario_argumento)
-	respuesta = Valoracion.objects.filter(id_argumento_id = val_argumento).count()
-	aumentar_reputacion = Perfil(user=usuario_reputacion, reputacion=respuesta)
