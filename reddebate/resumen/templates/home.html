@@ -2,6 +2,7 @@
 {% load static %}
 <html>
 <head>
+<link rel="shortcut icon" type="image/png" href="{% static 'img/RDLogo02.png' %}"/>
 <link rel="stylesheet" type='text/css' href="{% static 'bootstrap-social-gh-pages/assets/css/bootstrap.css' %}" >
 <link rel="stylesheet" type='text/css' href="{% static 'bootstrap-social-gh-pages/assets/css/font-awesome.css' %}" >
 <link rel="stylesheet" type='text/css' href="{% static 'bootstrap-social-gh-pages/assets/css/docs.css' %}" >
@@ -11,20 +12,20 @@
 <title>Inicia Sesión</title>
 </head>
 <body style="background: #18BD9B">
-	<br>  
+	<br>
 	<br>
 	<div align="center">
 		<IMG SRC="{% static 'img/RDLogo02.png' %}" WIDTH='300' VSPACE='3' HSPACE='3' ALT="RedDebateLogo">
 		</div>
 		<br>
-		<div class="col-sm-4"></div> 
+		<div class="col-sm-4"></div>
 		<div class="col-sm-4">
 			<br>
 				</a>
 				<a class="btn btn-block btn-social btn-facebook" href="{% url 'social:begin' 'facebook' %}" align="center" >
 			  	<span class="fa fa-facebook"></span> <div align="center">Ingresa con Facebook </div>
 			  	</a>
-			
+
         </div>
 	</div>
 </body>
