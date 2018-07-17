@@ -30,7 +30,7 @@
 			<div class="container" name="desc">
 						<div class="row" id="my-row">
 							<div class="col-sm-3 panel">
-								<button id = "bot_af" type="submit" class="btn btn-postura" onclick='javascript:cambiar_postura("{{ debate.id_debate }}", "1");'>A favor  <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></button>
+								<button id = "bot_af" type="submit" class="btn btn-postura" onclick='javascript:cambiar_postura("{{ debate.id_debate }}", "1", "{{porc_f}}", "{{porc_c}}");'>A favor  <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></button>
 							</div>
 							<div class="col-sm-6">
 								<div class="blank">
@@ -55,7 +55,7 @@
 								</div>
 							</div>
 							<div class="col-sm-3 panel">
-								<button id = "bot_ec" type="submit" class="btn btn-postura" onclick='javascript:cambiar_postura("{{ debate.id_debate }}", "0");' >En contra  <span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></button>
+								<button id = "bot_ec" type="submit" class="btn btn-postura" onclick='javascript:cambiar_postura("{{ debate.id_debate }}", "0", "{{porc_f}}", "{{porc_c}}");'>En contra  <span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></button>
 							</div>
 						</div>
 			</div>
@@ -67,7 +67,7 @@
 								<form id="bot_af" method="post" action= "{% url 'despliega' debate.id_debate %}" enctype="multipart/form-data" onsubmit="return confirm('¿Seguro que desea cambiar de postura?, si escribió un argumento este se eliminará');">{% csrf_token %}
 					                <input type="hidden" value="{{ debate.id_debate }}" name="id">
 					                <input type="hidden" value="1" name="postura_debate">
-					                <button type="submit" class="btn btn-posturactual" disabled ><span class="glyphicon glyphicon-thumbs-up"></span> A Favor </button>
+					                <button type="submit" class="btn btn-posturactual" disabled ><span class="glyphicon glyphicon-thumbs-up"></span> A Favor <br><br> {{porc_f}}% </button>
 					      </form>
 							</div>
 							<div class="col-sm-6">
@@ -96,7 +96,7 @@
 								<form id="bot_ec" method="post" action= "{% url 'despliega' debate.id_debate %}" enctype="multipart/form-data" onsubmit="return confirm('¿Seguro que desea cambiar de postura?, si escribió un argumento este se eliminará');">{% csrf_token %}
 					                <input type="hidden" value="{{ debate.id_debate }}" name="id">
 					                <input type="hidden" value="0" name="postura_debate">
-					                <button type="submit" class="btn btn-postura" ><span class="glyphicon glyphicon-thumbs-down"></span> En Contra </button>
+					                <button type="submit" class="btn btn-postura" ><span class="glyphicon glyphicon-thumbs-down"></span> En Contra <br><br> {{porc_c}}% </button>
 					     </form>
 							</div>
 						</div>
@@ -108,7 +108,7 @@
 								<form id="bot_af" method="post" action= "{% url 'despliega' debate.id_debate %}" enctype="multipart/form-data" onsubmit="return confirm('¿Seguro que desea cambiar de postura?, si escribió un argumento este se eliminará');">{% csrf_token %}
 				                <input type="hidden" value="{{ debate.id_debate }}" name="id">
 				                <input type="hidden" value="1" name="postura_debate">
-				                <button type="submit" class="btn btn-postura" ><span class="glyphicon glyphicon-thumbs-up"></span> A Favor </button>
+				                <button type="submit" class="btn btn-postura" ><span class="glyphicon glyphicon-thumbs-up"></span> A Favor <br><br> {{porc_f}}% </button>
 				        </form>
 							</div>
 							<div class="col-sm-6">
@@ -137,7 +137,7 @@
 								<form id="bot_ec" method="post" action= "{% url 'despliega' debate.id_debate %}" enctype="multipart/form-data" onsubmit="return confirm('¿Seguro que desea cambiar de postura?, si escribió un argumento este se eliminará');">{% csrf_token %}
 				            <input type="hidden" value="{{ debate.id_debate }}" name="id">
 				            <input type="hidden" value="0" name="postura_debate">
-				            <button type="submit" class="btn btn-posturactual" disabled ><span class="glyphicon glyphicon-thumbs-down"></span> En Contra </button>
+				            <button type="submit" class="btn btn-posturactual" disabled ><span class="glyphicon glyphicon-thumbs-down"></span> En Contra <br><br> {{porc_c}}% </button>
 								</form>
 							</div>
 						</div>

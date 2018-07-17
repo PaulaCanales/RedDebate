@@ -24,7 +24,7 @@
 	</head>
 <body>
 <script type="text/javascript">
-  function cambiar_postura(id_debate, postura){
+  function cambiar_postura(id_debate, postura, porcentaje_f, porcentaje_c){
     console.log("funciona .. hasta aqui!!!!!!!");
        $.ajax({
 
@@ -39,23 +39,22 @@
                    console.log(data);
                     if (data == "En Contra"){
 
-                     document.getElementById('bot_ec').style.backgroundColor = '#18BD9B';
-                     document.getElementById('bot_ec').style.color = 'WHITE';
-                     document.getElementById('bot_af').style.backgroundColor = 'WHITE';
-                     document.getElementById('bot_af').style.color = '#18BD9B';
+                     document.getElementById('bot_ec').style.class = "posturactual"
+                     document.getElementById('bot_af').style.class = "postura"
 
 										 document.getElementById('bot_argumento0').style.display = 'block';
 										 document.getElementById('bot_argumento1').style.display = 'none';
                    }
                    else{
-                     document.getElementById('bot_af').style.backgroundColor = '#18BD9B';
-                     document.getElementById('bot_af').style.color = 'WHITE';
-                     document.getElementById('bot_ec').style.backgroundColor = 'WHITE';
-                     document.getElementById('bot_ec').style.color = '#18BD9B';
-										 
+                     document.getElementById('bot_af').style.class ="posturactual"
+                     document.getElementById('bot_ec').style.class ="postura"
+
 										 document.getElementById('bot_argumento1').style.display = 'block';
 										 document.getElementById('bot_argumento0').style.display = 'none';
                    }
+
+									 document.getElementById('bot_ec').textContent = "En Contra"+porcentaje_c
+									 document.getElementById('bot_af').textContent = "A Favor"+porcentaje_f
 
                    if (document.getElementById('argumentos')){
                      // document.getElementById('argumentos').style.display = 'block';

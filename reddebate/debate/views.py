@@ -149,8 +149,12 @@ def despliega(request, id_debate): #debate_id
 	posturas_c=Postura.objects.filter(id_debate_id=id_debate, postura=0)
 	numpost_f=posturas_f.count()
 	numpost_c=posturas_c.count()
-	print(numpost_f)
-	print(numpost_c)
+	if (int(numpost_c+numpost_f)==0):
+		porcentaje_c=0
+		porcentaje_f=0
+	else:
+		porcentaje_f = round(float(numpost_f) / float(numpost_c+numpost_f),3)*100
+		porcentaje_c = round(float(numpost_c) / float(numpost_c+numpost_f),3)*100
 
 	if debate.estado == 'abierto':
 		return render(request, 'debate.html', {'debate': debate,
@@ -160,7 +164,8 @@ def despliega(request, id_debate): #debate_id
 			'alias_actual': usuario_actual_alias.alias,
 			'postura_usr_deb': postura_debate_usuario,
 			'argF': argumentos_F, 'argC': argumentos_C, 't_arg': tiene_argumento,
-			'num_post_f': numpost_f, 'num_post_c': numpost_c })
+			'num_post_f': numpost_f, 'num_post_c': numpost_c,
+			'porc_f': porcentaje_f, 'porc_c': porcentaje_c })
 	else:
 		return render(request, 'debate_cerrado.html', {'debate': debate,
 			'usuario_creador': usuario_creador,
@@ -169,7 +174,8 @@ def despliega(request, id_debate): #debate_id
 			'alias_actual': usuario_actual_alias.alias,
 			'postura_usr_deb': postura_debate_usuario,
 			'argF': argumentos_F, 'argC': argumentos_C, 't_arg': tiene_argumento,
-			'num_post_f': numpost_f, 'num_post_c': numpost_c })
+			'num_post_f': numpost_f, 'num_post_c': numpost_c,
+			'porc_f': porcentaje_f, 'porc_c': porcentaje_c })
 
 
 ##@brief Funcion que guarda la postura del usuario en el debate, si esta ya existe la cambia, sino la crea.

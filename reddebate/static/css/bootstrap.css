@@ -3604,7 +3604,7 @@ fieldset[disabled] a.btn {
   height: 150px;
   color:#fff;
   background-color:#18BC9C;
-  border:2px solid #18BC9C;
+  border:0px solid #18BC9C;
   padding-left: 20px;
   padding-right: 20px;
 }
