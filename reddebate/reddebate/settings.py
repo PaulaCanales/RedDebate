@@ -118,16 +118,30 @@ AUTH_PASSWORD_VALIDATORS = [
 
 APPEND_SLASH=False
 
+#AUTHENTICATION_BACKENDS = (
+    # Facebook 'social.backends.facebook.FacebookOAuth2',
+    # Twitter 'social.backends.twitter.TwitterOAuth',
+    # Django 'django.contrib.auth.backends.ModelBackend', )
+    # Facebook Keys SOCIAL_AUTH_FACEBOOK_KEY = 'q23456uhgf'
+    #SOCIAL_AUTH_FACEBOOK_SECRET = 'qw4trgfdxc'
+    # Twitter Keys SOCIAL_AUTH_TWITTER_KEY = '123456yhgfdsvc'
+    #SOCIAL_AUTH_TWITTER_SECRET = '123456789okjhgfd'
+
 
 AUTHENTICATION_BACKENDS = (
  #'social.backends.facebook.FacebookAppOAuth2',
  'social.backends.facebook.FacebookOAuth2',
+ 'social.backends.twitter.TwitterOAuth',
  'django.contrib.auth.backends.ModelBackend',
  )
 
 #Facebook inicio de sesión con social-auth
 SOCIAL_AUTH_FACEBOOK_KEY = '671191633038377'
 SOCIAL_AUTH_FACEBOOK_SECRET = '1a94e2cf456e1c20b98a1ac8a2cb50f7'
+
+#Twitter inicio de sesión con social-auth
+SOCIAL_AUTH_TWITTER_KEY = 'XTnczMpQ7tq6uQcQEGFNUl3jR'
+SOCIAL_AUTH_TWITTER_SECRET = 'HsiSFdrB3IB7e1IPr1Hs4LTxRpB2Tbd61I97YTEDAUNjLovSjt'
 
 SOCIAL_AUTH_URL_NAMESPACE = 'social'
 

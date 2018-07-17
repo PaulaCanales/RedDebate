@@ -26,7 +26,6 @@
 <script type="text/javascript">
   function cambiar_postura(id_debate, postura){
     console.log("funciona .. hasta aqui!!!!!!!");
-    console.log("{% url 'despliega' 1 %}")
        $.ajax({
 
            url: "{% url 'despliega' 1 %}" ,
@@ -45,36 +44,17 @@
                      document.getElementById('bot_af').style.backgroundColor = 'WHITE';
                      document.getElementById('bot_af').style.color = '#18BD9B';
 
-                     if (document.getElementById('form_argumento_afavor').style.display=='none'){
-                       document.getElementById('bot_argumento_encontra').style.display = 'block';
-                       document.getElementById('bot_argumento_afavor').style.display = 'none';
-                     }
-                     else
-                     {
-                       document.getElementById('form_argumento_afavor').style.display = 'none';
-
-                       document.getElementById('bot_argumento_encontra').style.display = 'block';
-
-                     }
+										 document.getElementById('bot_argumento0').style.display = 'block';
+										 document.getElementById('bot_argumento1').style.display = 'none';
                    }
                    else{
                      document.getElementById('bot_af').style.backgroundColor = '#18BD9B';
                      document.getElementById('bot_af').style.color = 'WHITE';
                      document.getElementById('bot_ec').style.backgroundColor = 'WHITE';
                      document.getElementById('bot_ec').style.color = '#18BD9B';
-
-                     if (document.getElementById('form_argumento_encontra').style.display=='none'){
-                       document.getElementById('bot_argumento_afavor').style.display = 'block';
-                       document.getElementById('bot_argumento_encontra').style.display = 'none';
-                     }
-                     else
-                     {
-                       document.getElementById('form_argumento_encontra').style.display = 'none';
-
-                       document.getElementById('bot_argumento_afavor').style.display = 'block';
-
-                     }
-
+										 
+										 document.getElementById('bot_argumento1').style.display = 'block';
+										 document.getElementById('bot_argumento0').style.display = 'none';
                    }
 
                    if (document.getElementById('argumentos')){

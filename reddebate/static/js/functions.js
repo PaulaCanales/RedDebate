@@ -98,44 +98,9 @@ function cancelar_alias(){
   document.getElementById('boton_alias').style.display = 'block';
 }
 
-function formulario_editar_encontra(descripcion){
-  console.log("funciona .. hasta aqui editar_contra");
-  document.getElementById('textarea4').value = descripcion ;
-  document.getElementById('form_editar_encontra').style.display = 'block';
-  $("html, body").animate({ scrollTop: $(document).height() }, 1000);
-}
-
-function formulario_editar_afavor(descripcion ){
-  console.log("funciona .. hasta aqui editar");
-  document.getElementById('textarea1').value = descripcion ;
-  document.getElementById('form_editar_afavor').style.display = 'block';
-  $("html, body").animate({ scrollTop: $(document).height() }, 1000);
-}
-
-function rebatir_contra(argumento_id){
-  console.log("funciona .. hasta aqui rebatir");
-  document.getElementById('argumento_id_rebate_contra').value = argumento_id ;
-  document.getElementById('form_rebatir_contra').style.display = 'block';
-  $("html, body").animate({ scrollTop: $(document).height() }, 1000);
-}
-
-function rebatir_favor(argumento_id){
-  console.log("funciona .. hasta aqui rebatir");
-  document.getElementById('argumento_id_rebate_favor').value = argumento_id ;
-  document.getElementById('form_rebatir_afavor').style.display = 'block';
-  $("html, body").animate({ scrollTop: $(document).height() }, 1000);
-}
-
-function fomulario_argumento_afavor(){
-  console.log("funciona .. hasta aqui");
-  document.getElementById('form_argumento_afavor').style.display = 'block';
-  document.getElementById('bot_argumento_afavor').style.display = 'none';
-}
-
-function fomulario_argumento_encontra(){
-  console.log("funciona .. hasta aqui");
-  document.getElementById('form_argumento_encontra').style.display = 'block';
-  document.getElementById('bot_argumento_encontra').style.display = 'none';
+function fomulario_argumento(postura){
+  document.getElementById('bot_argumento'+postura).style.display = 'none';
+  document.getElementById('form_argumento'+postura).style.display = 'block';
 }
 
 function despliega_formulario(id){
@@ -206,13 +171,24 @@ $(document).ready(
     catch(err){}
   });
 */
-function mostrar_historial(modal){
+function mostrar_modal(modal, descripcion, respuesta){
   document.getElementById(modal).style.display="block";
+  if (descripcion != 0){
+    document.getElementById('textarea1').value = descripcion
+  }
+  if (respuesta != -1){
+    document.getElementById('argumento_id_rebate').value = respuesta ;
+  }
 }
 
-function cerrar_historial(modal){
+function cerrar_modal(modal){
   document.getElementById(modal).style.display="none";
 }
+
+function definir_postura(id, postura){
+
+}
+
 /*
 function valorar(argumento, id_div, val, opcionusr){
   console.log("llega al valorar");

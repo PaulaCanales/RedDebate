@@ -227,7 +227,7 @@ def publica_argumento(request):
 	try:
 		publicar = Argumento.objects.get(id_usuario_id=usuario.id,id_debate_id=id_debat)
 
-		editado = Edicion(descripcion_edicion= publicar.descripcion, id_argumento_id = publicar.id_argumento)
+		editado = Edicion(descripcion_edicion= publicar.descripcion, id_argumento_id = publicar.id_argumento, id_usuario_id = usuario.id)
 		editado.save()
 
 		publicar.descripcion = descrip

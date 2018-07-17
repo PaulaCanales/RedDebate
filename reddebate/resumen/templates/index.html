@@ -10,13 +10,13 @@
 		<div align="right" >
 			<button onclick="despliega_formulario('#nuevodebate')" type="submit" class="btn btn-index" > Nuevo Debate</button>
 		</div>
-	</div>			
+	</div>
 	<section class="success" id="nuevodebate" style="display:none">
         <div class="container">
         <form method="POST" class="post-form">{% csrf_token %}
 		<form action="/post_new" id="publicar_form" method="post">{% csrf_token %}
         	<div class="blank"><table>
-				<tr> 
+				<tr>
 					<td width=70% vertical-align: top>
 						<!-- <h4><strong>Publicar Debate</strong></h4> -->
 						<br>
@@ -53,7 +53,7 @@
 							            <label for="radio3">140 carácteres</label>
 							        </div>
 								</div>
-							<br>	
+							<br>
 							<h5>Publicar el debate como</h5>
 								<div class="funkyradio">
 									<div class="funkyradio-success">
@@ -66,7 +66,7 @@
 							        </div>
 								</div>
 							<br>
-							
+
 						</div>
 					</td>
 				</tr>
@@ -96,9 +96,9 @@
 				<tbody>
 			{% for deb in object_list %}
 			{% ifequal deb.estado 'abierto' %}
-				
-				<tr> 
-					
+
+				<tr>
+
 					<td width=300 > {{ deb.titulo }}</td>
 					<td width=600> <p> {{ deb.descripcion }}</p></td>
 
@@ -107,14 +107,14 @@
 
 					 <form id="id" method="post" action= "{% url 'index' %}" enctype="multipart/form-data" onsubmit="return confirm('¿Seguro que desea cerrar el debate?');">{% csrf_token %}
 	            	 <input type="hidden" value="{{ deb.id_debate }}" name="id_deb">
-	            	
-	            	<td > <button type="submit" class="btn btn-outline" > <span class="glyphicon glyphicon-remove-circle"></span> Cerrar</button> </td> 
+
+	            	<td > <button type="submit" class="btn btn-outline" > <span class="glyphicon glyphicon-remove-circle"></span> Cerrar</button> </td>
 
 	    		</form>
 	    			{%else%}
 	    				<td> </td>
 	    			{%endifequal%}
-					
+
 					<td> <a class="btn btn-tabla" href="{% url 'despliega' deb.id_debate %}" > <span class="glyphicon glyphicon-eye-open"></span> Ver </a></td>
 				</tr>
 			{%endifequal%}
@@ -138,15 +138,15 @@
 				<tbody>
 			{% for deb in object_list %}
 			{% ifequal deb.estado 'cerrado'%}
-				<tr> 
+				<tr>
 					<td width=300 ><p> {{ deb.titulo }} </p></td>
-					<td width=600> <p> {{ deb.descripcion }} </p></td> 
+					<td width=600> <p> {{ deb.descripcion }} </p></td>
 
 					<td > </td>
 
 					<td align="right"> <a  class="btn btn-tabla" href="{% url 'despliega' deb.id_debate %}" ><span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span> Ver </a></td>
 				</tr>
-			{%endifequal%}	
+			{%endifequal%}
 			{% endfor %}
 			</tbody>
 			</table></div>
@@ -155,8 +155,3 @@
 	<p class="bottom-three">.</p>
 	{% endblock content %}
 </html>
-
-
-
-
- 

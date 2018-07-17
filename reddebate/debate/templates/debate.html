@@ -27,374 +27,145 @@
 	</table></div>
 	{% ifequal debate.estado 'abierto'%}
 		{% ifequal postura_usr_deb 'No definido' %}
-			<button id = "bot_af" type="submit" class="btn btn-outline" onclick='javascript:cambiar_postura("{{ debate.id_debate }}", "1");'>A favor  <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></button>
-
-			<button id = "bot_ec" type="submit" class="btn btn-outline" onclick='javascript:cambiar_postura("{{ debate.id_debate }}", "0");' >En contra  <span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></button>
+			<div class="container" name="desc">
+						<div class="row" id="my-row">
+							<div class="col-sm-3 panel">
+								<button id = "bot_af" type="submit" class="btn btn-postura" onclick='javascript:cambiar_postura("{{ debate.id_debate }}", "1");'>A favor  <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></button>
+							</div>
+							<div class="col-sm-6 panel">
+								<div class="blank">
+										<table>
+										<tr>
+											<td width=120 ><p1>Descripción</p1></td>
+											<td>{{ debate.descripcion }}</td>
+										</tr>
+										<tr>
+											<td width=120 ><p1>Fecha inicio</p1></td>
+											<td>{{ debate.date }}</td>
+										</tr>
+										<tr>
+											<td width=120 ><p1>Estado</p1></td>
+											<td>{{ debate.estado }}</td>
+										</tr>
+										<tr>
+											<td width=120 ><p1>Tu Postura</p1></td>
+											<td><div id="tu_postura" >{{postura_usr_deb}} </div></td>
+										</tr>
+									</table>
+								</div>
+							</div>
+							<div class="col-sm-3 panel">
+								<button id = "bot_ec" type="submit" class="btn btn-postura" onclick='javascript:cambiar_postura("{{ debate.id_debate }}", "0");' >En contra  <span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></button>
+							</div>
+						</div>
+			</div>
 		{%else%}
 			{% ifequal postura_usr_deb 'A Favor' %}
-			<table><tr><td>
-			<form id="bot_af" method="post" action= "{% url 'despliega' debate.id_debate %}" enctype="multipart/form-data" onsubmit="return confirm('¿Seguro que desea cambiar de postura?, si escribió un argumento este se eliminará');">{% csrf_token %}
-                <input type="hidden" value="{{ debate.id_debate }}" name="id">
-                <input type="hidden" value="1" name="postura_debate">
-
-                <button type="submit" class="btn btn-tabla" ><span class="glyphicon glyphicon-thumbs-up"></span> A Favor </button>
-            </form>
-			</td>
-			<td></td>
-			<td>
-			<form id="bot_ec" method="post" action= "{% url 'despliega' debate.id_debate %}" enctype="multipart/form-data" onsubmit="return confirm('¿Seguro que desea cambiar de postura?, si escribió un argumento este se eliminará');">{% csrf_token %}
-                <input type="hidden" value="{{ debate.id_debate }}" name="id">
-                <input type="hidden" value="0" name="postura_debate">
-
-                <button type="submit" class="btn btn-outline" ><span class="glyphicon glyphicon-thumbs-down"></span> En Contra </button>
-            </form>
-
-			</td>
-		</tr>
-	</table>
-
-
-
-
+				<div class="container" name="desc">
+						<div class="row" id="my-row">
+							<div class="col-sm-3 panel">
+								<form id="bot_af" method="post" action= "{% url 'despliega' debate.id_debate %}" enctype="multipart/form-data" onsubmit="return confirm('¿Seguro que desea cambiar de postura?, si escribió un argumento este se eliminará');">{% csrf_token %}
+					                <input type="hidden" value="{{ debate.id_debate }}" name="id">
+					                <input type="hidden" value="1" name="postura_debate">
+					                <button type="submit" class="btn btn-posturactual" disabled ><span class="glyphicon glyphicon-thumbs-up"></span> A Favor </button>
+					      </form>
+							</div>
+							<div class="col-sm-6 panel">
+								<div class="blank">
+										<table>
+										<tr>
+											<td width=120 ><p1>Descripción</p1></td>
+											<td>{{ debate.descripcion }}</td>
+										</tr>
+										<tr>
+											<td width=120 ><p1>Fecha inicio</p1></td>
+											<td>{{ debate.date }}</td>
+										</tr>
+										<tr>
+											<td width=120 ><p1>Estado</p1></td>
+											<td>{{ debate.estado }}</td>
+										</tr>
+										<tr>
+											<td width=120 ><p1>Tu Postura</p1></td>
+											<td><div id="tu_postura" >{{postura_usr_deb}} </div></td>
+										</tr>
+									</table>
+								</div>
+							</div>
+							<div class="col-sm-3 panel">
+								<form id="bot_ec" method="post" action= "{% url 'despliega' debate.id_debate %}" enctype="multipart/form-data" onsubmit="return confirm('¿Seguro que desea cambiar de postura?, si escribió un argumento este se eliminará');">{% csrf_token %}
+					                <input type="hidden" value="{{ debate.id_debate }}" name="id">
+					                <input type="hidden" value="0" name="postura_debate">
+					                <button type="submit" class="btn btn-postura" ><span class="glyphicon glyphicon-thumbs-down"></span> En Contra </button>
+					     </form>
+							</div>
+						</div>
+			</div>
 			{% else %}
-			<table><tr><td>
-				<form id="bot_af" method="post" action= "{% url 'despliega' debate.id_debate %}" enctype="multipart/form-data" onsubmit="return confirm('¿Seguro que desea cambiar de postura?, si escribió un argumento este se eliminará');">{% csrf_token %}
-                <input type="hidden" value="{{ debate.id_debate }}" name="id">
-                <input type="hidden" value="1" name="postura_debate">
-
-                <button type="submit" class="btn btn-outline" ><span class="glyphicon glyphicon-thumbs-up"></span> A Favor </button>
-            </form></td>
-            <td></td>
-<td>
-            <form id="bot_ec" method="post" action= "{% url 'despliega' debate.id_debate %}" enctype="multipart/form-data" onsubmit="return confirm('¿Seguro que desea cambiar de postura?, si escribió un argumento este se eliminará');">{% csrf_token %}
-                <input type="hidden" value="{{ debate.id_debate }}" name="id">
-                <input type="hidden" value="0" name="postura_debate">
-
-                <button type="submit" class="btn btn-tabla" ><span class="glyphicon glyphicon-thumbs-down"></span> En Contra </button></form>
-
-</td></tr></table>
+				<div class="container" name="desc">
+						<div class="row" id="my-row">
+							<div class="col-sm-3 panel">
+								<form id="bot_af" method="post" action= "{% url 'despliega' debate.id_debate %}" enctype="multipart/form-data" onsubmit="return confirm('¿Seguro que desea cambiar de postura?, si escribió un argumento este se eliminará');">{% csrf_token %}
+				                <input type="hidden" value="{{ debate.id_debate }}" name="id">
+				                <input type="hidden" value="1" name="postura_debate">
+				                <button type="submit" class="btn btn-postura" ><span class="glyphicon glyphicon-thumbs-up"></span> A Favor </button>
+				        </form>
+							</div>
+							<div class="col-sm-6 panel">
+								<div class="blank">
+										<table>
+										<tr>
+											<td width=120 ><p1>Descripción</p1></td>
+											<td>{{ debate.descripcion }}</td>
+										</tr>
+										<tr>
+											<td width=120 ><p1>Fecha inicio</p1></td>
+											<td>{{ debate.date }}</td>
+										</tr>
+										<tr>
+											<td width=120 ><p1>Estado</p1></td>
+											<td>{{ debate.estado }}</td>
+										</tr>
+										<tr>
+											<td width=120 ><p1>Tu Postura</p1></td>
+											<td><div id="tu_postura" >{{postura_usr_deb}} </div></td>
+										</tr>
+									</table>
+								</div>
+							</div>
+							<div class="col-sm-3 panel">
+								<form id="bot_ec" method="post" action= "{% url 'despliega' debate.id_debate %}" enctype="multipart/form-data" onsubmit="return confirm('¿Seguro que desea cambiar de postura?, si escribió un argumento este se eliminará');">{% csrf_token %}
+				            <input type="hidden" value="{{ debate.id_debate }}" name="id">
+				            <input type="hidden" value="0" name="postura_debate">
+				            <button type="submit" class="btn btn-posturactual" disabled ><span class="glyphicon glyphicon-thumbs-down"></span> En Contra </button>
+								</form>
+							</div>
+						</div>
+			 	</div>
 			{%endifequal%}
 		{%endifequal%}
 	{%endifequal%}
-	<div class="blank"><table>
-		<tr>
-			<td width=120 ><p1>Descripción</p1></td>
-			<td>{{ debate.descripcion }}</td>
-		</tr>
-		<tr>
-			<td width=120 ><p1>Fecha inicio</p1></td>
-			<td>{{ debate.date }}</td>
-		</tr>
-		<tr>
-			<td width=120 ><p1>Estado</p1></td>
-			<td>{{ debate.estado }}</td>
-		</tr>
-		<tr>
-			<td width=120 ><p1>Tu Postura</p1></td>
-			<td><div id="tu_postura" >{{postura_usr_deb}} </div></td>
-		</tr>
-	</table></div>
-	{% ifequal usuario_creador.id usuario %}
-		<div id="argumentos" style="display: block;" >
-	{% else %}
-		{% ifequal postura_usr_deb 'No definido' %}
-			<div id="argumentos" style="display: none;" >
-		{%endifequal%}
-	{% endifequal %}
-	<h2>Argumentos</h2>
-<div class="container" name="arg_afavor">
-	<div class="row">
-	    <div class="col-md-6">
-	          <div class="datagrid"><table>
-	            <tr>
-	              <thead>
-	              	<th>
-	              		#
-	              	</th>
-	              	<th>
-	              		A Favor
-	              	</th>
-	              	<th>
-	              	</th>
-	              	<th>
-						<div style="float:right"><span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>{{num_post_f}}</div>
-	              	</th>
-	              </thead>
-	            </tr>
-	            {% for arg in argF %}
-					<tr>
-						<td id="val{{arg.3}}" class="valoracion"> <!-- valoracion -->
-							{{arg.2}}
-						</td>
-						<td class="argumento"> <!-- argumento -->
-							<p><a href="{% url 'perfiles' arg.3 %}"><p1>{{arg.1}}:</p1></a> {{arg.0}}</p>
-							{% if arg.8 %}
-		                  	<button id="historialF" onclick="mostrar_historial('myModal1')" class="link btn-link">Editado</button>
-		                  	{% endif %}
-		                  	<!-- The Modal -->
-							<div id="myModal1" class="modal">
-							  <!-- Modal content -->
-							  <div class="modal-content">
-							    <span class="close" onclick="cerrar_historial('myModal1')">&times;</span>
-							    <h3>Historial <span class="glyphicon glyphicon-time"></span></h3>
-								{% for edicion in arg.8 %}
-									<p><p1> {{edicion.date_edicion}}:</p1> {{edicion.descripcion_edicion}}</p>
-								{% endfor %}
-							  </div>
-							</div>
-						</td>
-			            <td class="argumento"> <!-- boton editar/rebatir-->
-			                {% ifequal arg.5 usuario %} <!-- editar -->
-			                	<div style="float:right"> <button id="bot_editar_afavor" type="submit" class="btn btn-perfil" onclick='  javascript:formulario_editar_afavor("{{arg.0}}" );'> <span class="glyphicon glyphicon-edit" aria-hidden="true" ></span> </button> </div>
-			                {% else %}  <!-- rebatir -->
-			                	{% ifequal arg.7 'no_comentario' %}
-			                		<div style="float:right"> <button id="bot_rebatir_afavor" type="submit" class="btn btn-perfil" onclick='javascript:rebatir_favor("{{arg.3}}");' ><span class="glyphicon glyphicon-comment"  ></span></button></div>
-			                  	{%endifequal%}
-			                {%endifequal%}
-		              	</td>
+		<!-- argumentos -->
+		{% ifequal usuario_creador.id usuario %}
+			<div id="argumentos" style="display: block;" >
+		{% else %}
+			{% ifequal postura_usr_deb 'No definido' %}
+				<div id="argumentos" style="display: none;" >
+			{%endifequal%}
+		{% endifequal %}
+		<h2>Argumentos</h2>
+		<div class="container" name="arg_afavor">
+			<div class="row">
+		    <div class="col-md-6">
+					{% include 'participaciones.html' with frase="A Favor" comentario=argF postura=1 %}
+				</div>
+				<div class="col-md-6">
+					{% include 'participaciones.html' with frase="En Contra" comentario=argC postura=0 %}
+				</div>
+			</div>
+	</div>
 
-
-						<td class="argumento"> <!-- boton valorar -->
-							{% ifequal arg.4 'no' %} <!-- valorar habilitado -->
-								<div style="display:none" id= "{{arg.3}}"> <button type="submit" class="btn btn-perfil" onclick='javascript:valorar("{{arg.3}}", "num_valoracion1{{arg.3}}","val{{arg.3}}","quitar");' > <span  class="glyphicon glyphicon-thumbs-down" aria-hidden="true" ></span></button></div>
-
-								<div id="num_valoracion1{{arg.3}}"> <button type="submit" class="btn btn-perfil" onclick='javascript:valorar("{{arg.3}}", "num_valoracion1{{arg.3}}","val{{arg.3}}","sumar");' >   <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true" ></span></button> </div>
-
-							{% else %}<!-- valorar deshabilitado -->
-								<div id= "{{arg.3}}"> <button type="submit" class="btn btn-perfil" onclick='javascript:valorar("{{arg.3}}", "num_valoracion1{{arg.3}}","val{{arg.3}}","quitar");' > <span  class="glyphicon glyphicon-thumbs-down" aria-hidden="true" ></span></button></div>
-
-								<div style="display:none" id="num_valoracion1{{arg.3}}"> <button type="submit" class="btn btn-perfil" onclick='javascript:valorar("{{arg.3}}", "num_valoracion1{{arg.3}}","val{{arg.3}}","sumar");' >   <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true" ></span></button> </div>
-							{%endifequal%}
-						</td>
-	            	</tr>
-	            	{% if arg.6 %}
-	            	{% for respuesta in arg.6 %}
-	            	<tr>
-	            		<td class="rebatir"></td>
-	            		<td class="rebatir">
-				        <p>{{respuesta.1}}: {{respuesta.0}}</p>
-				        </td>
-				        <td class="rebatir"></td><td class="rebatir"></td>
-		            </tr>
-		            {% endfor %}
-	              	{% endif %}
-	              {% empty %}
-	                  <tr><td class="vacio"> </td></tr>
-	              {% endfor %}
-	          </table> </div> <!-- datagrid -->
-	          {% ifequal postura_usr_deb 'A Favor'  %}
-	            {% ifequal t_arg 'no' %}
-	              <button id="bot_argumento_afavor" type="submit" class="btn btn-perfil" onclick=' javascript:fomulario_argumento_afavor();'  style="display: block;" >Da tu Argumento</button>
-	            {%endifequal%}
-	          {% else %}
-	            {% ifequal t_arg 'no' %}
-	              <button id="bot_argumento_afavor" type="submit" class="btn btn-perfil" onclick=' javascript:fomulario_argumento_afavor();'  style="display: none;" >Da tu Argumento</button>
-	            {%endifequal%}
-	          {%endifequal%}
-	          <div id="form_rebatir_afavor" style="display: none;" >
-	            <form method="POST" class="post-form">{% csrf_token %}
-	              <form action="/post_arg" id="publicar_form" method="post">{% csrf_token %}
-	                  <div class="form-group">
-	                    <textarea id="textarea6" rows="4" maxlength="{{debate.largo}}" name="descripcion_rebate" value="" type="textarea" class="form-control" placeholder="descripcion"> </textarea>
-	                    <div id="textarea_feedback6"></div>
-	                    <input id="argumento_id_rebate_favor" type="hidden" value="" name="id_arg_rebate">
-	                    <input type="hidden" value="{{ debate.id_debate }}" name="id_deb">
-	                    <div class="checkbox">
-	                      <label>
-	                        <input type="checkbox" value="alias" name="alias" > Publicar con Alias:  {{alias_actual}}
-	                      </label>
-	                    </div>
-	                  </div>
-	                <button type="submit" class="btn btn-perfil">Comentar</button>
-	              </form>
-	            </form>
-	          </div>
-	          <div id="form_editar_afavor" style="display: none;" >
-	            <form method="POST" class="post-form">{% csrf_token %}
-	              <form action="/post_arg" id="publicar_form" method="post">{% csrf_token %}
-	                  <div class="form-group">
-	                    <textarea id="textarea1" rows="4" maxlength="{{debate.largo}}" name="descripcion" value="" type="textarea" class="form-control" placeholder="descripcion"> </textarea>
-	                     <div id="textarea_feedback1"></div>
-	                      <input type="hidden" value="{{ debate.id_debate }}" name="id_deb">
-	                    <input type="hidden"  value="1" name="postura">
-	                    <div class="checkbox">
-	                      <label>
-	                        <input type="checkbox" value="alias" name="alias" > Publicar con Alias: {{alias_actual}}
-	                      </label>
-	                  </div>
-	                  </div>
-	                  <button type="submit" class="btn btn-perfil">Editar</button>
-	              </form>
-	            </form>
-	          </div>
-	          <div id="form_argumento_afavor" style="display: none;" >
-	            <form method="POST" class="post-form">{% csrf_token %}
-	              <form action="/post_arg" id="publicar_form" method="post">{% csrf_token %}
-	                  <div class="form-group">
-	                    <textarea id="textarea2" rows="4" maxlength="{{debate.largo}}" name="descripcion" value="" type="textarea" class="form-control" placeholder="descripcion"> </textarea>
-	                    <div id="textarea_feedback2"></div>
-	                    <input type="hidden" value="{{ debate.id_debate }}" name="id_deb">
-	                    <input type="hidden"  value="1" name="postura">
-	                    <div class="checkbox">
-	                      <label>
-	                        <input type="checkbox" value="alias" name="alias" > Publicar con Alias:  {{alias_actual}}
-	                      </label>
-	                    </div>
-	                  </div>
-	                <button type="submit" class="btn btn-perfil">Publicar</button>
-	              </form>
-	            </form>
-	          </div>
-	    </div> <!-- col1 -->
-	</div> <!-- row -->
-</div> <!-- container -->
-<div class="container" name="arg_encontra">
-	<div class="row">
-	    <div class="col-md-6">
-	      <div class="datagrid"><table>
-	        <tr>
-	          <thead>
-	          	<th>
-	          		#
-	          	</th>
-	          	<th>
-	          		En Contra
-	          	</th>
-	          	<th>
-	          	</th>
-	          	<th>
-	          		<div style="float:right"><span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span> {{num_post_c}}</div>
-	          	</th>
-	          </thead>
-	        </tr>
-	          {% for arg in argC %}
-	            <tr>
-	            	<td id="valc{{arg.3}}" class="valoracion"> <!-- valoracion -->
-						{{arg.2}}
-					</td>
-	              	<td class="argumento"> <!-- argumento -->
-	              		<p> <a href="{% url 'perfiles' arg.3 %}"><p1>{{arg.1}}: </p1></a> {{arg.0}} </p>
-		              	{% if arg.8 %}
-	             		<button id="historialF" onclick="mostrar_historial('myModal2')" class="link btn-link">Editado</button>
-	             		{% endif %}
-		                <!-- The Modal -->
-						<div id="myModal2" class="modal">
-						  <!-- Modal content -->
-						  <div class="modal-content">
-						    <span class="close" onclick="cerrar_historial('myModal2')">&times;</span>
-						    <h3>Historial <span class="glyphicon glyphicon-time"></span></h3>
-							{% for edicion in arg.8 %}
-								<p><p1>{{edicion.date_edicion}}:</p1> {{edicion.descripcion_edicion}}</p>
-							{% endfor %}
-						  </div>
-						</div>
-					</td>
-		            <td class="argumento"> <!-- boton editar/rebatir-->
-		            	{% ifequal arg.5 usuario %} <!-- editar -->
-							<div style="float:right"> <button id="bot_editar_afavor" type="submit" class="btn btn-perfil" onclick='  javascript:formulario_editar_encontra("{{arg.0}}" );'> <span class="glyphicon glyphicon-edit" aria-hidden="true" ></span>  </button> </div>
-
-						{% else %}
-							{% ifequal arg.7 'no_comentario' %}
-								<div style="float:right"> <!-- rebatir -->
-								<button id="bot_rebatir_contra" type="submit" class="btn btn-perfil" onclick='javascript:rebatir_contra("{{arg.3}}");' ><span class="glyphicon glyphicon-comment"  ></span></button>
-								</div>
-							{%endifequal%}
-						{%endifequal%}
-		          	</td>
-		            <td class="argumento"> <!-- boton valorar -->
-						{% ifequal arg.4 'no' %} <!-- valorar habilitado -->
-							<div style="display:none;" id= "{{arg.3}}" class="btn btn-perfil disabled" ><span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span></div>
-
-							<div id = "num_valoracion2{{arg.3}}"> <button type="submit" class="btn btn-perfil" onclick='javascript:valorar("{{arg.3}}", "num_valoracion2{{arg.3}}", "valc{{arg.3}}");' ><span class="glyphicon glyphicon-thumbs-up" aria-hidden="true" ></span></button> </div>
-						{% else %} <!-- valorar deshabilitado -->
-							<div style="float:right" class="btn btn-perfil disabled" >   <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true" ></span></div>
-						{%endifequal%}
-		            </td>
-	        	</tr>
-	            {% if arg.6 %}
-	            {% for respuesta in arg.6 %}
-	            <tr>
-	            	<td class="rebatir"></td>
-                 	<td class="rebatir">
-                		<p>{{respuesta.1}}: {{respuesta.0}}</p>
-                 	</td>
-				    <td class="rebatir"></td><td class="rebatir"></td>
-				</tr>
-	            {% endfor %}
-	            {% endif %}
-	          {% empty %}
-	              <tr><td class="vacio"> </td></tr>
-	          {% endfor %}
-	      </table></div> <!-- datagrid -->
-	      {% ifequal postura_usr_deb 'En Contra' %}
-	            {% ifequal t_arg 'no' %}
-	              <button id="bot_argumento_encontra" type="submit" class="btn btn-perfil" onclick='javascript:fomulario_argumento_encontra();' style="display: block;" >Da tu Argumento</button>
-	            {%endifequal%}
-	          {% else %}
-	            {% ifequal t_arg 'no' %}
-	              <button id="bot_argumento_encontra" type="submit" class="btn btn-perfil" onclick='javascript:fomulario_argumento_encontra();' style="display: none;" >Da tu Argumento</button>
-	            {%endifequal%}
-	          {%endifequal%}
-	          <div id="form_rebatir_contra" style="display: none;" >
-	            <form method="POST" class="post-form">{% csrf_token %}
-	              <form action="/post_arg" id="publicar_form" method="post">{% csrf_token %}
-	                  <div class="form-group">
-	                    <textarea id="textarea3" rows="4" maxlength="{{debate.largo}}" name="descripcion_rebate" value="" type="textarea" class="form-control" placeholder="descripcion"> </textarea>
-	                    <div id="textarea_feedback3"></div>
-	                    <input id="argumento_id_rebate_contra" type="hidden" value="" name="id_arg_rebate">
-	                    <input type="hidden" value="{{ debate.id_debate }}" name="id_deb">
-	                    <div class="checkbox">
-	                      <label>
-	                        <input type="checkbox" value="alias" name="alias" > Publicar con Alias:  {{alias_actual}}
-	                      </label>
-	                    </div>
-	                  </div>
-	                <button type="submit" class="btn btn-perfil">Comentar</button>
-	              </form>
-	            </form>
-	          </div>
-	          <div id="form_editar_encontra" style="display: none;" >
-	            <form method="POST" class="post-form">{% csrf_token %}
-	              <form action="/post_arg" id="publicar_form" method="post">{% csrf_token %}
-	                  <div class="form-group">
-	                    <textarea id="textarea4" rows="4" maxlength="{{debate.largo}}" name="descripcion" value="" type="textarea" class="form-control" placeholder="descripcion"> </textarea>
-	                     <div id="textarea_feedback4"></div>
-	                      <input type="hidden" value="{{ debate.id_debate }}" name="id_deb">
-	                    <input type="hidden"  value="0" name="postura">
-	                    <div class="checkbox">
-	                      <label>
-	                        <input type="checkbox" value="alias" name="alias" > Publicar con Alias:  {{alias_actual}}
-	                      </label>
-	                  </div>
-	                  </div>
-	                  <button type="submit" class="btn btn-perfil">Editar</button>
-
-	              </form>
-	            </form>
-	          </div>
-
-	          <div id="form_argumento_encontra" style="display: none;" >
-	            <form method="POST" class="post-form">{% csrf_token %}
-	              <form action="/post_arg" id="publicar_form" method="post">{% csrf_token %}
-	                <div class="form-group">
-	                     <textarea id="textarea5" rows="4" maxlength="{{debate.largo}}" name="descripcion" value="" type="textarea" class="form-control" placeholder="descripcion"> </textarea>
-	                     <div id="textarea_feedback5"></div>
-	                     <input type="hidden" value="{{ debate.id_debate }}" name="id_deb">
-	                     <input type="hidden" value="0" name="postura">
-	                  <div class="checkbox">
-	                      <label>
-	                        <input type="checkbox" value="alias" name="alias" > Publicar con Alias:  {{alias_actual}}
-	                      </label>
-	                  </div>            </div>
-	                  <button type="submit" class="btn btn-perfil">Publicar</button>
-	              </form>
-	            </form>
-	          </div>
-	    </div> <!-- col2 -->
-	</div> <!-- row -->
-</div> <!-- container -->
-<p class="bottom-three">.</p>
-
+		<p class="bottom-three">.</p>
 
 {% ifequal postura_usr_deb 'No definido' %}
 </div>

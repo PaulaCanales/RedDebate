@@ -64,6 +64,7 @@ class Edicion(models.Model):
     id_edicion = models.AutoField(primary_key=True)
     descripcion_edicion = models.CharField(max_length=300)
     date_edicion = models.DateTimeField(default=datetime.now)
+    id_usuario = models.ForeignKey(User)
     id_argumento = models.ForeignKey(Argumento)
 
 
