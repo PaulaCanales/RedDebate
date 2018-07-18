@@ -12,7 +12,7 @@
     <form method="POST" class="post-form">{% csrf_token %}
     <form action="/post_new" id="publicar_form" method="post">{% csrf_token %}
         <div class="blank"><table>
-            <tr> 
+            <tr>
                 <td width=70% vertical-align: top>
                     <!-- <h4><strong>Publicar Debate</strong></h4> -->
                     <br>
@@ -51,7 +51,7 @@
                                     <label for="radio3e">140 carácteres</label>
                                 </div>
                             </div>
-                        <br>    
+                        <br>
                         <h5>Publicar el debate como</h5>
                             <div class="funkyradio">
                                 <div class="funkyradio-success">
@@ -64,7 +64,7 @@
                                 </div>
                             </div>
                         <br>
-                        
+
                     </div>
                 </td>
             </tr>
@@ -79,34 +79,37 @@
         <h3>{{ usuario.first_name }} {{ usuario.last_name }} </h3>
         <div class="container-perfil">
         <br>
-        
+
         <p1>Usuario: </p1>{{ usuario.username}}
         <br>
         <br>
         <p1>Email: </p1>{{ usuario.email }}
         <br>
         <br>
-        <p1>Fecha de ingreso : </p1>{{ usuario.date_joined }} 
+        <p1>Reputación: </p1>{{alias.reputacion}}
         <br>
         <br>
-        <div id="alias"> 
-            <p1>Alias : </p1>{{alias.alias}} 
+        <p1>Fecha de ingreso : </p1>{{ usuario.date_joined }}
+        <br>
+        <br>
+        <div id="alias">
+            <p1>Alias : </p1>{{alias.alias}}
             <button id = 'boton_alias' class="btn btn-perfil" onclick='javascript:cambiar_alias();'> Cambiar Alias <span class="glyphicon glyphicon-user" aria-hidden="true" ></span> </button>
         </div>
 
          </div>
         <br>
-        <div id='formulario_alias' style="display: none;" > 
+        <div id='formulario_alias' style="display: none;" >
 
                 <form method="POST" class="post-form">{% csrf_token %}
                     <form action="{% url 'perfil' %}" id="publicar_alias" method="post">{% csrf_token %}
                         <div class="form-group">
-                             <input name="nuevo_alias" value="" type="text" class="form-control" placeholder="{{alias.alias}}"> 
+                             <input name="nuevo_alias" value="" type="text" class="form-control" placeholder="{{alias.alias}}">
 
                         </div>
 
 
-                        <button type="submit" class="btn btn-perfil">Actualizar Alias</button> 
+                        <button type="submit" class="btn btn-perfil">Actualizar Alias</button>
                         <label type="button" onclick='cancelar_alias();' class="btn btn-perfil"> Cancelar </label>
 
                     </form>
@@ -114,14 +117,14 @@
         </div>
     </div>
 
-    <div class="col-xs-8">    
+    <div class="col-xs-8">
         <h3> Tus Debates Abiertos </h3>
         <div class="datagrid"><table>
             <tr>
                 <thead><tr><th>Título</th><th>Descripción</th><th> </th><th> </th></tr></thead>
             </tr>
             <tbody>
-        		{% for deb in debates_abiertos %} 
+        		{% for deb in debates_abiertos %}
                     <tr>
         				<td> {{ deb.0.titulo }} </td>
         				<td><p> {{ deb.0.descripcion }} </p></td>
@@ -133,41 +136,41 @@
                                 </button>
                                 <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
                                 <li>
-                                    <button type="submit" onclick=location.href="{% url 'despliega' deb.0.id_debate %}" class="btn btn-link" > Ver  <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span></button>   
-                                    
+                                    <button type="submit" onclick=location.href="{% url 'despliega' deb.0.id_debate %}" class="btn btn-link" > Ver  <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span></button>
+
                                 </li>
 
                                 {% ifequal deb.1 'no' %}
                                  <li>
-                                        
+
                                     <button > no puede editar <span class="glyphicon glyphicon-edit" aria-hidden="true"></span></button>
 
                                 </li>
                                 {%else%}
                                  <li>
-                                        
+
                                     <button type="submit" onclick="formulario_editar_debate('#editardebate','{{deb.0.id_debate}}','{{deb.0.titulo}}','{{deb.0.descripcion}}','{{deb.0.date_fin.year}}','{{deb.0.date_fin.month}}','{{deb.0.date_fin.day}}','{{deb.0.alias_c}}','{{deb.0.largo}}')" class="btn btn-link" > Editar <span class="glyphicon glyphicon-edit" aria-hidden="true"></span></button>
 
                                 </li>
                                 {%endifequal%}
-                                
+
                                 <li>
                                    <form id="id" method="post" action= "{% url 'perfil' %}" enctype="multipart/form-data" onsubmit="return confirm('¿Seguro que desea cerrar el debate?');">{% csrf_token %}
                                         <input type="hidden" value="{{ deb.0.id_debate }}" name="id_deb">
-                                        
+
                                         <button type="submit" class="btn btn-link" ><span class="glyphicon glyphicon-remove-circle"></span> Cerrar </button>
                                     </form>
 
                                 </li>
                                 <li role="separator" class="divider"></li>
-                                    
+
                                     <li>
 
                                         <form id="id" method="post" action= "{% url 'perfil' %}" enctype="multipart/form-data" onsubmit="return confirm('¿Seguro que desea eliminar el debate?');">{% csrf_token %}
-                                       
-                                        <input type="hidden" value="{{ deb.0.id_debate }}" name="id_deb_eliminar"> 
-                                
-                                        <button type="submit" class="btn btn-link" > Eliminar <span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button> 
+
+                                        <input type="hidden" value="{{ deb.0.id_debate }}" name="id_deb_eliminar">
+
+                                        <button type="submit" class="btn btn-link" > Eliminar <span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
 
                                         </form>
                                     </li>
@@ -198,36 +201,36 @@
                                         <span class="caret"></span>
                                     </button>
                                     <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
-                                    <li>	
-                                        <button type="submit" onclick=location.href="{% url 'despliega' deb.id_debate %}" class="btn btn-link" > Ver  <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span></button>  
+                                    <li>
+                                        <button type="submit" onclick=location.href="{% url 'despliega' deb.id_debate %}" class="btn btn-link" > Ver  <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span></button>
                 	                </li>
 
                                     <li>
                                     <form id="id" method="post" action= "{% url 'perfil' %}" enctype="multipart/form-data" onsubmit="return confirm('¿Seguro que desea republicar el debate?');">{% csrf_token %}
-                            	   
+
                                     <input type="hidden" value="{{ deb.id_debate }}" name="id_deb_republicar">
-                            	    
+
                                     <button type="submit" class="btn btn-link" > Republicar <span class="glyphicon glyphicon-off" aria-hidden="true"></span></button>
                     		        </form>
 
                                     </li>
-                    
+
                                     <li role="separator" class="divider"></li>
-                                    
+
                                     <li>
 
                                         <form id="id" method="post" action= "{% url 'perfil' %}" enctype="multipart/form-data" onsubmit="return confirm('¿Seguro que desea eliminar el debate?');">{% csrf_token %}
-                            	       
-                                        <input type="hidden" value="{{ deb.id_debate }}" name="id_deb_eliminar"> 
-                            	
-                                        <button type="submit" class="btn btn-link" > Eliminar <span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button> 
+
+                                        <input type="hidden" value="{{ deb.id_debate }}" name="id_deb_eliminar">
+
+                                        <button type="submit" class="btn btn-link" > Eliminar <span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
 
                     		            </form>
                                     </li>
                                     </ul>
                                     </div>
                                 </td>
-                            </tr> 	
+                            </tr>
                 		{% endfor %}
                     </tbody>
                 </table>
@@ -240,5 +243,3 @@
 {% endblock content %}
 
 </html>
-
-
