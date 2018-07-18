@@ -11,9 +11,15 @@
     {% for arg in comentario %}
       <tr>
         <td style="border-bottom: #fff;">
-          <button type="submit" class="btn btn-valorar" onclick="javascript:valorar('{{arg.3}}','num_valoracion1{{arg.3}}','val{{arg.3}}','sumar')">
-          <span class="glyphicon glyphicon-triangle-top" aria-hidden="true"></span>
-          </button>
+          {% ifequal arg.4 'no' %}
+            <button type="submit" class="btn btn-valorar" onclick='javascript:valorar("{{arg.3}}","sumar")'>
+            <span class="glyphicon glyphicon-triangle-top" aria-hidden="true"></span>
+            </button>
+          {% else %}
+            <button type="submit" class="btn btn-valorar" disabled>
+            <span class="glyphicon glyphicon-triangle-top" aria-hidden="true"></span>
+            </button>
+          {% endifequal %}
         </td>
         <td rowspan="3"><!-- comentario-->
           <p><a href="{% url 'perfiles' arg.3 %}"><p1>{{arg.1}}:</p1></a> {{arg.0}}</p>
@@ -97,7 +103,7 @@
       </tr>
       <tr>
         <td>
-          <button type="submit" class="btn btn-valorar" onclick="javascript:valorar('{{arg.3}}','num_valoracion1{{arg.3}}','val{{arg.3}}','quitar')">
+          <button type="submit" class="btn btn-valorar" onclick='javascript:valorar("{{arg.3}}","quitar")'>
           <span class="glyphicon glyphicon-triangle-bottom" aria-hidden="true"></span>
           </button>
         </td>

@@ -1,91 +1,3 @@
-/*
-function cambiar_postura(id_debate, postura){
-  console.log("funciona .. hasta aqui");
-  console.log("debate/"+id_debate)
-     $.ajax({
-
-         url: "{% url 'despliega' 1 %}" ,
-         type: 'POST',
-         data:{  id : id_debate,
-                 postura_debate_ajax: postura,
-                 csrfmiddlewaretoken: '{{ csrf_token }}'
-               } ,
-               success: function(data) {
-                 document.getElementById('tu_postura').innerHTML = data;
-                 console.log(data);
-                  if (data == "En Contra"){
-
-                   document.getElementById('bot_ec').style.backgroundColor = '#18BD9B';
-                   document.getElementById('bot_ec').style.color = 'WHITE';
-                   document.getElementById('bot_af').style.backgroundColor = 'WHITE';
-                   document.getElementById('bot_af').style.color = '#18BD9B';
-
-                   if (document.getElementById('form_argumento_afavor').style.display=='none'){
-                     document.getElementById('bot_argumento_encontra').style.display = 'block';
-                     document.getElementById('bot_argumento_afavor').style.display = 'none';
-                   }
-                   else
-                   {
-                     document.getElementById('form_argumento_afavor').style.display = 'none';
-
-                     document.getElementById('bot_argumento_encontra').style.display = 'block';
-
-                   }
-                 }
-                 else{
-                   document.getElementById('bot_af').style.backgroundColor = '#18BD9B';
-                   document.getElementById('bot_af').style.color = 'WHITE';
-                   document.getElementById('bot_ec').style.backgroundColor = 'WHITE';
-                   document.getElementById('bot_ec').style.color = '#18BD9B';
-
-                   if (document.getElementById('form_argumento_encontra').style.display=='none'){
-                     document.getElementById('bot_argumento_afavor').style.display = 'block';
-                     document.getElementById('bot_argumento_encontra').style.display = 'none';
-                   }
-                   else
-                   {
-                     document.getElementById('form_argumento_encontra').style.display = 'none';
-
-                     document.getElementById('bot_argumento_afavor').style.display = 'block';
-
-                   }
-
-                 }
-
-                 if (document.getElementById('argumentos')){
-                   // document.getElementById('argumentos').style.display = 'block';
-                   $("#argumentos").slideDown("slow");
-                   if (num_post_c){
-                         if (data == "En Contra"){
-                           document.getElementById('num_postura_contra').innerHTML = num_post_c ;
-                         }
-                         else{
-                           document.getElementById('num_postura_favor').innerHTML = num_post_f ;
-
-                         }
-                   }
-                 }
-                 else{
-                   if (num_post_c){
-                         if (data == "En Contra"){
-                           document.getElementById('num_postura_contra').innerHTML = '<span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span> ' + num_post_c;
-                           document.getElementById('num_postura_favor').innerHTML = '<span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span> ' + num_post_f ;
-                         }
-                         else{
-                           document.getElementById('num_postura_favor').innerHTML = '<span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span> ' + num_post_c ;
-                           document.getElementById('num_postura_contra').innerHTML = '<span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span> ' + num_post_f ;
-                         }
-                    }
-                    else{ var relleno =0;}
-                 }
-               },
-               failure: function(data) {
-                   alert('Error de conexión');
-               },
-               crossDomain: true
-           });
-}
-*/
 function cambiar_alias(){
   console.log("llega al cambiar_alias");
   document.getElementById('boton_alias').style.display = 'none';
@@ -163,14 +75,7 @@ function debate_estado(evt, estadoDbt) {
   document.getElementById(estadoDbt).style.display = "block";
   evt.currentTarget.className += " active";
 }
-/*
-$(document).ready(
-  function(){
-    try{
-      document.getElementById("dbt_abiertos").click(); }
-    catch(err){}
-  });
-*/
+
 function mostrar_modal(modal, descripcion, respuesta){
   document.getElementById(modal).style.display="block";
   if (descripcion != 0){

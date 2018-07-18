@@ -29,7 +29,7 @@ def despliega(request, id_debate): #debate_id
 			return redirect(despliega,id_debate_argumento)
 
 		if 'id_arg' in request.POST:
-			respuesta = publica_valoracion(request)
+			respuesta = valorar_argumento(request)
 			return HttpResponse(respuesta)
 
 		if 'id_arg_rebate' in request.POST:
@@ -302,4 +302,16 @@ def publica_valoracion(request):
 	usuario_reputacion = usuario_reputacion + reputacion
 	aumentar_reputacion = Perfil(user_id=usuario_argumento, reputacion=usuario_reputacion)
 	aumentar_reputacion.save()
+	return(respuesta)
+
+def valorar_argumento(request):
+	val_argumento= request.POST['id_arg']
+	usuario = request.user
+	val=request.POST['opcion']
+	try:
+		publicar = Valoracion.objects.get(id_argumento_id=val_argumento, id_usuario_id=usuario.id);
+		publicar.tipo_valoracion = val
+	except:
+		publicar = Valoracion(id_argumento_id=val_argumento, id_usuario_id=usuario.id, tipo_valoracion=val)
+	respuesta = Valoracion.objects.filter(id_argumento_id = val_argumento).count()
 	return(respuesta)

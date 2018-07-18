@@ -104,25 +104,26 @@
              });
            }
 
-  function valorar(argumento, id_div, val, opcionusr){
+  function valorar(argumento, opcionusr){
      console.log("llega al valorar");
      console.log(argumento);
-     $.ajax({
-       url: "{% url 'despliega' 15 %}" ,
-       type: 'POST',
-       data:{  id_arg : argumento,
-         opcion: opcionusr,
-         csrfmiddlewaretoken: '{{ csrf_token }}'} ,
-         success: function(data) { // id
-           document.getElementById(id_div).innerHTML = data;
-           document.getElementById(id_div).style.display = "none";
-           document.getElementById(val).innerHTML = data;
-           document.getElementById(argumento).style.display = 'block';
-           console.log("div: ");
-           console.log(id_div); },
-         failure: function(data) {
-           alert('Error de conexión'); },
-           crossDomain: true });
+		 $.ajax({
+
+				 url: "{% url 'despliega' 15 %}" ,
+				 type: 'POST',
+				 data:{  id_arg : argumento,
+								 opcion: opcionusr,
+								 csrfmiddlewaretoken: '{{ csrf_token }}'
+							 } ,
+							 success: function(data) {
+								 var comparar = opcionusr.localeCompare("sumar")
+								 document.getElementById('val'+argumento).innerHTML = data;
+							 },
+							 failure: function(data) {
+									 alert('Error de conexión');
+							 },
+							 crossDomain: true
+					 });
    }
 
   $(document).ready(
