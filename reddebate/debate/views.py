@@ -78,12 +78,20 @@ def despliega(request, id_debate): #debate_id
 			usuario_alias = Perfil.objects.get(user=usuario_debate)
 			usuario_debate = usuario_alias.alias
 		try:
-			valoracion = Valoracion.objects.get(id_argumento_id= argumento.id_argumento, id_usuario_id = usuario_actual)
-			t_valoracion = "si"
+			valoracion = Valoracion.objects.get(id_argumento_id= argumento.id_argumento, id_usuario_id = usuario_actual, tipo_valoracion="sumar")
+			t_valoracion_suma = "si"
 		except:
-			t_valoracion = "no"
+			t_valoracion_suma = "no"
+		try:
+			valoracion = Valoracion.objects.get(id_argumento_id= argumento.id_argumento, id_usuario_id = usuario_actual, tipo_valoracion="quitar")
+			t_valoracion_quita = "si"
+		except:
+			t_valoracion_quita = "no"
 		print(usuario_debate)
-		valoracion_argF = Valoracion.objects.filter(id_argumento_id= argumento.id_argumento).count()
+		t_valoracion=[t_valoracion_suma,t_valoracion_quita]
+		val_sumar = Valoracion.objects.filter(id_argumento_id= argumento.id_argumento, tipo_valoracion="sumar").count()
+		val_quitar = Valoracion.objects.filter(id_argumento_id= argumento.id_argumento, tipo_valoracion="quitar").count()
+		valoracion_argF = val_sumar - val_quitar
 		argumentos_F.append([argumento.descripcion, usuario_debate,
 			valoracion_argF, argumento.id_argumento, t_valoracion,
 			usuario_id, redebates_lista , tiene_comentario, ediciones, argumento.alias_c])
@@ -116,12 +124,19 @@ def despliega(request, id_debate): #debate_id
 			usuario_alias = Perfil.objects.get(user=usuario_debate)
 			usuario_debate = usuario_alias.alias
 		try:
-			valoracion = Valoracion.objects.get(id_argumento_id= argumento.id_argumento, id_usuario_id = request.user.id)
-			t_valoracion = "si"
+			valoracion = Valoracion.objects.get(id_argumento_id= argumento.id_argumento, id_usuario_id = request.user.id, tipo_valoracion="sumar")
+			t_valoracion_suma = "si"
 		except:
-			t_valoracion = "no"
-		valoracion_argC = Valoracion.objects.filter(id_argumento_id= argumento.id_argumento).count()
-
+			t_valoracion_suma = "no"
+		try:
+			valoracion = Valoracion.objects.get(id_argumento_id= argumento.id_argumento, id_usuario_id = request.user.id, tipo_valoracion="quitar")
+			t_valoracion_quita = "si"
+		except:
+			t_valoracion_quita = "no"
+		val_sumar = Valoracion.objects.filter(id_argumento_id= argumento.id_argumento, tipo_valoracion="sumar").count()
+		val_quitar = Valoracion.objects.filter(id_argumento_id= argumento.id_argumento, tipo_valoracion="quitar").count()
+		valoracion_argC = val_sumar - val_quitar
+		t_valoracion=[t_valoracion_suma,t_valoracion_quita]
 		argumentos_C.append([argumento.descripcion, usuario_debate,
 		 valoracion_argC, argumento.id_argumento, t_valoracion,
 		 usuario_id, redebates_lista, tiene_comentario, ediciones, argumento.alias_c ])
@@ -313,5 +328,8 @@ def valorar_argumento(request):
 		publicar.tipo_valoracion = val
 	except:
 		publicar = Valoracion(id_argumento_id=val_argumento, id_usuario_id=usuario.id, tipo_valoracion=val)
-	respuesta = Valoracion.objects.filter(id_argumento_id = val_argumento).count()
+	val_sumar = Valoracion.objects.filter(id_argumento_id= val_argumento, tipo_valoracion="sumar").count()
+	val_quitar = Valoracion.objects.filter(id_argumento_id= val_argumento, tipo_valoracion="quitar").count()
+	respuesta = val_sumar - val_quitar
+	publicar.save()
 	return(respuesta)

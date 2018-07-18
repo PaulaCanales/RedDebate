@@ -51,7 +51,7 @@ class Respuesta(models.Model):
 class Valoracion(models.Model):
     #parametros de la tabla.
     id_valoracion = models.AutoField(primary_key=True)
-    tipo_valoracion = models.CharField(max_length=50)
+    tipo_valoracion = models.CharField(max_length=50, default='nulo')
     date_valoracion = models.DateField(default=datetime.now)
     id_usuario = models.ForeignKey(User)
     id_argumento = models.ForeignKey(Argumento)

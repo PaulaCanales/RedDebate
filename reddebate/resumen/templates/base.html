@@ -116,8 +116,23 @@
 								 csrfmiddlewaretoken: '{{ csrf_token }}'
 							 } ,
 							 success: function(data) {
-								 var comparar = opcionusr.localeCompare("sumar")
+								 var comp_suma = opcionusr.localeCompare("sumar")
+								 var comp_quita = opcionusr.localeCompare("quitar")
+								 if (comp_suma==0){ data = parseInt(data) + 1}
+								 else if (comp_quita==0){ data = parseInt(data) - 1}
 								 document.getElementById('val'+argumento).innerHTML = data;
+								 var div_nulo = document.getElementById('nulo_'+opcionusr+'_val'+argumento);
+								 var div_val = document.getElementById(opcionusr+'_val'+argumento);
+								 console.log(div_nulo);
+								 console.log(div_val);
+								 // if (div_nulo.style.display === "none"){
+									//   div_nulo.style.display = "block";
+									// 	div_val.style.display = "none";
+								 //  }
+								 // else{
+									//  div_nulo.style.display = "none";
+									//  div_val.style.display = "block";
+								 //  }
 							 },
 							 failure: function(data) {
 									 alert('Error de conexión');

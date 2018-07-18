@@ -11,12 +11,18 @@
     {% for arg in comentario %}
       <tr>
         <td style="border-bottom: #fff;">
-          {% ifequal arg.4 'no' %}
-            <button type="submit" class="btn btn-valorar" onclick='javascript:valorar("{{arg.3}}","sumar")'>
+          {% ifequal arg.4.0 'no' %}
+            <button id="sumar_val{{arg.3}}" type="submit" class="btn btn-valorar" style="display: block;" onclick='javascript:valorar("{{arg.3}}","sumar")'>
+            <span class="glyphicon glyphicon-triangle-top" aria-hidden="true"></span>
+            </button>
+            <button id="nulo_sumar_val{{arg.3}}" type="submit" class="btn btn-nulo" style="display: none;" onclick='javascript:valorar("{{arg.3}}","nulo")'>
             <span class="glyphicon glyphicon-triangle-top" aria-hidden="true"></span>
             </button>
           {% else %}
-            <button type="submit" class="btn btn-valorar" disabled>
+            <button id="sumar_val{{arg.3}}" type="submit" class="btn btn-valorar" style="display: none;" onclick='javascript:valorar("{{arg.3}}","sumar")'>
+            <span class="glyphicon glyphicon-triangle-top" aria-hidden="true"></span>
+            </button>
+            <button id="nulo_sumar_val{{arg.3}}" type="submit" class="btn btn-nulo" style="display: block;" onclick='javascript:valorar("{{arg.3}}","nulo")'>
             <span class="glyphicon glyphicon-triangle-top" aria-hidden="true"></span>
             </button>
           {% endifequal %}
@@ -103,9 +109,15 @@
       </tr>
       <tr>
         <td>
+          {% ifequal arg.4.1 'no' %}
           <button type="submit" class="btn btn-valorar" onclick='javascript:valorar("{{arg.3}}","quitar")'>
           <span class="glyphicon glyphicon-triangle-bottom" aria-hidden="true"></span>
           </button>
+          {% else %}
+          <button type="submit" class="btn btn-nulo" onclick='javascript:valorar("{{arg.3}}","nulo")'>
+          <span class="glyphicon glyphicon-triangle-bottom" aria-hidden="true"></span>
+          </button>
+          {% endifequal %}
         </td>
       </tr>
       {% if arg.6 %}

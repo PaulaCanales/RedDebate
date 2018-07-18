@@ -3537,6 +3537,19 @@ fieldset[disabled] a.btn {
   border:0px;
   transition:all .3s ease-in-out;
 }
+.btn-nulo {
+  width: auto;
+  color:#18BC9C;
+  background:#fff;
+  border:0px;
+  font-size: 10px;
+
+}
+.btn-nulo.active,.btn-nulo:active,.btn-nulo:focus,.btn-nulo:hover {
+  color:#000;
+  border:0px;
+  transition:all .3s ease-in-out;
+}
 .btn-index {
   width: auto;
   color:#fff;
