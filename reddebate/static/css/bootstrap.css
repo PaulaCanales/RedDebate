@@ -3524,6 +3524,19 @@ fieldset[disabled] a.btn {
   background:#18BC9C;
   transition:all .3s ease-in-out;
 }
+.btn-valorar {
+  width: auto;
+  color:#000;
+  background:#fff;
+  border:0px;
+  font-size: 10px;
+
+}
+.btn-valorar.active,.btn-valorar:active,.btn-valorar:focus,.btn-valorar:hover {
+  color:#18BC9C;
+  border:0px;
+  transition:all .3s ease-in-out;
+}
 .btn-index {
   width: auto;
   color:#fff;
