@@ -24,7 +24,7 @@
 	</head>
 <body>
 <script type="text/javascript">
-  function cambiar_postura(id_debate, postura, porcentaje_f, porcentaje_c){
+  function cambiar_postura(id_debate, postura, post_f, post_c){
     console.log("funciona .. hasta aqui!!!!!!!");
        $.ajax({
 
@@ -37,24 +37,40 @@
                  success: function(data) {
                    document.getElementById('tu_postura').innerHTML = data;
                    console.log(data);
+									 var compare = data.localeCompare("A Favor");
+									 if (compare  == 0){
+										 post_f = parseInt(post_f) + 1;
+										 var porcentaje_f = (parseInt(post_f) / (parseInt(post_f) + parseInt(post_c))*100);
+										 var porcentaje_c = (parseInt(post_c) / (parseInt(post_f) + parseInt(post_c))*100);
+									 }
+									 else{
+										 post_c = parseInt(post_c) + 1;
+										 var porcentaje_f = (parseInt(post_f) / (parseInt(post_f) + parseInt(post_c))*100);
+										 var porcentaje_c = (parseInt(post_c) / (parseInt(post_f) + parseInt(post_c))*100);
+									 }
+									 porcentaje_f = parseFloat(porcentaje_f).toFixed(1);
+									 porcentaje_c = parseFloat(porcentaje_c).toFixed(1);
+
+									 console.log(porcentaje_f);
+									 console.log(porcentaje_c);
                     if (data == "En Contra"){
 
-                     document.getElementById('bot_ec').style.class = "posturactual"
-                     document.getElementById('bot_af').style.class = "postura"
+                     document.getElementById('bot_ec').style.class = "posturactual";
+                     document.getElementById('bot_af').style.class = "postura";
 
 										 document.getElementById('bot_argumento0').style.display = 'block';
 										 document.getElementById('bot_argumento1').style.display = 'none';
                    }
                    else{
-                     document.getElementById('bot_af').style.class ="posturactual"
-                     document.getElementById('bot_ec').style.class ="postura"
+                     document.getElementById('bot_af').style.class ="posturactual";
+                     document.getElementById('bot_ec').style.class ="postura";
 
 										 document.getElementById('bot_argumento1').style.display = 'block';
 										 document.getElementById('bot_argumento0').style.display = 'none';
                    }
 
-									 document.getElementById('bot_ec').textContent = "En Contra"+porcentaje_c
-									 document.getElementById('bot_af').textContent = "A Favor"+porcentaje_f
+									 document.getElementById('label_porc_c').innerHTML = porcentaje_c+"%";
+									 document.getElementById('label_porc_f').innerHTML = porcentaje_f+"%";
 
                    if (document.getElementById('argumentos')){
                      // document.getElementById('argumentos').style.display = 'block';
