@@ -335,7 +335,8 @@ def valorar_argumento(request):
 	respuesta = val_sumar - val_quitar
 	reputacion = val_sumar*5 - val_quitar*2
 	usuario_argumento = Argumento.objects.get(id_argumento=val_argumento).id_usuario_id
-	publicar_reputacion = Perfil(user_id=usuario_argumento, reputacion=reputacion)
+	publicar_reputacion = Perfil.objects.get(user_id=usuario_argumento)
+	publicar_reputacion.reputacion = reputacion
 	publicar_reputacion.save()
 
 	return(respuesta)
