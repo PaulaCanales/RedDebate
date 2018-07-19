@@ -90,10 +90,6 @@ function cerrar_modal(modal){
   document.getElementById(modal).style.display="none";
 }
 
-function definir_postura(id, postura){
-
-}
-
 /*
 function valorar(argumento, id_div, val, opcionusr){
   console.log("llega al valorar");
