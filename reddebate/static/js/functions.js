@@ -90,6 +90,13 @@ function cerrar_modal(modal){
   document.getElementById(modal).style.display="none";
 }
 
+function definir_postura(id_debate, postura, post_f, post_c){
+  if (document.getElementById('argumentos')){
+    $("#argumentos").slideDown("slow");
+  }
+  cambiar_postura(id_debate, postura, post_f, post_c);
+}
+
 /*
 function valorar(argumento, id_div, val, opcionusr){
   console.log("llega al valorar");

@@ -25,9 +25,7 @@
 <body>
 <script type="text/javascript">
   function cambiar_postura(id_debate, postura, post_f, post_c){
-    console.log("funciona .. hasta aqui!!!!!!!");
        $.ajax({
-
            url: "{% url 'despliega' 1 %}" ,
            type: 'POST',
            data:{  id : id_debate,
@@ -35,67 +33,8 @@
                    csrfmiddlewaretoken: '{{ csrf_token }}'
                  } ,
                  success: function(data) {
+									 location.reload();
                    document.getElementById('tu_postura').innerHTML = data;
-                    if (data == "En Contra"){
-											post_c = parseInt(post_c) + 1;
- 										 	var porcentaje_f = (parseInt(post_f) / (parseInt(post_f) + parseInt(post_c))*100);
- 										 	var porcentaje_c = (parseInt(post_c) / (parseInt(post_f) + parseInt(post_c))*100);
-
-											document.getElementById('bot_ec').style.class = "posturactual";
-                     	document.getElementById('bot_af').style.class = "postura";
-
-										 	document.getElementById('bot_argumento0').style.display = 'block';
-										 	document.getElementById('bot_argumento1').style.display = 'none';
-                   }
-                   else{
-										 post_f = parseInt(post_f) + 1;
-										 var porcentaje_f = (parseInt(post_f) / (parseInt(post_f) + parseInt(post_c))*100);
-										 var porcentaje_c = (parseInt(post_c) / (parseInt(post_f) + parseInt(post_c))*100);
-
-                     document.getElementById('bot_af').style.class ="posturactual";
-                     document.getElementById('bot_ec').style.class ="postura";
-
-										 document.getElementById('bot_argumento1').style.display = 'block';
-										 document.getElementById('bot_argumento0').style.display = 'none';
-                   }
-									 document.getElementById('label_num_post1').innerHTML = post_f;
-									 document.getElementById('label_num_post0').innerHTML = post_c;
-
-									 porcentaje_f = parseFloat(porcentaje_f).toFixed(1);
-									 porcentaje_c = parseFloat(porcentaje_c).toFixed(1);
-									 document.getElementById('label_porc_c').innerHTML = porcentaje_c+"%";
-									 document.getElementById('label_porc_f').innerHTML = porcentaje_f+"%";
-
-                   if (document.getElementById('argumentos')){
-                     // document.getElementById('argumentos').style.display = 'block';
-                      $("#argumentos").slideDown("slow");
-                     {% if num_post_c %}
-                           if (data == "En Contra"){
-                             document.getElementById('num_postura_contra').innerHTML = {{num_post_c}} ;
-                           }
-                           else{
-                             document.getElementById('num_postura_favor').innerHTML = {{num_post_f}} ;
-
-                           }
-                     {% endif %}
-                   }
-                   else{
-                       {% if num_post_c %}
-                           if (data == "En Contra"){
-                             document.getElementById('num_postura_contra').innerHTML = '<span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span> ' + {{num_post_c}};
-                             document.getElementById('num_postura_favor').innerHTML = '<span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span> ' + {{num_post_f}} ;
-                           }
-                           else{
-                             document.getElementById('num_postura_favor').innerHTML = '<span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span> ' + {{num_post_c}} ;
-                             document.getElementById('num_postura_contra').innerHTML = '<span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span> ' + {{num_post_f}} ;
-                           }
-                       {% else %}
-                       var relleno =0;
-                       {% endif %}
-
-
-
-                   }
                  },
                  failure: function(data) {
                      alert('Error de conexión');

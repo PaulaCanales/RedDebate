@@ -30,7 +30,7 @@
 			<div class="container" name="desc">
 						<div class="row" id="my-row">
 							<div class="col-sm-3 panel">
-								<button id = "bot_af" type="submit" class="btn btn-postura" onclick='javascript:cambiar_postura("{{ debate.id_debate }}", "1", "{{num_post_f}}", "{{num_post_c}}");'>
+								<button id = "bot_af" type="submit" class="btn btn-postura" onclick='javascript:definir_postura("{{ debate.id_debate }}", "1", "{{num_post_f}}", "{{num_post_c}}");'>
 									<span class="glyphicon glyphicon-thumbs-up"></span>
 									A Favor <br><br>
 									<label id="label_porc_f"></label>
@@ -59,7 +59,7 @@
 								</div>
 							</div>
 							<div class="col-sm-3 panel">
-								<button id = "bot_ec" type="submit" class="btn btn-postura" onclick='javascript:cambiar_postura("{{ debate.id_debate }}", "0", "{{num_post_f}}", "{{num_post_c}}");'>
+								<button id = "bot_ec" type="submit" class="btn btn-postura" onclick='javascript:definir_postura("{{ debate.id_debate }}", "0", "{{num_post_f}}", "{{num_post_c}}");'>
 									<span class="glyphicon glyphicon-thumbs-down"></span>
 									En Contra <br><br>
 									<label id="label_porc_c"></label>
