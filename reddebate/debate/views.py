@@ -328,20 +328,14 @@ def valorar_argumento(request):
 		publicar.tipo_valoracion = val
 	except:
 		publicar = Valoracion(id_argumento_id=val_argumento, id_usuario_id=usuario.id, tipo_valoracion=val)
+	publicar.save()
+
 	val_sumar = Valoracion.objects.filter(id_argumento_id= val_argumento, tipo_valoracion="sumar").count()
 	val_quitar = Valoracion.objects.filter(id_argumento_id= val_argumento, tipo_valoracion="quitar").count()
 	respuesta = val_sumar - val_quitar
-	publicar.save()
-	if val=="sumar":
-		reputacion=10
-	elif val=="nulo":
-		reputacion=0
-	else:
-		reputacion=-10
-	val_reputacion = request.POST['id_arg']
-	usuario_argumento = Argumento.objects.get(id_argumento=val_reputacion).id_usuario_id
-	usuario_reputacion = Perfil.objects.get(user_id=usuario_argumento).reputacion
-	usuario_reputacion = usuario_reputacion + reputacion
-	aumentar_reputacion = Perfil(user_id=usuario_argumento, reputacion=usuario_reputacion)
-	aumentar_reputacion.save()
+	reputacion = val_sumar*5 - val_quitar*2
+	usuario_argumento = Argumento.objects.get(id_argumento=val_argumento).id_usuario_id
+	publicar_reputacion = Perfil(user_id=usuario_argumento, reputacion=reputacion)
+	publicar_reputacion.save()
+
 	return(respuesta)
