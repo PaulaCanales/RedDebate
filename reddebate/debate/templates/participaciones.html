@@ -23,59 +23,27 @@
         </td>
         <td rowspan="3"><!-- comentario-->
           <p><a href="{% url 'perfiles' arg.3 %}"><p1>{{arg.1}}:</p1></a> {{arg.0}}</p>
-        	{% if arg.8 %}
-            <button id="historialF" onclick="mostrar_modal('historial_modal',0,-1)" class="link btn-link">Editado</button>
-          {% endif %}
-          <!-- Inicio Modal -->
-        	<div id="historial_modal" class="modal">
-        	  <div class="modal-content">
-        	    <span class="close" onclick="cerrar_modal('historial_modal')">&times;</span>
-        	    <h3>Historial <span class="glyphicon glyphicon-time"></span></h3>
-        		    {% for edicion in arg.8 %}
-        			     <p><p1> {{edicion.date_edicion}}:</p1> {{edicion.descripcion_edicion}}</p>
-                {% endfor %}
-        	   </div>
-           </div>
-          <!-- Fin Modal -->
         </td>
-        <td rowspan="3"> <!-- boton editar/rebatir-->
-            {% ifequal arg.5 usuario %} <!-- editar -->
-            	<div style="float:right"> <button id="bot_editar" type="submit" class="btn btn-perfil" onclick='javascript:mostrar_modal("edicion_modal", "{{arg.0}}", -1);'> <span class="glyphicon glyphicon-edit" aria-hidden="true" ></span> </button> </div>
-            {% else %}  <!-- rebatir -->
+        <td rowspan="2" style="border-bottom: #fff; text-align: center;"> <!-- boton editar/rebatir-->
+              <!-- rebatir -->
             	{% ifequal arg.7 'no_comentario' %}
-            		<div style="float:right"> <button id="bot_rebatir" type="submit" class="btn btn-perfil" onclick='javascript:mostrar_modal("respuesta_modal", 0, "{{arg.3}}");' ><span class="glyphicon glyphicon-comment"  ></span></button></div>
+            		<div style="float:right">
+                  <button id="bot_rebatir" type="submit" class="btn btn-args" onclick='javascript:mostrar_modal("respuesta_modal","{{arg.6}}");' >{{ arg.6|length }} <span class="glyphicon glyphicon-comment"  ></span></button>
+                </div>
               	{%endifequal%}
-            {%endifequal%}
-            <div id="edicion_modal" class="modal">
-              <!-- Modal content -->
-          	  <div class="modal-content">
-          	    <span class="close" onclick="cerrar_modal('edicion_modal')">&times;</span>
-          	    <h3>Edición <span class="glyphicon glyphicon-edit"></span></h3>
-                  <div id="form_editar">
-                    <form method="POST" class="post-form">{% csrf_token %}
-                      <form action="/post_arg" id="publicar_form" method="post">{% csrf_token %}
-                          <div class="form-group">
-                            <textarea id="textarea1" rows="4" maxlength="{{debate.largo}}" name="descripcion" value="" type="textarea" class="form-control" placeholder="descripcion"> </textarea>
-                             <div id="textarea_feedback1"></div>
-                              <input type="hidden" value="{{ debate.id_debate }}" name="id_deb">
-                            <input type="hidden"  value="1" name="postura">
-                            <div class="checkbox">
-                              <label>
-                                <input type="checkbox" value="alias" name="alias" > Publicar con Alias: {{alias_actual}}
-                              </label>
-                          </div>
-                          </div>
-                          <button type="submit" class="btn btn-perfil">Editar</button>
-                      </form>
-                    </form>
-                  </div>
-          	   </div>
-             </div>
             <div id="respuesta_modal" class="modal">
-              <!-- Modal content -->
               <div class="modal-content">
                 <span class="close" onclick="cerrar_modal('respuesta_modal')">&times;</span>
-                <h3>Respuesta <span class="glyphicon glyphicon-comment"></span></h3>
+                <h3>Respuestas <span class="glyphicon glyphicon-comment"></span></h3>
+                  <div id=respuestass></div>
+                    <div id=respuestas>
+                      {{arg.6}}
+                      {% if arg.6 %}
+                      	{% for respuesta in arg.6 %}
+                            <p>{{respuesta.1}}: {{respuesta.0}}</p>
+                        {% endfor %}
+                      {% endif %}
+                    </div>
                     <div id="form_rebatir">
                       <form method="POST" class="post-form">{% csrf_token %}
                         <form action="/post_arg" id="publicar_form" method="post">{% csrf_token %}
@@ -113,18 +81,18 @@
           </button>
           {% endifequal %}
         </td>
+        <td><div style="float:right">
+          {% ifequal arg.5 usuario %}
+            <form id="eliminar_arg" method="post" action= "{% url 'despliega' debate.id_debate %}" enctype="multipart/form-data" onsubmit="return confirm('¿Seguro que desea eliminar el argumento?');">{% csrf_token %}
+              <input type="hidden" value="{{ arg.3 }}" name="id_arg_eliminar">
+              <input type="hidden" value="{{ debate.id_debate }}" name="id_deb_arg_eliminar">
+              <button type="submit" class="btn btn-args" > <span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
+            </form>
+          {% else %}
+            <button id="bot_reportar" type="submit" class="btn btn-args" onclick='' ><span class="glyphicon glyphicon-bullhorn"></span></button>
+          {%endifequal%}
+        </div></td>
       </tr>
-      {% if arg.6 %}
-      	{% for respuesta in arg.6 %}
-      	<tr>
-      		<td class="rebatir"></td>
-      		<td class="rebatir">
-            <p>{{respuesta.1}}: {{respuesta.0}}</p>
-          </td>
-          <td class="rebatir"></td><td class="rebatir"></td>
-        </tr>
-        {% endfor %}
-      {% endif %}
     {% empty %}
       <tr><td class="vacio"> </td></tr>
     {% endfor %}

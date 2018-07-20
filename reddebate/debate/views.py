@@ -36,6 +36,10 @@ def despliega(request, id_debate): #debate_id
 			id_debat = publica_redate(request)
 			return redirect(despliega,id_debat)
 
+		if 'id_arg_eliminar' in request.POST:
+			id_debate = elimina_argumento(request)
+			return redirect(despliega,id_debate)
+
 	debate = Debate.objects.get(id_debate= id_debate)
 	usuario_id = debate.id_usuario_id #usuario creador
 	usuario_creador = User.objects.get(id= usuario_id)
@@ -340,3 +344,10 @@ def valorar_argumento(request):
 	publicar_reputacion.save()
 
 	return(respuesta)
+
+def elimina_argumento(request):
+	id_argumento = request.POST['id_arg_eliminar']
+	id_deb=request.POST['id_deb_arg_eliminar']
+	arg = Argumento.objects.get(pk=id_argumento)
+	arg.delete()
+	return (id_deb)
