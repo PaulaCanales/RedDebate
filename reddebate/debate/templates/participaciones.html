@@ -25,49 +25,44 @@
           <p><a href="{% url 'perfiles' arg.3 %}"><p1>{{arg.1}}:</p1></a> {{arg.0}}</p>
         </td>
         <td rowspan="2" style="border-bottom: #fff; text-align: center;"> <!-- boton editar/rebatir-->
-              <!-- rebatir -->
-            	{% ifequal arg.7 'no_comentario' %}
-            		<div style="float:right">
-                  <button id="bot_rebatir" type="submit" class="btn btn-args" onclick='javascript:mostrar_modal("respuesta_modal","{{arg.6}}");' >{{ arg.6|length }} <span class="glyphicon glyphicon-comment"  ></span></button>
-                </div>
-              	{%endifequal%}
-            <div id="respuesta_modal" class="modal">
-              <div class="modal-content">
-                <span class="close" onclick="cerrar_modal('respuesta_modal')">&times;</span>
-                <h3>Respuestas <span class="glyphicon glyphicon-comment"></span></h3>
-                  <div id=respuestass></div>
-                    <div id=respuestas>
-                      {{arg.6}}
-                      {% if arg.6 %}
-                      	{% for respuesta in arg.6 %}
-                            <p>{{respuesta.1}}: {{respuesta.0}}</p>
-                        {% endfor %}
-                      {% endif %}
-                    </div>
-                    <div id="form_rebatir">
-                      <form method="POST" class="post-form">{% csrf_token %}
-                        <form action="/post_arg" id="publicar_form" method="post">{% csrf_token %}
-                            <div class="form-group">
-                              <textarea id="textarea6" rows="4" maxlength="{{debate.largo}}" name="descripcion_rebate" value="" type="textarea" class="form-control" placeholder="descripcion"> </textarea>
-                              <div id="textarea_feedback6"></div>
-                              <input id="argumento_id_rebate" type="hidden" value="" name="id_arg_rebate">
-                              <input type="hidden" value="{{ debate.id_debate }}" name="id_deb">
-                              <div class="checkbox">
-                                <label>
-                                  <input type="checkbox" value="alias" name="alias" > Publicar con Alias:  {{alias_actual}}
-                                </label>
-                              </div>
-                            </div>
-                          <button type="submit" class="btn btn-perfil">Comentar</button>
-                        </form>
-                      </form>
-                    </div>
-              </div>
-            </div>
+      		<div style="float:right">
+            <button id="bot_rebatir{{postura}}" type="submit" class="btn btn-args" data-whatever="{{arg.6}}" onclick='javascript:mostrar_modal("respuesta_modal{{postura}}","{{arg.3}}","{{arg.6}}");' >{{ arg.6|length }} <span class="glyphicon glyphicon-comment"  ></span></button>
+          </div>
         </td>
+
+          <div id="respuesta_modal{{postura}}" class="modal">
+            <div class="modal-content">
+              <span class="close" onclick="cerrar_modal('respuesta_modal{{postura}}')">&times;</span>
+              <h3>Respuestas {{frase}}<span class="glyphicon glyphicon-comment"></span></h3>
+                  <div id=respuestas>
+                    {% for respuesta in arg.6%}
+                      <p>{{respuesta.1}}: {{respuesta.0}}</p>
+                    {% endfor %}
+                  </div>
+                  <div id="form_rebatir">
+                    <form method="POST" class="post-form">{% csrf_token %}
+                      <form action="/post_arg" id="publicar_form" method="post">{% csrf_token %}
+                          <div class="form-group">
+                            <textarea id="textarea6" rows="4" maxlength="{{debate.largo}}" name="descripcion_rebate" value="" type="textarea" class="form-control" placeholder="descripcion"> </textarea>
+                            <div id="textarea_feedback6"></div>
+                            <input id="id_argumento_rebate" type="hidden" value="" name="id_arg_rebate">
+                            <input type="hidden" value="{{ debate.id_debate }}" name="id_deb">
+                            <div class="checkbox">
+                              <label>
+                                <input type="checkbox" value="alias" name="alias" > Publicar con Alias:  {{alias_actual}}
+                              </label>
+                            </div>
+                          </div>
+                        <button type="submit" class="btn btn-perfil">Comentar</button>
+                      </form>
+                    </form>
+                  </div>
+            </div>
+          </div>
+
       </tr>
       <tr>
-        <td style="border-bottom: #fff; text-align: center;" id="val{{arg.3}}"> {{arg.2}} </td>
+        <td style="border-bottom: #fff; text-align: center;" id="val{{arg.3}}"> {{arg.2}}</td>
       </tr>
       <tr>
         <td>

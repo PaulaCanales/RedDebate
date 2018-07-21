@@ -5,9 +5,9 @@
     <link rel="shortcut icon" type="image/png" href="{% static 'img/RDLogo02.png' %}"/>
 
     <!--Load the AJAX API google charts-->
-      <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
-      <link rel="stylesheet" type='text/css' href="{% static '/css/bootstrap.css' %}" >
+      <!--<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>-->
+      <script src="{% static 'js/jquery.js' %}"></script>
+      <link rel="stylesheet" type='text/css' href="{% static '/css/style.css' %}" >
 
       <!-- DatePicker -->
       <link rel="stylesheet" href="{% static 'css/datepicker.css' %}"/>
@@ -158,7 +158,7 @@
       var text_remaining = text_max - text_length;
       $('#textarea_feedback1').html(text_remaining + ' caracteres restantes'); });
   });
-
+/*
   google.charts.load('current', {'packages':['corechart','bar']});
 
   // Set a callback to run when the Google Visualization API is loaded.
@@ -288,6 +288,7 @@
        var chart = new google.visualization.PieChart(document.getElementById('chart_div2'));
        chart.draw(data, options);
      };
+*/
 </script>
 
 	<div class="page-header">

@@ -146,12 +146,8 @@ def despliega(request, id_debate): #debate_id
 		 usuario_id, redebates_lista, tiene_comentario, ediciones, argumento.alias_c ])
 		if (request.user.id == argumento.id_usuario_id):
 			tiene_argumento = 'si'
-	print("argumentos: ", argumentos_C)
 	argumentos_C = sorted(argumentos_C, key=lambda valoracion: valoracion[2], reverse=True)
-	print("argumentos: ", argumentos_C)
 	argumentos_F = sorted(argumentos_F, key=lambda valoracion: valoracion[2], reverse=True)
-	print("argumentos: ", argumentos_F)
-
 
 	try:
 		postura_debate_usuario = Postura.objects.get(id_usuario_id= usuario_actual, id_debate_id=id_debate)
@@ -283,7 +279,7 @@ def publica_argumento(request):
 def publica_redate(request):
 	descrip = request.POST['descripcion_rebate']
 	argumento_debate = request.POST['id_arg_rebate']
-	print(argumento_debate)
+
 	id_debat = request.POST['id_deb']
 	usuario = request.user
 	if 'alias' in request.POST:

@@ -76,10 +76,11 @@ function debate_estado(evt, estadoDbt) {
   evt.currentTarget.className += " active";
 }
 
-function mostrar_modal(modal, data){
+function mostrar_modal(modal, id_arg, respuestas){
   document.getElementById(modal).style.display="block";
-  document.getElementById('respuestass').textContent = data;
-}
+  document.getElementById("id_argumento_rebate").value = id_arg;
+  console.log(respuestas);
+};
 
 function cerrar_modal(modal){
   document.getElementById(modal).style.display="none";
