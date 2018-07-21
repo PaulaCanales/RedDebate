@@ -36,6 +36,9 @@
             <div class="modal-content">
               <span class="close" onclick="cerrar_modal('respuesta_modal{{postura}}')">&times;</span>
               <h3>Respuestas <span class="glyphicon glyphicon-comment"></span></h3>
+                <div id="descripcion_argumento">
+                  {{arg.0}}
+                </div>
                   <div id=respuestas class="modal-body">
                     {% for respuesta in arg.6%}
                       <div class="panel panel-default">
@@ -64,6 +67,7 @@
                         <button type="submit" class="btn btn-perfil">Comentar</button>
                       </form>
                     </form>
+                    <button type="submit" class="btn btn-perfil" onclick="cerrar_modal('respuesta_modal{{postura}}')">Cancelar</button>
                   </div>
             </div>
           </div>
