@@ -714,7 +714,7 @@ footer {
 .navbar-inverse .btn-link {
   color: #ffffff;
 }
-.modal-backdrop {
-    /* bug fix - no overlay */
-    display: none;
+.modal-body{
+    max-height: 500px;
+    overflow-y: auto;
 }

@@ -12,7 +12,7 @@ import requests
 from django.http import HttpResponse
 from resumen.models import Debate
 from perfil.models import Perfil
-from debate.models import Postura, Argumento
+from debate.models import Postura, Argumento, Respuesta
 
 # Create your views here.
 ##@brief Funcion que despliega los datos del usuario, debates abiertos, cerrados y opciones para cada uno.
@@ -20,15 +20,27 @@ from debate.models import Postura, Argumento
 ##@return redirect redirecciona a la vista "perfil"
 ##@warning Login is required
 @login_required
-def perfiles(request, id_argumento):
-    argumento = Argumento.objects.get(id_argumento=id_argumento)
-    usa_alias = argumento.alias_c
-    usuario = User.objects.get(id=argumento.id_usuario_id)
-    alias_usuario = Perfil.objects.get(user_id=usuario)
-    print(alias_usuario.alias)
+def perfiles(request, id):
+    input  = id.split("X")
+    if input[1]=="argumento":
+        print("estoy aquiiiiiii")
+        argumento = Argumento.objects.get(id_argumento=input[0])
+        usa_alias = argumento.alias_c
+        usuario = User.objects.get(id=argumento.id_usuario_id)
+        alias_usuario = Perfil.objects.get(user_id=usuario)
+        print(alias_usuario.alias)
+
+    elif input[1]=="respuesta":
+        print("ahora estoy en el otro lado")
+        respuesta = Respuesta.objects.get(id_respuesta=input[0])
+        usa_alias = respuesta.alias_c
+        usuario = User.objects.get(id=respuesta.id_usuario_id)
+        alias_usuario = Perfil.objects.get(user_id=usuario)
 
     return render(request, 'perfiles.html', {'usuario': usuario,
         'alias': alias_usuario, 'usa_alias': usa_alias})
+
+
 
 ##@brief Funcion que despliega los datos del usuario, debates abiertos, cerrados y opciones para cada uno.
 ##@param request solicitud web

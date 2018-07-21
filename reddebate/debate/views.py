@@ -65,6 +65,7 @@ def despliega(request, id_debate): #debate_id
 		redebates_lista = []
 		tiene_comentario = "no_comentario"
 		for redebate in redebates:
+			id_respuesta = redebate.id_respuesta
 			descripcion_redebate = redebate.descripcion
 			usuario_redebate = User.objects.get(id=redebate.id_usuario_id)
 			if redebate.alias_c == "alias":
@@ -73,7 +74,7 @@ def despliega(request, id_debate): #debate_id
 			else:
 				usuario_redebate = usuario_redebate.username
 
-			redebates_lista.append([descripcion_redebate, usuario_redebate])
+			redebates_lista.append([descripcion_redebate, usuario_redebate, id_respuesta])
 			if tiene_comentario == "no_comentario" and usuario_redebate == request.user:
 				tiene_comentario = "si_comentario"
 		usuario_debate = User.objects.get(id= argumento.id_usuario_id)
@@ -110,6 +111,7 @@ def despliega(request, id_debate): #debate_id
 		redebates_lista = []
 		tiene_comentario = "no_comentario"
 		for redebate in redebates:
+			id_respuesta = redebate.id_respuesta
 			descripcion_redebate = redebate.descripcion
 			usuario_redebate = User.objects.get(id=redebate.id_usuario_id)
 			if redebate.alias_c == "alias":
@@ -118,7 +120,7 @@ def despliega(request, id_debate): #debate_id
 			else:
 				usuario_redebate = usuario_redebate.username
 
-			redebates_lista.append([descripcion_redebate, usuario_redebate])
+			redebates_lista.append([descripcion_redebate, usuario_redebate, id_respuesta])
 			if tiene_comentario == "no_comentario" and usuario_redebate == request.user:
 				tiene_comentario = "si_comentario"
 		usuario_debate = User.objects.get(id= argumento.id_usuario_id)

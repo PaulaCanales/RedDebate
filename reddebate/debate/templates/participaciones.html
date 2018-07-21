@@ -22,7 +22,9 @@
           {% endifequal %}
         </td>
         <td rowspan="3"><!-- comentario-->
-          <p><a href="{% url 'perfiles' arg.3 %}"><p1>{{arg.1}}:</p1></a> {{arg.0}}</p>
+          {% with name=arg.3|stringformat:"i"|add:"Xargumento" %}
+            <p><a href="{% url 'perfiles' name %}"><p1>{{arg.1}}:</p1></a> {{arg.0}}</p>
+          {% endwith %}
         </td>
         <td rowspan="2" style="border-bottom: #fff; text-align: center;"> <!-- boton editar/rebatir-->
       		<div style="float:right">
@@ -33,10 +35,16 @@
           <div id="respuesta_modal{{postura}}" class="modal">
             <div class="modal-content">
               <span class="close" onclick="cerrar_modal('respuesta_modal{{postura}}')">&times;</span>
-              <h3>Respuestas {{frase}}<span class="glyphicon glyphicon-comment"></span></h3>
-                  <div id=respuestas>
+              <h3>Respuestas <span class="glyphicon glyphicon-comment"></span></h3>
+                  <div id=respuestas class="modal-body">
                     {% for respuesta in arg.6%}
-                      <p>{{respuesta.1}}: {{respuesta.0}}</p>
+                      <div class="panel panel-default">
+                        <div class="panel-body">
+                        {% with name=respuesta.2|stringformat:"i"|add:"Xrespuesta" %}
+                        <p><a href="{% url 'perfiles' name %}"><p1>{{respuesta.1}}:</p1></a> {{respuesta.0}}</p>
+                        {% endwith %}
+                        </div>
+                      </div>
                     {% endfor %}
                   </div>
                   <div id="form_rebatir">
