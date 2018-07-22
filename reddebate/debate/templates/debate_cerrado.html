@@ -8,16 +8,25 @@
 {% block content %}
 <script type="text/javascript">
 $(document).ready(function(){
-	google.charts.load('current', {'packages':['corechart']});
+	google.charts.load('current', {'packages':['corechart', 'bar']});
 	google.charts.setOnLoadCallback(posturaChart);
 	google.charts.setOnLoadCallback(argumentosChart);
+	google.charts.setOnLoadCallback(mejorArgumentoChart);
 	});
 	var varGlobal = {
 		postura_f : {{num_post_f}},
 		postura_c : {{num_post_c}},
 		argumentos_f : {{argF|length}},
-		argumentos_c : {{argC|length}}
+		argumentos_c : {{argC|length}},
+		primer_arg_f : 0,
+		segundo_arg_f : 0,
+		primer_arg_c : 0,
+		segundo_arg_c : 0
 	}
+	{% if argF.0.2 %} varGlobal.primer_arg_f={{ argF.0.2}}; {% endif %}
+	{% if argF.1.2 %} varGlobal.segundo_arg_f={{ argF.1.2}}; {% endif %}
+	{% if argC.0.2 %} varGlobal.primer_arg_c={{ argC.0.2}}; {% endif %}
+	{% if argC.1.2 %} varGlobal.segundo_arg_c={{ argC.1.2}}; {% endif %}
 </script>
 <div class="container">
 	<div class="blank"><table>
@@ -75,10 +84,10 @@ $(document).ready(function(){
 			 <div class="col-md-6"> <div id="piechart_postura"></div></div>
 		   <div class="col-md-6"> <div id="piechart_argumento"></div></div>
 		</div>
-		<!-- <h2>  </h2>
+		<br><br><br>
 		<div class="container">
-			<div id="chart_arg_val" style="width: 900px; height: 300px;" ></div>
-		</div> -->
+			<div id="chart_mejorArgumento" style="width: 900px; height: 300px;" ></div>
+		</div>
 	</div>
 
 

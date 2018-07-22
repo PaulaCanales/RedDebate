@@ -127,3 +127,29 @@ function argumentosChart() {
         var chart = new google.visualization.PieChart(document.getElementById('piechart_argumento'));
         chart.draw(data, options);
 }
+
+function mejorArgumentoChart(){
+  var data = new google.visualization.arrayToDataTable([
+      ['Valoración', 'A Favor','En Contra'],
+      ['1º Mejor Valorado', varGlobal.primer_arg_f  ,varGlobal.primer_arg_c],
+      ['2º Mejor Valorado', varGlobal.segundo_arg_f  , varGlobal.segundo_arg_c]]);
+    var options = {
+      width: 800,
+      chart: {
+        title: 'Valoración',
+        subtitle: 'Comparación de los argumentos a favor y en contra más valorados' },
+        bars: 'horizontal', // Required for Material Bar Charts.
+        series: {
+          0: { color: '18BD9B'}, // Bind series 0 to an axis named 'distance'.
+          1: { color: '2D3E50'} // Bind series 1 to an axis named 'brightness'.
+        },
+        axes: {
+          x: {
+          argumento: {label: 'Valoración'}, // Bottom x-axis.
+          valoracion: {side: 'top', label: 'magnitud'} // Top x-axis.
+          }
+        }
+      };
+    var chart = new google.charts.Bar(document.getElementById('chart_mejorArgumento'));
+    chart.draw(data, options);
+   };
