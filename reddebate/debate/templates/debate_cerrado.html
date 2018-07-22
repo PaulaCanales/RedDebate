@@ -1,181 +1,100 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 {% extends 'base.html' %}
 {% load static %}
-
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 
 <html>
 
 
 {% block content %}
-
+<script type="text/javascript">
+$(document).ready(function(){
+	google.charts.load('current', {'packages':['corechart']});
+	google.charts.setOnLoadCallback(posturaChart);
+	google.charts.setOnLoadCallback(argumentosChart);
+	});
+	var varGlobal = {
+		postura_f : {{num_post_f}},
+		postura_c : {{num_post_c}},
+		argumentos_f : {{argF|length}},
+		argumentos_c : {{argC|length}}
+	}
+</script>
 <div class="container">
 	<div class="blank"><table>
-		<tr> 
-			
+		<tr>
+
 			<td>
 				<div class="container-titulo">
-					
+
 					<h3 class="h3-t1"> {{ debate.titulo }}</h3>
 					{% ifequal debate.alias_c 'alias' %}
 						<h5>Creado por {{alias}} en modo anónimo</h5>
-						
+
 					{%else%}
 						<h5>Creado por {{usuario_creador}}</h5>
 					{%endifequal%}
 
-					
+
 				</div>
 			</td>
 		</tr>
 
-	</table>	
+	</table>
 	</div>
-	
-	
+
+
 	<div class="blank"><table>
-		<tr> 
+		<tr>
 			<td width=120 ><p1>Descripción</p1></td>
 			<td>{{ debate.descripcion }}</td>
 		</tr>
 
-		<tr> 
+		<tr>
 			<td width=120 ><p1>Fecha inicio</p1></td>
 			<td>{{ debate.date }}</td>
 		</tr>
 
-		<tr> 
+		<tr>
 			<td width=120 ><p1>Estado</p1></td>
 			<td>{{ debate.estado }}</td>
 		</tr>
 
-		<tr> 
+		<tr>
 			<td width=120 ><p1>Tu Postura</p1></td>
 			<td><div id="tu_postura" >{{postura_usr_deb}} </div></td>
 		</tr>
 
-	</table>	
+	</table>
 	</div>
 
-	<div id="estadisticas" > 
-		<h3>Estadísticas</h3>	
-		
-		 <!--Div that will hold the pie chart-->
-		 <div class="row_est">
-			 <div class="col-md-6">
-		    	<div id="chart_div"></div> 
-		    </div>
-		    <div class="col-md-6">
-				<div id="chart_div2"  align = "center"></div>
-			</div> 
+
+	<div id="estadisticas" >
+		<h3>Estadísticas</h3>
+
+		<div class="row_est">
+			 <div class="col-md-6"> <div id="piechart_postura"></div></div>
+		   <div class="col-md-6"> <div id="piechart_argumento"></div></div>
 		</div>
-		<h2>  </h2>
+		<!-- <h2>  </h2>
 		<div class="container">
 			<div id="chart_arg_val" style="width: 900px; height: 300px;" ></div>
-		</div>
+		</div> -->
 	</div>
 
 
 
-	<div id="argumentos" > 
-
+	<div id="argumentos" >
 		<h3>Argumentos</h3>
-		<div class="container">
-		  <div class="row">
-		    <div class="col-xs-6">
-		      <div class="datagrid"><table>
-				<tr>
-	              <thead>
-	              	<th>
-	              		#
-	              	</th>
-	              	<th>
-	              		A Favor
-	              	</th>
-	              	<th>
-	              	</th>
-	              	<th>
-						<div style="float:right"><span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>{{num_post_f}}</div>
-	              	</th>
-	              </thead>
-	            </tr>	  
-					{% for arg in argF %}
-					   	<tr>
-					   		<td class="valoracion"> <!-- valoracion -->
-							{{arg.2}}
-							</td>
-					   		<td class="argumento"> 
-					   			<p1>{{arg.1}}:</p1> {{arg.0}}  
-						   	</td>
-						   	<td class="argumento"></td>
-						   	<td class="argumento"></td>
-					   	</tr>
-					   	{% if arg.6 %}
-		            	{% for respuesta in arg.6 %}
-		            	<tr>
-		            		<td class="rebatir"></td>
-		            		<td class="rebatir">
-					        <p>{{respuesta.1}}: {{respuesta.0}}</p>
-					        </td>
-					        <td class="rebatir"></td><td class="rebatir"></td>
-			            </tr>
-			            {% endfor %} 
-		              	{% endif %}     
-					{% empty %}
-					   	<tr><td> </td></tr> 
-					{% endfor %}
-
-			</table>
+		<div class="container" name="arg_afavor">
+			<div class="row">
+		    <div class="col-md-6">
+					{% include 'participaciones.html' with frase="A Favor" comentario=argF postura=1 num_post=num_post_f%}
+				</div>
+				<div class="col-md-6">
+					{% include 'participaciones.html' with frase="En Contra" comentario=argC postura=0 num_post=num_post_c%}
+				</div>
 			</div>
-		    </div>
-		    <div class="col-xs-6">
-		      	<div class="datagrid"><table>
-		      	<tr>
-	              <thead>
-	              	<th>
-	              		#
-	              	</th>
-	              	<th>
-	              		A Favor
-	              	</th>
-	              	<th>
-	              	</th>
-	              	<th>
-						<div style="float:right"><span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span> {{num_post_c}}</div>
-	              	</th>
-	              </thead>
-	            </tr>	
-					{% for arg in argC %}
-						<tr>
-					   		<td class="valoracion"> <!-- valoracion -->
-							{{arg.2}}
-							</td>
-					   		<td class="argumento"> 
-					   			<p1>{{arg.1}}:</p1> {{arg.0}}  
-						   	</td>
-						   	<td class="argumento"></td>
-						   	<td class="argumento"></td>
-					   	</tr>
-					   	{% if arg.6 %}
-		            	{% for respuesta in arg.6 %}
-		            	<tr>
-		            		<td class="rebatir"></td>
-		            		<td class="rebatir">
-					        <p>{{respuesta.1}}: {{respuesta.0}}</p>
-					        </td>
-					        <td class="rebatir"></td><td class="rebatir"></td>
-			            </tr>
-			            {% endfor %} 
-		              	{% endif %}      
-					{% empty %}
-					   	<tr><td> </td></tr> 
-					{% endfor %}
-
-			</table>
-			</div>
-		    </div>
-		  </div>
-		</div>
+	</div>
 	</div>
 	<p class="bottom-three">.</p>
 </div>

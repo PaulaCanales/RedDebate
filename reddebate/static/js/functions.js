@@ -92,3 +92,38 @@ function definir_postura(id_debate, postura, post_f, post_c){
   }
   cambiar_postura(id_debate, postura, post_f, post_c);
 }
+
+function posturaChart() {
+  var data = google.visualization.arrayToDataTable([
+          ['Postura', 'Cantidad'],
+          ['A Favor', varGlobal.postura_f],
+          ['En Contra', varGlobal.postura_c]
+        ]);
+
+        var options = {
+          title: 'Resumen Posturas',
+          width:400,
+          height:300,
+          colors: ['#18BD9B', '#2D3E50']
+        };
+
+        var chart = new google.visualization.PieChart(document.getElementById('piechart_postura'));
+        chart.draw(data, options);
+}
+function argumentosChart() {
+  var data = google.visualization.arrayToDataTable([
+          ['Argumentos', 'Cantidad'],
+          ['A Favor', varGlobal.argumentos_f],
+          ['En Contra', varGlobal.argumentos_c]
+        ]);
+
+        var options = {
+          title: 'Resumen Argumentos',
+          width:400,
+          height:300,
+          colors: ['#18BD9B', '#2D3E50']
+        };
+
+        var chart = new google.visualization.PieChart(document.getElementById('piechart_argumento'));
+        chart.draw(data, options);
+}
