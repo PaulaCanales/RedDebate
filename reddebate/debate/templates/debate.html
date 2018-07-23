@@ -33,9 +33,9 @@
 						<form id="confirmarcambiopost" method="post" action= "{% url 'despliega' debate.id_debate %}" enctype="multipart/form-data">{% csrf_token %}
               <input type="hidden" value="{{ debate.id_debate }}" name="id">
 							<input type="hidden" value="" name="postura_debate" id="postura_debate">
-							<div class="radio"> <label><input type="radio" name="razon1" checked> Cambié de opinión </label></div>
-							<div class="radio"> <label><input type="radio" name="razon2"> Me equivoqué de botón </label></div>
-							<div class="radio"> <label><input type="radio" name="razon3"> Otro </label></div>
+							<div class="radio"> <label><input type="radio" value="1" name="razon" checked> Cambié de opinión </label></div>
+							<div class="radio"> <label><input type="radio" value="2" name="razon"> Me equivoqué de botón </label></div>
+							<div class="radio"> <label><input type="radio" value="3" name="razon"> Otro </label></div>
               <button type="submit" class="btn btn-perfil" > Aceptar </button>
 							<a class="btn btn-perfil" onclick="cerrar_modal('cambioPostura_modal')">Cancelar</a>
             </form>

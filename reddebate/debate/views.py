@@ -234,9 +234,11 @@ def define_postura(request):
 
 	if 'postura_debate' in request.POST:
 		post_usuario= request.POST['postura_debate']
+		razon_cambio = request.POST['razon']
 		try:
 			publicar_postura = Postura.objects.get(id_debate_id=id_debat, id_usuario_id=usuario.id)
 			publicar_postura.postura=post_usuario
+			publicar_postura.cambio_postura=razon_cambio
 		except:
 			print("Error en publicar_postura")
 
