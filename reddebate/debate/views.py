@@ -96,9 +96,10 @@ def despliega(request, id_debate): #debate_id
 		val_sumar = Valoracion.objects.filter(id_argumento_id= argumento.id_argumento, tipo_valoracion="sumar").count()
 		val_quitar = Valoracion.objects.filter(id_argumento_id= argumento.id_argumento, tipo_valoracion="quitar").count()
 		valoracion_argF = val_sumar - val_quitar
+		post_usr_arg = Postura.objects.get(id_usuario_id= argumento.id_usuario_id, id_debate_id=id_debate).postura
 		argumentos_F.append([argumento.descripcion, usuario_debate,
 			valoracion_argF, argumento.id_argumento, t_valoracion,
-			usuario_id, redebates_lista , tiene_comentario, ediciones, argumento.alias_c])
+			usuario_id, redebates_lista , tiene_comentario, ediciones, argumento.alias_c, argumento.postura, post_usr_arg])
 
 		if (request.user.id == argumento.id_usuario_id):
 			tiene_argumento ='si'
@@ -142,9 +143,10 @@ def despliega(request, id_debate): #debate_id
 		val_quitar = Valoracion.objects.filter(id_argumento_id= argumento.id_argumento, tipo_valoracion="quitar").count()
 		valoracion_argC = val_sumar - val_quitar
 		t_valoracion=[t_valoracion_suma,t_valoracion_quita]
+		post_usr_arg = Postura.objects.get(id_usuario_id= argumento.id_usuario_id, id_debate_id=id_debate).postura
 		argumentos_C.append([argumento.descripcion, usuario_debate,
 		 valoracion_argC, argumento.id_argumento, t_valoracion,
-		 usuario_id, redebates_lista, tiene_comentario, ediciones, argumento.alias_c ])
+		 usuario_id, redebates_lista, tiene_comentario, ediciones, argumento.alias_c,  argumento.postura, post_usr_arg ])
 		if (request.user.id == argumento.id_usuario_id):
 			tiene_argumento = 'si'
 	argumentos_C = sorted(argumentos_C, key=lambda valoracion: valoracion[2], reverse=True)
@@ -205,29 +207,39 @@ def define_postura(request):
 
 	if 'postura_debate_ajax' in request.POST:
 		post_usuario= request.POST['postura_debate_ajax']
-		if (Postura.objects.filter(id_debate_id=id_debat, id_usuario_id=usuario.id).count() >0):
+		try:
 			publicar_postura = Postura.objects.get(id_debate_id=id_debat, id_usuario_id=usuario.id)
 			publicar_postura.postura=post_usuario
-		else:
-			publicar_postura = Postura(postura=post_usuario, id_debate_id=id_debat, id_usuario_id=usuario.id)
+		except:
+			publicar_postura = Postura(postura=post_usuario, postura_inicial=post_usuario, id_debate_id=id_debat, id_usuario_id=usuario.id)
 		publicar_postura.save()
-		if post_usuario=='1' :
-			resp= "A Favor"
-		else:
-			resp= "En Contra"
+		if post_usuario=='1': resp= "A Favor"
+		else: resp= "En Contra"
+
 		return (resp)
+
 	if 'postura_debate' in request.POST:
 		post_usuario= request.POST['postura_debate']
 		try:
 			publicar_postura = Postura.objects.get(id_debate_id=id_debat, id_usuario_id=usuario.id)
 			publicar_postura.postura=post_usuario
 		except:
-			print("error en publicar_postura")
+			print("Error en publicar_postura")
+
+		try:
+			argumento = Argumento.objects.get(id_debate_id=id_debat, id_usuario_id =usuario.id)
+			if(int(argumento.postura)!=int(publicar_postura.postura)):
+				marcar_argumento=argumento.id_argumento
+			else:
+				marcar_argumento = "vacio"
+		except:
+			marcar_argumento = "vacio"
+
+
 		publicar_postura.save()
-		if (Argumento.objects.filter(id_debate_id=id_debat, id_usuario_id=usuario.id).count() >0):
+		'''if (Argumento.objects.filter(id_debate_id=id_debat, id_usuario_id=usuario.id).count() >0):
 			argumento_eliminar =Argumento.objects.get(id_debate_id=id_debat, id_usuario_id =usuario.id)
-			argumento_eliminar.delete()
-		#eliminar argumento:
+			argumento_eliminar.delete()'''
 
 		return (id_debat)
 

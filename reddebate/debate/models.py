@@ -14,6 +14,7 @@ class Postura(models.Model):
     #parametros de la tabla.
     id_postura = models.AutoField(primary_key=True)
     postura = models.IntegerField(default=1)
+    postura_inicial = models.IntegerField(default=1)
     date_Postura = models.DateField(default=datetime.now)
     id_usuario = models.ForeignKey(User)
     id_debate = models.ForeignKey(Debate)

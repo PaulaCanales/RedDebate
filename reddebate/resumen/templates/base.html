@@ -35,7 +35,11 @@
                  } ,
                  success: function(data) {
 									 location.reload();
-                   document.getElementById('tu_postura').innerHTML = data;
+									 console.log(data);
+									 var comparar = data.localeCompare('vacio')
+									 if (comparar != 0){
+										 document.getElementById("cambio_postura"+data).style.display = 'block';
+									 }
                  },
                  failure: function(data) {
                      alert('Error de conexión');

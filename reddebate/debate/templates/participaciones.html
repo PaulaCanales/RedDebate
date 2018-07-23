@@ -26,7 +26,7 @@
             <p><a href="{% url 'perfiles' name %}"><p1>{{arg.1}}:</p1></a> {{arg.0}}</p>
           {% endwith %}
         </td>
-        <td rowspan="2" style="border-bottom: #fff; text-align: center;"> <!-- boton editar/rebatir-->
+        <td style="border-bottom: #fff; text-align: center;"> <!-- boton editar/rebatir-->
       		<div style="float:right">
             <button id="bot_rebatir{{postura}}" type="submit" class="btn btn-args" data-whatever="{{arg.6}}" onclick='javascript:mostrar_modal("respuesta_modal{{postura}}","{{arg.3}}","{{arg.6}}");' >{{ arg.6|length }} <span class="glyphicon glyphicon-comment"  ></span></button>
           </div>
@@ -75,6 +75,11 @@
       </tr>
       <tr>
         <td style="border-bottom: #fff; text-align: center;" id="val{{arg.3}}"> {{arg.2}}</td>
+        {% ifequal arg.10 arg.11%}
+        <td style="border-bottom: #fff; text-align: center; display:none" id="cambio_postura{{arg.3}}"> <span class="glyphicon glyphicon-refresh" aria-hidden="true"></span> </td>
+        {% else %}
+        <td style="border-bottom: #fff; text-align: center; display:block" id="cambio_postura{{arg.3}}"> <span class="glyphicon glyphicon-refresh" aria-hidden="true"></span> </td>
+        {% endifequal %}
       </tr>
       <tr>
         <td>

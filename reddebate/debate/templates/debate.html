@@ -72,7 +72,7 @@
 				<div class="container" name="desc">
 						<div class="row" id="my-row">
 							<div class="col-sm-3 panel">
-								<form id="bot_af" method="post" action= "{% url 'despliega' debate.id_debate %}" enctype="multipart/form-data" onsubmit="return confirm('¿Seguro que desea cambiar de postura?, si escribió un argumento este se eliminará');">{% csrf_token %}
+								<form id="bot_af" method="post" action= "{% url 'despliega' debate.id_debate %}" enctype="multipart/form-data" onsubmit="return confirm('¿Seguro que desea cambiar de postura? Su cambio quedará registrado.');">{% csrf_token %}
 					                <input type="hidden" value="{{ debate.id_debate }}" name="id">
 					                <input type="hidden" value="1" name="postura_debate">
 					                <button type="submit" class="btn btn-posturactual" disabled ><span class="glyphicon glyphicon-thumbs-up"></span> A Favor <br><br><label id="label_porc_f">{{porc_f}}%</label></button>
@@ -101,7 +101,7 @@
 								</div>
 							</div>
 							<div class="col-sm-3 panel">
-								<form id="bot_ec" method="post" action= "{% url 'despliega' debate.id_debate %}" enctype="multipart/form-data" onsubmit="return confirm('¿Seguro que desea cambiar de postura?, si escribió un argumento este se eliminará');">{% csrf_token %}
+								<form id="bot_ec" method="post" action= "{% url 'despliega' debate.id_debate %}" enctype="multipart/form-data" onsubmit="return confirm('¿Seguro que desea cambiar de postura? Su cambio quedará registrado.');">{% csrf_token %}
 					                <input type="hidden" value="{{ debate.id_debate }}" name="id">
 					                <input type="hidden" value="0" name="postura_debate">
 					                <button type="submit" class="btn btn-postura" ><span class="glyphicon glyphicon-thumbs-down"></span> En Contra <br><br> <label id="label_porc_c">{{porc_c}}%</label> </button>
@@ -113,7 +113,7 @@
 				<div class="container" name="desc">
 						<div class="row" id="my-row">
 							<div class="col-sm-3 panel">
-								<form id="bot_af" method="post" action= "{% url 'despliega' debate.id_debate %}" enctype="multipart/form-data" onsubmit="return confirm('¿Seguro que desea cambiar de postura?, si escribió un argumento este se eliminará');">{% csrf_token %}
+								<form id="bot_af" method="post" action= "{% url 'despliega' debate.id_debate %}" enctype="multipart/form-data" onsubmit="return confirm('¿Seguro que desea cambiar de postura? Su cambio quedará registrado.');">{% csrf_token %}
 				                <input type="hidden" value="{{ debate.id_debate }}" name="id">
 				                <input type="hidden" value="1" name="postura_debate">
 				                <button type="submit" class="btn btn-postura" ><span class="glyphicon glyphicon-thumbs-up"></span> A Favor <br><br> <label id="label_porc_f">{{porc_f}}%</label> </button>
@@ -142,7 +142,7 @@
 								</div>
 							</div>
 							<div class="col-sm-3 panel">
-								<form id="bot_ec" method="post" action= "{% url 'despliega' debate.id_debate %}" enctype="multipart/form-data" onsubmit="return confirm('¿Seguro que desea cambiar de postura?, si escribió un argumento este se eliminará');">{% csrf_token %}
+								<form id="bot_ec" method="post" action= "{% url 'despliega' debate.id_debate %}" enctype="multipart/form-data" onsubmit="return confirm('¿Seguro que desea cambiar de postura? Su cambio quedará registrado.');">{% csrf_token %}
 				            <input type="hidden" value="{{ debate.id_debate }}" name="id">
 				            <input type="hidden" value="0" name="postura_debate">
 				            <button type="submit" class="btn btn-posturactual" disabled ><span class="glyphicon glyphicon-thumbs-down"></span> En Contra <br><br> <label id="label_porc_c">{{porc_c}}%</label> </button>
