@@ -92,7 +92,6 @@ def despliega(request, id_debate): #debate_id
 			t_valoracion_quita = "si"
 		except:
 			t_valoracion_quita = "no"
-		print(usuario_debate)
 		t_valoracion=[t_valoracion_suma,t_valoracion_quita]
 		val_sumar = Valoracion.objects.filter(id_argumento_id= argumento.id_argumento, tipo_valoracion="sumar").count()
 		val_quitar = Valoracion.objects.filter(id_argumento_id= argumento.id_argumento, tipo_valoracion="quitar").count()
@@ -206,13 +205,11 @@ def define_postura(request):
 
 	if 'postura_debate_ajax' in request.POST:
 		post_usuario= request.POST['postura_debate_ajax']
-		print (post_usuario)
 		if (Postura.objects.filter(id_debate_id=id_debat, id_usuario_id=usuario.id).count() >0):
 			publicar_postura = Postura.objects.get(id_debate_id=id_debat, id_usuario_id=usuario.id)
 			publicar_postura.postura=post_usuario
 		else:
 			publicar_postura = Postura(postura=post_usuario, id_debate_id=id_debat, id_usuario_id=usuario.id)
-		print(publicar_postura)
 		publicar_postura.save()
 		if post_usuario=='1' :
 			resp= "A Favor"
@@ -221,7 +218,6 @@ def define_postura(request):
 		return (resp)
 	if 'postura_debate' in request.POST:
 		post_usuario= request.POST['postura_debate']
-		print (post_usuario)
 		try:
 			publicar_postura = Postura.objects.get(id_debate_id=id_debat, id_usuario_id=usuario.id)
 			publicar_postura.postura=post_usuario
@@ -241,11 +237,9 @@ def define_postura(request):
 ##@warning Login is required
 @login_required
 def publica_argumento(request):
-	print("post_arg de despliega")
 	descrip = request.POST['descripcion']
 	postura_deb_usr = request.POST['postura']
 	usuario = request.user
-	print(request.user)
 	id_debat = request.POST['id_deb']
 	try:
 		publicar = Argumento.objects.get(id_usuario_id=usuario.id,id_debate_id=id_debat)
@@ -270,7 +264,6 @@ def publica_argumento(request):
 		 		id_debate_id=id_debat, postura= postura_deb_usr)
 
 	publicar.save()
-	print (Argumento.objects.filter(id_debate_id= id_debat))
 	return(id_debat)
 
 ##@brief Funcion que guarda el comentario del usuario de un argumento.

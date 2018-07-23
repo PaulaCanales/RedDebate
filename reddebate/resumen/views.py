@@ -36,7 +36,6 @@ def index(request):
         if debate.estado != 'cerrado' and debate.date_fin!= None and debate.date_fin <= ahora :
             debate.estado = 'cerrado'
             debate.save()
-            print(debate)
     print("el usuario activo es_: ", usuario.id)
     perfil_usuario = Perfil.objects.get(user_id= usuario.id)
     alias_usuario = perfil_usuario.alias
@@ -51,17 +50,12 @@ def index(request):
 def iniciando_alias(request, u):
     try:
         usuario_2 = Perfil.objects.get(user= u)
-        print("en el try: alias_usuario")
         alias_usuario = usuario_2.alias
-        print(alias_usuario)
     except:
         perfil_usuario= Perfil(user=u)
         perfil_usuario.save()
         usuario_2 = Perfil.objects.get(user= u)
         alias_usuario = usuario_2.alias
-
-        print("en el except: alias_usuario")
-        print(alias_usuario)
 
 ##@brief Funcion que cierra el debate
 ##@param request solicitud web
@@ -69,7 +63,6 @@ def iniciando_alias(request, u):
 ##@warning Login is required
 @login_required
 def cerrar_debate(request):
-    print("cerrado el debate", request.POST['id_deb'])
     id_deb = request.POST['id_deb']
     deb = Debate.objects.get(pk=id_deb)
     deb.estado = 'cerrado'

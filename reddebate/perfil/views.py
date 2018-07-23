@@ -23,15 +23,12 @@ from debate.models import Postura, Argumento, Respuesta
 def perfiles(request, id):
     input  = id.split("X")
     if input[1]=="argumento":
-        print("estoy aquiiiiiii")
         argumento = Argumento.objects.get(id_argumento=input[0])
         usa_alias = argumento.alias_c
         usuario = User.objects.get(id=argumento.id_usuario_id)
         alias_usuario = Perfil.objects.get(user_id=usuario)
-        print(alias_usuario.alias)
 
     elif input[1]=="respuesta":
-        print("ahora estoy en el otro lado")
         respuesta = Respuesta.objects.get(id_respuesta=input[0])
         usa_alias = respuesta.alias_c
         usuario = User.objects.get(id=respuesta.id_usuario_id)
@@ -56,7 +53,6 @@ def perfil(request):
         if 'nuevo_alias' in request.POST:
             nuevo_alias = request.POST['nuevo_alias']
             usuario = request.user
-            print (usuario.id)
             publicar= Perfil.objects.get(user=usuario)
             publicar.alias = nuevo_alias
             publicar.save()
