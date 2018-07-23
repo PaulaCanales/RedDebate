@@ -12,6 +12,7 @@ $(document).ready(function(){
 	google.charts.setOnLoadCallback(posturaChart);
 	google.charts.setOnLoadCallback(argumentosChart);
 	google.charts.setOnLoadCallback(mejorArgumentoChart);
+	google.charts.setOnLoadCallback(cambioPosturaChart);
 	});
 	var varGlobal = {
 		postura_f : {{num_post_f}},
@@ -21,7 +22,10 @@ $(document).ready(function(){
 		primer_arg_f : 0,
 		segundo_arg_f : 0,
 		primer_arg_c : 0,
-		segundo_arg_c : 0
+		segundo_arg_c : 0,
+		cambio_favor_contra: {{cambio_f_c}},
+		cambio_contra_favor: {{cambio_c_f}},
+		cambio_total: {{cambio_f_c}} + {{cambio_c_f}}
 	}
 	{% if argF.0.2 %} varGlobal.primer_arg_f={{ argF.0.2}}; {% endif %}
 	{% if argF.1.2 %} varGlobal.segundo_arg_f={{ argF.1.2}}; {% endif %}
@@ -81,8 +85,9 @@ $(document).ready(function(){
 		<h3>Estadísticas</h3>
 
 		<div class="row_est">
-			 <div class="col-md-6"> <div id="piechart_postura"></div></div>
-		   <div class="col-md-6"> <div id="piechart_argumento"></div></div>
+			 <div class="col-md-4"> <div id="piechart_postura"></div></div>
+			 <div class="col-md-4"> <div id="piechart_argumento"></div></div>
+		   <div class="col-md-4"> <div id="piechart_cambioPostura"></div></div>
 		</div>
 		<br><br><br>
 		<div class="container">

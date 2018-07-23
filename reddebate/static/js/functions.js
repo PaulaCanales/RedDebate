@@ -128,6 +128,24 @@ function argumentosChart() {
         chart.draw(data, options);
 }
 
+function cambioPosturaChart() {
+  var data = google.visualization.arrayToDataTable([
+          ['Cambio', 'Cantidad'],
+          ['De Favor a Contra', varGlobal.cambio_favor_contra],
+          ['De Contra a Favor', varGlobal.cambio_contra_favor]
+        ]);
+
+        var options = {
+          title: 'Usuarios que cambiaron de postura: '+varGlobal.cambio_total,
+          width:400,
+          height:300,
+          colors: ['#18BD9B', '#2D3E50']
+        };
+
+        var chart = new google.visualization.PieChart(document.getElementById('piechart_cambioPostura'));
+        chart.draw(data, options);
+}
+
 function mejorArgumentoChart(){
   var data = new google.visualization.arrayToDataTable([
       ['Valoración', 'A Favor','En Contra'],
