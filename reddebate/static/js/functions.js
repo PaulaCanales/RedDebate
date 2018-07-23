@@ -171,3 +171,7 @@ function mejorArgumentoChart(){
     var chart = new google.charts.Bar(document.getElementById('chart_mejorArgumento'));
     chart.draw(data, options);
    };
+function confirmar_cambio(post) {
+   document.getElementById("cambioPostura_modal").style.display="block";
+   document.getElementById("postura_debate").value = post;
+}
