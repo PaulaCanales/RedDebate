@@ -186,18 +186,16 @@ def despliega(request, id_debate): #debate_id
 			'porc_f': porcentaje_f, 'porc_c': porcentaje_c })
 	else:
 		posturas_total = Postura.objects.filter(id_debate_id= id_debate)
-		cambio_favor_contra = 0
-		cambio_contra_favor = 0
-		for postura in posturas_total:
-			if postura.postura_inicial == 0:
-				if postura.postura ==1:
-					cambio_favor_contra += 1
-			else:
-				if postura.postura ==0:
-					cambio_contra_favor += 1
-			print("debatecerrado")
-			print(cambio_favor_contra)
-			print(cambio_contra_favor)
+		cambio_favor_contra = Postura.objects.filter(id_debate_id=id_debate, postura_inicial=0, postura=1).count()
+		cambio_contra_favor = Postura.objects.filter(id_debate_id=id_debate, postura_inicial=1, postura=0).count()
+
+		razon_favor_contra = []
+		razon_contra_favor = []
+		for i in range (1,4):
+			razon_favor_contra.append(Postura.objects.filter(id_debate_id=id_debate, postura_inicial=0, postura=1, cambio_postura=i).count())
+		for i in range (1,4):
+			razon_contra_favor.append(Postura.objects.filter(id_debate_id=id_debate, postura_inicial=1, postura=0, cambio_postura=i).count())
+
 		return render(request, 'debate_cerrado.html', {'debate': debate,
 			'usuario_creador': usuario_creador,
 			'usuario': usuario_actual,
@@ -207,7 +205,8 @@ def despliega(request, id_debate): #debate_id
 			'argF': argumentos_F, 'argC': argumentos_C, 't_arg': tiene_argumento,
 			'num_post_f': numpost_f, 'num_post_c': numpost_c,
 			'porc_f': porcentaje_f, 'porc_c': porcentaje_c,
-			'cambio_f_c':cambio_favor_contra, 'cambio_c_f':cambio_contra_favor })
+			'cambio_f_c':cambio_favor_contra, 'cambio_c_f':cambio_contra_favor,
+			'razon_f_c':razon_favor_contra, 'razon_c_f':razon_contra_favor })
 
 
 ##@brief Funcion que guarda la postura del usuario en el debate, si esta ya existe la cambia, sino la crea.

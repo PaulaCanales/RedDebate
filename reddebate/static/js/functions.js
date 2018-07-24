@@ -1,11 +1,9 @@
 function cambiar_alias(){
-  console.log("llega al cambiar_alias");
   document.getElementById('boton_alias').style.display = 'none';
   document.getElementById('formulario_alias').style.display = 'block';
 }
 
 function cancelar_alias(){
-  console.log("llega al cambiar_alias");
   document.getElementById('formulario_alias').style.display = 'none';
   document.getElementById('boton_alias').style.display = 'block';
 }
@@ -92,6 +90,12 @@ function definir_postura(id_debate, postura, post_f, post_c){
   }
   cambiar_postura(id_debate, postura, post_f, post_c);
 }
+function confirmar_cambio(post) {
+   document.getElementById("cambioPostura_modal").style.display="block";
+   document.getElementById("postura_debate").value = post;
+}
+
+// Gráficos
 
 function posturaChart() {
   var data = google.visualization.arrayToDataTable([
@@ -144,6 +148,11 @@ function cambioPosturaChart() {
 
         var chart = new google.visualization.PieChart(document.getElementById('piechart_cambioPostura'));
         chart.draw(data, options);
+
+        function selectHandler() {
+          var selectedItem = chart.getSelection()[0].row;
+         }
+        google.visualization.events.addListener(chart, 'select', selectHandler);
 }
 
 function mejorArgumentoChart(){
@@ -152,26 +161,46 @@ function mejorArgumentoChart(){
       ['1º Mejor Valorado', varGlobal.primer_arg_f  ,varGlobal.primer_arg_c],
       ['2º Mejor Valorado', varGlobal.segundo_arg_f  , varGlobal.segundo_arg_c]]);
     var options = {
-      width: 800,
-      chart: {
-        title: 'Valoración',
-        subtitle: 'Comparación de los argumentos a favor y en contra más valorados' },
-        bars: 'horizontal', // Required for Material Bar Charts.
+      title: 'Argumentos a favor y en contra más valorados',
+      chartArea: {width: '50%'},
+      bars: 'horizontal', // Required for Material Bar Charts.
+      series: {
+        0: { color: '18BD9B'}, // Bind series 0 to an axis named 'distance'.
+        1: { color: '2D3E50'} // Bind series 1 to an axis named 'brightness'.
+      },
+      hAxis: {
+          title: 'Cantidad'
+        },
+        vAxis: {
+          title: 'Valoración'
+        }
+    };
+    var chart = new google.visualization.BarChart(document.getElementById('chart_mejorArgumento'));
+    chart.draw(data, options);
+   };
+function razonCambioChart(){
+  var data = new google.visualization.arrayToDataTable([
+      ['Razón', 'De Favor a Contra','De Contra a Favor'],
+      ['Cambió de opinión', varGlobal.razon_favor_contra[0]  ,varGlobal.razon_contra_favor[0]],
+      ['Error de clic', varGlobal.razon_favor_contra[1]  ,varGlobal.razon_contra_favor[1]],
+      ['Otro', varGlobal.razon_favor_contra[2] , varGlobal.razon_contra_favor[2]]]);
+
+      var options = {
+        title: 'Motivos cambio de postura',
+        chartArea: {width: '50%'},
+        isStacked: true,
         series: {
           0: { color: '18BD9B'}, // Bind series 0 to an axis named 'distance'.
           1: { color: '2D3E50'} // Bind series 1 to an axis named 'brightness'.
         },
-        axes: {
-          x: {
-          argumento: {label: 'Valoración'}, // Bottom x-axis.
-          valoracion: {side: 'top', label: 'magnitud'} // Top x-axis.
-          }
+        hAxis: {
+          title: 'Cantidad',
+          minValue: 0,
+        },
+        vAxis: {
+          title: 'Motivos'
         }
       };
-    var chart = new google.charts.Bar(document.getElementById('chart_mejorArgumento'));
-    chart.draw(data, options);
-   };
-function confirmar_cambio(post) {
-   document.getElementById("cambioPostura_modal").style.display="block";
-   document.getElementById("postura_debate").value = post;
-}
+      var chart = new google.visualization.BarChart(document.getElementById('chart_razonCambio'));
+      chart.draw(data, options);
+    }
