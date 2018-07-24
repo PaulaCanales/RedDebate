@@ -155,7 +155,7 @@
                                 {%endifequal%}
 
                                 <li>
-                                   <form id="id" method="post" action= "{% url 'perfil' %}" enctype="multipart/form-data" onsubmit="return confirm('¿Seguro que desea cerrar el debate?');">{% csrf_token %}
+                                   <form id="id" method="post" action= "{% url 'resumen:index' %}" enctype="multipart/form-data" onsubmit="return confirm('¿Seguro que desea cerrar el debate?');">{% csrf_token %}
                                         <input type="hidden" value="{{ deb.0.id_debate }}" name="id_deb">
 
                                         <button type="submit" class="btn btn-link" ><span class="glyphicon glyphicon-remove-circle"></span> Cerrar </button>

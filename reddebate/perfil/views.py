@@ -102,3 +102,17 @@ def eliminar_debate(request):
     deb = Debate.objects.get(pk=id_deb)
     deb.delete()
     return redirect('perfil')
+##@brief Funcion que actualiza el debate "cerrado" a "abierto"
+##@param request solicitud web
+##@return redirect redirecciona a la vista "perfil"
+##@warning Login is required
+@login_required
+def republicar_debate(request):
+    id_deb=request.POST['id_deb_republicar']
+    deb = Debate.objects.get(pk=id_deb)
+    ahora = datetime.date.today()
+    if (deb.date_fin != None) and deb.date_fin <= ahora :
+        deb.date_fin = None
+    deb.estado = 'abierto'
+    deb.save()
+    return redirect('perfil')

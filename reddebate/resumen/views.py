@@ -101,19 +101,3 @@ def crear_debate(request):
         publicar= Debate(titulo=ti, descripcion=des, id_usuario_id=usuario.id,
             largo=largo_max, alias_c=alias, date_fin= fecha_fin)
     publicar.save()
-
-
-##@brief Funcion que actualiza el debate "cerrado" a "abierto"
-##@param request solicitud web
-##@return redirect redirecciona a la vista "perfil"
-##@warning Login is required
-@login_required
-def republicar_debate(request):
-    id_deb=request.POST['id_deb_republicar']
-    deb = Debate.objects.get(pk=id_deb)
-    ahora = datetime.date.today()
-    if (deb.date_fin != None) and deb.date_fin <= ahora :
-        deb.date_fin = None
-    deb.estado = 'abierto'
-    deb.save()
-    return redirect('perfil')
