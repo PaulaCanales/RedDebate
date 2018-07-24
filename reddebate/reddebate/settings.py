@@ -146,7 +146,7 @@ SOCIAL_AUTH_TWITTER_SECRET = 'HsiSFdrB3IB7e1IPr1Hs4LTxRpB2Tbd61I97YTEDAUNjLovSjt
 SOCIAL_AUTH_URL_NAMESPACE = 'social'
 
 #luego de la autentificacion del usuario redirecciona a la URL, entonces solo será necesario el decorador @login_required.
-SOCIAL_AUTH_LOGIN_REDIRECT_URL =  '/reddebate/resumen/'
+SOCIAL_AUTH_LOGIN_REDIRECT_URL =  '/resumen/'
 LOGIN_URL = '/reddebate/'
 SOCIAL_AUTH_FACEBOOK_SCOPE =['email']
 SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {
