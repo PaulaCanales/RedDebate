@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+
+<html>
+<div class="container">
+	<div class="blank"><table>
+		<tr>
+			<td>
+				<div class="row">
+					<div class="col-md-11 panel">
+						<div class="container-titulo" style="margin-left: 15px;">
+							<h3>{{ debate.titulo }}</h3>
+							{% ifequal debate.alias_c 'alias' %}
+								<h5>Creado por {{alias}} en modo anónimo</h5>
+							{% else %}
+								<h5>Debate creado por {{usuario_creador}}</h5>
+							{% endifequal %}
+						</div>
+					</div>
+					<div class="col-md-1 panel" style="margin-top: 20px">
+						<form id="id" method="post" action= "{% url 'resumen:index' %}" enctype="multipart/form-data" onsubmit="return confirm('¿Seguro que desea cerrar el debate?');">{% csrf_token %}
+							 <input type="hidden" value="{{ debate.id_debate  }}" name="id_deb">
+
+							 <button type="submit" class="btn btn-perfil" >Cerrar</button>
+					 </form>
+					</div>
+				</div>
+			</td>
+		</tr>
+	</table></div>
+	{% ifequal debate.estado 'abierto' %}
+				<div class="container" name="desc">
+						<div class="row" id="my-row">
+							<div class="col-md-3 panel">
+								<button type="submit" class="btn btn-posturactual" disabled ><span class="glyphicon glyphicon-thumbs-up"></span> A Favor <br><br><label id="label_porc_f">{{porc_f}}%</label></button>
+							</div>
+							<div class="col-md-6">
+								<div class="blank">
+										<table>
+										<tr>
+											<td width=120 ><p1>Descripción</p1></td>
+											<td>{{ debate.descripcion }}</td>
+										</tr>
+										<tr>
+											<td width=120 ><p1>Fecha inicio</p1></td>
+											<td>{{ debate.date }}</td>
+										</tr>
+										<tr>
+											<td width=120 ><p1>Estado</p1></td>
+											<td>{{ debate.estado }}</td>
+										</tr>
+										<tr>
+											<td width=120 ><p1>Tu Postura</p1></td>
+											<td> Creador </td>
+										</tr>
+									</table>
+								</div>
+							</div>
+							<div class="col-md-3 panel">
+								<button type="submit" class="btn btn-posturactual" disabled><span class="glyphicon glyphicon-thumbs-down"></span> En Contra <br><br> <label id="label_porc_c">{{porc_c}}%</label> </button>
+							</div>
+						</div>
+			</div>
+	{% endifequal %}
+	<ul class="tab">
+	<li><a href="javascript:void(0)" class="tablinks" onclick="ver(event, 'argumentos')" id="args">Argumentos</a></li>
+	<li><a href="javascript:void(0)" class="tablinks" onclick="ver(event, 'estadisticas')">Estadísticas</a></li>
+	</ul>
+		<!-- argumentos -->
+	<div id="argumentos" class="tabcontent" >
+		<h2>Argumentos</h2>
+		<div class="container" name="arg_afavor">
+			<div class="row">
+		    <div class="col-md-6">
+					{% include 'participaciones.html' with frase="A Favor" comentario=argF postura=1 num_post=num_post_f%}
+				</div>
+				<div class="col-md-6">
+					{% include 'participaciones.html' with frase="En Contra" comentario=argC postura=0 num_post=num_post_c%}
+				</div>
+			</div>
+		</div>
+		<p class="bottom-three">.</p>
+	</div>
+	<div id="estadisticas" class="tabcontent"> Holi </div>
+
+</html>

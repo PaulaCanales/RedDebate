@@ -1,4 +1,4 @@
-from django.conf.urls import url
+from django.conf.urls import url, include
 
 from . import views
 
@@ -7,5 +7,6 @@ urlpatterns = [
 
 	#url(r'^post_arg$', views.post_arg, name='post_arg'),
 	url(r'^(?P<id_debate>[0-9]+)/$', views.despliega, name='despliega'),
+	url(r'^', include('resumen.urls', namespace='resumen'))
 
 ]
