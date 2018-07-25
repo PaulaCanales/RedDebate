@@ -174,39 +174,33 @@ def despliega(request, id_debate): #debate_id
 		porcentaje_f = round(float(numpost_f) / float(numpost_c+numpost_f),3)*100
 		porcentaje_c = round(float(numpost_c) / float(numpost_c+numpost_f),3)*100
 
-	if debate.estado == 'abierto':
-		return render(request, 'debate.html', {'debate': debate,
-			'usuario_creador': usuario_creador,
-			'usuario': usuario_actual,
-			'alias': perfil_creador,
-			'alias_actual': usuario_actual_alias.alias,
-			'postura_usr_deb': postura_debate_usuario,
-			'argF': argumentos_F, 'argC': argumentos_C, 't_arg': tiene_argumento,
-			'num_post_f': numpost_f, 'num_post_c': numpost_c,
-			'porc_f': porcentaje_f, 'porc_c': porcentaje_c })
-	else:
-		posturas_total = Postura.objects.filter(id_debate_id= id_debate)
-		cambio_favor_contra = Postura.objects.filter(id_debate_id=id_debate, postura_inicial=0, postura=1).count()
-		cambio_contra_favor = Postura.objects.filter(id_debate_id=id_debate, postura_inicial=1, postura=0).count()
+	posturas_total = Postura.objects.filter(id_debate_id= id_debate)
+	cambio_favor_contra = Postura.objects.filter(id_debate_id=id_debate, postura_inicial=0, postura=1).count()
+	cambio_contra_favor = Postura.objects.filter(id_debate_id=id_debate, postura_inicial=1, postura=0).count()
 
-		razon_favor_contra = []
-		razon_contra_favor = []
-		for i in range (1,4):
-			razon_favor_contra.append(Postura.objects.filter(id_debate_id=id_debate, postura_inicial=0, postura=1, cambio_postura=i).count())
-		for i in range (1,4):
-			razon_contra_favor.append(Postura.objects.filter(id_debate_id=id_debate, postura_inicial=1, postura=0, cambio_postura=i).count())
+	razon_favor_contra = []
+	razon_contra_favor = []
+	for i in range (1,4):
+		razon_favor_contra.append(Postura.objects.filter(id_debate_id=id_debate, postura_inicial=0, postura=1, cambio_postura=i).count())
+	for i in range (1,4):
+		razon_contra_favor.append(Postura.objects.filter(id_debate_id=id_debate, postura_inicial=1, postura=0, cambio_postura=i).count())
 
-		return render(request, 'debate_cerrado.html', {'debate': debate,
-			'usuario_creador': usuario_creador,
-			'usuario': usuario_actual,
-			'alias': perfil_creador,
-			'alias_actual': usuario_actual_alias.alias,
-			'postura_usr_deb': postura_debate_usuario,
-			'argF': argumentos_F, 'argC': argumentos_C, 't_arg': tiene_argumento,
-			'num_post_f': numpost_f, 'num_post_c': numpost_c,
-			'porc_f': porcentaje_f, 'porc_c': porcentaje_c,
-			'cambio_f_c':cambio_favor_contra, 'cambio_c_f':cambio_contra_favor,
-			'razon_f_c':razon_favor_contra, 'razon_c_f':razon_contra_favor })
+	datos = {'debate': debate,
+		'usuario_creador': usuario_creador,
+		'usuario': usuario_actual,
+		'alias': perfil_creador,
+		'alias_actual': usuario_actual_alias.alias,
+		'postura_usr_deb': postura_debate_usuario,
+		'argF': argumentos_F, 'argC': argumentos_C, 't_arg': tiene_argumento,
+		'num_post_f': numpost_f, 'num_post_c': numpost_c,
+		'porc_f': porcentaje_f, 'porc_c': porcentaje_c,
+		'cambio_f_c':cambio_favor_contra, 'cambio_c_f':cambio_contra_favor,
+		'razon_f_c':razon_favor_contra, 'razon_c_f':razon_contra_favor }
+	return render(request, 'debate.html', datos)
+	# if debate.estado == 'abierto':
+	# 	return render(request, 'debate.html', datos)
+	# else:
+	# 	return render(request, 'debate_cerrado.html', datos)
 
 
 ##@brief Funcion que guarda la postura del usuario en el debate, si esta ya existe la cambia, sino la crea.

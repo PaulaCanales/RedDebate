@@ -41,117 +41,69 @@
 						</div>
 			</div>
 		</div>
-		{% ifequal debate.estado 'abierto'%}
-			{% ifequal postura_usr_deb 'No definido' %}
-				<div class="container" name="desc">
-							<div class="row" id="my-row">
-								<div class="col-md-3 panel">
-									<button id = "bot_af" type="submit" class="btn btn-postura" onclick='javascript:definir_postura("{{ debate.id_debate }}", "1", "{{num_post_f}}", "{{num_post_c}}");'>
-										<span class="glyphicon glyphicon-thumbs-up"></span>
-										A Favor <br><br>
-										<label id="label_porc_f"></label>
-									</button>
-								</div>
-								<div class="col-md-6">
-									<div class="blank">
-											<table>
-											<tr>
-												<td width=120 ><p1>Descripción</p1></td>
-												<td>{{ debate.descripcion }}</td>
-											</tr>
-											<tr>
-												<td width=120 ><p1>Fecha inicio</p1></td>
-												<td>{{ debate.date }}</td>
-											</tr>
-											<tr>
-												<td width=120 ><p1>Estado</p1></td>
-												<td>{{ debate.estado }}</td>
-											</tr>
-											<tr>
-												<td width=120 ><p1>Tu Postura</p1></td>
-												<td><div id="tu_postura" >{{postura_usr_deb}} </div></td>
-											</tr>
-										</table>
-									</div>
-								</div>
-								<div class="col-md-3 panel">
-									<button id = "bot_ec" type="submit" class="btn btn-postura" onclick='javascript:definir_postura("{{ debate.id_debate }}", "0", "{{num_post_f}}", "{{num_post_c}}");'>
-										<span class="glyphicon glyphicon-thumbs-down"></span>
-										En Contra <br><br>
-										<label id="label_porc_c"></label>
-									</button>
-								</div>
-							</div>
+
+		<div class="container" name="desc">
+			<div class="row" id="my-row">
+				<div class="col-md-3 panel">
+					{% ifequal postura_usr_deb 'No definido' %}
+						<button id = "bot_af" type="submit" class="btn btn-postura" onclick='javascript:definir_postura("{{ debate.id_debate }}", "1", "{{num_post_f}}", "{{num_post_c}}");'>
+							<span class="glyphicon glyphicon-thumbs-up"></span>
+							A Favor <br><br>
+							<label id="label_porc_f"></label>
+						</button>
+					{% else %}
+						{% ifequal postura_usr_deb 'A Favor' %}
+							<button id = "bot_af" type="submit" class="btn btn-posturactual" disabled >
+								<span class="glyphicon glyphicon-thumbs-up"></span> A Favor <br><br><label id="label_porc_f">{{porc_f}}%</label>
+							</button>
+						{% else %}
+							<button id = "bot_af" type="submit" class="btn btn-postura" onclick = "confirmar_cambio('1')">
+								<span class="glyphicon glyphicon-thumbs-up"></span> A Favor <br><br> <label id="label_porc_f">{{porc_f}}%</label>
+							</button>
+						{% endifequal%}
+					{% endifequal %}
 				</div>
-			{%else%}
-				{% ifequal postura_usr_deb 'A Favor' %}
-					<div class="container" name="desc">
-							<div class="row" id="my-row">
-								<div class="col-md-3 panel">
-									<button type="submit" class="btn btn-posturactual" disabled ><span class="glyphicon glyphicon-thumbs-up"></span> A Favor <br><br><label id="label_porc_f">{{porc_f}}%</label></button>
-								</div>
-								<div class="col-md-6">
-									<div class="blank">
-											<table>
-											<tr>
-												<td width=120 ><p1>Descripción</p1></td>
-												<td>{{ debate.descripcion }}</td>
-											</tr>
-											<tr>
-												<td width=120 ><p1>Fecha inicio</p1></td>
-												<td>{{ debate.date }}</td>
-											</tr>
-											<tr>
-												<td width=120 ><p1>Estado</p1></td>
-												<td>{{ debate.estado }}</td>
-											</tr>
-											<tr>
-												<td width=120 ><p1>Tu Postura</p1></td>
-												<td><div id="tu_postura" >{{postura_usr_deb}} </div></td>
-											</tr>
-										</table>
-									</div>
-								</div>
-								<div class="col-md-3 panel">
-									<button type="submit" class="btn btn-postura" onclick = "confirmar_cambio('0')"><span class="glyphicon glyphicon-thumbs-down"></span> En Contra <br><br> <label id="label_porc_c">{{porc_c}}%</label> </button>
-								</div>
-							</div>
+				<div class="col-md-6">
+					<div class="blank">
+							<table>
+							<tr>
+								<td width=120 ><p1>Descripción</p1></td><td>{{ debate.descripcion }}</td>
+							</tr>
+							<tr>
+								<td width=120 ><p1>Fecha inicio</p1></td><td>{{ debate.date }}</td>
+							</tr>
+							<tr>
+								<td width=120 ><p1>Estado</p1></td><td>{{ debate.estado }}</td>
+							</tr>
+							<tr>
+								<td width=120 ><p1>Tu Postura</p1></td><td><div id="tu_postura"> {{postura_usr_deb}} </div></td>
+							</tr>
+						</table>
+					</div>
 				</div>
-				{% else %}
-					<div class="container" name="desc">
-							<div class="row" id="my-row">
-								<div class="col-md-3 panel">
-									<button type="submit" class="btn btn-postura" onclick = "confirmar_cambio('1')"><span class="glyphicon glyphicon-thumbs-up"></span> A Favor <br><br> <label id="label_porc_f">{{porc_f}}%</label> </button>
-								</div>
-								<div class="col-md-6">
-									<div class="blank">
-											<table>
-											<tr>
-												<td width=120 ><p1>Descripción</p1></td>
-												<td>{{ debate.descripcion }}</td>
-											</tr>
-											<tr>
-												<td width=120 ><p1>Fecha inicio</p1></td>
-												<td>{{ debate.date }}</td>
-											</tr>
-											<tr>
-												<td width=120 ><p1>Estado</p1></td>
-												<td>{{ debate.estado }}</td>
-											</tr>
-											<tr>
-												<td width=120 ><p1>Tu Postura</p1></td>
-												<td><div id="tu_postura" >{{postura_usr_deb}} </div></td>
-											</tr>
-										</table>
-									</div>
-								</div>
-								<div class="col-md-3 panel">
-									<button type="submit" class="btn btn-posturactual" disabled ><span class="glyphicon glyphicon-thumbs-down"></span> En Contra <br><br> <label id="label_porc_c">{{porc_c}}%</label> </button>
-								</div>
-							</div>
-				 	</div>
-				{%endifequal%}
-			{%endifequal%}
+				<div class="col-md-3 panel">
+					{% ifequal postura_usr_deb 'No definido' %}
+						<button id = "bot_ec" type="submit" class="btn btn-postura" onclick='javascript:definir_postura("{{ debate.id_debate }}", "0", "{{num_post_f}}", "{{num_post_c}}");'>
+							<span class="glyphicon glyphicon-thumbs-down"></span>
+							En Contra <br><br>
+						<label id="label_porc_c"></label>
+					</button>
+					{% else %}
+						{% ifequal postura_usr_deb 'A Favor' %}
+							<button id = "bot_ec" type="submit" class="btn btn-postura" onclick = "confirmar_cambio('0')">
+								<span class="glyphicon glyphicon-thumbs-down"></span> En Contra <br><br> <label id="label_porc_c">{{porc_c}}%</label>
+							</button>
+						{% else %}
+							<button id = "bot_ec" type="submit" class="btn btn-posturactual" disabled >
+								<span class="glyphicon glyphicon-thumbs-down"></span> En Contra <br><br> <label id="label_porc_c">{{porc_c}}%</label>
+							</button>
+						{% endifequal%}
+					{% endifequal %}
+				</div>
+			</div>
+		</div>
+		{% ifequal debate.estado 'cerrado'%}
+			{% include 'estadisticas.html' %}
 		{%endifequal%}
 		{% ifequal postura_usr_deb 'No definido' %}
 		<div id="no-argumentos" style="display: block;" >

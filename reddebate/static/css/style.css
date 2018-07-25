@@ -8,14 +8,7 @@ textarea{
 
 .h1,
 .h2,
-.h3{
-  font-family: inherit;
-  font-weight: 500;
-  line-height: 1.1;
-  color: #2D3E50;
-  padding-top: 25px;
-  padding-bottom: 10px;
-}
+.h3,
 
 .h6{
   color: #2D3E50;
@@ -78,10 +71,12 @@ p1{
   padding-right: 0px;
   padding-left: 15px;
   padding-bottom: 5px;
+  padding-top: 5px;
   margin-right: auto;
   margin-left: auto;
   margin-bottom: 10px;
-  background-color:#18BD9B;
+  background-color:#2D3E50;
+  color: #fff;
   -webkit-border-radius: 8px;
   -moz-border-radius: 8px;
   border-radius: 8px;
@@ -558,6 +553,17 @@ footer {
 .btn-nulo.active,.btn-nulo:active,.btn-nulo:focus,.btn-nulo:hover {
   color:#000;
   border:0px;
+  transition:all .3s ease-in-out;
+}
+.btn-titulo {
+  width: auto;
+  color:#fff;
+  background:#2D3E50;
+  border:0px;
+  font-size: 25px;
+}
+.btn-titulo.active,.btn-titulo:active,.btn-titulo:focus,.btn-titulo:hover {
+  color:#18BC9C;
   transition:all .3s ease-in-out;
 }
 .btn-index {
