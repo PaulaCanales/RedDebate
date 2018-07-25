@@ -28,18 +28,18 @@
         </td>
         <td style="border-bottom: #fff; text-align: center;"> <!-- boton editar/rebatir-->
       		<div style="float:right">
-            <button id="bot_rebatir{{postura}}" type="submit" class="btn btn-args" data-whatever="{{arg.6}}" onclick='javascript:mostrar_modal("respuesta_modal{{postura}}","{{arg.3}}","{{arg.6}}");' >{{ arg.6|length }} <span class="glyphicon glyphicon-comment"  ></span></button>
+            <button id="bot_rebatir{{postura}}" type="submit" class="btn btn-args" data-whatever="{{arg.6}}" onclick='javascript:mostrar_modal("respuesta_modal{{postura}}{{arg.3}}","{{arg.3}}","{{arg.6}}","{{postura}}");' >{{ arg.6|length }} <span class="glyphicon glyphicon-comment"  ></span></button>
           </div>
         </td>
 
-          <div id="respuesta_modal{{postura}}" class="modal">
+          <div id="respuesta_modal{{postura}}{{arg.3}}" class="modal">
             <div class="modal-content">
-              <span class="close" onclick="cerrar_modal('respuesta_modal{{postura}}')">&times;</span>
+              <span class="close" onclick="cerrar_modal('respuesta_modal{{postura}}{{arg.3}}')">&times;</span>
               <h3>Respuestas <span class="glyphicon glyphicon-comment"></span></h3>
                 <div id="descripcion_argumento">
                   {{arg.0}}
                 </div>
-                  <div id=respuestas class="modal-body">
+                  <div id="respuestas" class="modal-body">
                     {% for respuesta in arg.6%}
                       <div class="panel panel-default">
                         <div class="panel-body">
@@ -56,7 +56,7 @@
                           <div class="form-group">
                             <textarea id="textarea6" rows="4" maxlength="{{debate.largo}}" name="descripcion_rebate" value="" type="textarea" class="form-control" placeholder="descripcion"> </textarea>
                             <div id="textarea_feedback6"></div>
-                            <input id="id_argumento_rebate" type="hidden" value="" name="id_arg_rebate">
+                            <input id="id_argumento_rebate{{postura}}{{arg.3}}" type="hidden" value="" name="id_arg_rebate{{postura}}">
                             <input type="hidden" value="{{ debate.id_debate }}" name="id_deb">
                             <div class="checkbox">
                               <label>
@@ -67,7 +67,7 @@
                         <button type="submit" class="btn btn-perfil">Comentar</button>
                       </form>
                     </form>
-                    <button type="submit" class="btn btn-perfil" onclick="cerrar_modal('respuesta_modal{{postura}}')">Cancelar</button>
+                    <button type="submit" class="btn btn-perfil" onclick="cerrar_modal('respuesta_modal{{postura}}{{arg.3}}')">Cancelar</button>
                   </div>
             </div>
           </div>

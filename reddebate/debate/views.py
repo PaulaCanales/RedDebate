@@ -32,7 +32,11 @@ def despliega(request, id_debate): #debate_id
 			respuesta = valorar_argumento(request)
 			return HttpResponse(respuesta)
 
-		if 'id_arg_rebate' in request.POST:
+		if 'id_arg_rebate0' in request.POST:
+			id_debat = publica_redate(request)
+			return redirect(despliega,id_debat)
+
+		if 'id_arg_rebate1' in request.POST:
 			id_debat = publica_redate(request)
 			return redirect(despliega,id_debat)
 
@@ -294,8 +298,11 @@ def publica_argumento(request):
 @login_required
 def publica_redate(request):
 	descrip = request.POST['descripcion_rebate']
-	argumento_debate = request.POST['id_arg_rebate']
-
+	try:
+		argumento_debate = request.POST['id_arg_rebate0']
+	except:
+		argumento_debate = request.POST['id_arg_rebate1']
+	print(argumento_debate)
 	id_debat = request.POST['id_deb']
 	usuario = request.user
 	if 'alias' in request.POST:
