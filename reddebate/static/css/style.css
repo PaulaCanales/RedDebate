@@ -90,7 +90,7 @@ section h2 {
 }
 section.success {
   background: #18BC9C;
-  color: white;
+  color: #2D3E50;
 }
 @media (max-width: 767px) {
   section {
@@ -100,10 +100,8 @@ section.success {
     padding-top: 75px;
   }
 }
-
-.row {
-  margin-right: -15px;
-  margin-left: -15px;
+.fieldWrapper{
+  margin-bottom: 20px;
 }
 .row_est {
   margin-right: -15px;

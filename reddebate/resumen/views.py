@@ -13,7 +13,7 @@ from django.http import HttpResponse
 from resumen.models import Debate
 from debate.models import Postura, Argumento, Respuesta, Valoracion, Edicion
 from perfil.models import Perfil
-from resumen.models import crearDebateForm
+from resumen.forms import creaDebateForm
 
 ##@brief Funcion que despliega todos los debates
 ##@param request solicitud web
@@ -21,15 +21,16 @@ from resumen.models import crearDebateForm
 ##@warning Login is required
 @login_required
 def index(request):
+    form = creaDebateForm()
     if request.method == 'POST':
         if 'id_deb' in request.POST:
             cerrar_debate(request)
         if 'descripcion' in request.POST:
-            crear_debate_img(request)
+            form = crear_debate(request)
             return redirect('index')
 
+
     usuario = request.user
-    #u = User.objects.get(username= usuario.username)
     iniciando_alias(request, usuario)
     category_list = Debate.objects.all().order_by('-id_debate')
     for debate in category_list:
@@ -40,7 +41,7 @@ def index(request):
     print("el usuario activo es_: ", usuario.id)
     perfil_usuario = Perfil.objects.get(user_id= usuario.id)
     alias_usuario = perfil_usuario.alias
-    context = {'object_list': category_list, 'usuario': usuario, 'alias': alias_usuario, }
+    context = {'object_list': category_list, 'usuario': usuario, 'alias': alias_usuario, 'form':form}
     return render(request, 'index.html', context)
 
 ##@brief Funcion que inicializa el alias del usuario actual, en caso de no tener alias sera "anonimo".
@@ -70,50 +71,15 @@ def cerrar_debate(request):
     deb.save()
     return redirect('index')
 
-##@brief Funcion que guarda un nuevo debate, tambien lo edita
+##@brief Funcion que guarda un nuevo debate
 ##@param request solicitud web
 ##@warning Login is required
 @login_required
 def crear_debate(request):
-    if request.method == 'POST':
-        ti = request.POST['titulo']
-        des = request.POST['descripcion']
-        largo_max = request.POST['largo_m']
-        alias = request.POST['alias']
-        fecha_fin = request.POST['date']
-        if (fecha_fin):
-            print(fecha_fin)
-        else:
-            fecha_fin= None
-            print("null")
-        print(fecha_fin)
-        print("valor checkbox 'alias':")
-        usuario = request.user
-    try:
-        id_deb=request.POST['id_debate_editar']
-        publicar = Debate.objects.get(id_debate=id_deb,id_usuario_id=usuario)
-        publicar.titulo=ti
-        publicar.descripcion=des
-        publicar.alias_c=alias
-        publicar.date_fin=fecha_fin
-        publicar.largo=largo_max
-
-    except:
-        publicar= Debate(titulo=ti, descripcion=des, id_usuario_id=usuario.id,
-            largo=largo_max, alias_c=alias, date_fin= fecha_fin)
-    publicar.save()
-
-def crear_debate_img(request):
-    if request.method == 'POST':
-        form = crearDebateForm(request.POST, request.FILES)
-        if form.is_valid():
-            Deb = Debate(titulo=form.cleaned_data['titulo'],
-                        descripcion=form.cleaned_data['descripcion'],
-                        id_usuario_id=form.cleaned_data['id_usuario'],
-                        largo=form.cleaned_data['largo_m'],
-                        alias_c=form.cleaned_data['alias'],
-                        date_fin = form.cleaned_data['date'],
-                        img=form.cleaned_data['image'])
-            Deb.save()
-            return HttpResponse('image upload success')
-    return HttpResponseForbidden('allowed only via POST')
+    if request.method == "POST":
+            form = creaDebateForm(request.POST, request.FILES, initial={'id_usuario': request.user.id})
+            if form.is_valid():
+                post = form.save(commit=False)
+                post.id_usuario = request.user
+                post.save()
+    return form
