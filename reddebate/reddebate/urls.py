@@ -17,7 +17,8 @@ from django.conf.urls import include, url
 from django.contrib import admin
 from django.views.generic import TemplateView
 from django.contrib.auth.views import logout as logout_social
-
+from django.conf import settings
+from django.conf.urls.static import static
 
 
 urlpatterns = [
@@ -37,3 +38,6 @@ urlpatterns = [
     {'next_page': '/reddebate'}, name="user-logout"),
 
 ]
+if settings.DEBUG:
+    urlpatterns += static(settings.STATIC_URL, document_root = settings.STATIC_ROOT)
+    urlpatterns += static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)

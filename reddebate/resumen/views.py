@@ -13,6 +13,7 @@ from django.http import HttpResponse
 from resumen.models import Debate
 from debate.models import Postura, Argumento, Respuesta, Valoracion, Edicion
 from perfil.models import Perfil
+from resumen.models import crearDebateForm
 
 ##@brief Funcion que despliega todos los debates
 ##@param request solicitud web
@@ -24,7 +25,7 @@ def index(request):
         if 'id_deb' in request.POST:
             cerrar_debate(request)
         if 'descripcion' in request.POST:
-            resp = crear_debate(request)
+            crear_debate_img(request)
             return redirect('index')
 
     usuario = request.user
@@ -101,3 +102,18 @@ def crear_debate(request):
         publicar= Debate(titulo=ti, descripcion=des, id_usuario_id=usuario.id,
             largo=largo_max, alias_c=alias, date_fin= fecha_fin)
     publicar.save()
+
+def crear_debate_img(request):
+    if request.method == 'POST':
+        form = crearDebateForm(request.POST, request.FILES)
+        if form.is_valid():
+            Deb = Debate(titulo=form.cleaned_data['titulo'],
+                        descripcion=form.cleaned_data['descripcion'],
+                        id_usuario_id=1,
+                        largo=form.cleaned_data['largo_m'],
+                        alias_c=form.cleaned_data['alias'],
+                        date_fin = form.cleaned_data['date'],
+                        img=form.cleaned_data['image'])
+            Deb.save()
+    #         return HttpResponse('image upload success')
+    # return HttpResponseForbidden('allowed only via POST')

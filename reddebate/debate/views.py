@@ -199,12 +199,9 @@ def despliega(request, id_debate): #debate_id
 		'num_post_f': numpost_f, 'num_post_c': numpost_c,
 		'porc_f': porcentaje_f, 'porc_c': porcentaje_c,
 		'cambio_f_c':cambio_favor_contra, 'cambio_c_f':cambio_contra_favor,
-		'razon_f_c':razon_favor_contra, 'razon_c_f':razon_contra_favor }
+		'razon_f_c':razon_favor_contra, 'razon_c_f':razon_contra_favor,
+		'img': debate.img}
 	return render(request, 'debate.html', datos)
-	# if debate.estado == 'abierto':
-	# 	return render(request, 'debate.html', datos)
-	# else:
-	# 	return render(request, 'debate_cerrado.html', datos)
 
 
 ##@brief Funcion que guarda la postura del usuario en el debate, si esta ya existe la cambia, sino la crea.
@@ -302,7 +299,6 @@ def publica_redate(request):
 		argumento_debate = request.POST['id_arg_rebate0']
 	except:
 		argumento_debate = request.POST['id_arg_rebate1']
-	print(argumento_debate)
 	id_debat = request.POST['id_deb']
 	usuario = request.user
 	if 'alias' in request.POST:

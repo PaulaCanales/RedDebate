@@ -41,7 +41,11 @@ $(document).ready(function(){
 							<table>
 							<tr>
 								<td width=120 ><p1>Descripción</p1></td>
-								<td>{{ debate.descripcion }}</td>
+								<td>{{ debate.descripcion }}
+									{% if img %}
+									<a href="{{ img.url }}"> Adjunto </a>
+									{% endif %}
+								</td>
 							</tr>
 							<tr>
 								<td width=120 ><p1>Fecha inicio</p1></td>
