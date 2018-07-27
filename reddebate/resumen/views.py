@@ -109,11 +109,11 @@ def crear_debate_img(request):
         if form.is_valid():
             Deb = Debate(titulo=form.cleaned_data['titulo'],
                         descripcion=form.cleaned_data['descripcion'],
-                        id_usuario_id=1,
+                        id_usuario_id=form.cleaned_data['id_usuario'],
                         largo=form.cleaned_data['largo_m'],
                         alias_c=form.cleaned_data['alias'],
                         date_fin = form.cleaned_data['date'],
                         img=form.cleaned_data['image'])
             Deb.save()
-    #         return HttpResponse('image upload success')
-    # return HttpResponseForbidden('allowed only via POST')
+            return HttpResponse('image upload success')
+    return HttpResponseForbidden('allowed only via POST')

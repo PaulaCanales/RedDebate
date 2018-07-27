@@ -29,3 +29,4 @@ class crearDebateForm(forms.Form):
     alias = forms.CharField()
     date = forms.DateField(required=False)
     image = forms.FileField(required=False)
+    id_usuario = forms.IntegerField()
