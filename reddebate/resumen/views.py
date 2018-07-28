@@ -21,6 +21,8 @@ from resumen.forms import creaDebateForm
 ##@warning Login is required
 @login_required
 def index(request):
+    usuario = request.user
+    iniciando_alias(request, usuario)
     creador=[('username', User.objects.get(id=request.user.id).username),
 	         ('alias',Perfil.objects.get(user= request.user).alias)]
     form = creaDebateForm(creador=creador)
@@ -32,8 +34,7 @@ def index(request):
             return redirect('index')
 
 
-    usuario = request.user
-    iniciando_alias(request, usuario)
+
     category_list = Debate.objects.all().order_by('-id_debate')
     for debate in category_list:
         ahora = datetime.date.today()

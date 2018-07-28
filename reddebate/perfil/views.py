@@ -13,6 +13,7 @@ from django.http import HttpResponse
 from resumen.models import Debate
 from perfil.models import Perfil
 from debate.models import Postura, Argumento, Respuesta
+from perfil.forms import modificaAlias
 
 # Create your views here.
 ##@brief Funcion que despliega los datos del usuario, debates abiertos, cerrados y opciones para cada uno.
@@ -45,18 +46,19 @@ def perfiles(request, id):
 ##@warning Login is required
 @login_required
 def perfil(request):
+    perfil= Perfil.objects.get(user=request.user)
+    alias_form = modificaAlias(instance=perfil)
     if request.method == 'POST':
         if 'id_deb' in request.POST:
             cerrar_debate(request)
             return redirect('perfil')
 
         if 'nuevo_alias' in request.POST:
-            nuevo_alias = request.POST['nuevo_alias']
-            usuario = request.user
-            publicar= Perfil.objects.get(user=usuario)
-            publicar.alias = nuevo_alias
-            publicar.save()
-            return redirect('perfil')
+            alias_form = modificaAlias(request.POST, instance=perfil)
+            if alias_form.is_valid():
+                perfil = alias_form.save(commit=False)
+                perfil.save()
+                return redirect('perfil')
 
         if 'id_debate_editar' in request.POST:
             crear_debate(request)
@@ -91,6 +93,7 @@ def perfil(request):
         'alias': alias_usuario,
         'debates_abiertos': lista_debates_abiertos,
         'debates_cerrados': debates_cerrados,
+        'alias_form': alias_form,
         })
 ##@brief Funcion que elimina un debate
 ##@param request solicitud web

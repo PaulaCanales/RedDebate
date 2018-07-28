@@ -99,21 +99,27 @@
 
          </div>
         <br>
+        {% if alias_form.alias.errors %}
+          <div class="alert alert-danger">
+              {{ alias_form.alias.errors }}
+              <script>
+              $(document).ready(function(){
+              		try{document.getElementById("boton_alias").click();}
+              		catch(err){}});
+              </script>
+          </div>
+        {% endif %}
         <div id='formulario_alias' style="display: none;" >
+          <form method="POST" class="post-form" enctype="multipart/form-data">{% csrf_token %}
+            {{ alias_form.non_field_errors }}
+						<div class="fieldWrapper">
+                {{ alias_form.user }}
+						    {{ alias_form.alias }}
+						</div>
+            <button name="nuevo_alias" type="submit" class="btn btn-perfil">Publicar</button>
+            <label type="button" onclick='cancelar_alias();' class="btn btn-perfil"> Cancelar </label>
+          </form>
 
-                <form method="POST" class="post-form">{% csrf_token %}
-                    <form action="{% url 'perfil' %}" id="publicar_alias" method="post">{% csrf_token %}
-                        <div class="form-group">
-                             <input name="nuevo_alias" value="" type="text" class="form-control" placeholder="{{alias.alias}}">
-
-                        </div>
-
-
-                        <button type="submit" class="btn btn-perfil">Actualizar Alias</button>
-                        <label type="button" onclick='cancelar_alias();' class="btn btn-perfil"> Cancelar </label>
-
-                    </form>
-                </form>
         </div>
     </div>
 
