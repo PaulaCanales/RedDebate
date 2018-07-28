@@ -35,8 +35,10 @@ def perfiles(request, id):
         usuario = User.objects.get(id=respuesta.id_usuario_id)
         alias_usuario = Perfil.objects.get(user_id=usuario)
 
+    total_usuarios = User.objects.all()
+    
     return render(request, 'perfiles.html', {'usuario': usuario,
-        'alias': alias_usuario, 'usa_alias': usa_alias})
+        'alias': alias_usuario, 'usa_alias': usa_alias, 'total_usuarios': total_usuarios,})
 
 
 
@@ -85,7 +87,6 @@ def perfil(request):
         else:
             puede_editar = "si"
         lista_debates_abiertos.append([debate, puede_editar])
-
 
 
 

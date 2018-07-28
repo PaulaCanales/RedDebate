@@ -14,7 +14,6 @@
         <h3>{{ usuario.first_name }} {{ usuario.last_name }} </h3>
         <div class="container-perfil">
         <br>
-
         <p1>Usuario: </p1>{{ usuario.username}}
         <br>
         <br>
@@ -42,6 +41,16 @@
          </div>
         <br>
       {%endifequal%}
+    </div>
+    <div class="col-md-8">
+      <h3> Usuarios </h3>
+      
+        <ul class="list-group">
+        {% for usr in total_usuarios %}
+           <li class="list-group-item">{{usr.username}}</li>
+        {% endfor %}
+        </ul>
+      
     </div>
 </div>
 
