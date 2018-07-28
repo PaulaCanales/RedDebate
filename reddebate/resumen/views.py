@@ -21,7 +21,9 @@ from resumen.forms import creaDebateForm
 ##@warning Login is required
 @login_required
 def index(request):
-    form = creaDebateForm()
+    creador=[('username', User.objects.get(id=request.user.id).username),
+	         ('alias',Perfil.objects.get(user= request.user).alias)]
+    form = creaDebateForm(creador=creador)
     if request.method == 'POST':
         if 'id_deb' in request.POST:
             cerrar_debate(request)
@@ -77,7 +79,7 @@ def cerrar_debate(request):
 @login_required
 def crear_debate(request):
     if request.method == "POST":
-            form = creaDebateForm(request.POST, request.FILES)
+            form = creaDebateForm(request.POST, request.FILES, creador=0)
             if form.is_valid():
                 post = form.save(commit=False)
                 post.id_usuario = request.user

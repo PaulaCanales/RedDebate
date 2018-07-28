@@ -13,6 +13,14 @@ creador=[('username','Nombre Real'),
          ('alias','Alias')]
 
 class creaDebateForm(forms.ModelForm):
+    def __init__(self,*args,**kwargs):
+        self.creador = kwargs.pop('creador')
+        super(creaDebateForm,self).__init__(*args,**kwargs)
+        if self.creador:
+            self.fields['alias_c'].widget=forms.Select(
+                    choices=self.creador,
+                    attrs={'class': 'form-control'}
+                    )
     titulo = forms.CharField(widget=forms.TextInput(
         attrs={
             'class': 'form-control',
@@ -31,14 +39,9 @@ class creaDebateForm(forms.ModelForm):
             attrs={
                 'class': 'datepicker',
             }))
-    alias_c = forms.CharField(
-        label='Publicar debate con',
-        widget=forms.Select(
-            choices=creador,
-            attrs={'class': 'form-control'}
-            ))
+    alias_c = forms.CharField(label='Publicar debate como')
     largo = forms.CharField(
-        label='Largo máximo de los argumentos',
+        label='Largo máximo argumentos',
         widget=forms.Select(
             choices=caracteres,
             attrs={'class': 'form-control'}

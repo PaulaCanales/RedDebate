@@ -122,6 +122,10 @@ section.success {
 #my-row .panel{
   height: 150px;
 }
+#publicar-debate .sinpadding{
+  padding-right: 15px;
+  padding-left: 0px;
+}
 .blank table {
   border-collapse: collapse;
   text-align: left;

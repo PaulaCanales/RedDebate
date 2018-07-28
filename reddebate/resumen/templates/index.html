@@ -14,7 +14,7 @@
 		<section class="success" id="nuevodebate" style="display:none">
 			<div class="container">
 			<form method="POST" class="post-form" enctype="multipart/form-data">{% csrf_token %}
-				<div class="row">
+				<div class="row" id=publicar-debate>
 					<div class="col-md-9">
 						{{ form.non_field_errors }}
 						<div class="fieldWrapper">
@@ -39,14 +39,14 @@
 						    {{ form.alias_c.label_tag }}
 						    {{ form.alias_c }}
 						</div>
-						<div class="col-md-6">
+						<div class="col-md-6 sinpadding">
 							<div class="fieldWrapper">
 						    {{ form.largo.errors }}
 						    {{ form.largo.label_tag }}
 						    {{ form.largo }}
 							</div>
 						</div>
-						<div class="col-md-6">
+						<div class="col-md-6 sinpadding">
 							<div class="fieldWrapper">
 						    {{ form.num_rebate.errors }}
 						    {{ form.num_rebate.label_tag }}
