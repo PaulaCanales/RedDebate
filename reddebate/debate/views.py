@@ -3,6 +3,7 @@ from django.shortcuts import render, redirect
 from resumen.models import Debate
 from debate.models import Postura, Argumento, Valoracion, Respuesta, Edicion
 from perfil.models import Perfil
+from debate.forms import publicaArgumentoForm
 
 from django.http import HttpResponse
 from django.contrib.auth.models import User
@@ -16,6 +17,10 @@ from django.contrib.auth.decorators import login_required
 ##@warning Login is required
 @login_required
 def despliega(request, id_debate): #debate_id
+	max_length = Debate.objects.get(id_debate=id_debate).largo
+	creador=[('username', User.objects.get(id=request.user.id).username),
+	         ('alias',Perfil.objects.get(user= request.user).alias)]
+	arg_form = publicaArgumentoForm(creador=creador,max_length=max_length)
 	if request.method == 'POST':
 		if 'postura_debate_ajax' in request.POST:
 			resp = define_postura(request)
@@ -25,8 +30,8 @@ def despliega(request, id_debate): #debate_id
 			return redirect(despliega,id_debate)
 
 		if 'descripcion' in request.POST:
-			id_debate_argumento = publica_argumento(request)
-			return redirect(despliega,id_debate_argumento)
+			arg_form = publica_argumento(request, id_debate)
+			return redirect(despliega,id_debate)
 
 		if 'id_arg' in request.POST:
 			respuesta = valorar_argumento(request)
@@ -224,7 +229,7 @@ def despliega(request, id_debate): #debate_id
 		'porc_f': porcentaje_f, 'porc_c': porcentaje_c,
 		'cambio_f_c':cambio_favor_contra, 'cambio_c_f':cambio_contra_favor,
 		'razon_f_c':razon_favor_contra, 'razon_c_f':razon_contra_favor,
-		'img': debate.img, 'cant_rebates':cant_rebates}
+		'img': debate.img, 'cant_rebates':cant_rebates, 'arg_form':arg_form}
 	return render(request, 'debate.html', datos)
 
 
@@ -282,35 +287,17 @@ def define_postura(request):
 ##@return id_debat para redireccionar a la vista "despliega" con este id de debate
 ##@warning Login is required
 @login_required
-def publica_argumento(request):
-	descrip = request.POST['descripcion']
-	postura_deb_usr = request.POST['postura']
-	usuario = request.user
-	id_debat = request.POST['id_deb']
-	try:
-		publicar = Argumento.objects.get(id_usuario_id=usuario.id,id_debate_id=id_debat)
-
-		editado = Edicion(descripcion_edicion= publicar.descripcion, id_argumento_id = publicar.id_argumento, id_usuario_id = usuario.id)
-		editado.save()
-
-		publicar.descripcion = descrip
-		if 'alias' in request.POST:
-			alias_usuario = request.POST['alias']
-			publicar.alias_c= alias_usuario
-		else:
-			publicar.alias_c= 'username'
-	except:
-		if 'alias' in request.POST:
-			alias_usuario = request.POST['alias']
-			publicar= Argumento(descripcion=descrip, id_usuario_id=usuario.id,
-		 		id_debate_id=id_debat, postura= postura_deb_usr, alias_c=alias_usuario)
-
-		else :
-			publicar= Argumento(descripcion=descrip, id_usuario_id=usuario.id,
-		 		id_debate_id=id_debat, postura= postura_deb_usr)
-
-	publicar.save()
-	return(id_debat)
+def publica_argumento(request, id_debate):
+	postura = Postura.objects.get(id_debate_id=id_debate, id_usuario_id = request.user)
+	if request.method == "POST":
+		arg_form = publicaArgumentoForm(request.POST, creador=0, max_length=0)
+		if arg_form.is_valid():
+			post = arg_form.save(commit=False)
+			post.id_usuario_id = request.user.id
+			post.id_debate_id = id_debate
+			post.postura = postura.postura
+			post.save()
+	return arg_form
 
 ##@brief Funcion que guarda el comentario del usuario de un argumento.
 ##@param request solicitud web, entrega los datos del usuario actual

@@ -77,7 +77,7 @@ def cerrar_debate(request):
 @login_required
 def crear_debate(request):
     if request.method == "POST":
-            form = creaDebateForm(request.POST, request.FILES, initial={'id_usuario': request.user.id})
+            form = creaDebateForm(request.POST, request.FILES)
             if form.is_valid():
                 post = form.save(commit=False)
                 post.id_usuario = request.user

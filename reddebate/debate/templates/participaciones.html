@@ -126,20 +126,8 @@
   {%endifequal%}
 {%endifequal%}
 <div id="form_argumento{{postura}}" style="display: none;" >
-  <form method="POST" class="post-form">{% csrf_token %}
-    <form action="/post_arg" id="publicar_form" method="post">{% csrf_token %}
-        <div class="form-group">
-          <textarea id="textarea2" rows="4" maxlength="{{debate.largo}}" name="descripcion" value="" type="textarea" class="form-control" placeholder="descripcion"> </textarea>
-          <div id="textarea_feedback2"></div>
-          <input type="hidden" value="{{ debate.id_debate }}" name="id_deb">
-          <input type="hidden"  value="{{postura}}" name="postura">
-          <div class="checkbox">
-            <label>
-              <input type="checkbox" value="alias" name="alias" > Publicar con Alias:  {{alias_actual}}
-            </label>
-          </div>
-        </div>
-      <button type="submit" class="btn btn-perfil">Publicar</button>
-    </form>
+  <form method="POST" class="post-form" enctype="multipart/form-data">{% csrf_token %}
+    {{arg_form.as_p}}
+    <button type="submit" class="btn btn-perfil">Publicar</button>
   </form>
 </div>
