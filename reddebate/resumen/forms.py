@@ -3,9 +3,12 @@
 from django import forms
 from resumen.models import Debate
 
-caracteres = [('300', '300'),
-                ('200','200'),
-                ('140','140')]
+caracteres = [('300', '300 caracteres'),
+                ('200','200 caracteres'),
+                ('140','140 caracteres')]
+rebates = [('1', '1'),
+                ('2','2'),
+                ('3','3')]
 creador=[('username','Nombre Real'),
          ('alias','Alias')]
 
@@ -40,7 +43,13 @@ class creaDebateForm(forms.ModelForm):
             choices=caracteres,
             attrs={'class': 'form-control'}
             ))
+    num_rebate = forms.CharField(
+        label='Rebates por usuario',
+        widget=forms.Select(
+            choices=rebates,
+            attrs={'class': 'form-control'}
+            ))
     img = forms.FileField(label='Añadir imagen', required=False)
     class Meta:
         model = Debate
-        fields = ('id_debate', 'titulo', 'descripcion', 'date_fin', 'alias_c', 'largo', 'img')
+        fields = ('id_debate', 'titulo', 'descripcion', 'date_fin', 'alias_c', 'largo', 'num_rebate', 'img')

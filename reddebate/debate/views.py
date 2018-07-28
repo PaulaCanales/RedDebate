@@ -47,6 +47,7 @@ def despliega(request, id_debate): #debate_id
 	debate = Debate.objects.get(id_debate= id_debate)
 	usuario_id = debate.id_usuario_id #usuario creador
 	usuario_creador = User.objects.get(id= usuario_id)
+	cant_rebates = debate.num_rebate
 	try:
 		perfil_creador = Perfil.objects.get(user= usuario_creador)
 		perfil_creador = perfil_creador.alias
@@ -66,8 +67,9 @@ def despliega(request, id_debate): #debate_id
 	for argumento in argumentos_aFavor:
 		ediciones = Edicion.objects.filter(id_argumento_id= argumento.id_argumento)
 		redebates = Respuesta.objects.filter(id_argumento_id= argumento.id_argumento)
+		rebates_usr = Respuesta.objects.filter(id_usuario_id=request.user, id_argumento_id= argumento.id_argumento).count()
 		redebates_lista = []
-		tiene_comentario = "no_comentario"
+		puede_rebatir1 = True
 		for redebate in redebates:
 			id_respuesta = redebate.id_respuesta
 			descripcion_redebate = redebate.descripcion
@@ -79,8 +81,10 @@ def despliega(request, id_debate): #debate_id
 				usuario_redebate = usuario_redebate.username
 
 			redebates_lista.append([descripcion_redebate, usuario_redebate, id_respuesta])
-			if tiene_comentario == "no_comentario" and usuario_redebate == request.user:
-				tiene_comentario = "si_comentario"
+			if rebates_usr < cant_rebates:
+				puede_rebatir1 = True
+			else:
+				puede_rebatir1 = False
 		usuario_debate = User.objects.get(id= argumento.id_usuario_id)
 		usuario_id = usuario_debate.id
 		if (argumento.alias_c == "alias"):
@@ -101,9 +105,18 @@ def despliega(request, id_debate): #debate_id
 		val_quitar = Valoracion.objects.filter(id_argumento_id= argumento.id_argumento, tipo_valoracion="quitar").count()
 		valoracion_argF = val_sumar - val_quitar
 		post_usr_arg = Postura.objects.get(id_usuario_id= argumento.id_usuario_id, id_debate_id=id_debate).postura
-		argumentos_F.append([argumento.descripcion, usuario_debate,
-			valoracion_argF, argumento.id_argumento, t_valoracion,
-			usuario_id, redebates_lista , tiene_comentario, ediciones, argumento.alias_c, argumento.postura, post_usr_arg])
+		argumentos_F.append([argumento.descripcion,
+							usuario_debate,
+							valoracion_argF,
+							argumento.id_argumento,
+							t_valoracion,
+							usuario_id,
+							redebates_lista ,
+							puede_rebatir1,
+							ediciones,
+							argumento.alias_c,
+							argumento.postura,
+							post_usr_arg])
 
 		if (request.user.id == argumento.id_usuario_id):
 			tiene_argumento ='si'
@@ -112,8 +125,9 @@ def despliega(request, id_debate): #debate_id
 
 		ediciones = Edicion.objects.filter(id_argumento_id= argumento.id_argumento)
 		redebates = Respuesta.objects.filter(id_argumento_id= argumento.id_argumento)
+		rebates_usr = Respuesta.objects.filter(id_usuario_id=request.user, id_argumento_id= argumento.id_argumento).count()
 		redebates_lista = []
-		tiene_comentario = "no_comentario"
+		puede_rebatir0 = True
 		for redebate in redebates:
 			id_respuesta = redebate.id_respuesta
 			descripcion_redebate = redebate.descripcion
@@ -125,8 +139,10 @@ def despliega(request, id_debate): #debate_id
 				usuario_redebate = usuario_redebate.username
 
 			redebates_lista.append([descripcion_redebate, usuario_redebate, id_respuesta])
-			if tiene_comentario == "no_comentario" and usuario_redebate == request.user:
-				tiene_comentario = "si_comentario"
+			if rebates_usr < cant_rebates:
+				puede_rebatir0 = True
+			else:
+				puede_rebatir0 = False
 		usuario_debate = User.objects.get(id= argumento.id_usuario_id)
 		usuario_id = usuario_debate.id
 
@@ -148,9 +164,18 @@ def despliega(request, id_debate): #debate_id
 		valoracion_argC = val_sumar - val_quitar
 		t_valoracion=[t_valoracion_suma,t_valoracion_quita]
 		post_usr_arg = Postura.objects.get(id_usuario_id= argumento.id_usuario_id, id_debate_id=id_debate).postura
-		argumentos_C.append([argumento.descripcion, usuario_debate,
-		 valoracion_argC, argumento.id_argumento, t_valoracion,
-		 usuario_id, redebates_lista, tiene_comentario, ediciones, argumento.alias_c,  argumento.postura, post_usr_arg ])
+		argumentos_C.append([argumento.descripcion,
+							usuario_debate,
+							valoracion_argC,
+							argumento.id_argumento,
+							t_valoracion,
+							usuario_id,
+							redebates_lista,
+							puede_rebatir0,
+							ediciones,
+							argumento.alias_c,
+							argumento.postura,
+							post_usr_arg ])
 		if (request.user.id == argumento.id_usuario_id):
 			tiene_argumento = 'si'
 	argumentos_C = sorted(argumentos_C, key=lambda valoracion: valoracion[2], reverse=True)
@@ -188,7 +213,6 @@ def despliega(request, id_debate): #debate_id
 		razon_favor_contra.append(Postura.objects.filter(id_debate_id=id_debate, postura_inicial=0, postura=1, cambio_postura=i).count())
 	for i in range (1,4):
 		razon_contra_favor.append(Postura.objects.filter(id_debate_id=id_debate, postura_inicial=1, postura=0, cambio_postura=i).count())
-
 	datos = {'debate': debate,
 		'usuario_creador': usuario_creador,
 		'usuario': usuario_actual,
@@ -200,7 +224,7 @@ def despliega(request, id_debate): #debate_id
 		'porc_f': porcentaje_f, 'porc_c': porcentaje_c,
 		'cambio_f_c':cambio_favor_contra, 'cambio_c_f':cambio_contra_favor,
 		'razon_f_c':razon_favor_contra, 'razon_c_f':razon_contra_favor,
-		'img': debate.img}
+		'img': debate.img, 'cant_rebates':cant_rebates}
 	return render(request, 'debate.html', datos)
 
 

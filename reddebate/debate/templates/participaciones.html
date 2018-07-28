@@ -50,6 +50,7 @@
                       </div>
                     {% endfor %}
                   </div>
+                  {% if arg.7 %}
                   <div id="form_rebatir">
                     <form method="POST" class="post-form">{% csrf_token %}
                       <form action="/post_arg" id="publicar_form" method="post">{% csrf_token %}
@@ -69,6 +70,9 @@
                     </form>
                     <button type="submit" class="btn btn-perfil" onclick="cerrar_modal('respuesta_modal{{postura}}{{arg.3}}')">Cancelar</button>
                   </div>
+                  {% else %}
+                  <div>Ya no puedes rebatir</div>
+                  {% endif %}
             </div>
           </div>
 

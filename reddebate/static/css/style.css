@@ -102,6 +102,7 @@ section.success {
 }
 .fieldWrapper{
   margin-bottom: 20px;
+  text-align: left;
 }
 .row_est {
   margin-right: -15px;
@@ -112,7 +113,7 @@ section.success {
   position: relative;
   min-height: 1px;
   padding-right: 15px;
-  padding-left: 0px;
+  padding-left: 15px;
 }
 
 #my-row{
