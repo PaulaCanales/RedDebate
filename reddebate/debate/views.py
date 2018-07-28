@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect
 from resumen.models import Debate
 from debate.models import Postura, Argumento, Valoracion, Respuesta, Edicion
 from perfil.models import Perfil
-from debate.forms import publicaArgumentoForm
+from debate.forms import publicaArgumentoForm, publicaRespuestaForm
 
 from django.http import HttpResponse
 from django.contrib.auth.models import User
@@ -21,6 +21,7 @@ def despliega(request, id_debate): #debate_id
 	creador=[('username', User.objects.get(id=request.user.id).username),
 	         ('alias',Perfil.objects.get(user= request.user).alias)]
 	arg_form = publicaArgumentoForm(creador=creador,max_length=max_length)
+	resp_form = publicaRespuestaForm(creador=creador,max_length=max_length)
 	if request.method == 'POST':
 		if 'postura_debate_ajax' in request.POST:
 			resp = define_postura(request)
@@ -29,7 +30,7 @@ def despliega(request, id_debate): #debate_id
 			id_debate = define_postura(request)
 			return redirect(despliega,id_debate)
 
-		if 'descripcion' in request.POST:
+		if 'argumento' in request.POST:
 			arg_form = publica_argumento(request, id_debate)
 			return redirect(despliega,id_debate)
 
@@ -37,13 +38,13 @@ def despliega(request, id_debate): #debate_id
 			respuesta = valorar_argumento(request)
 			return HttpResponse(respuesta)
 
-		if 'id_arg_rebate0' in request.POST:
-			id_debat = publica_redate(request)
-			return redirect(despliega,id_debat)
+		if 'responder0' in request.POST:
+			resp_form = publica_redate(request, id_debate, "id_argumento0")
+			return redirect(despliega,id_debate)
 
-		if 'id_arg_rebate1' in request.POST:
-			id_debat = publica_redate(request)
-			return redirect(despliega,id_debat)
+		if 'responder1' in request.POST:
+			resp_form = publica_redate(request, id_debate, "id_argumento1")
+			return redirect(despliega,id_debate)
 
 		if 'id_arg_eliminar' in request.POST:
 			id_debate = elimina_argumento(request)
@@ -229,7 +230,8 @@ def despliega(request, id_debate): #debate_id
 		'porc_f': porcentaje_f, 'porc_c': porcentaje_c,
 		'cambio_f_c':cambio_favor_contra, 'cambio_c_f':cambio_contra_favor,
 		'razon_f_c':razon_favor_contra, 'razon_c_f':razon_contra_favor,
-		'img': debate.img, 'cant_rebates':cant_rebates, 'arg_form':arg_form}
+		'img': debate.img, 'cant_rebates':cant_rebates, 'arg_form':arg_form,
+		'resp_form':resp_form}
 	return render(request, 'debate.html', datos)
 
 
@@ -304,24 +306,34 @@ def publica_argumento(request, id_debate):
 ##@return id_debat para redireccional a la vista "despliega" con este id de debate
 ##@warning Login is required
 @login_required
-def publica_redate(request):
-	descrip = request.POST['descripcion_rebate']
-	try:
-		argumento_debate = request.POST['id_arg_rebate0']
-	except:
-		argumento_debate = request.POST['id_arg_rebate1']
-	id_debat = request.POST['id_deb']
-	usuario = request.user
-	if 'alias' in request.POST:
-		alias_usuario = request.POST['alias']
-
-		publicar= Respuesta(descripcion=descrip, id_usuario_id=usuario.id,
-		 		id_argumento_id=argumento_debate, alias_c=alias_usuario)
-	else :
-		publicar= Respuesta(descripcion=descrip, id_usuario_id=usuario.id,
-		 		id_argumento_id=argumento_debate)
-	publicar.save()
-	return(id_debat)
+def publica_redate(request,id_debate, id_argumento):
+	if request.method == "POST":
+		id_arg = request.POST[id_argumento]
+		print(id_arg)
+		resp_form = publicaRespuestaForm(request.POST, creador=0, max_length=0)
+		if resp_form.is_valid():
+			post = resp_form.save(commit=False)
+			post.id_usuario_id = request.user.id
+			post.id_argumento_id = id_arg
+			post.save()
+	return resp_form
+	# descrip = request.POST['descripcion_rebate']
+	# try:
+	# 	argumento_debate = request.POST['id_arg_rebate0']
+	# except:
+	# 	argumento_debate = request.POST['id_arg_rebate1']
+	# id_debat = request.POST['id_deb']
+	# usuario = request.user
+	# if 'alias' in request.POST:
+	# 	alias_usuario = request.POST['alias']
+	#
+	# 	publicar= Respuesta(descripcion=descrip, id_usuario_id=usuario.id,
+	# 	 		id_argumento_id=argumento_debate, alias_c=alias_usuario)
+	# else :
+	# 	publicar= Respuesta(descripcion=descrip, id_usuario_id=usuario.id,
+	# 	 		id_argumento_id=argumento_debate)
+	# publicar.save()
+	# return(id_debat)
 
 ##@brief Funcion que guarda la valoracion del usuario al argumento
 ##@param request solicitud web, entrega los datos del usuario actual

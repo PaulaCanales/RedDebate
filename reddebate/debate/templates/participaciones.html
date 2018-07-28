@@ -52,21 +52,10 @@
                   </div>
                   {% if arg.7 %}
                   <div id="form_rebatir">
-                    <form method="POST" class="post-form">{% csrf_token %}
-                      <form action="/post_arg" id="publicar_form" method="post">{% csrf_token %}
-                          <div class="form-group">
-                            <textarea id="textarea6" rows="4" maxlength="{{debate.largo}}" name="descripcion_rebate" value="" type="textarea" class="form-control" placeholder="descripcion"> </textarea>
-                            <div id="textarea_feedback6"></div>
-                            <input id="id_argumento_rebate{{postura}}{{arg.3}}" type="hidden" value="" name="id_arg_rebate{{postura}}">
-                            <input type="hidden" value="{{ debate.id_debate }}" name="id_deb">
-                            <div class="checkbox">
-                              <label>
-                                <input type="checkbox" value="alias" name="alias" > Publicar con Alias:  {{alias_actual}}
-                              </label>
-                            </div>
-                          </div>
-                        <button type="submit" class="btn btn-perfil">Comentar</button>
-                      </form>
+                    <form method="POST" class="post-form" enctype="multipart/form-data">{% csrf_token %}
+                      {{resp_form.as_p}}
+                      <input type="hidden" value="{{arg.3}}" name="id_argumento{{postura}}">
+                      <button name="responder{{postura}}"type="submit" class="btn btn-perfil">Responder</button>
                     </form>
                     <button type="submit" class="btn btn-perfil" onclick="cerrar_modal('respuesta_modal{{postura}}{{arg.3}}')">Cancelar</button>
                   </div>
@@ -128,6 +117,6 @@
 <div id="form_argumento{{postura}}" style="display: none;" >
   <form method="POST" class="post-form" enctype="multipart/form-data">{% csrf_token %}
     {{arg_form.as_p}}
-    <button type="submit" class="btn btn-perfil">Publicar</button>
+    <button name="argumento" type="submit" class="btn btn-perfil">Publicar</button>
   </form>
 </div>
