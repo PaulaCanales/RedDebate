@@ -12,6 +12,12 @@ rebates = [('1', '1'),
 creador=[('username','Nombre Real'),
          ('alias','Alias')]
 
+class LoginForm(forms.Form):
+    name_user = forms.CharField(max_length=20, required=True, label="",
+    widget=(forms.TextInput(attrs={"class":"input-login"})))
+    password_user = forms.CharField(max_length=20, required=True, label="",
+    widget=(forms.TextInput(attrs={"class":"input-login"})))
+
 class creaDebateForm(forms.ModelForm):
     def __init__(self,*args,**kwargs):
         self.creador = kwargs.pop('creador')

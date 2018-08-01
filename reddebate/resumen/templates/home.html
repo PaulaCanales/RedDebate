@@ -15,10 +15,14 @@
 	<br>
 	<br>
 	<div align="center">
-		<IMG SRC="{% static 'img/RDLogo02.png' %}" WIDTH='300' VSPACE='3' HSPACE='3' ALT="RedDebateLogo">
-		</div>
+		  <IMG SRC="{% static 'img/RDLogo02.png' %}" WIDTH='300' VSPACE='3' HSPACE='3' ALT="RedDebateLogo">
+      <form method="POST" class="post-form" enctype="multipart/form-data">{% csrf_token %}
+          {{ form.as_p }}
+          <button type="submit" class="btn btn-publicar">Ingresar</button>
+      </form>
+	</div>
 		<br>
-		<div class="col-md-4"></div>
+		<!-- <div class="col-md-4"></div>
 		<div class="col-md-4">
 			<br>
 				</a>
@@ -29,8 +33,7 @@
           <a class="btn btn-block btn-social btn-twitter" href="{% url 'social:begin' 'twitter' %}?next={{ request.path }}">
            <span class="fa fa-twitter"></span> <div align="center">Ingresa con Twitter </div>
          </a>
-        </div>
-	</div>
+    </div> -->
 </body>
 
 </html>

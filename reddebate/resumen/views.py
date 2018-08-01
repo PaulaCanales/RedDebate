@@ -3,6 +3,7 @@ from django.views.generic import ListView, DetailView
 from django.contrib.auth.models import User
 import datetime
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import authenticate, login
 
 
 from django.http import HttpResponse
@@ -13,7 +14,24 @@ from django.http import HttpResponse
 from resumen.models import Debate
 from debate.models import Postura, Argumento, Respuesta, Valoracion, Edicion
 from perfil.models import Perfil
-from resumen.forms import creaDebateForm
+from resumen.forms import creaDebateForm, LoginForm
+
+def home(request):
+    form = LoginForm(request.POST or None)
+    if form.is_valid():
+        data = form.cleaned_data
+        usuario = data.get("name_user")
+        clave = data.get("password_user")
+        acceso = authenticate(username=usuario, password=clave)
+        if acceso is not None:
+            login(request,acceso)
+            return redirect('index')
+        else:
+            return redirect('home')
+    else:
+        form = LoginForm()
+    context = {'form':form}
+    return render(request,"home.html", context)
 
 ##@brief Funcion que despliega todos los debates
 ##@param request solicitud web
