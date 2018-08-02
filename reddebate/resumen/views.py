@@ -47,9 +47,9 @@ def index(request):
     if request.method == 'POST':
         if 'id_deb' in request.POST:
             cerrar_debate(request)
-        if 'descripcion' in request.POST:
-            form = crear_debate(request)
-            return redirect('index')
+        # if 'descripcion' in request.POST:
+        #     form = crear_debate(request)
+        #     return redirect('index')
 
 
 

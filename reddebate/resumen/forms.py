@@ -25,18 +25,20 @@ class creaDebateForm(forms.ModelForm):
         if self.creador:
             self.fields['alias_c'].widget=forms.Select(
                     choices=self.creador,
-                    attrs={'class': 'form-control'}
+                    attrs={'class': 'form-control', 'id': 'debAliasForm'}
                     )
     titulo = forms.CharField(widget=forms.TextInput(
         attrs={
             'class': 'form-control',
-            'placeholder': 'Escribe un título...'
+            'placeholder': 'Escribe un título...',
+            'id': 'debTituloForm'
         }))
     descripcion = forms.CharField(widget=forms.Textarea(
         attrs={
             'class': 'form-control',
             'placeholder': 'Escribe una descripción...',
-            'rows': 8
+            'rows': 8,
+            'id': 'debDescripcionForm'
         }))
     date_fin = forms.DateField(
         required=False,
@@ -44,21 +46,25 @@ class creaDebateForm(forms.ModelForm):
         widget=forms.TextInput(
             attrs={
                 'class': 'datepicker',
+                'id': 'debFinForm'
             }))
     alias_c = forms.CharField(label='Publicar debate como')
     largo = forms.CharField(
         label='Largo máximo argumentos',
         widget=forms.Select(
             choices=caracteres,
-            attrs={'class': 'form-control'}
+            attrs={'class': 'form-control', 'id': 'debLargoForm'}
             ))
     num_rebate = forms.CharField(
         label='Rebates por usuario',
         widget=forms.Select(
             choices=rebates,
-            attrs={'class': 'form-control'}
+            attrs={'class': 'form-control', 'id': 'debRebateForm'}
             ))
-    img = forms.FileField(label='Añadir imagen', required=False)
+    img = forms.FileField(label='Añadir imagen', required=False,
+        widget=forms.FileInput(
+            attrs={'id': 'debImgForm'}
+            ))
     class Meta:
         model = Debate
         fields = ('id_debate', 'titulo', 'descripcion', 'date_fin', 'alias_c', 'largo', 'num_rebate', 'img')

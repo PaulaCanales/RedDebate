@@ -13,7 +13,7 @@
 	</div>
 		<section class="success" id="nuevodebate" style="display:none">
 			<div class="container">
-			<form method="POST" class="post-form" enctype="multipart/form-data">{% csrf_token %}
+			<form id="nuevodebateform" method="POST" class="post-form" enctype="multipart/form-data">{% csrf_token %}
 				<div class="row" id=publicar-debate>
 					<div class="col-md-9">
 						{{ form.non_field_errors }}
@@ -80,38 +80,32 @@
 			<div class="row">
 				<div class="col-md-6"><input type="text" id="myInput" onkeyup="filtrar_debate('myInput','Tabla_DbtAbiertos')" placeholder="Buscar por Título..." title="Escribe un Título"></div>
 			</div>
-			<div class="datagrid"><table id="Tabla_DbtAbiertos">
+			<div class="datagrid">
+				<table id="Tabla_DbtAbiertos">
 				<tr>
 					<thead><tr><th>Título</th><th>Descripción</th><th> </th><th> </th></tr></thead>
 				</tr>
 				<tbody>
-			{% for deb in object_list %}
-			{% ifequal deb.estado 'abierto' %}
-
-				<tr>
-
-					<td width=300 > {{ deb.titulo }}</td>
-					<td width=600> <p> {{ deb.descripcion }}</p></td>
-
-
-					{% ifequal usuario.id deb.id_usuario_id %}
-
-					 <form id="id" method="post" action= "{% url 'index' %}" enctype="multipart/form-data" onsubmit="return confirm('¿Seguro que desea cerrar el debate?');">{% csrf_token %}
-	            	 <input type="hidden" value="{{ deb.id_debate }}" name="id_deb">
-
-	            	<td > <button type="submit" class="btn btn-outline" > <span class="glyphicon glyphicon-remove-circle"></span> Cerrar</button> </td>
-
-	    		</form>
-	    			{%else%}
-	    				<td> </td>
-	    			{%endifequal%}
-
-					<td> <a class="btn btn-tabla" href="{% url 'despliega' deb.id_debate %}" > <span class="glyphicon glyphicon-eye-open"></span> Ver </a></td>
-				</tr>
-			{%endifequal%}
-			{% endfor %}
-			</tbody>
-			</table></div>
+					{% for deb in object_list %}
+					{% ifequal deb.estado 'abierto' %}
+						<tr>
+							<td width=300 > {{ deb.titulo }}</td>
+							<td width=600> <p> {{ deb.descripcion }}</p></td>
+							{% ifequal usuario.id deb.id_usuario_id %}
+								 <form id="id" method="post" action= "{% url 'index' %}" enctype="multipart/form-data" onsubmit="return confirm('¿Seguro que desea cerrar el debate?');">{% csrf_token %}
+				            	 <input type="hidden" value="{{ deb.id_debate }}" name="id_deb">
+				            	<td > <button type="submit" class="btn btn-outline" > <span class="glyphicon glyphicon-remove-circle"></span> Cerrar</button> </td>
+				    		</form>
+			    		{%else%}
+			    			<td> </td>
+			    		{%endifequal%}
+							<td> <a class="btn btn-tabla" href="{% url 'despliega' deb.id_debate %}" > <span class="glyphicon glyphicon-eye-open"></span> Ver </a></td>
+						</tr>
+					{%endifequal%}
+					{% endfor %}
+				</tbody>
+				</table>
+			</div>
 		</div>
 
 		<div id="deb_cerrados" class="tabcontent">
@@ -142,7 +136,7 @@
 			</tbody>
 			</table></div>
 		</div>
-		<button onclick="start()">Start</button>
+		<!-- <button onclick="start()">Start</button>
 		<button onclick="stop()">Stop</button>
 		 <input type="text" id="example" >
 		<table id="chat" style="border: 2px solid #2D3E50;">
@@ -151,7 +145,7 @@
             <td> </td>
           </tr>
       </tbody>
-		</table>
+		</table> -->
 	</div>
 	<p class="bottom-three">.</p>
 	{% endblock content %}
