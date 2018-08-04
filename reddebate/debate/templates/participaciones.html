@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 
 <div class="datagrid">
-  <table>
+  <table id="Tabla_Argumentos{{postura}}">
     <tr><thead>
       	<th> # </th>
       	<th> {{frase}} </th>
@@ -114,8 +114,11 @@
     {%endifequal%}
   {%endifequal%}
 {%endifequal%}
+<ul id="alertaArgumento{{postura}}" class="list-group">
+
+</ul>
 <div id="form_argumento{{postura}}" style="display: none;" >
-  <form method="POST" class="post-form" enctype="multipart/form-data">{% csrf_token %}
+  <form id="nuevoArgForm{{postura}}" method="POST" class="post-form" enctype="multipart/form-data">{% csrf_token %}
     {{arg_form.as_p}}
     <button name="argumento" type="submit" class="btn btn-perfil">Publicar</button>
   </form>

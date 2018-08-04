@@ -15,7 +15,8 @@
       <script src="{% static 'js/bootstrap-datepicker.js' %}"></script>
       <script src="{% static 'js/bootstrap.js' %}"></script>
 			<script src="{% static 'js/functions.js' %}"></script>
-      <script src="{% static 'js/channels.js' %}"></script>
+			<script src="{% static 'js/channels.js' %}"></script>
+      <script src="{% static 'js/reconnecting-websocket.min.js' %}"></script>
       <script>
         $(function() {
           $('.datepicker').datepicker();
@@ -39,7 +40,9 @@
 									 console.log(data);
 									 var comparar = data.localeCompare('vacio')
 									 if (comparar != 0){
-										 document.getElementById("cambio_postura"+data).style.display = 'block';
+										 if(document.getElementById("cambio_postura"+data)){
+											 document.getElementById("cambio_postura"+data).style.display = 'block';
+										 }
 									 }
                  },
                  failure: function(data) {

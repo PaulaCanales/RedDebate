@@ -37,6 +37,13 @@ class Argumento(models.Model):
 
     def __unicode__(self): # __unicode__ on Python 2
         return self.descripcion
+    def as_dict(self):
+        if self.alias_c == "username":
+            usr = User.objects.get(id = self.id_usuario.id).username
+        else:
+            usr = Perfil.objects.get(user_id = self.id_usuario.id).alias
+
+        return {'descripcion': self.descripcion, 'nombre': usr, 'postura': self.postura}
 
 class Respuesta(models.Model):
     #parametros de la tabla.

@@ -15,6 +15,7 @@
 				<td>
 					<div class="container-titulo">
 						<h3 class="h3-t1"> {{ debate.titulo }}</h3>
+						<input id="idDebate" type="hidden" value={{debate.id_debate}}>
 						{% ifequal debate.alias_c 'alias' %}
 							<h5>Creado por {{alias}} en modo anónimo</h5>
 						{%else%}

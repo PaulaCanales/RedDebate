@@ -30,9 +30,9 @@ def despliega(request, id_debate): #debate_id
 			id_debate = define_postura(request)
 			return redirect(despliega,id_debate)
 
-		if 'argumento' in request.POST:
-			arg_form = publica_argumento(request, id_debate)
-			return redirect(despliega,id_debate)
+		# if 'argumento' in request.POST:
+		# 	arg_form = publica_argumento(request, id_debate)
+		# 	return redirect(despliega,id_debate)
 
 		if 'id_arg' in request.POST:
 			respuesta = valorar_argumento(request)
@@ -246,11 +246,18 @@ def define_postura(request):
 
 	if 'postura_debate_ajax' in request.POST:
 		post_usuario= request.POST['postura_debate_ajax']
+		print("en ajax")
 		try:
 			publicar_postura = Postura.objects.get(id_debate_id=id_debat, id_usuario_id=usuario.id)
 			publicar_postura.postura=post_usuario
+			print("publicar postura existente")
 		except:
 			publicar_postura = Postura(postura=post_usuario, postura_inicial=post_usuario, id_debate_id=id_debat, id_usuario_id=usuario.id)
+			print("publicar postura ")
+			print(post_usuario)
+			print(id_debat)
+			print(usuario.id)
+
 		publicar_postura.save()
 		if post_usuario=='1': resp= "A Favor"
 		else: resp= "En Contra"
@@ -317,23 +324,6 @@ def publica_redate(request,id_debate, id_argumento):
 			post.id_argumento_id = id_arg
 			post.save()
 	return resp_form
-	# descrip = request.POST['descripcion_rebate']
-	# try:
-	# 	argumento_debate = request.POST['id_arg_rebate0']
-	# except:
-	# 	argumento_debate = request.POST['id_arg_rebate1']
-	# id_debat = request.POST['id_deb']
-	# usuario = request.user
-	# if 'alias' in request.POST:
-	# 	alias_usuario = request.POST['alias']
-	#
-	# 	publicar= Respuesta(descripcion=descrip, id_usuario_id=usuario.id,
-	# 	 		id_argumento_id=argumento_debate, alias_c=alias_usuario)
-	# else :
-	# 	publicar= Respuesta(descripcion=descrip, id_usuario_id=usuario.id,
-	# 	 		id_argumento_id=argumento_debate)
-	# publicar.save()
-	# return(id_debat)
 
 ##@brief Funcion que guarda la valoracion del usuario al argumento
 ##@param request solicitud web, entrega los datos del usuario actual

@@ -12,7 +12,7 @@ class publicaArgumentoForm(forms.ModelForm):
         if self.creador:
             self.fields['alias_c'].widget=forms.Select(
                     choices=self.creador,
-                    attrs={'class': 'form-control', 'maxlength': "30"}
+                    attrs={'class': 'form-control', 'maxlength': "30", 'id':"aliasArg"}
                     )
         if self.max_length:
             self.fields['descripcion'].widget=forms.Textarea(
@@ -20,7 +20,8 @@ class publicaArgumentoForm(forms.ModelForm):
                         'class': 'form-control',
                         'placeholder': 'Escribe un argumento...',
                         'rows': 4,
-                        'maxlength': self.max_length
+                        'maxlength': self.max_length,
+                        'id': 'descArg'
                 })
 
     descripcion = forms.CharField(label=False)
