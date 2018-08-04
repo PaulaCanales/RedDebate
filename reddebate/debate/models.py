@@ -3,9 +3,10 @@ from django.db.models.fields.related import ForeignKey
 from django.contrib.auth.models import User
 from datetime import *
 from django.db import models
-
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 from resumen.models import Debate
-from perfil.models import Perfil
+from perfil.models import Perfil, Notificacion
 
 
 # Create your models here.
@@ -22,7 +23,16 @@ class Postura(models.Model):
 
     def __unicode__(self): # __unicode__ on Python 2
         return self.postura
+    def __getitem__(self, key):
+        return getattr(self, key)
 
+@receiver(post_save, sender=Postura)
+def crea_notificacion(sender, instance, **kwargs):
+    if kwargs['created']:
+        debate = instance['id_debate']
+        usuario = instance['id_usuario']
+        msj = str(usuario)+" ha definido postura en "+str(debate)
+        notificacion = Notificacion.objects.create(id_debate = debate, id_usuario = usuario, mensaje=msj)
 
 
 class Argumento(models.Model):

@@ -13,7 +13,7 @@ import requests
 from django.http import HttpResponse
 from resumen.models import Debate
 from debate.models import Postura, Argumento, Respuesta, Valoracion, Edicion
-from perfil.models import Perfil
+from perfil.models import Perfil, Notificacion
 from resumen.forms import creaDebateForm, LoginForm
 
 def home(request):
@@ -62,7 +62,14 @@ def index(request):
     print("el usuario activo es_: ", usuario.id)
     perfil_usuario = Perfil.objects.get(user_id= usuario.id)
     alias_usuario = perfil_usuario.alias
-    context = {'object_list': category_list, 'usuario': usuario, 'alias': alias_usuario, 'form':form}
+    notificaciones = Notificacion.objects.all()
+    notificacion_usr = []
+    for n in notificaciones:
+        deb_usr=Debate.objects.get(id_debate = n.id_debate.id_debate).id_usuario
+        if deb_usr == request.user:
+            notificacion_usr.append(n)
+    context = {'object_list': category_list, 'usuario': usuario, 'alias': alias_usuario,
+                'form':form, 'notificaciones':notificacion_usr}
     return render(request, 'index.html', context)
 
 ##@brief Funcion que inicializa el alias del usuario actual, en caso de no tener alias sera "anonimo".
