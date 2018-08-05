@@ -40,9 +40,17 @@ class Postura(models.Model):
 def crea_notificacion(sender, instance, **kwargs):
     if kwargs['created']:
         debate = instance['id_debate']
-        usuario = instance['id_usuario']
-        msj = str(usuario)+" ha definido postura en "+str(debate)
-        notificacion = Notificacion.objects.create(id_debate = debate, id_usuario = usuario, mensaje=msj)
+        num_postura = Postura.objects.filter(id_debate=debate.id_debate).count()
+        try:
+            notificacion = Notificacion.objects.get(id_debate_id=debate.id_debate, tipo="postura")
+            print("segunda o mas")
+            notificacion.mensaje = str(num_postura)+" usuarios han definido postura en "+str(debate)
+            notificacion.estado = 0
+            notificacion.save()
+        except:
+            print("primera")
+            msj = str(num_postura)+" usuario ha definido postura en "+str(debate)
+            notificacion = Notificacion.objects.create(id_debate = debate, mensaje=msj)
 
 
 class Argumento(models.Model):
