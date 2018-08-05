@@ -30,15 +30,12 @@
 				<span class="close" onclick="cerrar_modal('cambioPostura_modal')">&times;</span>
 				<h3>¿Por qué quieres cambiar de postura? <span class="glyphicon glyphicon-comment"></span></h3>
 						<div id="form_razon_cambio">
-							<form id="confirmarcambiopost" method="post" action= "{% url 'despliega' debate.id_debate %}" enctype="multipart/form-data">{% csrf_token %}
-	              <input type="hidden" value="{{ debate.id_debate }}" name="id">
-								<input type="hidden" value="" name="postura_debate" id="postura_debate">
+								<input id="postura_debate" type="hidden" value="" name="postura_debate">
 								<div class="radio"> <label><input type="radio" value="1" name="razon" checked> Cambié de opinión </label></div>
 								<div class="radio"> <label><input type="radio" value="2" name="razon"> Me equivoqué de botón </label></div>
 								<div class="radio"> <label><input type="radio" value="3" name="razon"> Otro </label></div>
-	              <button type="submit" class="btn btn-perfil" > Aceptar </button>
+	              <button id="bot_cambiar_post" type="submit" class="btn btn-perfil" > Aceptar </button>
 								<a class="btn btn-perfil" onclick="cerrar_modal('cambioPostura_modal')">Cancelar</a>
-	            </form>
 						</div>
 			</div>
 		</div>
@@ -47,10 +44,11 @@
 			<div class="row" id="my-row">
 				<div class="col-md-3 panel">
 					{% ifequal postura_usr_deb 'No definido' %}
-						<button id = "bot_af" type="submit" class="btn btn-postura" onclick='javascript:definir_postura("{{ debate.id_debate }}", "1", "{{num_post_f}}", "{{num_post_c}}");'>
+						<!-- <button id = "bot_af" type="submit" class="btn btn-postura" onclick='javascript:definir_postura("{{ debate.id_debate }}", "1", "{{num_post_f}}", "{{num_post_c}}");'> -->
+						<button id = "bot_af_init" type="submit" class="btn btn-postura" >
 							<span class="glyphicon glyphicon-thumbs-up"></span>
 							A Favor <br><br>
-							<label id="label_porc_f"></label>
+							<label id="label_porc_f1"></label>
 						</button>
 					{% else %}
 						{% ifequal postura_usr_deb 'A Favor' %}
@@ -89,10 +87,11 @@
 				</div>
 				<div class="col-md-3 panel">
 					{% ifequal postura_usr_deb 'No definido' %}
-						<button id = "bot_ec" type="submit" class="btn btn-postura" onclick='javascript:definir_postura("{{ debate.id_debate }}", "0", "{{num_post_f}}", "{{num_post_c}}");'>
+						<!-- <button id = "bot_ec" type="submit" class="btn btn-postura" onclick='javascript:definir_postura("{{ debate.id_debate }}", "0", "{{num_post_f}}", "{{num_post_c}}");'> -->
+						<button id = "bot_ec_init" type="submit" class="btn btn-postura">
 							<span class="glyphicon glyphicon-thumbs-down"></span>
 							En Contra <br><br>
-						<label id="label_porc_c"></label>
+						<label id="label_porc_c1"></label>
 					</button>
 					{% else %}
 						{% ifequal postura_usr_deb 'A Favor' %}

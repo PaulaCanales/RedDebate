@@ -36,6 +36,19 @@ def ws_receive(message):
             data['postura'] = postura.postura
             data['id_debate'] = debate
             m = Argumento.objects.create(**data)
+        elif set(data.keys()) == set(('postura','postura_inicial','id_usuario','id_debate')):
+            debate = Debate.objects.get(id_debate=data['id_debate'])
+            data['id_usuario'] = message.user
+            data['id_debate'] = debate
+            m = Postura.objects.create(**data)
+        elif set(data.keys()) == set(('postura', 'id_debate', 'razon')):
+            debate = Debate.objects.get(id_debate=data['id_debate'])
+            data['id_debate'] = debate
+            m = Postura.objects.get(id_debate_id=debate.id_debate, id_usuario_id=message.user.id)
+            m.postura = data['postura']
+            m.cambio_postura = data['razon']
+            m.save()
+
         Group(grupo).send({'text': json.dumps(m.as_dict())})
 
 @channel_session_user

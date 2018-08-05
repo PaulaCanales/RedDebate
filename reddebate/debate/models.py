@@ -25,6 +25,16 @@ class Postura(models.Model):
         return self.postura
     def __getitem__(self, key):
         return getattr(self, key)
+    def as_dict(self):
+        postura_f=Postura.objects.filter(id_debate_id=self.id_debate, postura=1).count()
+        postura_c=Postura.objects.filter(id_debate_id=self.id_debate, postura=0).count()
+        if (int(postura_f+postura_c)==0):
+            porcentaje_f=0
+            porcentaje_c=0
+        else:
+            porcentaje_f=round(float(postura_f) / float(postura_c+postura_f),3)*100
+            porcentaje_c=round(float(postura_c) / float(postura_c+postura_f),3)*100
+        return {'postura_f': postura_f, 'postura_c':postura_c, 'porc_f':porcentaje_f, 'porc_c':porcentaje_c }
 
 @receiver(post_save, sender=Postura)
 def crea_notificacion(sender, instance, **kwargs):

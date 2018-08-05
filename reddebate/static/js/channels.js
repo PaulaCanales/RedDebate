@@ -16,8 +16,16 @@ $(document).ready(function(){
 
           debates.append(ele)
         }
+        else if (data.postura_f || data.postura_c){
+          var porcentaje_f = Math.round(parseFloat(data.porc_f)*100)/100;
+          var porcentaje_c = Math.round(parseFloat(data.porc_c)*100)/100;
+          $("#label_porc_f").text(porcentaje_f+"%")
+          $("#label_porc_c").text(porcentaje_c+"%")
+          $("#label_num_post1").text(data.postura_f)
+          $("#label_num_post0").text(data.postura_c)
+
+        }
         else if (data.descripcion){
-          var data = JSON.parse(message.data);
           var nuevosArgs = $("#alertaArgumento"+data.postura);
           var nuevo = $('<a onclick="javascript:location.reload()" id="nuevoArgumento{{postura}}" class="list-group-item"> </a>').text("Nuevo argumento de "+data.nombre)
           nuevosArgs.append(nuevo)
@@ -52,4 +60,37 @@ $(document).ready(function(){
     setTimeout(function(){location.reload();}, 500);
     return false;
   });
+  $("#bot_af_init").click(function(event){
+    var message = {
+      postura: 1,
+      postura_inicial: 1,
+      id_usuario: "",
+      id_debate: $('#idDebate').val(),
+    };
+    socket.send(JSON.stringify(message));
+    setTimeout(function(){location.reload();}, 500);
+    return false;
+  });
+  $("#bot_ec_init").click(function(event){
+    var message = {
+      postura: 0,
+      postura_inicial: 0,
+      id_usuario: "",
+      id_debate: $('#idDebate').val(),
+    };
+    socket.send(JSON.stringify(message));
+    setTimeout(function(){location.reload();}, 500);
+    return false;
+  });
+  $("#bot_cambiar_post").click(function(event){
+    var message = {
+      postura: $('#postura_debate').val(),
+      id_debate: $('#idDebate').val(),
+      razon: $( "input[name='razon']:checked" ).val(),
+    };
+    socket.send(JSON.stringify(message));
+    setTimeout(function(){location.reload();}, 500);
+    return false;
+  });
+
 });

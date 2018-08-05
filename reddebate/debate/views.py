@@ -23,16 +23,6 @@ def despliega(request, id_debate): #debate_id
 	arg_form = publicaArgumentoForm(creador=creador,max_length=max_length)
 	resp_form = publicaRespuestaForm(creador=creador,max_length=max_length)
 	if request.method == 'POST':
-		if 'postura_debate_ajax' in request.POST:
-			resp = define_postura(request)
-			return HttpResponse(resp)
-		if 'postura_debate' in request.POST:
-			id_debate = define_postura(request)
-			return redirect(despliega,id_debate)
-
-		# if 'argumento' in request.POST:
-		# 	arg_form = publica_argumento(request, id_debate)
-		# 	return redirect(despliega,id_debate)
 
 		if 'id_arg' in request.POST:
 			respuesta = valorar_argumento(request)
@@ -233,80 +223,6 @@ def despliega(request, id_debate): #debate_id
 		'img': debate.img, 'cant_rebates':cant_rebates, 'arg_form':arg_form,
 		'resp_form':resp_form}
 	return render(request, 'debate.html', datos)
-
-
-##@brief Funcion que guarda la postura del usuario en el debate, si esta ya existe la cambia, sino la crea.
-##@param request solicitud web, entrega los datos del usuario actual
-##@return resp que se ingresa en el HttpResponse para indicar la postura actualizada del usuario
-##@warning Login is required
-@login_required
-def define_postura(request):
-	id_debat= request.POST['id']
-	usuario = request.user
-
-	if 'postura_debate_ajax' in request.POST:
-		post_usuario= request.POST['postura_debate_ajax']
-		print("en ajax")
-		try:
-			publicar_postura = Postura.objects.get(id_debate_id=id_debat, id_usuario_id=usuario.id)
-			publicar_postura.postura=post_usuario
-			print("publicar postura existente")
-		except:
-			publicar_postura = Postura(postura=post_usuario, postura_inicial=post_usuario, id_debate_id=id_debat, id_usuario_id=usuario.id)
-			print("publicar postura ")
-			print(post_usuario)
-			print(id_debat)
-			print(usuario.id)
-
-		publicar_postura.save()
-		if post_usuario=='1': resp= "A Favor"
-		else: resp= "En Contra"
-
-		return (resp)
-
-	if 'postura_debate' in request.POST:
-		post_usuario= request.POST['postura_debate']
-		razon_cambio = request.POST['razon']
-		try:
-			publicar_postura = Postura.objects.get(id_debate_id=id_debat, id_usuario_id=usuario.id)
-			publicar_postura.postura=post_usuario
-			publicar_postura.cambio_postura=razon_cambio
-		except:
-			print("Error en publicar_postura")
-
-		try:
-			argumento = Argumento.objects.get(id_debate_id=id_debat, id_usuario_id =usuario.id)
-			if(int(argumento.postura)!=int(publicar_postura.postura)):
-				marcar_argumento=argumento.id_argumento
-			else:
-				marcar_argumento = "vacio"
-		except:
-			marcar_argumento = "vacio"
-
-
-		publicar_postura.save()
-		'''if (Argumento.objects.filter(id_debate_id=id_debat, id_usuario_id=usuario.id).count() >0):
-			argumento_eliminar =Argumento.objects.get(id_debate_id=id_debat, id_usuario_id =usuario.id)
-			argumento_eliminar.delete()'''
-
-		return (id_debat)
-
-##@brief Funcion que guarda el argumento del usuario en el debate, tambien edita el argumento.
-##@param request solicitud web, entrega los datos del usuario actual
-##@return id_debat para redireccionar a la vista "despliega" con este id de debate
-##@warning Login is required
-@login_required
-def publica_argumento(request, id_debate):
-	postura = Postura.objects.get(id_debate_id=id_debate, id_usuario_id = request.user)
-	if request.method == "POST":
-		arg_form = publicaArgumentoForm(request.POST, creador=0, max_length=0)
-		if arg_form.is_valid():
-			post = arg_form.save(commit=False)
-			post.id_usuario_id = request.user.id
-			post.id_debate_id = id_debate
-			post.postura = postura.postura
-			post.save()
-	return arg_form
 
 ##@brief Funcion que guarda el comentario del usuario de un argumento.
 ##@param request solicitud web, entrega los datos del usuario actual

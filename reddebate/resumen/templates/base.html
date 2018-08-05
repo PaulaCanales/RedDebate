@@ -27,30 +27,30 @@
 	</head>
 <body>
 <script type="text/javascript">
-  function cambiar_postura(id_debate, postura, post_f, post_c){
-       $.ajax({
-           url: "{% url 'despliega' 1 %}" ,
-           type: 'POST',
-           data:{  id : id_debate,
-                   postura_debate_ajax: postura,
-                   csrfmiddlewaretoken: '{{ csrf_token }}'
-                 } ,
-                 success: function(data) {
-									 location.reload();
-									 console.log(data);
-									 var comparar = data.localeCompare('vacio')
-									 if (comparar != 0){
-										 if(document.getElementById("cambio_postura"+data)){
-											 document.getElementById("cambio_postura"+data).style.display = 'block';
-										 }
-									 }
-                 },
-                 failure: function(data) {
-                     alert('Error de conexión');
-                 },
-                 crossDomain: true
-             });
-           }
+  // function cambiar_postura(id_debate, postura, post_f, post_c){
+  //      $.ajax({
+  //          url: "{% url 'despliega' 1 %}" ,
+  //          type: 'POST',
+  //          data:{  id : id_debate,
+  //                  postura_debate_ajax: postura,
+  //                  csrfmiddlewaretoken: '{{ csrf_token }}'
+  //                } ,
+  //                success: function(data) {
+	// 								 location.reload();
+	// 								 console.log(data);
+	// 								 var comparar = data.localeCompare('vacio')
+	// 								 if (comparar != 0){
+	// 									 if(document.getElementById("cambio_postura"+data)){
+	// 										 document.getElementById("cambio_postura"+data).style.display = 'block';
+	// 									 }
+	// 								 }
+  //                },
+  //                failure: function(data) {
+  //                    alert('Error de conexión');
+  //                },
+  //                crossDomain: true
+  //            });
+  //          }
 
   function valorar(argumento, opcionusr){
 		 $.ajax({
