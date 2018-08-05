@@ -62,15 +62,20 @@ def index(request):
     print("el usuario activo es_: ", usuario.id)
     perfil_usuario = Perfil.objects.get(user_id= usuario.id)
     alias_usuario = perfil_usuario.alias
+    notificacion_usr = verificaNotificacion(request)
+    context = {'object_list': category_list, 'usuario': usuario, 'alias': alias_usuario,
+                'form':form, 'notificaciones':notificacion_usr}
+    return render(request, 'index.html', context)
+
+@login_required
+def verificaNotificacion(request):
     notificaciones = Notificacion.objects.all()
     notificacion_usr = []
     for n in notificaciones:
         deb_usr=Debate.objects.get(id_debate = n.id_debate.id_debate).id_usuario
         if deb_usr == request.user:
             notificacion_usr.append(n)
-    context = {'object_list': category_list, 'usuario': usuario, 'alias': alias_usuario,
-                'form':form, 'notificaciones':notificacion_usr}
-    return render(request, 'index.html', context)
+    return notificacion_usr
 
 ##@brief Funcion que inicializa el alias del usuario actual, en caso de no tener alias sera "anonimo".
 ##@param request solicitud web

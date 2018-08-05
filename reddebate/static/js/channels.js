@@ -1,5 +1,16 @@
 $(document).ready(function(){
   var socket = new ReconnectingWebSocket('ws://' + window.location.host + window.location.pathname);
+  var socket_notificacion = new ReconnectingWebSocket('ws://' + window.location.host + '/notificacion/');
+
+  socket_notificacion.onmessage = function(notificacion){
+    console.log("probando notificacion");
+    var data = JSON.parse(notificacion.data);
+    console.log(data);
+    var id_usr_actual = $("#id_usuario_actual").text();
+    if (id_usr_actual == data){
+      $("#num_notif").text("!")
+    }
+  };
   socket.onmessage = function(message) {
         var data = JSON.parse(message.data);
         console.log("onmassage");

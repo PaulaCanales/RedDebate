@@ -27,30 +27,6 @@
 	</head>
 <body>
 <script type="text/javascript">
-  // function cambiar_postura(id_debate, postura, post_f, post_c){
-  //      $.ajax({
-  //          url: "{% url 'despliega' 1 %}" ,
-  //          type: 'POST',
-  //          data:{  id : id_debate,
-  //                  postura_debate_ajax: postura,
-  //                  csrfmiddlewaretoken: '{{ csrf_token }}'
-  //                } ,
-  //                success: function(data) {
-	// 								 location.reload();
-	// 								 console.log(data);
-	// 								 var comparar = data.localeCompare('vacio')
-	// 								 if (comparar != 0){
-	// 									 if(document.getElementById("cambio_postura"+data)){
-	// 										 document.getElementById("cambio_postura"+data).style.display = 'block';
-	// 									 }
-	// 								 }
-  //                },
-  //                failure: function(data) {
-  //                    alert('Error de conexión');
-  //                },
-  //                crossDomain: true
-  //            });
-  //          }
 
   function valorar(argumento, opcionusr){
 		 $.ajax({
@@ -201,14 +177,16 @@
 										</li> -->
 										<li>
 											<a href="#" rel="popover" title="Notificaciones" data-toggle="popover" data-trigger="focus" data-placement="bottom" data-popover-content="#popoverNotificaciones">
-												<span class="glyphicon glyphicon-bell"></span> <span class="badge"> {{notificaciones|length}}</span>
+												<span class="glyphicon glyphicon-bell"></span> <span id="num_notif" class="badge"> {{notificaciones|length}}</span>
 											</a>
 										</li>
                 </ul>
             </div>
 						<div id ="popoverNotificaciones" class="hide">
 							{% for notificacion in notificaciones  %}
-								<p> {{notificacion}} </p>
+								<div class="alert alert-info" role="alert">
+									<a href="{% url 'despliega' notificacion.id_debate_id %}"> {{notificacion}} </a>
+								</div>
 							{% endfor %}
 						</div>
 
@@ -225,9 +203,9 @@
 
     </div>
      <div align="right" style="padding-right: 30px;">
-     </br>
+     <br>
         {{ user.get_full_name }}
-    </br>
+				<label id="id_usuario_actual" class="hide" value="{{user.id}}">{{user.id}}</label>
         <!-- <a href="{% url 'user-logout' %}"> Cerrar Sesión</a> -->
     </div>
 	{% block content %}

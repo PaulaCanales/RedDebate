@@ -14,6 +14,7 @@ from resumen.models import Debate
 from perfil.models import Perfil
 from debate.models import Postura, Argumento, Respuesta
 from perfil.forms import modificaAlias
+from resumen.views import verificaNotificacion
 
 # Create your views here.
 ##@brief Funcion que despliega los datos del usuario, debates abiertos, cerrados y opciones para cada uno.
@@ -36,9 +37,10 @@ def perfiles(request, id):
         alias_usuario = Perfil.objects.get(user_id=usuario)
 
     total_usuarios = User.objects.all()
-    
+    notificacion_usr = verificaNotificacion(request)
     return render(request, 'perfiles.html', {'usuario': usuario,
-        'alias': alias_usuario, 'usa_alias': usa_alias, 'total_usuarios': total_usuarios,})
+        'alias': alias_usuario, 'usa_alias': usa_alias, 'total_usuarios': total_usuarios,
+        'notificaciones': notificacion_usr})
 
 
 
@@ -89,12 +91,12 @@ def perfil(request):
         lista_debates_abiertos.append([debate, puede_editar])
 
 
-
+    notificacion_usr = verificaNotificacion(request)
     return render(request, 'perfil_usuario.html', {'usuario': usuario,
         'alias': alias_usuario,
         'debates_abiertos': lista_debates_abiertos,
         'debates_cerrados': debates_cerrados,
-        'alias_form': alias_form,
+        'alias_form': alias_form, 'notificaciones': notificacion_usr,
         })
 ##@brief Funcion que elimina un debate
 ##@param request solicitud web

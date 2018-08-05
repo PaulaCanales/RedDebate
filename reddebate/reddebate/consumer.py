@@ -41,6 +41,7 @@ def ws_receive(message):
             data['id_usuario'] = message.user
             data['id_debate'] = debate
             m = Postura.objects.create(**data)
+
         elif set(data.keys()) == set(('postura', 'id_debate', 'razon')):
             debate = Debate.objects.get(id_debate=data['id_debate'])
             data['id_debate'] = debate

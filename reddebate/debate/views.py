@@ -4,6 +4,7 @@ from resumen.models import Debate
 from debate.models import Postura, Argumento, Valoracion, Respuesta, Edicion
 from perfil.models import Perfil
 from debate.forms import publicaArgumentoForm, publicaRespuestaForm
+from resumen.views import verificaNotificacion
 
 from django.http import HttpResponse
 from django.contrib.auth.models import User
@@ -209,6 +210,7 @@ def despliega(request, id_debate): #debate_id
 		razon_favor_contra.append(Postura.objects.filter(id_debate_id=id_debate, postura_inicial=0, postura=1, cambio_postura=i).count())
 	for i in range (1,4):
 		razon_contra_favor.append(Postura.objects.filter(id_debate_id=id_debate, postura_inicial=1, postura=0, cambio_postura=i).count())
+	notificacion_usr = verificaNotificacion(request)
 	datos = {'debate': debate,
 		'usuario_creador': usuario_creador,
 		'usuario': usuario_actual,
@@ -221,7 +223,7 @@ def despliega(request, id_debate): #debate_id
 		'cambio_f_c':cambio_favor_contra, 'cambio_c_f':cambio_contra_favor,
 		'razon_f_c':razon_favor_contra, 'razon_c_f':razon_contra_favor,
 		'img': debate.img, 'cant_rebates':cant_rebates, 'arg_form':arg_form,
-		'resp_form':resp_form}
+		'resp_form':resp_form, 'notificaciones': notificacion_usr}
 	return render(request, 'debate.html', datos)
 
 ##@brief Funcion que guarda el comentario del usuario de un argumento.

@@ -7,7 +7,7 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from resumen.models import Debate
 from perfil.models import Perfil, Notificacion
-
+from channels import Group
 
 # Create your models here.
 
@@ -26,6 +26,7 @@ class Postura(models.Model):
     def __getitem__(self, key):
         return getattr(self, key)
     def as_dict(self):
+        # id_creador = Debate.objects.get(id_debate=self.id_debate.id_debate).id_usuario_id
         postura_f=Postura.objects.filter(id_debate_id=self.id_debate, postura=1).count()
         postura_c=Postura.objects.filter(id_debate_id=self.id_debate, postura=0).count()
         if (int(postura_f+postura_c)==0):
@@ -34,12 +35,14 @@ class Postura(models.Model):
         else:
             porcentaje_f=round(float(postura_f) / float(postura_c+postura_f),3)*100
             porcentaje_c=round(float(postura_c) / float(postura_c+postura_f),3)*100
-        return {'postura_f': postura_f, 'postura_c':postura_c, 'porc_f':porcentaje_f, 'porc_c':porcentaje_c }
+        return {'postura_f': postura_f, 'postura_c':postura_c,
+                'porc_f':porcentaje_f, 'porc_c':porcentaje_c}
 
 @receiver(post_save, sender=Postura)
 def crea_notificacion(sender, instance, **kwargs):
     if kwargs['created']:
         debate = instance['id_debate']
+        id_creador = debate.id_usuario_id
         num_postura = Postura.objects.filter(id_debate=debate.id_debate).count()
         try:
             notificacion = Notificacion.objects.get(id_debate_id=debate.id_debate, tipo="postura")
@@ -51,7 +54,7 @@ def crea_notificacion(sender, instance, **kwargs):
             print("primera")
             msj = str(num_postura)+" usuario ha definido postura en "+str(debate)
             notificacion = Notificacion.objects.create(id_debate = debate, mensaje=msj)
-
+        Group("notificacion").send({"text": str(id_creador)})
 
 class Argumento(models.Model):
     #parametros de la tabla.
