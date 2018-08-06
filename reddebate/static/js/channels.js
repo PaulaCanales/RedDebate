@@ -23,17 +23,15 @@ $(document).ready(function(){
   socket.onmessage = function(message) {
         var data = JSON.parse(message.data);
         console.log("onmassage");
+        var url = "/debate/"+data.id+"/"
         if (data.titulo){
           var debates = $("#Tabla_DbtAbiertos")
           var ele = $('<tr></tr>')
-
-          ele.append(
-              $("<td width=300 ></td>").text(data.titulo)
-          )
-          ele.append(
-              $("<td width=600><p></p></td>").text(data.descripcion)
-          )
-
+          ele.append($('<td class="alert alert-success" role="alert">0</td>'))
+          ele.append($('<td class="alert alert-danger" role="alert">0</td>'))
+          ele.append($("<td width=300 ></td>").text(data.titulo))
+          ele.append($("<td width=800><p></p></td>").text(data.descripcion))
+          ele.append($('<td> <a class="btn btn-tabla" href="'+url+'" > <span class="glyphicon glyphicon-eye-open"></span> Ver </a></td>'))
           debates.append(ele)
         }
         else if (data.postura_f || data.postura_c){

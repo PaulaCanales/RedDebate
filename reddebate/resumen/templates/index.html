@@ -73,33 +73,24 @@
 		</ul>
 
 		<div id="deb_abiertos" class="tabcontent">
-			<br>
 			<div class="row">
 				<div class="col-md-6"></div>
-			</div>
-			<div class="row">
 				<div class="col-md-6"><input type="text" id="myInput" onkeyup="filtrar_debate('myInput','Tabla_DbtAbiertos')" placeholder="Buscar por Título..." title="Escribe un Título"></div>
 			</div>
 			<div class="datagrid">
 				<table id="Tabla_DbtAbiertos">
 				<tr>
-					<thead><tr><th>Título</th><th>Descripción</th><th> </th><th> </th></tr></thead>
+					<thead><tr><th><span class="glyphicon glyphicon-thumbs-up"></span></th><th><span class="glyphicon glyphicon-thumbs-down"></span></th><th>Título</th><th>Descripción</th><th> </th></tr></thead>
 				</tr>
 				<tbody>
 					{% for deb in object_list %}
-					{% ifequal deb.estado 'abierto' %}
+					{% ifequal deb.0.estado 'abierto' %}
 						<tr>
-							<td width=300 > {{ deb.titulo }}</td>
-							<td width=600> <p> {{ deb.descripcion }}</p></td>
-							{% ifequal usuario.id deb.id_usuario_id %}
-								 <form id="id" method="post" action= "{% url 'index' %}" enctype="multipart/form-data" onsubmit="return confirm('¿Seguro que desea cerrar el debate?');">{% csrf_token %}
-				            	 <input type="hidden" value="{{ deb.id_debate }}" name="id_deb">
-				            	<td > <button type="submit" class="btn btn-outline" > <span class="glyphicon glyphicon-remove-circle"></span> Cerrar</button> </td>
-				    		</form>
-			    		{%else%}
-			    			<td> </td>
-			    		{%endifequal%}
-							<td> <a class="btn btn-tabla" href="{% url 'despliega' deb.id_debate %}" > <span class="glyphicon glyphicon-eye-open"></span> Ver </a></td>
+							<td class="alert alert-success" role="alert">{{deb.1}}</td>
+							<td class="alert alert-danger" role="alert">{{deb.2}}</td>
+							<td width=300 > {{ deb.0.titulo }}</td>
+							<td width=800> <p> {{ deb.0.descripcion }}</p></td>
+							<td> <a class="btn btn-tabla" href="{% url 'despliega' deb.0.id_debate %}" > <span class="glyphicon glyphicon-eye-open"></span> Ver </a></td>
 						</tr>
 					{%endifequal%}
 					{% endfor %}
@@ -107,34 +98,33 @@
 				</table>
 			</div>
 		</div>
-
 		<div id="deb_cerrados" class="tabcontent">
-			<br>
 			<div class="row">
 				<div class="col-md-6"></div>
+				<div class="col-md-6">
+					<input type="text" id="myInput2" onkeyup="filtrar_debate('myInput2','Tabla_DbtCerrados')" placeholder="Buscar por Título..." title="Escribe un Título">
+				</div>
 			</div>
-			<div class="row">
-				<div class="col-md-6"><input type="text" id="myInput2" onkeyup="filtrar_debate('myInput2','Tabla_DbtCerrados')" placeholder="Buscar por Título..." title="Escribe un Título"></div>
-			</div>
-			<div class="datagrid"><table id="Tabla_DbtCerrados">
+		<div class="datagrid">
+			<table id="Tabla_DbtCerrados">
 				<tr>
-					<thead><tr><th>Título</th><th>Descripción</th><th> </th><th> </th></tr></thead>
+					<thead><tr><th><span class="glyphicon glyphicon-thumbs-up"></span></th><th><span class="glyphicon glyphicon-thumbs-down"></span></th><th>Título</th><th>Descripción</th><th> </th></tr></thead>
 				</tr>
 				<tbody>
-			{% for deb in object_list %}
-			{% ifequal deb.estado 'cerrado'%}
-				<tr>
-					<td width=300 ><p> {{ deb.titulo }} </p></td>
-					<td width=600> <p> {{ deb.descripcion }} </p></td>
-
-					<td > </td>
-
-					<td align="right"> <a  class="btn btn-tabla" href="{% url 'despliega' deb.id_debate %}" ><span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span> Ver </a></td>
-				</tr>
-			{%endifequal%}
-			{% endfor %}
-			</tbody>
-			</table></div>
+					{% for deb in object_list %}
+					{% ifequal deb.0.estado 'cerrado' %}
+						<tr>
+							<td>{{deb.1}}</td>
+							<td>{{deb.2}}</td>
+							<td width=300 > {{ deb.0.titulo }}</td>
+							<td width=800> <p> {{ deb.0.descripcion }}</p></td>
+							<td> <a class="btn btn-tabla" href="{% url 'despliega' deb.0.id_debate %}" > <span class="glyphicon glyphicon-eye-open"></span> Ver </a></td>
+						</tr>
+					{%endifequal%}
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
 		</div>
 		<!-- <button onclick="start()">Start</button>
 		<button onclick="stop()">Stop</button>

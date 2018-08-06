@@ -22,4 +22,5 @@ class Debate(models.Model):
     def __unicode__(self): # __unicode__ on Python 2
 		return self.titulo
     def as_dict(self):
-        return {'titulo': self.titulo, 'descripcion': self.descripcion}
+        return {'titulo': self.titulo, 'descripcion': self.descripcion,
+                'id': self.id_debate}

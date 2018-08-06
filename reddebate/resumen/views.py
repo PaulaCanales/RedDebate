@@ -54,16 +54,20 @@ def index(request):
 
 
     category_list = Debate.objects.all().order_by('-id_debate')
+    object_list = []
     for debate in category_list:
         ahora = datetime.date.today()
         if debate.estado != 'cerrado' and debate.date_fin!= None and debate.date_fin <= ahora :
             debate.estado = 'cerrado'
             debate.save()
+        num_posturas_af = Postura.objects.filter(id_debate_id=debate.id_debate, postura=0).count()
+        num_posturas_ec = Postura.objects.filter(id_debate_id=debate.id_debate, postura=1).count()
+        object_list.append([debate,num_posturas_af,num_posturas_ec])
     print("el usuario activo es_: ", usuario.id)
     perfil_usuario = Perfil.objects.get(user_id= usuario.id)
     alias_usuario = perfil_usuario.alias
     notificacion_usr = verificaNotificacion(request)
-    context = {'object_list': category_list, 'usuario': usuario, 'alias': alias_usuario,
+    context = {'object_list': object_list, 'usuario': usuario, 'alias': alias_usuario,
                 'form':form, 'notificaciones':notificacion_usr}
     return render(request, 'index.html', context)
 
