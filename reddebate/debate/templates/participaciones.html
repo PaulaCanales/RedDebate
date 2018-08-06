@@ -103,7 +103,7 @@
     {% endfor %}
   </table>
 </div> <!-- datagrid -->
-{% ifequal postura_usr_deb 'No definido' %}
+<!-- {% ifequal postura_usr_deb 'No definido' %}
   <button id="bot_argumento{{postura}}" type="submit" class="btn btn-perfil" onclick=" javascript:fomulario_argumento('{{postura}}');"  style="display: none;" >Da tu Argumento</button>
 {% else %}
   {% ifequal t_arg 'no' %}
@@ -119,7 +119,11 @@
 </ul>
 <div id="form_argumento{{postura}}" style="display: none;" >
   <form id="nuevoArgForm{{postura}}" method="POST" class="post-form" enctype="multipart/form-data">{% csrf_token %}
-    {{arg_form.as_p}}
+    {% ifequal postura_usr_deb 'A Favor' %}
+      {{arg_form1.as_p}}
+    {% else %}
+      {{arg_form0.as_p}}
+    {% endifequal %}
     <button name="argumento" type="submit" class="btn btn-perfil">Publicar</button>
   </form>
-</div>
+</div> -->

@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect
 from resumen.models import Debate
 from debate.models import Postura, Argumento, Valoracion, Respuesta, Edicion
 from perfil.models import Perfil, Notificacion
-from debate.forms import publicaArgumentoForm, publicaRespuestaForm
+from debate.forms import publicaArgumentoForm1,publicaArgumentoForm0, publicaRespuestaForm
 from resumen.views import verificaNotificacion
 
 from django.http import HttpResponse
@@ -21,7 +21,8 @@ def despliega(request, id_debate): #debate_id
 	max_length = Debate.objects.get(id_debate=id_debate).largo
 	creador=[('username', User.objects.get(id=request.user.id).username),
 	         ('alias',Perfil.objects.get(user= request.user).alias)]
-	arg_form = publicaArgumentoForm(creador=creador,max_length=max_length)
+	arg_form0 = publicaArgumentoForm0(creador=creador,max_length=max_length)
+	arg_form1 = publicaArgumentoForm1(creador=creador,max_length=max_length)
 	resp_form = publicaRespuestaForm(creador=creador,max_length=max_length)
 	if request.method == 'POST':
 
@@ -222,8 +223,8 @@ def despliega(request, id_debate): #debate_id
 		'porc_f': porcentaje_f, 'porc_c': porcentaje_c,
 		'cambio_f_c':cambio_favor_contra, 'cambio_c_f':cambio_contra_favor,
 		'razon_f_c':razon_favor_contra, 'razon_c_f':razon_contra_favor,
-		'img': debate.img, 'cant_rebates':cant_rebates, 'arg_form':arg_form,
-		'resp_form':resp_form, 'notificaciones': notificacion_usr}
+		'img': debate.img, 'cant_rebates':cant_rebates, 'arg_form1':arg_form1,
+		'arg_form0':arg_form0,'resp_form':resp_form, 'notificaciones': notificacion_usr}
 	return render(request, 'debate.html', datos)
 
 ##@brief Funcion que guarda el comentario del usuario de un argumento.

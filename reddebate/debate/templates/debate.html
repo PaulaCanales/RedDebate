@@ -122,9 +122,23 @@
 			<div class="row">
 		    <div class="col-md-6">
 					{% include 'participaciones.html' with frase="A Favor" comentario=argF postura=1 num_post=num_post_f%}
+					<ul id="alertaArgumento1" class="list-group"></ul>
+					{% ifequal postura_usr_deb 'A Favor' %}
+						<form id="nuevoArgForm1" method="POST" class="post-form" enctype="multipart/form-data">{% csrf_token %}
+			      {{arg_form1.as_p}}
+						<button name="argumento" type="submit" class="btn btn-perfil">Publicar</button>
+						</form>
+					{% endifequal %}
 				</div>
 				<div class="col-md-6">
 					{% include 'participaciones.html' with frase="En Contra" comentario=argC postura=0 num_post=num_post_c%}
+					<ul id="alertaArgumento0" class="list-group"></ul>
+					{% ifequal postura_usr_deb 'En Contra' %}
+					<form id="nuevoArgForm0" method="POST" class="post-form" enctype="multipart/form-data">{% csrf_token %}
+						{{arg_form0.as_p}}
+						<button name="argumento" type="submit" class="btn btn-perfil">Publicar</button>
+					</form>
+			    {% endifequal %}
 				</div>
 			</div>
 		</div>

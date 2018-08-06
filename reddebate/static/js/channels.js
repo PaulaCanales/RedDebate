@@ -3,33 +3,21 @@ $(document).ready(function(){
   var socket_notificacion = new ReconnectingWebSocket('ws://' + window.location.host + '/notificacion/');
 
   socket_notificacion.onmessage = function(notificacion){
-    console.log("probando notificacion");
     var data = JSON.parse(notificacion.data);
-    console.log(data);
     var id_usr_actual = $("#id_usuario_actual").text();
     if (id_usr_actual == data.id_creador){
       $("#num_notif").text("!")
       var popup = $("#popoverNotificaciones")
       var url = "/debate/"+data.id_debate+"/"+data.id_notificacion
       var item = document.getElementById("notificacion"+data.id_notificacion)
-      console.log(item);
       if(item){
-        console.log("no esta leida");
         $("#notificacion"+data.id_notificacion).text(data.mensaje)
       }
       else{
-        console.log("ya esta leida");
         var ele = $('<div class="alert alert-danger" role="alert"> </div>')
         ele.append($('<a href="'+url+'"></a>').text(data.mensaje))
         popup.append(ele)
       }
-      // if (item){
-      //   item.text(data.mensaje)
-      // }
-      // else{
-      //   var ele = $("<a></a>").text(data.mensaje)
-      //   popup.append(ele)
-      // }
     }
   };
   socket.onmessage = function(message) {
@@ -59,7 +47,7 @@ $(document).ready(function(){
         }
         else if (data.descripcion){
           var nuevosArgs = $("#alertaArgumento"+data.postura);
-          var nuevo = $('<a onclick="javascript:location.reload()" id="nuevoArgumento{{postura}}" class="list-group-item"> </a>').text("Nuevo argumento de "+data.nombre)
+          var nuevo = $('<a onclick="javascript:location.reload()" id="nuevoArgumento'+data.postura+'" class="list-group-item"> </a>').text("Nuevo argumento de "+data.nombre)
           nuevosArgs.append(nuevo)
         }
     };
@@ -81,13 +69,29 @@ $(document).ready(function(){
   });
 
   $("#nuevoArgForm1").on("submit", function(event){
+    console.log();("a favor")
     var message = {
-      descripcion: $('#descArg').val(),
-      alias_c: $('#aliasArg').val(),
+      descripcion: $('#descArg1').val(),
+      alias_c: $('#aliasArg1').val(),
       id_debate: $('#idDebate').val(),
       postura: "",
       id_usuario_id: ""
     }
+    socket.send(JSON.stringify(message));
+    setTimeout(function(){location.reload();}, 500);
+    return false;
+  });
+  $("#nuevoArgForm0").on("submit", function(event){
+    console.log("en contra");
+    console.log($('#descArg0').val(),);
+    var message = {
+      descripcion: $('#descArg0').val(),
+      alias_c: $('#aliasArg0').val(),
+      id_debate: $('#idDebate').val(),
+      postura: "",
+      id_usuario_id: ""
+    }
+    console.log(message);
     socket.send(JSON.stringify(message));
     setTimeout(function(){location.reload();}, 500);
     return false;
