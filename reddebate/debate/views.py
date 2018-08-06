@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 
 from resumen.models import Debate
 from debate.models import Postura, Argumento, Valoracion, Respuesta, Edicion
-from perfil.models import Perfil
+from perfil.models import Perfil, Notificacion
 from debate.forms import publicaArgumentoForm, publicaRespuestaForm
 from resumen.views import verificaNotificacion
 
@@ -297,3 +297,10 @@ def elimina_argumento(request):
 	arg = Argumento.objects.get(pk=id_argumento)
 	arg.delete()
 	return (id_deb)
+
+def ver_notificacion(request, id_debate, id_notificacion):
+	print("ver notificacion")
+	notificacion = Notificacion.objects.get(id=id_notificacion)
+	notificacion.estado = 1
+	notificacion.save()
+	return redirect(despliega,id_debate)

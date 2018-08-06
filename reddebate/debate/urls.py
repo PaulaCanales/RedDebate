@@ -7,6 +7,7 @@ urlpatterns = [
 
 	#url(r'^post_arg$', views.post_arg, name='post_arg'),
 	url(r'^(?P<id_debate>[0-9]+)/$', views.despliega, name='despliega'),
+	url(r'^(?P<id_debate>[0-9]+)/(?P<id_notificacion>[0-9]+)$', views.ver_notificacion, name='ver_notificacion'),
 	url(r'^', include('resumen.urls', namespace='resumen'))
 
 ]

@@ -8,6 +8,7 @@ from django.dispatch import receiver
 from resumen.models import Debate
 from perfil.models import Perfil, Notificacion
 from channels import Group
+import json
 
 # Create your models here.
 
@@ -54,7 +55,12 @@ def crea_notificacion(sender, instance, **kwargs):
             print("primera")
             msj = str(num_postura)+" usuario ha definido postura en "+str(debate)
             notificacion = Notificacion.objects.create(id_debate = debate, mensaje=msj)
-        Group("notificacion").send({"text": str(id_creador)})
+        Group("notificacion").send({'text': json.dumps(
+                                            {'id_creador': str(id_creador),
+                                            'mensaje': notificacion.mensaje,
+                                            'id_notificacion': notificacion.id,
+                                            'id_debate': debate.id_debate
+                                            })})
 
 class Argumento(models.Model):
     #parametros de la tabla.

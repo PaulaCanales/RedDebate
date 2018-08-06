@@ -7,8 +7,29 @@ $(document).ready(function(){
     var data = JSON.parse(notificacion.data);
     console.log(data);
     var id_usr_actual = $("#id_usuario_actual").text();
-    if (id_usr_actual == data){
+    if (id_usr_actual == data.id_creador){
       $("#num_notif").text("!")
+      var popup = $("#popoverNotificaciones")
+      var url = "/debate/"+data.id_debate+"/"+data.id_notificacion
+      var item = document.getElementById("notificacion"+data.id_notificacion)
+      console.log(item);
+      if(item){
+        console.log("no esta leida");
+        $("#notificacion"+data.id_notificacion).text(data.mensaje)
+      }
+      else{
+        console.log("ya esta leida");
+        var ele = $('<div class="alert alert-danger" role="alert"> </div>')
+        ele.append($('<a href="'+url+'"></a>').text(data.mensaje))
+        popup.append(ele)
+      }
+      // if (item){
+      //   item.text(data.mensaje)
+      // }
+      // else{
+      //   var ele = $("<a></a>").text(data.mensaje)
+      //   popup.append(ele)
+      // }
     }
   };
   socket.onmessage = function(message) {
