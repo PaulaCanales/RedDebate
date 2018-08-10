@@ -62,7 +62,7 @@ $(document).ready(function(){
       largo: $('#debLargoForm').val(),
       num_rebate: $('#debRebateForm').val(),
       date_fin: fechafin,
-      img: $('#debImgForm').val(),
+      // img: $('#debImgForm').val(),
       id_usuario_id: ""
     }
     socket.send(JSON.stringify(message));

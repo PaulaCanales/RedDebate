@@ -26,7 +26,7 @@ def ws_receive(message):
         return
 
     if data:
-        if set(data.keys()) == set(('titulo', 'descripcion', 'alias_c', 'largo', 'num_rebate', 'date_fin', 'img', 'id_usuario_id')):
+        if set(data.keys()) == set(('titulo', 'descripcion', 'alias_c', 'largo', 'num_rebate', 'date_fin', 'id_usuario_id')):
             data['id_usuario_id'] = message.user.id
             m = Debate.objects.create(**data)
         elif set(data.keys()) == set(('descripcion','alias_c','id_debate','postura','id_usuario_id')):
