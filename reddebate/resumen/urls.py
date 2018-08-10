@@ -6,6 +6,7 @@ urlpatterns = [
 
     url(r'^$', views.home, name='home'),
     url(r'^resumen/', views.index, name='index'),
+    url(r'^logout/', views.logout, name='logout'),
     url(r'^post/new/$', views.crear_debate, name='post_new'),
 
     #url(r'^perfil/$', views.perfil, name='perfil'),

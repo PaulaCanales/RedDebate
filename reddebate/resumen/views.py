@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 import datetime
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login
+from django.contrib.auth import logout as django_logout
 
 
 from django.http import HttpResponse
@@ -32,6 +33,10 @@ def home(request):
         form = LoginForm()
     context = {'form':form}
     return render(request,"home.html", context)
+
+def logout(request):
+    django_logout(request)
+    return redirect('home')
 
 ##@brief Funcion que despliega todos los debates
 ##@param request solicitud web

@@ -31,7 +31,7 @@
   function valorar(argumento, opcionusr){
 		 $.ajax({
 
-				 url: "{% url 'despliega' 15 %}" ,
+				 url: "{% url 'despliega' 1 %}" ,
 				 type: 'POST',
 				 data:{  id_arg : argumento,
 								 opcion: opcionusr,
@@ -208,7 +208,7 @@
      <br>
         {{ user.get_full_name }}
 				<label id="id_usuario_actual" class="hide" value="{{user.id}}">{{user.id}}</label>
-        <!-- <a href="{% url 'user-logout' %}"> Cerrar Sesión</a> -->
+        <a href="{% url 'logout' %}"> Cerrar Sesión</a>
     </div>
 	{% block content %}
 	{% endblock content %}
