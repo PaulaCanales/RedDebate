@@ -208,6 +208,7 @@
      <br>
         {{ user.get_full_name }}
 				<label id="id_usuario_actual" class="hide" value="{{user.id}}">{{user.id}}</label>
+				<br>
         <a href="{% url 'logout' %}"> Cerrar Sesión</a>
     </div>
 	{% block content %}

@@ -51,13 +51,17 @@ $(document).ready(function(){
     };
 
   $("#nuevodebateform").on("submit", function(event) {
+    var fechafin = $('#debFinForm').val()
+    if (fechafin.length === 0){
+      var fechafin = null;
+    }
     var message = {
       titulo: $('#debTituloForm').val(),
       descripcion: $('#debDescripcionForm').val(),
       alias_c: $('#debAliasForm').val(),
       largo: $('#debLargoForm').val(),
       num_rebate: $('#debRebateForm').val(),
-      date_fin: $('#debFinForm').val(),
+      date_fin: fechafin,
       img: $('#debImgForm').val(),
       id_usuario_id: ""
     }

@@ -41,12 +41,14 @@ class creaDebateForm(forms.ModelForm):
             'id': 'debDescripcionForm'
         }))
     date_fin = forms.DateField(
+        # input_formats=['%Y-%m-%d'],
         required=False,
         label='Fecha fin',
         widget=forms.TextInput(
             attrs={
                 'class': 'datepicker',
-                'id': 'debFinForm'
+                'id': 'debFinForm',
+                'readonly': True,
             }))
     alias_c = forms.CharField(label='Publicar debate como')
     largo = forms.CharField(

@@ -33,7 +33,8 @@ def home(request):
         form = LoginForm()
     context = {'form':form}
     return render(request,"home.html", context)
-
+    
+@login_required
 def logout(request):
     django_logout(request)
     return redirect('home')

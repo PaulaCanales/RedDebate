@@ -118,6 +118,10 @@ function ver(evt, estadoDbt) {
   evt.currentTarget.className += " active";
 }
 
+function borrarFecha(){
+  $('#debFinForm').val("")
+}
+
 // Gráficos
 
 function posturaChart() {
