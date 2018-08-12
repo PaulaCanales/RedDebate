@@ -46,6 +46,9 @@ def despliega(request, id_debate): #debate_id
 	usuario_id = debate.id_usuario_id #usuario creador
 	usuario_creador = User.objects.get(id= usuario_id)
 	cant_rebates = debate.num_rebate
+	cant_argumentos = debate.num_argumento
+	cant_cambio_postura = debate.num_cambio_postura
+	tipo_rebate = debate.tipo_rebate
 	try:
 		perfil_creador = Perfil.objects.get(user= usuario_creador)
 		perfil_creador = perfil_creador.alias
@@ -61,7 +64,7 @@ def despliega(request, id_debate): #debate_id
 	argumentos_F = []
 	argumentos_C = []
 
-	tiene_argumento ='no'
+	# tiene_argumento ='no'
 	for argumento in argumentos_aFavor:
 		ediciones = Edicion.objects.filter(id_argumento_id= argumento.id_argumento)
 		redebates = Respuesta.objects.filter(id_argumento_id= argumento.id_argumento)
@@ -116,8 +119,8 @@ def despliega(request, id_debate): #debate_id
 							argumento.postura,
 							post_usr_arg])
 
-		if (request.user.id == argumento.id_usuario_id):
-			tiene_argumento ='si'
+		# if (request.user.id == argumento.id_usuario_id):
+		# 	tiene_argumento ='si'
 
 	for argumento in argumentos_enContra:
 
@@ -174,17 +177,31 @@ def despliega(request, id_debate): #debate_id
 							argumento.alias_c,
 							argumento.postura,
 							post_usr_arg ])
-		if (request.user.id == argumento.id_usuario_id):
-			tiene_argumento = 'si'
+		# if (request.user.id == argumento.id_usuario_id):
+		# 	tiene_argumento = 'si'
 	argumentos_C = sorted(argumentos_C, key=lambda valoracion: valoracion[2], reverse=True)
 	argumentos_F = sorted(argumentos_F, key=lambda valoracion: valoracion[2], reverse=True)
 
+	argumentos_usr = Argumento.objects.filter(id_debate_id= id_debate, id_usuario_id=request.user ).count()
+	if argumentos_usr < cant_argumentos:
+		puede_argumentar = True
+	else:
+		puede_argumentar = False
+			
 	try:
 		postura_debate_usuario = Postura.objects.get(id_usuario_id= usuario_actual, id_debate_id=id_debate)
 		tiene_postura = True
+		cambios_usr = postura_debate_usuario.cuenta_cambios
 	except:
 		postura_debate_usuario = "No definido"
 		tiene_postura = False
+		cambios_usr = 0
+
+	if cambios_usr < cant_cambio_postura:
+		puede_cambiar_postura = True
+	else:
+		puede_cambiar_postura = False
+
 	if tiene_postura:
 		if postura_debate_usuario.postura == 1:
 			postura_debate_usuario = "A Favor"
@@ -202,15 +219,20 @@ def despliega(request, id_debate): #debate_id
 		porcentaje_c = round(float(numpost_c) / float(numpost_c+numpost_f),3)*100
 
 	posturas_total = Postura.objects.filter(id_debate_id= id_debate)
-	cambio_favor_contra = Postura.objects.filter(id_debate_id=id_debate, postura_inicial=0, postura=1).count()
-	cambio_contra_favor = Postura.objects.filter(id_debate_id=id_debate, postura_inicial=1, postura=0).count()
-
+	# cambio_favor_contra = Postura.objects.filter(id_debate_id=id_debate, postura_inicial=0, postura=1).count()
+	# cambio_contra_favor = Postura.objects.filter(id_debate_id=id_debate, postura_inicial=1, postura=0).count()
+	cambio_favor_contra = 0
+	cambio_contra_favor = 0
 	razon_favor_contra = []
 	razon_contra_favor = []
 	for i in range (1,4):
-		razon_favor_contra.append(Postura.objects.filter(id_debate_id=id_debate, postura_inicial=0, postura=1, cambio_postura=i).count())
+		num = Postura.objects.filter(id_debate_id=id_debate, postura=0, cambio_postura=i).count()
+		razon_favor_contra.append(num)
+		cambio_favor_contra += num
 	for i in range (1,4):
-		razon_contra_favor.append(Postura.objects.filter(id_debate_id=id_debate, postura_inicial=1, postura=0, cambio_postura=i).count())
+		num = Postura.objects.filter(id_debate_id=id_debate, postura=1, cambio_postura=i).count()
+		razon_contra_favor.append(num)
+		cambio_contra_favor += num
 	notificacion_usr = verificaNotificacion(request)
 	datos = {'debate': debate,
 		'usuario_creador': usuario_creador,
@@ -218,7 +240,7 @@ def despliega(request, id_debate): #debate_id
 		'alias': perfil_creador,
 		'alias_actual': usuario_actual_alias.alias,
 		'postura_usr_deb': postura_debate_usuario,
-		'argF': argumentos_F, 'argC': argumentos_C, 't_arg': tiene_argumento,
+		'argF': argumentos_F, 'argC': argumentos_C, 't_arg': puede_argumentar, 'p_post': puede_cambiar_postura,
 		'num_post_f': numpost_f, 'num_post_c': numpost_c,
 		'porc_f': porcentaje_f, 'porc_c': porcentaje_c,
 		'cambio_f_c':cambio_favor_contra, 'cambio_c_f':cambio_contra_favor,

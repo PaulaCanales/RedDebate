@@ -3,12 +3,8 @@
 from django import forms
 from resumen.models import Debate
 
-caracteres = [('300', '300 caracteres'),
-                ('200','200 caracteres'),
-                ('140','140 caracteres')]
-rebates = [('1', '1'),
-                ('2','2'),
-                ('3','3')]
+tipoRebate = [('0', 'Ambas posturas'),
+                ('1','Postura contraria')]
 creador=[('username','Nombre Real'),
          ('alias','Alias')]
 
@@ -41,7 +37,6 @@ class creaDebateForm(forms.ModelForm):
             'id': 'debDescripcionForm'
         }))
     date_fin = forms.DateField(
-        # input_formats=['%Y-%m-%d'],
         required=False,
         label='Fecha fin',
         widget=forms.TextInput(
@@ -52,16 +47,34 @@ class creaDebateForm(forms.ModelForm):
             }))
     alias_c = forms.CharField(label='Publicar debate como')
     largo = forms.CharField(
-        label='Largo máximo argumentos',
-        widget=forms.Select(
-            choices=caracteres,
-            attrs={'class': 'form-control', 'id': 'debLargoForm'}
+        label='Caracteres/argumento',
+        widget=forms.TextInput(
+            # choices=caracteres,
+            attrs={'class':'form-control', 'id': 'debLargoForm', 'value':'140','readonly': True}
+            ))
+    num_argumento = forms.CharField(
+        label='Argumentos/usuario',
+        widget=forms.TextInput(
+            # choices=rebates,
+            attrs={'class': 'form-control', 'id': 'debArgsForm', 'value':'1','readonly': True}
             ))
     num_rebate = forms.CharField(
-        label='Rebates por usuario',
+        label='Rebates/usuario',
+        widget=forms.TextInput(
+            # choices=rebates,
+            attrs={'class': 'form-control', 'id': 'debRebateForm', 'value':'1','readonly': True}
+            ))
+    num_cambio_postura = forms.CharField(
+        label='Cambio postura/usr',
+        widget=forms.TextInput(
+            # choices=rebates,
+            attrs={'class': 'form-control', 'id': 'debCambioPostForm', 'value':'1','readonly': True}
+            ))
+    tipo_rebate = forms.CharField(
+        label='Tipo Redebate',
         widget=forms.Select(
-            choices=rebates,
-            attrs={'class': 'form-control', 'id': 'debRebateForm'}
+            choices=tipoRebate,
+            attrs={'class': 'form-control', 'id': 'debTipoRebateForm'}
             ))
     img = forms.FileField(label='Añadir imagen', required=False,
         widget=forms.FileInput(
@@ -69,4 +82,4 @@ class creaDebateForm(forms.ModelForm):
             ))
     class Meta:
         model = Debate
-        fields = ('id_debate', 'titulo', 'descripcion', 'date_fin', 'alias_c', 'largo', 'num_rebate', 'img')
+        fields = ('id_debate', 'titulo', 'descripcion', 'date_fin', 'alias_c', 'largo', 'num_argumento', 'num_rebate', 'num_cambio_postura', 'tipo_rebate','img')

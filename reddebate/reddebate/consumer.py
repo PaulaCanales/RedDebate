@@ -26,7 +26,7 @@ def ws_receive(message):
         return
 
     if data:
-        if set(data.keys()) == set(('titulo', 'descripcion', 'alias_c', 'largo', 'num_rebate', 'date_fin', 'id_usuario_id')):
+        if set(data.keys()) == set(('titulo', 'descripcion', 'alias_c', 'largo', 'num_argumento', 'num_rebate', 'tipo_rebate', 'num_cambio_postura','date_fin', 'id_usuario_id')):
             data['id_usuario_id'] = message.user.id
             m = Debate.objects.create(**data)
         elif set(data.keys()) == set(('descripcion','alias_c','id_debate','postura','id_usuario_id')):
@@ -36,7 +36,7 @@ def ws_receive(message):
             data['postura'] = postura.postura
             data['id_debate'] = debate
             m = Argumento.objects.create(**data)
-        elif set(data.keys()) == set(('postura','postura_inicial','id_usuario','id_debate')):
+        elif set(data.keys()) == set(('postura','id_usuario','id_debate')):
             debate = Debate.objects.get(id_debate=data['id_debate'])
             data['id_usuario'] = message.user
             data['id_debate'] = debate
@@ -48,6 +48,7 @@ def ws_receive(message):
             m = Postura.objects.get(id_debate_id=debate.id_debate, id_usuario_id=message.user.id)
             m.postura = data['postura']
             m.cambio_postura = data['razon']
+            m.cuenta_cambios = m.cuenta_cambios + 1
             m.save()
 
         Group(grupo).send({'text': json.dumps(m.as_dict())})

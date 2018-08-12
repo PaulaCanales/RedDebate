@@ -17,7 +17,10 @@ class Debate(models.Model):
     id_usuario = models.ForeignKey(User)
     estado = models.CharField(max_length=20, default='abierto')
     img = models.FileField(blank=True, null=True)
+    num_argumento = models.IntegerField(default=1)
+    num_cambio_postura = models.IntegerField(default=1)
     num_rebate = models.IntegerField(default=1)
+    tipo_rebate = models.IntegerField(default=0)
 
     def __unicode__(self): # __unicode__ on Python 2
 		return self.titulo

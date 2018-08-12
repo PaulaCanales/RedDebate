@@ -122,6 +122,21 @@ function borrarFecha(){
   $('#debFinForm').val("")
 }
 
+function spinnerReglas(id, operacion, max, min, paso){
+  var valor = $('#'+id).val();
+  if(operacion>0){
+    if(parseInt(valor) < parseInt(max)){
+      $('#'+id).val(parseInt(valor)+parseInt(paso));
+    }
+  }
+  else {
+    if(parseInt(valor) > parseInt(min)){
+      $('#'+id).val(parseInt(valor)-parseInt(paso));
+    }
+  }
+
+}
+
 // Gráficos
 
 function posturaChart() {

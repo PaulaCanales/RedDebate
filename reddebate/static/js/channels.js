@@ -60,7 +60,10 @@ $(document).ready(function(){
       descripcion: $('#debDescripcionForm').val(),
       alias_c: $('#debAliasForm').val(),
       largo: $('#debLargoForm').val(),
+      num_argumento: $('#debArgsForm').val(),
       num_rebate: $('#debRebateForm').val(),
+      tipo_rebate: $('#debTipoRebateForm').val(),
+      num_cambio_postura: $('#debCambioPostForm').val(),
       date_fin: fechafin,
       // img: $('#debImgForm').val(),
       id_usuario_id: ""
@@ -101,7 +104,6 @@ $(document).ready(function(){
   $("#bot_af_init").click(function(event){
     var message = {
       postura: 1,
-      postura_inicial: 1,
       id_usuario: "",
       id_debate: $('#idDebate').val(),
     };
@@ -112,7 +114,6 @@ $(document).ready(function(){
   $("#bot_ec_init").click(function(event){
     var message = {
       postura: 0,
-      postura_inicial: 0,
       id_usuario: "",
       id_debate: $('#idDebate').val(),
     };

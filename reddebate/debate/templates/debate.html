@@ -34,6 +34,7 @@
 		<div id="cambioPostura_modal" class="modal">
 			<div class="modal-content">
 				<span class="close" onclick="cerrar_modal('cambioPostura_modal')">&times;</span>
+				{% if p_post %}
 				<h3>¿Por qué quieres cambiar de postura? <span class="glyphicon glyphicon-comment"></span></h3>
 						<div id="form_razon_cambio">
 								<input id="postura_debate" type="hidden" value="" name="postura_debate">
@@ -43,6 +44,9 @@
 	              <button id="bot_cambiar_post" type="submit" class="btn btn-perfil" > Aceptar </button>
 								<a class="btn btn-perfil" onclick="cerrar_modal('cambioPostura_modal')">Cancelar</a>
 						</div>
+				{% else %}
+					<h3> Ya no puedes cambiar de postura </h3>
+				{% endif %}
 			</div>
 		</div>
 		<div name="detalle-debate">
@@ -128,26 +132,26 @@
 		    <div class="col-md-6">
 					{% include 'participaciones.html' with frase="A Favor" comentario=argF postura=1 num_post=num_post_f%}
 					<ul id="alertaArgumento1" class="list-group"></ul>
-					{% ifequal t_arg 'no' %}
+					{% if t_arg %}
 					{% ifequal postura_usr_deb 'A Favor' %}
 						<form id="nuevoArgForm1" method="POST" class="post-form" enctype="multipart/form-data">{% csrf_token %}
 			      {{arg_form1.as_p}}
 						<button name="argumento" type="submit" class="btn btn-perfil">Publicar</button>
 						</form>
 					{% endifequal %}
-					{% endifequal %}
+					{% endif %}
 				</div>
 				<div class="col-md-6">
 					{% include 'participaciones.html' with frase="En Contra" comentario=argC postura=0 num_post=num_post_c%}
 					<ul id="alertaArgumento0" class="list-group"></ul>
-					{% ifequal t_arg 'no' %}
+					{% if t_arg %}
 					{% ifequal postura_usr_deb 'En Contra' %}
 					<form id="nuevoArgForm0" method="POST" class="post-form" enctype="multipart/form-data">{% csrf_token %}
 						{{arg_form0.as_p}}
 						<button name="argumento" type="submit" class="btn btn-perfil">Publicar</button>
 					</form>
 			    {% endifequal %}
-					{% endifequal %}
+					{% endif %}
 				</div>
 			</div>
 		</div>
