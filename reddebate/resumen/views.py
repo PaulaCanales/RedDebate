@@ -33,7 +33,7 @@ def home(request):
         form = LoginForm()
     context = {'form':form}
     return render(request,"home.html", context)
-    
+
 @login_required
 def logout(request):
     django_logout(request)
@@ -66,8 +66,8 @@ def index(request):
         if debate.estado != 'cerrado' and debate.date_fin!= None and debate.date_fin <= ahora :
             debate.estado = 'cerrado'
             debate.save()
-        num_posturas_af = Postura.objects.filter(id_debate_id=debate.id_debate, postura=0).count()
-        num_posturas_ec = Postura.objects.filter(id_debate_id=debate.id_debate, postura=1).count()
+        num_posturas_af = Postura.objects.filter(id_debate_id=debate.id_debate, postura=1).count()
+        num_posturas_ec = Postura.objects.filter(id_debate_id=debate.id_debate, postura=0).count()
         object_list.append([debate,num_posturas_af,num_posturas_ec])
     print("el usuario activo es_: ", usuario.id)
     perfil_usuario = Perfil.objects.get(user_id= usuario.id)
