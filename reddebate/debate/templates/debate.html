@@ -25,6 +25,12 @@
 				</td>
 			</tr>
 		</table></div>
+		<div id="fb-root"></div>
+		<div style="text-align: right">
+		<div class="fb-share-button"
+    	data-href="http://reddebate.cl/reddebate/debate/{{debate.id_debate}}/"
+    	data-layout="button_count">
+  	</div></div><br>
 		<div id="cambioPostura_modal" class="modal">
 			<div class="modal-content">
 				<span class="close" onclick="cerrar_modal('cambioPostura_modal')">&times;</span>
@@ -39,8 +45,7 @@
 						</div>
 			</div>
 		</div>
-
-		<div class="container" name="desc">
+		<div name="detalle-debate">
 			<div class="row" id="my-row">
 				<div class="col-md-3 panel">
 					{% ifequal postura_usr_deb 'No definido' %}
@@ -118,7 +123,7 @@
 			<!-- argumentos -->
 		<div id="argumentos" style="display: block;" >
 		<h2>Argumentos</h2>
-		<div class="container" name="arg_afavor">
+		<div name="argumentos-debate">
 			<div class="row">
 		    <div class="col-md-6">
 					{% include 'participaciones.html' with frase="A Favor" comentario=argF postura=1 num_post=num_post_f%}
