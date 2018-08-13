@@ -1,13 +1,16 @@
 from django.conf.urls import url
 
 from . import views
+from .views import TagIndexView
 
 urlpatterns = [
 
     url(r'^$', views.home, name='home'),
     url(r'^resumen/', views.index, name='index'),
+    url(r'^tag/(?P<slug>[-\w]+)/$', TagIndexView.as_view(), name='tagged'),
     url(r'^logout/', views.logout, name='logout'),
     url(r'^post/new/$', views.crear_debate, name='post_new'),
+
 
     #url(r'^perfil/$', views.perfil, name='perfil'),
     #url(r'^(?P<id_argumento>[0-9]+)/$', views.perfiles, name='perfiles')

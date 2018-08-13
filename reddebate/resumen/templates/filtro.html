@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+{% extends 'base.html' %}
+{% load static %}
+<html>
+{% block content %}
+<div class="container">
+{% for deb in debates%}
+  <p> deb {{deb}}<p>
+{% endfor %}
+</div>
+{% endblock content %}
+</html>

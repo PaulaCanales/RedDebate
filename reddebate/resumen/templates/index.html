@@ -12,134 +12,58 @@
 		</div>
 	</div>
 		<section class="success" id="nuevodebate" style="display:none">
-			<div class="container">
-			<form id="nuevodebateform" method="POST" class="post-form" enctype="multipart/form-data">{% csrf_token %}
-				<div class="row" id=publicar-debate>
-					<div class="col-md-8">
-						{{ form.non_field_errors }}
-						<div class="fieldWrapper">
-						    {{ form.titulo.errors }}
-						    {{ form.titulo.label_tag }}
-						    {{ form.titulo }}
-						</div>
-						<div class="fieldWrapper">
-						    {{ form.descripcion.errors }}
-						    {{ form.descripcion.label_tag }}
-						    {{ form.descripcion }}
-						</div>
-						<!-- <div class="fieldWrapper">
-						    {{ form.img.errors }}
-						    {{ form.img.label_tag }}
-						    {{ form.img }}
-						</div> -->
-					</div>
-					<div class="col-md-2">
-						<div class="fieldWrapper">
-						    {{ form.alias_c.errors }}
-						    {{ form.alias_c.label_tag }}
-						    {{ form.alias_c }}
-						</div>
-							<div class="fieldWrapper">
-						    {{ form.largo.errors }}
-						    {{ form.largo.label_tag }}
-								<div class="input-group spinner">
-							    {{ form.largo }}
-									<div class="input-group-btn-vertical">
-										<a href="javascript: spinnerReglas('debLargoForm','1','340','140','100')"class="btn btn-default"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a>
-										<a href="javascript: spinnerReglas('debLargoForm','-1','340','140','100')"class="btn btn-default"><span class="glyphicon glyphicon-minus" aria-hidden="true"></span></a>
-									</div>
-								</div>
-							</div>
-							<div class="fieldWrapper">
-						    {{ form.num_argumento.errors }}
-						    {{ form.num_argumento.label_tag }}
-								<div class="input-group spinner">
-							    {{ form.num_argumento }}
-									<div class="input-group-btn-vertical">
-										<a href="javascript: spinnerReglas('debArgsForm','1','10','1','1')"class="btn btn-default"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a>
-										<a href="javascript: spinnerReglas('debArgsForm','-1','10','1','1')"class="btn btn-default"><span class="glyphicon glyphicon-minus" aria-hidden="true"></span></a>
-									</div>
-								</div>
-							</div>
-							<div class="fieldWrapper">
-							    {{ form.date_fin.errors }}
-							    {{ form.date_fin.label_tag }}
-							    {{ form.date_fin }}
-									<a  href="javascript: borrarFecha()" class="btn btn-default">
-										<span class="glyphicon glyphicon-erase" aria-hidden="true"></span>
-									</a>
-							</div>
-							</div>
-							<div class="col-md-2">
-							<div class="fieldWrapper">
-						    {{ form.num_rebate.errors }}
-						    {{ form.num_rebate.label_tag }}
-								<div class="input-group spinner">
-						    	{{ form.num_rebate }}
-									<div class="input-group-btn-vertical">
-										<a href="javascript: spinnerReglas('debRebateForm', '1','10','1','1')"class="btn btn-default"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a>
-										<a href="javascript: spinnerReglas('debRebateForm','-1','10','1','1')"class="btn btn-default"><span class="glyphicon glyphicon-minus" aria-hidden="true"></span></a>
-									</div>
-								</div>
-							</div>
-							<div class="fieldWrapper">
-						    {{ form.tipo_rebate.errors }}
-						    {{ form.tipo_rebate.label_tag }}
-						    {{ form.tipo_rebate }}
-							</div>
-							<div class="fieldWrapper">
-						    {{ form.num_cambio_postura.errors }}
-						    {{ form.num_cambio_postura.label_tag }}
-								<div class="input-group spinner">
-						    	{{ form.num_cambio_postura }}
-									<div class="input-group-btn-vertical">
-										<a href="javascript: spinnerReglas('debCambioPostForm', '1','3','1','1')"class="btn btn-default"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a>
-										<a href="javascript: spinnerReglas('debCambioPostForm','-1','3','1','1')"class="btn btn-default"><span class="glyphicon glyphicon-minus" aria-hidden="true"></span></a>
-									</div>
-								</div>
-							</div>
-
-					</div>
-				</div>
-				<button type="submit" class="btn btn-publicar">Publicar</button>
-				<a onclick="cierra_formulario('#nuevodebate')" class="btn btn-cancelar" >Cancelar</a>
-			</form>
-		</div>
+			{% include 'debate_form.html' %}
     </section>
     <br><br>
     <div class="container">
-    	<ul class="tab">
+    <!-- <ul class="tab">
 		  <li><a href="javascript:void(0)" class="tablinks" onclick="debate_estado(event, 'deb_abiertos')" id="dbt_abiertos">Debates Abiertos</a></li>
 		  <li><a href="javascript:void(0)" class="tablinks" onclick="debate_estado(event, 'deb_cerrados')">Debates Cerrados</a></li>
-		</ul>
+		</ul> -->
 
-		<div id="deb_abiertos" class="tabcontent">
-			<div class="row">
-				<div class="col-md-6"></div>
-				<div class="col-md-6"><input type="text" id="myInput" onkeyup="filtrar_debate('myInput','Tabla_DbtAbiertos')" placeholder="Buscar por Título..." title="Escribe un Título"></div>
+		<!-- <div id="deb_abiertos" class="tabcontent"> -->
+		<div class="row">
+			<div class="col-md-2">
+				<div class="panel panel-default">
+				  <div class="panel-heading">
+				    <h3 class="panel-title">Tags</h3>
+				  </div>
+				  <div class="panel-body">
+				    {% for deb in category_list %}
+							{% for tag in deb.tags.all %}
+			            <li> <a href="{% url 'tagged' tag.slug %}">{{ tag.name }}</a></li>
+			        {% endfor %}
+						{% endfor %}
+				  </div>
+				</div>
 			</div>
-			<div class="datagrid">
-				<table id="Tabla_DbtAbiertos">
-				<tr>
-					<thead><tr><th><span class="glyphicon glyphicon-thumbs-up"></span></th><th><span class="glyphicon glyphicon-thumbs-down"></span></th><th>Título</th><th>Descripción</th><th> </th></tr></thead>
-				</tr>
-				<tbody>
-					{% for deb in object_list %}
-					{% ifequal deb.0.estado 'abierto' %}
-						<tr>
-							<td class="alert alert-success" role="alert">{{deb.1}}</td>
-							<td class="alert alert-danger" role="alert">{{deb.2}}</td>
-							<td width=300 > {{ deb.0.titulo }}</td>
-							<td width=800> <p> {{ deb.0.descripcion }}</p></td>
-							<td> <a class="btn btn-tabla" href="{% url 'despliega' deb.0.id_debate %}" > <span class="glyphicon glyphicon-eye-open"></span> Ver </a></td>
-						</tr>
-					{%endifequal%}
-					{% endfor %}
-				</tbody>
-				</table>
+			<div class="col-md-10">
+				<input type="text" id="myInput" onkeyup="filtrar_debate('myInput','Tabla_DbtAbiertos')" placeholder="Buscar por Título..." title="Escribe un Título">
+				<div class="datagrid">
+					<table id="Tabla_DbtAbiertos">
+					<tr>
+						<thead><tr><th><span class="glyphicon glyphicon-thumbs-up"></span></th><th><span class="glyphicon glyphicon-thumbs-down"></span></th><th>Título</th><th>Descripción</th><th> </th></tr></thead>
+					</tr>
+					<tbody>
+						{% for deb in object_list %}
+						{% ifequal deb.0.estado 'abierto' %}
+							<tr>
+								<td class="alert alert-success" role="alert">{{deb.1}}</td>
+								<td class="alert alert-danger" role="alert">{{deb.2}}</td>
+								<td width=300 > {{ deb.0.titulo }}</td>
+								<td width=800> <p> {{ deb.0.descripcion }}</p></td>
+								<td> <a class="btn btn-tabla" href="{% url 'despliega' deb.0.id_debate %}" > <span class="glyphicon glyphicon-eye-open"></span> Ver </a></td>
+							</tr>
+						{%endifequal%}
+						{% endfor %}
+					</tbody>
+					</table>
+				</div>
 			</div>
 		</div>
-		<div id="deb_cerrados" class="tabcontent">
+
+		<!-- </div> -->
+		<!-- <div id="deb_cerrados" class="tabcontent">
 			<div class="row">
 				<div class="col-md-6"></div>
 				<div class="col-md-6">
@@ -166,17 +90,7 @@
 				</tbody>
 			</table>
 		</div>
-		</div>
-		<!-- <button onclick="start()">Start</button>
-		<button onclick="stop()">Stop</button>
-		 <input type="text" id="example" >
-		<table id="chat" style="border: 2px solid #2D3E50;">
-      <tbody>
-          <tr>
-            <td> </td>
-          </tr>
-      </tbody>
-		</table> -->
+		</div> -->
 	</div>
 	<p class="bottom-three">.</p>
 	{% endblock content %}

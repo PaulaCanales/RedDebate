@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'social_django',
     'channels',
     'reddebate',
+    'taggit',
 ]
 CHANNEL_LAYERS = {
     'default': {

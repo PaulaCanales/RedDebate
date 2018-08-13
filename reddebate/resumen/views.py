@@ -5,12 +5,11 @@ import datetime
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login
 from django.contrib.auth import logout as django_logout
-
-
+from django.views.generic import DetailView, ListView
+from taggit.models import Tag
 from django.http import HttpResponse
 from django.shortcuts import redirect
 import requests
-
 from django.http import HttpResponse
 from resumen.models import Debate
 from debate.models import Postura, Argumento, Respuesta, Valoracion, Edicion
@@ -73,7 +72,7 @@ def index(request):
     perfil_usuario = Perfil.objects.get(user_id= usuario.id)
     alias_usuario = perfil_usuario.alias
     notificacion_usr = verificaNotificacion(request)
-    context = {'object_list': object_list, 'usuario': usuario, 'alias': alias_usuario,
+    context = {'category_list':category_list, 'object_list': object_list, 'usuario': usuario, 'alias': alias_usuario,
                 'form':form, 'notificaciones':notificacion_usr}
     return render(request, 'index.html', context)
 
@@ -126,3 +125,12 @@ def crear_debate(request):
                 post.id_usuario = request.user
                 post.save()
     return form
+
+class TagIndexView(ListView):
+    template_name = 'filtro.html'
+    model = Debate
+    paginate_by = '10'
+    context_object_name = 'debates'
+
+    def get_queryset(self):
+        return Debate.objects.filter(tags__slug=self.kwargs.get('slug'))

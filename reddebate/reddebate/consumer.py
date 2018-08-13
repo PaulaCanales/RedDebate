@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from channels import Group
 import threading
 import random
