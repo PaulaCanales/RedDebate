@@ -52,11 +52,6 @@ def index(request):
     if request.method == 'POST':
         if 'id_deb' in request.POST:
             cerrar_debate(request)
-        # if 'descripcion' in request.POST:
-        #     form = crear_debate(request)
-        #     return redirect('index')
-
-
 
     category_list = Debate.objects.all().order_by('-id_debate')
     object_list = []
@@ -67,7 +62,14 @@ def index(request):
             debate.save()
         num_posturas_af = Postura.objects.filter(id_debate_id=debate.id_debate, postura=1).count()
         num_posturas_ec = Postura.objects.filter(id_debate_id=debate.id_debate, postura=0).count()
-        object_list.append([debate,num_posturas_af,num_posturas_ec])
+        num_posturas = num_posturas_af + num_posturas_ec
+    	if (int(num_posturas)==0):
+    		porcentaje_c=0
+    		porcentaje_f=0
+    	else:
+    		porcentaje_f = (num_posturas_af // num_posturas)*100
+    		porcentaje_c = (num_posturas_ec // num_posturas)*100
+        object_list.append([debate,porcentaje_f,porcentaje_c])
     print("el usuario activo es_: ", usuario.id)
     perfil_usuario = Perfil.objects.get(user_id= usuario.id)
     alias_usuario = perfil_usuario.alias
@@ -75,6 +77,10 @@ def index(request):
     context = {'category_list':category_list, 'object_list': object_list, 'usuario': usuario, 'alias': alias_usuario,
                 'form':form, 'notificaciones':notificacion_usr}
     return render(request, 'index.html', context)
+
+def tagged(request, slug):
+    print(Debate.objects.filter(tags__slug=slug))
+    return redirect('index')
 
 @login_required
 def verificaNotificacion(request):
@@ -125,12 +131,3 @@ def crear_debate(request):
                 post.id_usuario = request.user
                 post.save()
     return form
-
-class TagIndexView(ListView):
-    template_name = 'filtro.html'
-    model = Debate
-    paginate_by = '10'
-    context_object_name = 'debates'
-
-    def get_queryset(self):
-        return Debate.objects.filter(tags__slug=self.kwargs.get('slug'))

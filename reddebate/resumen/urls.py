@@ -7,7 +7,7 @@ urlpatterns = [
 
     url(r'^$', views.home, name='home'),
     url(r'^resumen/', views.index, name='index'),
-    url(r'^tag/(?P<slug>[-\w]+)/$', TagIndexView.as_view(), name='tagged'),
+    url(r'^tag/(?P<slug>[-\w]+)/$', views.tagged, name='tagged'),
     url(r'^logout/', views.logout, name='logout'),
     url(r'^post/new/$', views.crear_debate, name='post_new'),
 

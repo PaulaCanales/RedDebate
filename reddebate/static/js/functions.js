@@ -27,6 +27,7 @@ function fomulario_argumento(postura){
 
 function despliega_formulario(id){
   $(id).slideDown("slow");
+  $('html, body').animate({scrollTop : 0},800);
 }
 
 function cierra_formulario(id){
@@ -136,7 +137,16 @@ function spinnerReglas(id, operacion, max, min, paso){
   }
 
 }
+function cortarTexto(texto)
+{
+  var limite = 100;
+  if(texto.length > limite)
+  {
+    texto = texto.substring(0,limite) + "...";
+  }
 
+    document.write(texto);
+}
 // Gráficos
 
 function posturaChart() {
