@@ -935,3 +935,16 @@ hr {
 .tab-slider--body {
   margin-bottom: 20px;
 }
+.panel-default > .panel-heading {
+  background-color: #2D3E50;
+  color: #fff;
+  font-family: "Montserrat", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+.panel-default > .panel-body {
+  background-color: #fff;
+  color: #2D3E50;
+}
+.panel-default > .panel-body a {
+  color: #18BD9B;
+  font-weight: bold;
+}

@@ -23,17 +23,6 @@ def home(request):
         if user:
             login(request, user)
             return redirect('index')
-    #     data = form.cleaned_data
-    #     usuario = data.get("username")
-    #     clave = data.get("password")
-    #     acceso = authenticate(username=usuario, password=clave)
-    #     if acceso is not None:
-    #         login(request,acceso)
-    #         return redirect('index')
-    #     else:
-    #         return redirect('home')
-    # else:
-    #     form = LoginForm()
     context = {'form':form}
     return render(request,"home.html", context)
 

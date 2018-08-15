@@ -16,12 +16,22 @@
 		<div class="row">
 			<div class="col-md-2">
 				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h3 class="panel-title">¡Bienvenido!</h3>
+				 </div>
+	 				<div class="panel-body">
+						<p>{{ user.get_full_name }}</p>
+						<a href="{% url 'logout' %}"> Cerrar Sesión</a>
+					</div>
+	     </div>
+				<div class="panel panel-default">
 				  <div class="panel-heading">
 				    <h3 class="panel-title">Top Tags</h3>
 				  </div>
 				  <div class="panel-body">
 				    {% for tag in top_tags %}
-							<li> <a href="{% url 'tagged' tag.slug %}">{{ tag.name }}</a></li>
+							<a href="{% url 'tagged' tag.slug %}">{{ tag.name }}</a><br>
+							<p> {{tag.num_times}}</p>
 						{% endfor %}
 				  </div>
 				</div>

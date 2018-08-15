@@ -167,10 +167,8 @@
 </script>
 
 	<div class="page-header">
-	<!--barra superior-->
 	    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
         <div class="container">
-            <!-- Brand and toggle get grouped for better mobile display -->
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
                     <span class="sr-only">Toggle navigation</span>
@@ -178,10 +176,8 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-
                 <a href="{% url 'index' %}"><IMG SRC="{% static 'img/RDLogo03.png' %}" height='65' ALT="RedDebateLogo"></a>
             </div>
-            <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav navbar-right">
                     <li>
@@ -211,33 +207,16 @@
 						{% endifequal %}
 						{% endfor %}
 						</div>
-
-
-
-            <!-- /.navbar-collapse -->
         </div>
-
-
-        <!-- /.container -->
-    </nav>
-
-
-
-    </div>
-     <div align="right" style="padding-right: 30px;">
-     <br>
-        {{ user.get_full_name }}
-				<label id="id_usuario_actual" class="hide" value="{{user.id}}">{{user.id}}</label>
-				<br>
-        <a href="{% url 'logout' %}"> Cerrar Sesión</a>
+    	</nav>
+			<label id="id_usuario_actual" class="hide" value="{{user.id}}">{{user.id}}</label>
     </div>
 	{% block content %}
 	{% endblock content %}
-
+<label id="id_usuario_actual" class="hide" value="{{user.id}}">{{user.id}}</label>
   <div class="container">
-
     <div align="right">
-      <button onclick=window.open("http://146.83.216.163/mantisbt/login_page.php") type="submit" class="btn btn-index" > Reportar Problema</button>
+      <button onclick="") type="submit" class="btn btn-index" > Reportar Problema</button>
     </div>
   </div>
 	</body>

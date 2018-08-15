@@ -7,75 +7,8 @@
 <html>
 
 {% block content %}
-<section class="success" id="editardebate" style="display:none">
-    <div class="container">
-    <form method="POST" class="post-form">{% csrf_token %}
-    <form action="/post_new" id="publicar_form" method="post">{% csrf_token %}
-        <div class="blank"><table>
-            <tr>
-                <td width=70% vertical-align: top>
-                    <!-- <h4><strong>Publicar Debate</strong></h4> -->
-                    <br>
-                    <div class="form-group">
-                        <h4>Título</h4>
-                        <input name="titulo" id="tituloeditar" value="" type="text" class="form-control" placeholder="Título">
-                        <br>
-                        <input name="id_debate_editar" id="iddbteditar" value="" type="hidden" class="form-control">
-                        <h4>Descripción</h4>
-                        <textarea name="descripcion" id="desceditar" value="" rows="8" type="text" class="form-control" placeholder="Descripción"></textarea>
-                    </div>
-                    <button type="submit" class="btn btn-publicar">Editar</button>
-                    <a onclick="cierra_formulario('#editardebate')" class="btn btn-cancelar" > Cancelar</a>
-
-                </td>
-                <td width=10% ></td>
-                <td>
-                    <!-- <h4><strong>Reglas del Debate</strong></h4> -->
-                    <br>
-                    <div class="input-group">
-                        <h5>Fecha Fin</h5>
-                        <h5><div> <span class="glyphicon glyphicon-calendar"></span> <input class="datepicker" id="fechaeditar" type="text" name="date"> </div></h5>
-                        <br>
-                        <h5>Largo máximo de los argumentos</h5>
-                            <div class="funkyradio">
-                                <div class="funkyradio-success">
-                                    <input type="radio" name="largo_m" id="radio1e" value="300" checked/>
-                                    <label for="radio1e">300 carácteres</label>
-                                </div>
-                                <div class="funkyradio-success">
-                                    <input type="radio" name="largo_m" id="radio2e" value="200" />
-                                    <label for="radio2e">200 carácteres</label>
-                                </div>
-                                <div class="funkyradio-success">
-                                    <input type="radio" name="largo_m" id="radio3e" value="140" />
-                                    <label for="radio3e">140 carácteres</label>
-                                </div>
-                            </div>
-                        <br>
-                        <h5>Publicar el debate como</h5>
-                            <div class="funkyradio">
-                                <div class="funkyradio-success">
-                                    <input type="radio" name="alias" id="radio4e" value="username" checked/>
-                                    <label for="radio4e">Usuario: {{usuario.username}}</label>
-                                </div>
-                                <div class="funkyradio-success">
-                                    <input type="radio" name="alias" id="radio5e" value="alias" />
-                                    <label for="radio5e">Alias: {{alias.alias}}</label>
-                                </div>
-                            </div>
-                        <br>
-
-                    </div>
-                </td>
-            </tr>
-        </table></div>
-      </form></form>
-    </div>
-</section>
-
 <div class="container">
     <div class="col-md-4">
-
         <h3>{{ usuario.first_name }} {{ usuario.last_name }} </h3>
         <div class="container-perfil">
         <br>
@@ -123,8 +56,8 @@
         </div>
     </div>
 
-    <div class="col-xs-8">
-        <h3> Tus Debates Abiertos </h3>
+    <div class="col-md-8">
+        <!-- <h3> Tus Debates Abiertos </h3>
         <div class="datagrid"><table>
             <tr>
                 <thead><tr><th>Título</th><th>Descripción</th><th> </th><th> </th></tr></thead>
@@ -239,7 +172,7 @@
                             </tr>
                 		{% endfor %}
                     </tbody>
-                </table>
+                </table> -->
                 <p class="bottom-three">.</p>
             </div>
         </div>
