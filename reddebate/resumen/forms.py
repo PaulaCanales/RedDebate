@@ -2,6 +2,8 @@
 
 from django import forms
 from resumen.models import Debate
+from django.contrib.auth import authenticate, login
+
 
 tipoRebate = [('0', 'Ambas posturas'),
                 ('1','Postura contraria')]
@@ -9,10 +11,24 @@ creador=[('username','Nombre Real'),
          ('alias','Alias')]
 
 class LoginForm(forms.Form):
-    name_user = forms.CharField(max_length=20, required=True, label="",
-    widget=(forms.TextInput(attrs={"class":"input-login"})))
-    password_user = forms.CharField(max_length=20, required=True, label="",
-    widget=(forms.PasswordInput(attrs={"class":"input-login"})))
+    username = forms.CharField(max_length=20, required=True, label="Usuario",
+    widget=(forms.TextInput(attrs={"class":"input-login", 'name':"name", 'id':"name"})))
+    password = forms.CharField(max_length=20, required=True, label="Contraseña",
+    widget=(forms.PasswordInput(attrs={"class":"input-login", 'name':"pass", 'id':"pass"})))
+
+    def clean(self):
+        username = self.cleaned_data.get('username')
+        password = self.cleaned_data.get('password')
+        user = authenticate(username=username, password=password)
+        if not user or not user.is_active:
+            raise forms.ValidationError("Login incorrecto. Ingrese nuevamente.")
+        return self.cleaned_data
+
+    def login(self, request):
+        username = self.cleaned_data.get('username')
+        password = self.cleaned_data.get('password')
+        user = authenticate(username=username, password=password)
+        return user
 
 class creaDebateForm(forms.ModelForm):
     def __init__(self,*args,**kwargs):

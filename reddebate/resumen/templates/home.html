@@ -2,17 +2,70 @@
 {% load static %}
 <html>
 <head>
-<link rel="shortcut icon" type="image/png" href="{% static 'img/RDLogo02.png' %}"/>
-<link rel="stylesheet" type='text/css' href="{% static 'bootstrap-social-gh-pages/assets/css/bootstrap.css' %}" >
-<link rel="stylesheet" type='text/css' href="{% static 'bootstrap-social-gh-pages/assets/css/font-awesome.css' %}" >
-<link rel="stylesheet" type='text/css' href="{% static 'bootstrap-social-gh-pages/assets/css/docs.css' %}" >
-<link rel="stylesheet" type='text/css' href="{% static 'bootstrap-social-gh-pages/assets/css/bootstrap-social.css' %}" >
- <meta charset="UTF-8" />
+  <link rel="stylesheet" type='text/css' href="{% static '/css/login.css' %}" >
+  <link rel="shortcut icon" type="image/png" href="{% static 'img/RDLogo02.png' %}"/>
+  <link rel='stylesheet' href='http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css'>
+  <script src="{% static 'js/jquery.js' %}"></script>
+  <script src="{% static 'js/login.js' %}"></script>
+  <meta charset="UTF-8" />
 
-<title>Inicia Sesión</title>
+  <title>Inicia Sesión</title>
 </head>
-<body style="background: #18BD9B">
-	<br>
+<body>
+  <div class="materialContainer">
+   <div class="box">
+      <div class="title">Inicia Sesión</div>
+      <div class="error-login">
+      {% if form.non_field_errors %}
+          <ul>
+              {% for error in form.non_field_errors %}
+                  <li>{{ error }}</li>
+              {% endfor %}
+          </ul>
+      {% endif %}</div>
+      <form method="POST" class="post-form" enctype="multipart/form-data">{% csrf_token %}
+        <div class="input">
+          {{ form.username.errors }}
+          <label for="name">Usuario</label>
+          {{ form.username }}
+        </div>
+        <div class="input">
+          {{ form.password.errors }}
+          <label for="pass">Contraseña</label>
+          {{ form.password }}
+        </div>
+        <div class="button login">
+           <button type="submit" ><span>Ingresar</span> <i class="fa fa-check"></i></button>
+        </div>
+    </form>
+
+      <!-- <a href="" class="pass-forgot">¿Olvidaste contraseña?</a> -->
+   </div>
+
+   <div class="overbox">
+      <div class="material-button alt-2"><IMG SRC="{% static 'img/RDLogo02.png' %}" WIDTH='150' ALT="RedDebateLogo"></div>
+      <div class="title">Regístrate</div>
+      <div class="input">
+         <label for="regname">Usuario</label>
+         <input type="text" name="regname" id="regname">
+         <span class="spin"></span>
+      </div>
+      <div class="input">
+         <label for="regpass">Contraseña</label>
+         <input type="password" name="regpass" id="regpass">
+         <span class="spin"></span>
+      </div>
+      <div class="input">
+         <label for="reregpass">Repite Contraseña</label>
+         <input type="password" name="reregpass" id="reregpass">
+         <span class="spin"></span>
+      </div>
+      <div class="button">
+         <button><span>Siguiente</span></button>
+      </div>
+   </div>
+</div>
+	<!-- <br>
 	<br>
 	<div align="center">
 		  <IMG SRC="{% static 'img/RDLogo02.png' %}" WIDTH='300' VSPACE='3' HSPACE='3' ALT="RedDebateLogo">
@@ -21,7 +74,7 @@
           <button type="submit" class="btn btn-publicar">Ingresar</button>
       </form>
 	</div>
-		<br>
+		<br> -->
 		<!-- <div class="col-md-4"></div>
 		<div class="col-md-4">
 			<br>

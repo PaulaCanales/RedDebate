@@ -18,18 +18,22 @@ from taggit.models import Tag
 
 def home(request):
     form = LoginForm(request.POST or None)
-    if form.is_valid():
-        data = form.cleaned_data
-        usuario = data.get("name_user")
-        clave = data.get("password_user")
-        acceso = authenticate(username=usuario, password=clave)
-        if acceso is not None:
-            login(request,acceso)
+    if request.POST and form.is_valid():
+        user = form.login(request)
+        if user:
+            login(request, user)
             return redirect('index')
-        else:
-            return redirect('home')
-    else:
-        form = LoginForm()
+    #     data = form.cleaned_data
+    #     usuario = data.get("username")
+    #     clave = data.get("password")
+    #     acceso = authenticate(username=usuario, password=clave)
+    #     if acceso is not None:
+    #         login(request,acceso)
+    #         return redirect('index')
+    #     else:
+    #         return redirect('home')
+    # else:
+    #     form = LoginForm()
     context = {'form':form}
     return render(request,"home.html", context)
 
