@@ -1,7 +1,7 @@
 @import url("bootstrap.css");
 body{
   text-align: justify;
-  background-color: #f9f9f9;
+  background-color: #f7f7f7;
 
 }
 textarea{
@@ -168,45 +168,7 @@ section.success {
   border-bottom: none;
 }
 
-ul.tab {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-    background-color: #2D3E50;
-    -webkit-border-radius: 8px;
-    -moz-border-radius: 8px;
-    border-radius: 8px;
-}
 
-/* Float the list items side by side */
-ul.tab li {float: left;}
-
-/* Style the links inside the list items */
-ul.tab li a {
-    display: inline-block;
-    color: white;
-    text-align: center;
-    padding: 14px 16px;
-    text-decoration: none;
-    transition: 0.3s;
-    font-size: 17px;
-}
-
-/* Change background color of links on hover */
-ul.tab li a:hover {
-    background-color: #1C3146;
-}
-
-/* Create an active/current tablink class */
-ul.tab li a:focus, .active {
-    background-color: #18BD9D;
-}
-/* Style the tab content */
-.tabcontent {
-    display: none;
-    padding: 6px 12px;
-}
 
 #myInput {
   background-image: url('/static/img/searchicon.png');
@@ -279,7 +241,7 @@ ul.tab li a:focus, .active {
 
 .datagrid {
  font: normal 12px/150% Arial, Helvetica, sans-serif;
- background: #fff;
+ background-color: transparent;
  overflow: hidden;
  -webkit-border-radius: 8px;
  -moz-border-radius: 8px;
@@ -316,7 +278,7 @@ ul.tab li a:focus, .active {
  font-size: 16px;
  font-weight: bold;
  border-left: 0px solid #2D3E50;
- border-bottom: 3px solid white;
+ /* border-bottom: 3px solid white; */
  padding: 15px 15px;
  }
 
@@ -522,7 +484,9 @@ footer {
   color: #fff;
   background-color: #2D3E50;
 }
-
+.panel{
+  background-color: transparent;
+}
 .btn-tabla {
   width: 100px;
   color:#fff;
@@ -546,7 +510,7 @@ footer {
 .btn-perfil {
   width: auto;
   color:#18BC9C;
-  background:#fff;
+  background-color: transparent;
   border:2px solid #18BC9C
 
 }
@@ -559,7 +523,7 @@ footer {
 .btn-args {
   width: auto;
   color:#18BC9C;
-  background:#fff;
+  background-color: transparent;
   font-size: 11px;
 
 }
@@ -571,7 +535,7 @@ footer {
 .btn-valorar {
   width: auto;
   color:#000;
-  background:#fff;
+  background-color: transparent;
   border:0px;
   font-size: 10px;
 
@@ -584,7 +548,7 @@ footer {
 .btn-nulo {
   width: auto;
   color:#18BC9C;
-  background:#fff;
+  background-color: transparent;
   border:0px;
   font-size: 10px;
 
@@ -652,7 +616,7 @@ footer {
 .btn-outline {
   width: 100px;
   color:#18BC9C;
-  background:#fff;
+  background-color: transparent;
   border:2px solid #18BC9C
 
 }
@@ -667,7 +631,7 @@ footer {
   width: 90%;
   height: 150px;
   color:#18BC9C;
-  background:#fff;
+  background-color: transparent;
   border:2px solid #18BC9C;
   padding-left: 20px;
   padding-right: 20px;
@@ -906,4 +870,67 @@ hr {
   position: -webkit-sticky; /* Safari */
   position: sticky;
   top: 140px;
+  z-index: 1;
+}
+.tab-slider--nav {
+  width: 100%;
+  float: left;
+  margin-bottom: 20px;
+}
+
+.tab-slider--tabs {
+  display: block;
+  float: left;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  position: relative;
+  border-radius: 35px;
+  overflow: hidden;
+  background: #2D3E50;
+  height: 35px;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+}
+.tab-slider--tabs:after {
+  content: "";
+  width: 50%;
+  background: #18BD9B;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  transition: all 250ms ease-in-out;
+  border-radius: 35px;
+}
+.tab-slider--tabs.slide:after {
+  left: 50%;
+}
+
+.tab-slider--trigger {
+  font-size: 12px;
+  line-height: 1;
+  font-weight: bold;
+  color: #fff;
+  text-transform: uppercase;
+  text-align: center;
+  padding: 11px 20px;
+  position: relative;
+  z-index: 2;
+  cursor: pointer;
+  display: inline-block;
+  transition: color 250ms ease-in-out;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+}
+.tab-slider--trigger.active {
+  color: #fff;
+}
+
+.tab-slider--body {
+  margin-bottom: 20px;
 }

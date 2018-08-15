@@ -1,5 +1,4 @@
 from django.shortcuts import render, render_to_response
-from django.views.generic import ListView, DetailView
 from django.contrib.auth.models import User
 import datetime
 from django.contrib.auth.decorators import login_required
@@ -15,6 +14,7 @@ from resumen.models import Debate
 from debate.models import Postura, Argumento, Respuesta, Valoracion, Edicion
 from perfil.models import Perfil, Notificacion
 from resumen.forms import creaDebateForm, LoginForm
+from taggit.models import Tag
 
 def home(request):
     form = LoginForm(request.POST or None)
@@ -74,13 +74,24 @@ def index(request):
     perfil_usuario = Perfil.objects.get(user_id= usuario.id)
     alias_usuario = perfil_usuario.alias
     notificacion_usr = verificaNotificacion(request)
+    tags_list = [tag.name for tag in Tag.objects.all()]
+    top_tags = Debate.tags.most_common()[:5]
     context = {'category_list':category_list, 'object_list': object_list, 'usuario': usuario, 'alias': alias_usuario,
-                'form':form, 'notificaciones':notificacion_usr}
+                'form':form, 'notificaciones':notificacion_usr, 'top_tags':top_tags}
     return render(request, 'index.html', context)
 
 def tagged(request, slug):
-    print(Debate.objects.filter(tags__slug=slug))
-    return redirect('index')
+    usuario = request.user
+    perfil_usuario = Perfil.objects.get(user_id= usuario.id)
+    notificacion_usr = verificaNotificacion(request)
+    creador=[('username', User.objects.get(id=request.user.id).username),
+	         ('alias',perfil_usuario.alias)]
+    form = creaDebateForm(creador=creador)
+    debate_list = Debate.objects.filter(tags__slug=slug)
+    top_tags = Debate.tags.most_common()[:5]
+    context = {'category_list':debate_list, 'usuario': usuario, 'alias': perfil_usuario.alias,
+                'form':form, 'notificaciones':notificacion_usr, 'top_tags':top_tags}
+    return render(request, 'index.html', context)
 
 @login_required
 def verificaNotificacion(request):

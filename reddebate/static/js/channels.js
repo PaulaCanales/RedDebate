@@ -25,14 +25,9 @@ $(document).ready(function(){
         console.log("onmassage");
         var url = "/debate/"+data.id+"/"
         if (data.titulo){
-          var debates = $("#Tabla_DbtAbiertos")
-          var ele = $('<tr></tr>')
-          ele.append($('<td class="alert alert-success" role="alert">0</td>'))
-          ele.append($('<td class="alert alert-danger" role="alert">0</td>'))
-          ele.append($("<td width=300 ></td>").text(data.titulo))
-          ele.append($("<td width=800><p></p></td>").text(data.descripcion))
-          ele.append($('<td> <a class="btn btn-tabla" href="'+url+'" > <span class="glyphicon glyphicon-eye-open"></span> Ver </a></td>'))
-          debates.append(ele)
+          var nuevoDebate = $("#alertaDebate");
+          var nuevo = $('<a onclick="javascript:location.reload()" id="nuevoDebate" class="list-group-item"> </a>').text("Hay nuevos debates...");
+          nuevoDebate.append(nuevo);
         }
         else if (data.postura_f || data.postura_c){
           var porcentaje_f = Math.round(parseFloat(data.porc_f)*100)/100;

@@ -31,7 +31,7 @@ $(document).ready(function(){
 			</td>
 		</tr>
 	</table></div>
-	<div class="container" name="desc">
+	<div name="detalle-debate">
 			<div class="row" id="my-row">
 				<div class="col-md-3 panel">
 					<button id="bot_af" type="submit" class="btn btn-postura" disabled ><span class="glyphicon glyphicon-thumbs-up"></span> A Favor <br><br><label id="label_porc_f">{{porc_f}}%</label></button>
@@ -68,14 +68,16 @@ $(document).ready(function(){
 			</div>
 		</div>
 		{% ifequal debate.estado 'abierto'%}
-		<ul class="tab">
-			<li><a href="javascript:void(0)" class="tablinks" onclick="ver(event, 'argumentosTab')" id="argsTab">Argumentos</a></li>
-			<li><a href="javascript:void(0)" class="tablinks" onclick="ver(event, 'estadisticasTab')">Estadísticas</a></li>
+		<div class="tab-slider--nav">
+			<ul class="tab-slider--tabs">
+				<li class="tab-slider--trigger active" rel="tab1">Discusión</li>
+				<li class="tab-slider--trigger" rel="tab2">Estadísticas</li>
 			</ul>
-				<!-- argumentos -->
-			<div id="argumentosTab" class="tabcontent" >
+		</div>
+		<div class="tab-slider--container">
+			<div id="tab1" class="tab-slider--body">
 				<h2>Argumentos</h2>
-				<div class="container" name="arg_afavor">
+				<div name="argumentos-debate">
 					<div class="row">
 				    <div class="col-md-6">
 							{% include 'participaciones.html' with frase="A Favor" comentario=argF postura=1 num_post=num_post_f%}
@@ -87,12 +89,13 @@ $(document).ready(function(){
 				</div>
 				<p class="bottom-three">.</p>
 			</div>
-			<div id="estadisticasTab" class="tabcontent">
+			<div id="tab2" class="tab-slider--body">
 				{% include 'estadisticas.html' %}
 			</div>
 		{% else %}
 			{% include 'estadisticas.html' %}
 		{%endifequal%}
-
+	</div>
+</div>
 
 </html>

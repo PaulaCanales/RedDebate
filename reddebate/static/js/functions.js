@@ -137,8 +137,7 @@ function spinnerReglas(id, operacion, max, min, paso){
   }
 
 }
-function cortarTexto(texto)
-{
+function cortarTexto(texto){
   var limite = 100;
   if(texto.length > limite)
   {
