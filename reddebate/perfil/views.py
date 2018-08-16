@@ -77,26 +77,72 @@ def perfil(request):
 
     usuario = request.user
     alias_usuario = Perfil.objects.get(user=usuario)
-
-    debates_abiertos = Debate.objects.filter(id_usuario_id= usuario.id, estado= 'abierto').order_by('-id_debate')
-    debates_cerrados = Debate.objects.filter(id_usuario_id= usuario.id, estado= 'cerrado').order_by('-id_debate')
-    lista_debates_abiertos = []
-
-    for debate in debates_abiertos:
-        num_posturas_debate = Postura.objects.filter(id_debate_id = debate.id_debate).count()
-        if num_posturas_debate>0:
-            puede_editar = "no"
-        else:
+    debates = Debate.objects.all().order_by('-id_debate')
+    debates_usuario = Debate.objects.filter(id_usuario_id= usuario.id).order_by('-id_debate')
+    lista_debates = []
+    lista_debates_cerrados = []
+    for debate in debates_usuario:
+        num_posturas_af = Postura.objects.filter(id_debate_id=debate.id_debate, postura=1).count()
+        num_posturas_ec = Postura.objects.filter(id_debate_id=debate.id_debate, postura=0).count()
+        num_posturas = num_posturas_af + num_posturas_ec
+    	if (int(num_posturas)==0):
             puede_editar = "si"
-        lista_debates_abiertos.append([debate, puede_editar])
+            porcentaje_c=0
+            porcentaje_f=0
+    	else:
+            puede_editar = "no"
+            porcentaje_f = (float(num_posturas_af) / float(num_posturas))*100
+            porcentaje_c = (float(num_posturas_ec) / float(num_posturas))*100
+
+        lista_debates.append([debate, puede_editar, porcentaje_f, porcentaje_c, num_posturas_af, num_posturas_ec, num_posturas])
+    triunfos = 0
+    derrotas = 0
+    mejor_arg = 0
+    peor_arg = 0
+    for debate in debates:
+        try:
+            postura_usr = Postura.objects.get(id_debate_id=debate.id_debate, id_usuario_id=usuario.id).postura
+        except:
+            postura_usr = "vacia"
+        if (debate.estado == "cerrado"):
+            num_posturas_af = Postura.objects.filter(id_debate_id=debate.id_debate, postura=1).count()
+            num_posturas_ec = Postura.objects.filter(id_debate_id=debate.id_debate, postura=0).count()
+            argumentos = Argumento.objects.filter(id_debate_id=debate.id_debate).order_by('-puntaje')
+            if len(argumentos)!=0:
+                mejor_argumento = argumentos[0]
+                peor_argumento = argumentos[len(argumentos)-1]
+                if mejor_argumento.id_usuario.id == usuario.id:
+                    mejor_arg += 1
+                if peor_argumento.id_usuario.id == usuario.id:
+                    peor_arg += 1
+
+            if num_posturas_af>=num_posturas_ec:
+                postura_ganadora = 1
+                postura_perdedora = 0
+            else:
+                postura_ganadora = 0
+                postura_perdedora = 1
+
+            if postura_ganadora == postura_usr:
+                triunfos += 1
+            if postura_perdedora == postura_usr:
+                derrotas += 1
 
 
+    num_debates_usr = debates_usuario.count()
+    num_posturas_usr = Postura.objects.filter(id_usuario_id = usuario.id).count()
+    num_argumentos_usr = Argumento.objects.filter(id_usuario_id = usuario.id).count()
+    num_rebates_usr = Respuesta.objects.filter(id_usuario_id = usuario.id).count()
+    stats = {'debates': num_debates_usr, 'posturas':num_posturas_usr,
+             'argumentos': num_argumentos_usr, 'rebates':num_rebates_usr,
+             'triunfos': triunfos, 'derrotas':derrotas,
+             'mejor_arg':mejor_arg, 'peor_arg':peor_arg}
     notificacion_usr = verificaNotificacion(request)
     return render(request, 'perfil_usuario.html', {'usuario': usuario,
         'alias': alias_usuario,
-        'debates_abiertos': lista_debates_abiertos,
-        'debates_cerrados': debates_cerrados,
+        'debates': lista_debates,
         'alias_form': alias_form, 'notificaciones': notificacion_usr,
+        'stats': stats
         })
 ##@brief Funcion que elimina un debate
 ##@param request solicitud web

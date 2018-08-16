@@ -1,182 +1,182 @@
 <!DOCTYPE html>
 {% extends 'base.html' %}
 {% load static %}
-
-
-
 <html>
-
 {% block content %}
-<div class="container">
-    <div class="col-md-4">
-        <h3>{{ usuario.first_name }} {{ usuario.last_name }} </h3>
-        <div class="container-perfil">
-        <br>
-
-        <p1>Usuario: </p1>{{ usuario.username}}
-        <br>
-        <br>
-        <p1>Email: </p1>{{ usuario.email }}
-        <br>
-        <br>
-        <p1>Reputación: </p1>{{alias.reputacion}}
-        <br>
-        <br>
-        <p1>Fecha de ingreso : </p1>{{ usuario.date_joined }}
-        <br>
-        <br>
-        <div id="alias">
-            <p1>Alias : </p1>{{alias.alias}}
-            <button id = 'boton_alias' class="btn btn-perfil" onclick='javascript:cambiar_alias();'> Cambiar Alias <span class="glyphicon glyphicon-user" aria-hidden="true" ></span> </button>
+<link rel="stylesheet" type='text/css' href="{% static '/css/perfil.css' %}" >
+<div class="container-profile">
+  <header>
+  </header>
+  <main>
+    <div class="row">
+      <div class="left col-lg-4">
+        <div class="photo-left">
+          <img class="photo" src="{% static 'img/RDLogo05.png' %}"/>
+          <div class="active"></div>
         </div>
-
-         </div>
-        <br>
-        {% if alias_form.alias.errors %}
-          <div class="alert alert-danger">
-              {{ alias_form.alias.errors }}
-              <script>
-              $(document).ready(function(){
-              		try{document.getElementById("boton_alias").click();}
-              		catch(err){}});
-              </script>
+        <h4 class="name">{{usuario.username}}</h4>
+        <p class="info">{{ usuario.email }}</p>
+        <div class="stats row">
+          <div class="stat col-xs-6">
+            <h4 class="name">{{alias.reputacion}}</h4>
+            <p class="info">Reputación</p>
           </div>
-        {% endif %}
-        <div id='formulario_alias' style="display: none;" >
-          <form method="POST" class="post-form" enctype="multipart/form-data">{% csrf_token %}
-            {{ alias_form.non_field_errors }}
-						<div class="fieldWrapper">
-                {{ alias_form.user }}
-						    {{ alias_form.alias }}
-						</div>
-            <button name="nuevo_alias" type="submit" class="btn btn-perfil">Publicar</button>
-            <label type="button" onclick='cancelar_alias();' class="btn btn-perfil"> Cancelar </label>
-          </form>
-
+          <div class="stat col-xs-6">
+            <h4 class="name">{{stats.debates}}</h4>
+            <p class="info">Publicaciones</p>
+          </div>
         </div>
-    </div>
-
-    <div class="col-md-8">
-        <!-- <h3> Tus Debates Abiertos </h3>
-        <div class="datagrid"><table>
-            <tr>
-                <thead><tr><th>Título</th><th>Descripción</th><th> </th><th> </th></tr></thead>
-            </tr>
-            <tbody>
-        		{% for deb in debates_abiertos %}
-                    <tr>
-        				<td> {{ deb.0.titulo }} </td>
-        				<td><p> {{ deb.0.descripcion }} </p></td>
-                        <td>
-                            <div class="dropdown">
-                                <button class="btn btn-tabla dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    Opciones
-                                    <span class="caret"></span>
-                                </button>
-                                <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
-                                <li>
-                                    <button type="submit" onclick=location.href="{% url 'despliega' deb.0.id_debate %}" class="btn btn-link" > Ver  <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span></button>
-
-                                </li>
-
-                                {% ifequal deb.1 'no' %}
-                                 <li>
-
-                                    <button > no puede editar <span class="glyphicon glyphicon-edit" aria-hidden="true"></span></button>
-
-                                </li>
-                                {%else%}
-                                 <li>
-
-                                    <button type="submit" onclick="formulario_editar_debate('#editardebate','{{deb.0.id_debate}}','{{deb.0.titulo}}','{{deb.0.descripcion}}','{{deb.0.date_fin.year}}','{{deb.0.date_fin.month}}','{{deb.0.date_fin.day}}','{{deb.0.alias_c}}','{{deb.0.largo}}')" class="btn btn-link" > Editar <span class="glyphicon glyphicon-edit" aria-hidden="true"></span></button>
-
-                                </li>
-                                {%endifequal%}
-
-                                <li>
-                                   <form id="id" method="post" action= "{% url 'resumen:index' %}" enctype="multipart/form-data" onsubmit="return confirm('¿Seguro que desea cerrar el debate?');">{% csrf_token %}
-                                        <input type="hidden" value="{{ deb.0.id_debate }}" name="id_deb">
-
-                                        <button type="submit" class="btn btn-link" ><span class="glyphicon glyphicon-remove-circle"></span> Cerrar </button>
-                                    </form>
-
-                                </li>
-                                <li role="separator" class="divider"></li>
-
-                                    <li>
-
-                                        <form id="id" method="post" action= "{% url 'perfil' %}" enctype="multipart/form-data" onsubmit="return confirm('¿Seguro que desea eliminar el debate?');">{% csrf_token %}
-
-                                        <input type="hidden" value="{{ deb.0.id_debate }}" name="id_deb_eliminar">
-
-                                        <button type="submit" class="btn btn-link" > Eliminar <span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
-
-                                        </form>
-                                    </li>
-
-                                </ul>
-                            </div>
-
-                        </td>
-                    </tr>
-        		{% endfor %}
-            </tbody>
-            </table>
-
-            <h3> Tus Debates Cerrados </h3>
-            <div class="datagrid"><table>
-                    <tr>
-                        <thead><tr><th>Título</th><th>Descripción</th><th> </th><th> </th></tr></thead>
-                    </tr>
-                    <tbody>
-                		{% for deb in debates_cerrados %}
-                            <tr>
-                				<td> {{ deb.titulo }} </td>
-                				 <td><p> {{ deb.descripcion }} </p></td>
-
-                				<td> <div class="dropdown">
-                                    <button class="btn btn-tabla dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        Opciones
-                                        <span class="caret"></span>
-                                    </button>
-                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
-                                    <li>
-                                        <button type="submit" onclick=location.href="{% url 'despliega' deb.id_debate %}" class="btn btn-link" > Ver  <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span></button>
-                	                </li>
-
-                                    <li>
-                                    <form id="id" method="post" action= "{% url 'perfil' %}" enctype="multipart/form-data" onsubmit="return confirm('¿Seguro que desea republicar el debate?');">{% csrf_token %}
-
-                                    <input type="hidden" value="{{ deb.id_debate }}" name="id_deb_republicar">
-
-                                    <button type="submit" class="btn btn-link" > Republicar <span class="glyphicon glyphicon-off" aria-hidden="true"></span></button>
-                    		        </form>
-
-                                    </li>
-
-                                    <li role="separator" class="divider"></li>
-
-                                    <li>
-
-                                        <form id="id" method="post" action= "{% url 'perfil' %}" enctype="multipart/form-data" onsubmit="return confirm('¿Seguro que desea eliminar el debate?');">{% csrf_token %}
-
-                                        <input type="hidden" value="{{ deb.id_debate }}" name="id_deb_eliminar">
-
-                                        <button type="submit" class="btn btn-link" > Eliminar <span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
-
-                    		            </form>
-                                    </li>
-                                    </ul>
-                                    </div>
-                                </td>
-                            </tr>
-                		{% endfor %}
-                    </tbody>
-                </table> -->
-                <p class="bottom-three">.</p>
+        <div class="stats row">
+          <div class="stat col-xs-4">
+            <p class="number-stat">{{stats.posturas}}</p>
+            <p class="desc-stat">Posturas</p>
+          </div>
+          <div class="stat col-xs-4">
+            <p class="number-stat">{{stats.triunfos}}</p>
+            <p class="desc-stat">Triunfos</p>
+          </div>
+          <div class="stat col-xs-4">
+            <p class="number-stat">{{stats.derrotas}}</p>
+            <p class="desc-stat">Derrotas</p>
+          </div>
+        </div>
+        <div class="stats row">
+          <div class="stat col-xs-4">
+            <p class="number-stat">{{stats.argumentos}}</p>
+            <p class="desc-stat">Argumentos </p>
+          </div>
+          <div class="stat col-xs-4">
+            <p class="number-stat">{{stats.mejor_arg}}</p>
+            <p class="desc-stat">Mejor</p>
+          </div>
+          <div class="stat col-xs-4">
+            <p class="number-stat">{{stats.peor_arg}}</p>
+            <p class="desc-stat">Peor</p>
+          </div>
+        </div>
+        <p class="desc">{{ usuario.date_joined }}</p>
+      </div>
+      <div class="right col-lg-8">
+        <div class="tab-slider--nav">
+					<ul class="tab-slider--tabs">
+						<li class="tab-slider--trigger active" rel="tab1">Debates Abiertos</li>
+						<li class="tab-slider--trigger" rel="tab2">Debates Cerrados</li>
+					</ul>
+				</div>
+        <div class="tab-slider--container">
+					<div id="tab1" class="tab-slider--body">
+            <div class="row gallery">
+              <ul class="cards">
+                {% for deb in debates %}
+                {% ifequal deb.0.estado 'abierto' %}
+                  <li class="cards__item">
+                      <div class="card">
+                        <div class="card__content">
+                          <div class="card__title">{{ deb.0.titulo }}</div>
+                          <div class="progress">
+                            {% ifequal deb.6 0 %}
+                              <div class="progress-bar" style="background:rgba(0,0,0,0.4);; width: 100%">
+                                sin posturas
+                              </div>
+                            {% else %}
+                              {% ifequal deb.2 0 %}
+                                <div class="progress-bar" style="background:#d9534f; width: {{deb.3}}%">
+                                  <span class="glyphicon glyphicon-thumbs-down"></span> {{deb.5}}
+                                </div>
+                              {% else %}
+                                {% ifequal deb.3 0 %}
+                                  <div class="progress-bar" style="background:#18BC9C; width: {{deb.2}}%">
+                                    <span class="glyphicon glyphicon-thumbs-up"></span> {{deb.4}}
+                                  </div>
+                                  {% else %}
+                                  <div class="progress-bar" style="background:#18BC9C; width: {{deb.2}}%">
+                                    <span class="glyphicon glyphicon-thumbs-up"></span> {{deb.4}}
+                                  </div>
+                                  <div class="progress-bar" style="background:#d9534f; width: {{deb.3}}%">
+                                    <span class="glyphicon glyphicon-thumbs-down"></span> {{deb.5}}
+                                  </div>
+                                {% endifequal %}
+                              {% endifequal %}
+                            {% endifequal %}
+                          </div>
+                          <p class=card__text> {{deb.0.descripcion}} </p>
+                          <div class="row">
+                            <div class="col-md-6" style="padding-right: 2px">
+                          <form action="{% url 'despliega' deb.0.id_debate %}">
+                            <button class="btn btn-card2">Ver</button>
+                          </form></div>
+                          <div class="col-md-6" style="padding-left: 2px">
+                          <form id="id" method="post" action= "{% url 'resumen:index' %}" enctype="multipart/form-data" onsubmit="return confirm('¿Seguro que desea cerrar el debate?');">{% csrf_token %}
+                              <input type="hidden" value="{{ deb.0.id_debate }}" name="id_deb">
+                              <button type="submit" class="btn btn-card2">Cerrar</button>
+                          </form></div>
+                          </div>
+                        </div>
+                      </div>
+                    </li>
+                {% endifequal %}
+                {% endfor %}
+              </ul>
             </div>
+          </div>
+          <div id="tab2" class="tab-slider--body">
+            <div class="row gallery">
+              <ul class="cards">
+                {% for deb in debates %}
+                {% ifequal deb.0.estado 'cerrado' %}
+                <li class="cards__item">
+                    <div class="card">
+                      <div class="card__content">
+                        <div class="card__title">{{ deb.0.titulo }}</div>
+                        <div class="progress">
+                          {% ifequal deb.6 0 %}
+                            <div class="progress-bar" style="background:rgba(0,0,0,0.6);; width: 100%">
+                              sin posturas
+                            </div>
+                          {% else %}
+                            {% ifequal deb.2 0 %}
+                              <div class="progress-bar" style="background:#d9534f; width: {{deb.3}}%">
+                                <span class="glyphicon glyphicon-thumbs-down"></span> {{deb.5}}
+                              </div>
+                            {% else %}
+                              {% ifequal deb.3 0 %}
+                                <div class="progress-bar" style="background:#18BC9C; width: {{deb.2}}%">
+                                  <span class="glyphicon glyphicon-thumbs-up"></span> {{deb.4}}
+                                </div>
+                                {% else %}
+                                <div class="progress-bar" style="background:#18BC9C; width: {{deb.2}}%">
+                                  <span class="glyphicon glyphicon-thumbs-up"></span> {{deb.4}}
+                                </div>
+                                <div class="progress-bar" style="background:#d9534f; width: {{deb.3}}%">
+                                  <span class="glyphicon glyphicon-thumbs-down"></span> {{deb.5}}
+                                </div>
+                              {% endifequal %}
+                            {% endifequal %}
+                          {% endifequal %}
+                        </div>
+                        <p class=card__text> {{deb.0.descripcion}} </p>
+                        <div class="row">
+                          <div class="col-md-6" style="padding-right: 2px">
+                        <form action="{% url 'despliega' deb.0.id_debate %}">
+                          <button class="btn btn-card2">Ver</button>
+                        </form></div>
+                        <div class="col-md-6" style="padding-left: 2px">
+                          <form id="id" method="post" action= "{% url 'perfil' %}" enctype="multipart/form-data" onsubmit="return confirm('¿Seguro que desea republicar el debate?');">{% csrf_token %}
+                            <input type="hidden" value="{{ deb.0.id_debate }}" name="id_deb_republicar">
+                            <button type="submit" class="btn btn-card2">Abrir</button>
+                        </form></div>
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+                {% endifequal %}
+                {% endfor %}
+              </ul>
+            </div>
+          </div>
         </div>
-    </div>
+      </div>
+  </main>
 </div>
 
 {% endblock content %}

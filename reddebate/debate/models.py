@@ -71,6 +71,7 @@ class Argumento(models.Model):
     date_argumento = models.DateField(default=datetime.now)
     id_usuario = models.ForeignKey(User)
     id_debate = models.ForeignKey(Debate)
+    puntaje = models.IntegerField(default=0)
 
     def __unicode__(self): # __unicode__ on Python 2
         return self.descripcion

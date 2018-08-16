@@ -105,6 +105,8 @@ def despliega(request, id_debate): #debate_id
 		val_sumar = Valoracion.objects.filter(id_argumento_id= argumento.id_argumento, tipo_valoracion="sumar").count()
 		val_quitar = Valoracion.objects.filter(id_argumento_id= argumento.id_argumento, tipo_valoracion="quitar").count()
 		valoracion_argF = val_sumar - val_quitar
+		argumento.puntaje = valoracion_argF
+		argumento.save()
 		post_usr_arg = Postura.objects.get(id_usuario_id= argumento.id_usuario_id, id_debate_id=id_debate).postura
 		argumentos_F.append([argumento.descripcion,
 							usuario_debate,
@@ -164,6 +166,8 @@ def despliega(request, id_debate): #debate_id
 		val_quitar = Valoracion.objects.filter(id_argumento_id= argumento.id_argumento, tipo_valoracion="quitar").count()
 		valoracion_argC = val_sumar - val_quitar
 		t_valoracion=[t_valoracion_suma,t_valoracion_quita]
+		argumento.puntaje = valoracion_argC
+		argumento.save()
 		post_usr_arg = Postura.objects.get(id_usuario_id= argumento.id_usuario_id, id_debate_id=id_debate).postura
 		argumentos_C.append([argumento.descripcion,
 							usuario_debate,
@@ -187,7 +191,7 @@ def despliega(request, id_debate): #debate_id
 		puede_argumentar = True
 	else:
 		puede_argumentar = False
-			
+
 	try:
 		postura_debate_usuario = Postura.objects.get(id_usuario_id= usuario_actual, id_debate_id=id_debate)
 		tiene_postura = True
