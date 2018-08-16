@@ -64,7 +64,7 @@ $(document).ready(function(){
       id_usuario_id: ""
     }
     socket.send(JSON.stringify(message));
-    $("#nuevodebate").slideUp("slow");
+    location.reload();
     return false;
   });
 

@@ -54,17 +54,52 @@
             <p class="desc-stat">Peor</p>
           </div>
         </div>
-        <p class="desc">{{ usuario.date_joined }}</p>
+        <!-- <p class="desc">{{ usuario.date_joined }}</p> -->
       </div>
       <div class="right col-lg-8">
-        <div class="tab-slider--nav">
-					<ul class="tab-slider--tabs">
-						<li class="tab-slider--trigger active" rel="tab1">Debates Abiertos</li>
-						<li class="tab-slider--trigger" rel="tab2">Debates Cerrados</li>
-					</ul>
-				</div>
-        <div class="tab-slider--container">
-					<div id="tab1" class="tab-slider--body">
+        <div class="tab" role="tabpanel">
+          <ul class="nav nav-tabs" role="tablist">
+              <li role="presentation" class="active"><a href="#Section1" aria-controls="home" role="tab" data-toggle="tab">Información</a></li>
+              <li role="presentation"><a href="#Section2" aria-controls="profile" role="tab" data-toggle="tab">Debates Abiertos</a></li>
+              <li role="presentation"><a href="#Section3" aria-controls="messages" role="tab" data-toggle="tab">Debates Cerrados</a></li>
+          </ul>
+
+        <div class="tab-content tabs">
+          <div role="tabpanel" class="tab-pane fade in active" id="Section1">
+            <h4 class="fullname">{{usuario.get_full_name}}</h4>
+            <p class="desc-datos">Username</p>
+            <p class="datos">{{usuario.username}}</p>
+            <p class="desc-datos">Miembro desde</p>
+            <p class="datos">{{usuario.date_joined}}</p>
+            <p class="desc-datos">Alias</p>
+            <p class="datos">{{alias.alias}} <a id = 'boton_alias' onclick='javascript:cambiar_alias();'> <span class="glyphicon glyphicon-edit" aria-hidden="true" ></span> </a></p>
+            <p class="desc-datos">Personas alcanzadas</p>
+            <p class="datos">20</p>
+
+        {% if alias_form.alias.errors %}
+          <div class="alert alert-danger">
+              {{ alias_form.alias.errors }}
+              <script>
+              $(document).ready(function(){
+              		try{document.getElementById("boton_alias").click();}
+              		catch(err){}});
+              </script>
+          </div>
+        {% endif %}
+        <div id='formulario_alias' style="display: none;" >
+          <form method="POST" class="post-form" enctype="multipart/form-data">{% csrf_token %}
+            {{ alias_form.non_field_errors }}
+						<div class="fieldWrapper">
+                {{ alias_form.user }}
+						    {{ alias_form.alias }}
+						</div>
+            <button name="nuevo_alias" type="submit" class="btn btn-index">Cambiar</button>
+            <label type="button" onclick='cancelar_alias();' class="btn btn-index"> Cancelar </label>
+          </form>
+
+        </div>
+          </div>
+					<div role="tabpanel" class="tab-pane fade" id="Section2">
             <div class="row gallery">
               <ul class="cards">
                 {% for deb in debates %}
@@ -119,7 +154,7 @@
               </ul>
             </div>
           </div>
-          <div id="tab2" class="tab-slider--body">
+          <div role="tabpanel" class="tab-pane fade" id="Section3">
             <div class="row gallery">
               <ul class="cards">
                 {% for deb in debates %}
@@ -175,6 +210,8 @@
             </div>
           </div>
         </div>
+        </div>
+        <!-- columna -->
       </div>
   </main>
 </div>

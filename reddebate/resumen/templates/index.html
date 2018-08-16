@@ -43,9 +43,9 @@
 						<li class="tab-slider--trigger" rel="tab2">Debates Cerrados</li>
 					</ul>
 				</div>
+				<ul id="alertaDebate" class="list-group"></ul>
 				<div class="tab-slider--container">
 					<div id="tab1" class="tab-slider--body">
-						<ul id="alertaDebate" class="list-group"></ul>
 						<ul class="cards">
 							{% for deb in category_list %}
 							{% ifequal deb.estado 'abierto' %}

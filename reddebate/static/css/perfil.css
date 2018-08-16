@@ -70,7 +70,15 @@ main {
   font-family: "Open Sans";
   font-weight: 600;
   font-size: 18pt;
-  color: #777;
+  color: #2D3E50;
+}
+
+.fullname {
+  margin-top: 20px;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  font-size: 18pt;
+  color: #2D3E50;
 }
 
 .info {
@@ -81,7 +89,23 @@ main {
   color: #aaa;
   text-align: center;
 }
-
+.datos {
+  padding: 0px;
+  font-size: 14pt;
+  /* font-weight: bold; */
+  font-family: 'Montserrat', sans-serif;
+  color: #2D3E50;
+}
+.desc-datos{
+  margin-bottom: -10px;
+  font-size: 9pt;
+  color: #18BD9B;
+}
+.datos a{
+  font-size: 10pt;
+  color: #18BD9B;
+  padding-left: 10px;
+}
 .stats {
   margin-top: 25px;
   text-align: center;
@@ -90,7 +114,6 @@ main {
   font-family: 'Montserrat', sans-serif;
   width: 80%;
 }
-
 
 .number-stat {
   padding: 0px;
@@ -229,4 +252,59 @@ main {
 }
 .progress{
   margin-top: 5px;
+}
+.tab .nav-tabs{
+    display: inline-block;
+    background: #fff;
+    border-radius: 50px;
+    border: none;
+    padding: 6px;
+}
+.tab .nav-tabs li{
+    float: none;
+    display: inline-block;
+    position: relative;
+}
+.tab .nav-tabs li a{
+    font-size: 16px;
+    font-weight: 700;
+    background: #2D3E50;
+    color: #fff;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 10px 10px 0 0;
+    transition: all 0.5s ease 0s;
+}
+.tab .nav-tabs li a:hover{
+    background: #18BD9B;
+    color: #fff;
+    border: none;
+}
+.tab .nav-tabs li.active a,
+.tab .nav-tabs li.active a:focus,
+.tab .nav-tabs li.active a:hover{
+    border: none;
+    background: #18BD9B;
+    color: #fff;
+}
+.tab .tab-content{
+    font-size: 14px;
+    color: #686868;
+    line-height: 25px;
+    text-align: left;
+    padding: 5px 20px;
+}
+.tab .tab-content h3{
+    font-size: 22px;
+    color: #5b5a5a;
+}
+@media only screen and (max-width: 480px){
+    .tab .nav-tabs{
+        border-radius: 10px;
+    }
+    .tab .nav-tabs li{
+        width: 100%;
+        text-align: center;
+        margin-bottom: 5px;
+    }
 }

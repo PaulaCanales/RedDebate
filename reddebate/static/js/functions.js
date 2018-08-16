@@ -17,7 +17,7 @@ function cambiar_alias(){
 
 function cancelar_alias(){
   document.getElementById('formulario_alias').style.display = 'none';
-  document.getElementById('boton_alias').style.display = 'block';
+  document.getElementById('boton_alias').style.display = 'inline-block';
 }
 
 function fomulario_argumento(postura){
@@ -28,10 +28,12 @@ function fomulario_argumento(postura){
 function despliega_formulario(id){
   $(id).slideDown("slow");
   $('html, body').animate({scrollTop : 0},800);
+  $(nuevoDebateBtn).hide();
 }
 
 function cierra_formulario(id){
   $(id).slideUp("slow");
+  $(nuevoDebateBtn).show();
 }
 
 function formulario_editar_debate(id,id_dbt,titulo,desc,año,mes,dia,alias,largo){

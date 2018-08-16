@@ -76,6 +76,7 @@ p1{
   padding-top: 5px;
   margin-right: auto;
   margin-left: auto;
+  margin-top: 30px;
   margin-bottom: 10px;
   background-color:#2D3E50;
   color: #fff;
@@ -93,6 +94,7 @@ section h2 {
 section.success {
   background: #18BC9C;
   color: #2D3E50;
+  margin-top: 50px;
 }
 @media (max-width: 767px) {
   section {
