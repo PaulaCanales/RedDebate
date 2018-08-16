@@ -29,8 +29,9 @@ SECRET_KEY = 'vlf=awhlkhl@b1q7bo92mj^-@dh0fv0zx5mz%qsitx7zfc3s62'
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    'www.reddebate.cl/',
-    '146.83.216.233/'
+    'reddebate.cl',
+    '146.83.216.233',
+    'localhost'
 ]
 
 TEMPLATE_DIRS=(
