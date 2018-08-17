@@ -133,6 +133,12 @@ def perfil(request):
     num_posturas_usr = Postura.objects.filter(id_usuario_id = usuario.id).count()
     num_argumentos_usr = Argumento.objects.filter(id_usuario_id = usuario.id).count()
     num_rebates_usr = Respuesta.objects.filter(id_usuario_id = usuario.id).count()
+
+    # reputacion_usr = perfil.reputacion
+    # puntaje = (num_debates_usr * 5) + (num_posturas_usr * 3) + (num_argumentos_usr * 3) + (mejor_arg * 10) + (peor_arg * -5) + (num_rebates_usr * 3)
+    # reputacion_usr = reputacion_usr + puntaje
+    # perfil.reputacion = reputacion_usr
+    # perfil.save()
     stats = {'debates': num_debates_usr, 'posturas':num_posturas_usr,
              'argumentos': num_argumentos_usr, 'rebates':num_rebates_usr,
              'triunfos': triunfos, 'derrotas':derrotas,

@@ -7,9 +7,16 @@ import json
 import logging
 from resumen.models import Debate
 from debate.models import Argumento, Postura
+from perfil.models import Perfil
 from channels.auth import http_session_user, channel_session_user, channel_session_user_from_http
 
 log = logging.getLogger(__name__)
+
+def actualiza_reputacion(id_usr, puntaje):
+    perfil = Perfil.objects.get(user_id=id_usr)
+    reputacion = perfil.reputacion + puntaje
+    perfil.reputacion = reputacion
+    perfil.save()
 
 @channel_session_user_from_http
 def ws_connect(message):
@@ -30,6 +37,7 @@ def ws_receive(message):
     if data:
         if set(data.keys()) == set(('titulo', 'descripcion', 'alias_c', 'largo', 'num_argumento', 'num_rebate', 'tipo_rebate', 'num_cambio_postura','date_fin', 'id_usuario_id')):
             data['id_usuario_id'] = message.user.id
+            actualiza_reputacion(message.user.id, 5)
             m = Debate.objects.create(**data)
         elif set(data.keys()) == set(('descripcion','alias_c','id_debate','postura','id_usuario_id')):
             debate = Debate.objects.get(id_debate=data['id_debate'])
@@ -37,11 +45,13 @@ def ws_receive(message):
             data['id_usuario_id'] = message.user.id
             data['postura'] = postura.postura
             data['id_debate'] = debate
+            actualiza_reputacion(message.user.id, 3)
             m = Argumento.objects.create(**data)
         elif set(data.keys()) == set(('postura','id_usuario','id_debate')):
             debate = Debate.objects.get(id_debate=data['id_debate'])
             data['id_usuario'] = message.user
             data['id_debate'] = debate
+            actualiza_reputacion(message.user.id, 3)
             m = Postura.objects.create(**data)
 
         elif set(data.keys()) == set(('postura', 'id_debate', 'razon')):

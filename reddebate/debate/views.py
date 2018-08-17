@@ -268,54 +268,50 @@ def publica_redate(request,id_debate, id_argumento):
 			post.id_usuario_id = request.user.id
 			post.id_argumento_id = id_arg
 			post.save()
+		actualiza_reputacion(request.user.id, 3)
 	return resp_form
+
+def actualiza_reputacion(id_usr, puntaje):
+    perfil = Perfil.objects.get(user_id=id_usr)
+    reputacion = perfil.reputacion + puntaje
+    perfil.reputacion = reputacion
+    perfil.save()
 
 ##@brief Funcion que guarda la valoracion del usuario al argumento
 ##@param request solicitud web, entrega los datos del usuario actual
 ##@return respuesta se ingresa en el HttpResponse para indicar la valoracion actualizada del argumento
 ##@warning Login is required
 @login_required
-def publica_valoracion(request):
-	val_argumento= request.POST['id_arg']
-	usuario = request.user
-	val=request.POST['opcion']
-	if val=="sumar":
-		publicar_valoracion = Valoracion(id_argumento_id=val_argumento, id_usuario_id=usuario.id)
-		publicar_valoracion.save()
-		reputacion = 10
-	elif val=="quitar":
-		quitar_valoracion = Valoracion.objects.get(id_argumento_id=val_argumento, id_usuario_id=usuario.id);
-		quitar_valoracion.delete()
-		reputacion = -10
-	respuesta = Valoracion.objects.filter(id_argumento_id = val_argumento).count()
-	val_reputacion = request.POST['id_arg']
-	usuario_argumento = Argumento.objects.get(id_argumento=val_reputacion).id_usuario_id
-	usuario_reputacion = Perfil.objects.get(user_id=usuario_argumento).reputacion
-	usuario_reputacion = usuario_reputacion + reputacion
-	aumentar_reputacion = Perfil(user_id=usuario_argumento, reputacion=usuario_reputacion)
-	aumentar_reputacion.save()
-	return(respuesta)
-
 def valorar_argumento(request):
+	print("valorar argumento")
 	val_argumento= request.POST['id_arg']
 	usuario = request.user
 	val=request.POST['opcion']
+	if val == "sumar":
+		puntaje = 4
+	elif val =="quitar":
+		puntaje = -2
+	elif val =="nulo-sumar":
+		puntaje = -4
+	elif val =="nulo-quitar":
+		puntaje = 2
 	try:
 		publicar = Valoracion.objects.get(id_argumento_id=val_argumento, id_usuario_id=usuario.id);
+		val_actual = publicar.tipo_valoracion
+		if val == "sumar" or val == "quitar":
+			if val_actual == "sumar":
+				puntaje -= 4
+			elif val_actual == "quitar":
+				puntaje += 2
 		publicar.tipo_valoracion = val
 	except:
 		publicar = Valoracion(id_argumento_id=val_argumento, id_usuario_id=usuario.id, tipo_valoracion=val)
 	publicar.save()
-
+	id_usr_arg = Argumento.objects.get(id_argumento=val_argumento).id_usuario_id
+	actualiza_reputacion(id_usr_arg, puntaje)
 	val_sumar = Valoracion.objects.filter(id_argumento_id= val_argumento, tipo_valoracion="sumar").count()
 	val_quitar = Valoracion.objects.filter(id_argumento_id= val_argumento, tipo_valoracion="quitar").count()
 	respuesta = val_sumar - val_quitar
-	reputacion = val_sumar*5 - val_quitar*2
-	usuario_argumento = Argumento.objects.get(id_argumento=val_argumento).id_usuario_id
-	publicar_reputacion = Perfil.objects.get(user_id=usuario_argumento)
-	publicar_reputacion.reputacion = reputacion
-	publicar_reputacion.save()
-
 	return(respuesta)
 
 def elimina_argumento(request):
