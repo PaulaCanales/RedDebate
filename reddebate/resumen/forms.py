@@ -50,7 +50,8 @@ class creaDebateForm(forms.ModelForm):
             'class': 'form-control',
             'placeholder': 'Escribe una descripción...',
             'rows': 8,
-            'id': 'debDescripcionForm'
+            'id': 'debDescripcionForm',
+            'maxlength': 300,
         }))
     date_fin = forms.DateField(
         required=False,
