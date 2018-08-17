@@ -7,8 +7,66 @@
 <html>
 
 {% block content %}
-
-<div class="container">
+<link rel="stylesheet" type='text/css' href="{% static '/css/perfil.css' %}" >
+<div class="container-profile">
+  <header>
+  </header>
+  <main>
+    <div class="row">
+      <div class="left col-lg-5">
+        <div class="photo-left">
+          <img class="photo" src="{% static 'img/RDLogo05.png' %}"/>
+          <div class="active"></div>
+        </div>
+        <h4 class="name">{{usuario.username}}</h4>
+        <p class="info">{{ usuario.email }}</p>
+        <div class="stats row">
+          <div class="stat col-xs-6">
+            <h4 class="name">{{alias.reputacion}}</h4>
+            <p class="info">Reputación</p>
+          </div>
+          <div class="stat col-xs-6">
+            <h4 class="name">{{stats.debates}}</h4>
+            <p class="info">Publicaciones</p>
+          </div>
+        </div>
+        <div class="stats row">
+          <div class="stat col-xs-4">
+            <p class="number-stat">{{stats.posturas}}</p>
+            <p class="desc-stat">Posturas</p>
+          </div>
+          <div class="stat col-xs-4">
+            <p class="number-stat">{{stats.triunfos}}</p>
+            <p class="desc-stat">Triunfos</p>
+          </div>
+          <div class="stat col-xs-4">
+            <p class="number-stat">{{stats.derrotas}}</p>
+            <p class="desc-stat">Derrotas</p>
+          </div>
+        </div>
+        <div class="stats row">
+          <div class="stat col-xs-4">
+            <p class="number-stat">{{stats.argumentos}}</p>
+            <p class="desc-stat">Argumentos </p>
+          </div>
+          <div class="stat col-xs-4">
+            <p class="number-stat">{{stats.mejor_arg}}</p>
+            <p class="desc-stat">Mejor</p>
+          </div>
+          <div class="stat col-xs-4">
+            <p class="number-stat">{{stats.peor_arg}}</p>
+            <p class="desc-stat">Peor</p>
+          </div>
+        </div>
+        <!-- <p class="desc">{{ usuario.date_joined }}</p> -->
+      </div>
+      <div class="right col-lg-7">
+        En proceso...
+        <!-- columna -->
+      </div>
+  </main>
+</div>
+<!-- <div class="container">
     <div class="col-md-4">
       {% ifequal usa_alias 'username' %}
         <h3>{{ usuario.first_name }} {{ usuario.last_name }} </h3>
@@ -44,15 +102,15 @@
     </div>
     <div class="col-md-8">
       <h3> Usuarios </h3>
-      
+
         <ul class="list-group">
         {% for usr in total_usuarios %}
            <li class="list-group-item">{{usr.username}}</li>
         {% endfor %}
         </ul>
-      
+
     </div>
-</div>
+</div> -->
 
 {% endblock content %}
 
