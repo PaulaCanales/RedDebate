@@ -31,6 +31,12 @@ $(document).ready(function(){
 			</td>
 		</tr>
 	</table></div>
+	<div id="fb-root"></div>
+	<div style="text-align: right">
+	<div class="fb-share-button"
+		data-href="http://reddebate.cl/reddebate/debate/{{debate.id_debate}}/"
+		data-layout="button_count">
+	</div></div><br>
 	<div name="detalle-debate">
 			<div class="row" id="my-row">
 				<div class="col-md-3 panel">
@@ -81,9 +87,11 @@ $(document).ready(function(){
 					<div class="row">
 				    <div class="col-md-6">
 							{% include 'participaciones.html' with frase="A Favor" comentario=argF postura=1 num_post=num_post_f%}
+							<ul id="alertaArgumento1" class="list-group"></ul>
 						</div>
 						<div class="col-md-6">
 							{% include 'participaciones.html' with frase="En Contra" comentario=argC postura=0 num_post=num_post_c%}
+							<ul id="alertaArgumento0" class="list-group"></ul>
 						</div>
 					</div>
 				</div>
