@@ -135,16 +135,31 @@
                             {% endifequal %}
                           </div>
                           <p class=card__text> {{deb.0.descripcion}} </p>
-                          <div class="row">
-                            <div class="col-md-6" style="padding-right: 2px">
-                          <form action="{% url 'despliega' deb.0.id_debate %}">
-                            <button class="btn btn-card2">Ver</button>
-                          </form></div>
-                          <div class="col-md-6" style="padding-left: 2px">
-                          <form id="id" method="post" action= "{% url 'resumen:index' %}" enctype="multipart/form-data" onsubmit="return confirm('¿Seguro que desea cerrar el debate?');">{% csrf_token %}
-                              <input type="hidden" value="{{ deb.0.id_debate }}" name="id_deb">
-                              <button type="submit" class="btn btn-card2">Cerrar</button>
-                          </form></div>
+                          <div class="dropdown">
+                            <button class="btn btn-card2 dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                              Opciones
+                              <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                              <li>
+                                <form action="{% url 'despliega' deb.0.id_debate %}">
+                                  <button class="btn btn-dropdown-card">Ver</button>
+                                </form>
+                              </li>
+                              <li>
+                                <form id="id" method="post" action= "{% url 'resumen:index' %}" enctype="multipart/form-data" onsubmit="return confirm('¿Seguro que desea cerrar el debate?');">{% csrf_token %}
+                                    <input type="hidden" value="{{ deb.0.id_debate }}" name="id_deb">
+                                    <button type="submit" class="btn btn-dropdown-card">Cerrar</button>
+                                </form>
+                              </li>
+                              <li role="separator" class="divider"></li>
+                              <li>
+                                <form id="id" method="post" action= "{% url 'perfil' %}" enctype="multipart/form-data" onsubmit="return confirm('¿Seguro que desea eliminar el debate?');">{% csrf_token %}
+                                <input type="hidden" value="{{ deb.0.id_debate }}" name="id_deb_eliminar">
+                                <button type="submit" class="btn btn-dropdown-card">Eliminar</button>
+                                </form>
+                              </li>
+                            </ul>
                           </div>
                         </div>
                       </div>
@@ -190,16 +205,31 @@
                           {% endifequal %}
                         </div>
                         <p class=card__text> {{deb.0.descripcion}} </p>
-                        <div class="row">
-                          <div class="col-md-6" style="padding-right: 2px">
-                        <form action="{% url 'despliega' deb.0.id_debate %}">
-                          <button class="btn btn-card2">Ver</button>
-                        </form></div>
-                        <div class="col-md-6" style="padding-left: 2px">
-                          <form id="id" method="post" action= "{% url 'perfil' %}" enctype="multipart/form-data" onsubmit="return confirm('¿Seguro que desea republicar el debate?');">{% csrf_token %}
-                            <input type="hidden" value="{{ deb.0.id_debate }}" name="id_deb_republicar">
-                            <button type="submit" class="btn btn-card2">Abrir</button>
-                        </form></div>
+                        <div class="dropdown">
+                          <button class="btn btn-card2 dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                            Opciones
+                            <span class="caret"></span>
+                          </button>
+                          <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                            <li>
+                              <form action="{% url 'despliega' deb.0.id_debate %}">
+                                <button class="btn btn-dropdown-card">Ver</button>
+                              </form>
+                            </li>
+                            <li>
+                              <form id="id" method="post" action= "{% url 'perfil' %}" enctype="multipart/form-data" onsubmit="return confirm('¿Seguro que desea republicar el debate?');">{% csrf_token %}
+                                <input type="hidden" value="{{ deb.0.id_debate }}" name="id_deb_republicar">
+                                <button type="submit" class="btn btn-dropdown-card">Republicar</button>
+                              </form>
+                            </li>
+                            <li role="separator" class="divider"></li>
+                            <li>
+                              <form id="id" method="post" action= "{% url 'perfil' %}" enctype="multipart/form-data" onsubmit="return confirm('¿Seguro que desea eliminar el debate?');">{% csrf_token %}
+                              <input type="hidden" value="{{ deb.0.id_debate }}" name="id_deb_eliminar">
+                              <button type="submit" class="btn btn-dropdown-card">Eliminar</button>
+                              </form>
+                            </li>
+                          </ul>
                         </div>
                       </div>
                     </div>

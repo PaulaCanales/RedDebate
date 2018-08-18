@@ -15,6 +15,7 @@ from perfil.models import Perfil
 from debate.models import Postura, Argumento, Respuesta
 from perfil.forms import modificaAlias
 from resumen.views import verificaNotificacion, datos_debates
+from debate.views import actualiza_reputacion
 
 # Create your views here.
 ##@brief Funcion que despliega los datos del usuario, debates abiertos, cerrados y opciones para cada uno.
@@ -142,6 +143,7 @@ def eliminar_debate(request):
     id_deb=request.POST['id_deb_eliminar']
     deb = Debate.objects.get(pk=id_deb)
     deb.delete()
+    actualiza_reputacion(request.user.id, -5)
     return redirect('perfil')
 ##@brief Funcion que actualiza el debate "cerrado" a "abierto"
 ##@param request solicitud web
