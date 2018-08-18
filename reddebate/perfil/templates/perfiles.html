@@ -8,18 +8,24 @@
 
 {% block content %}
 <link rel="stylesheet" type='text/css' href="{% static '/css/perfil.css' %}" >
-<div class="container-profile">
+<div class="container-profile" style="width: 40%">
   <header>
   </header>
   <main>
     <div class="row">
-      <div class="left col-lg-5">
+      <div class="left col-md-12">
         <div class="photo-left">
           <img class="photo" src="{% static 'img/RDLogo05.png' %}"/>
           <div class="active"></div>
         </div>
+        {% ifequal usa_alias 'username' %}
         <h4 class="name">{{usuario.username}}</h4>
         <p class="info">{{ usuario.email }}</p>
+        {% else %}
+        <h4 class="name">{{ alias.alias }}</h4>
+        <p class="info">modo anónimo</p>
+
+        {% endifequal %}
         <div class="stats row">
           <div class="stat col-xs-6">
             <h4 class="name">{{alias.reputacion}}</h4>
@@ -60,10 +66,9 @@
         </div>
         <!-- <p class="desc">{{ usuario.date_joined }}</p> -->
       </div>
-      <div class="right col-lg-7">
+      <!-- <div class="right col-lg-7">
         En proceso...
-        <!-- columna -->
-      </div>
+      </div> -->
   </main>
 </div>
 <!-- <div class="container">

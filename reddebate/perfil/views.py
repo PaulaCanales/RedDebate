@@ -35,12 +35,12 @@ def perfiles(request, id):
         usa_alias = respuesta.alias_c
         usuario = User.objects.get(id=respuesta.id_usuario_id)
         alias_usuario = Perfil.objects.get(user_id=usuario)
-
+    stats = estadisticas_usuario(usuario.id)
     total_usuarios = User.objects.all()
     notificacion_usr = verificaNotificacion(request)
     return render(request, 'perfiles.html', {'usuario': usuario,
         'alias': alias_usuario, 'usa_alias': usa_alias, 'total_usuarios': total_usuarios,
-        'notificaciones': notificacion_usr})
+        'notificaciones': notificacion_usr, 'stats': stats})
 
 
 
@@ -77,7 +77,6 @@ def perfil(request):
 
     usuario = request.user
     alias_usuario = Perfil.objects.get(user=usuario)
-    debates = Debate.objects.all().order_by('-id_debate')
     debates_usuario = Debate.objects.filter(id_usuario_id= usuario.id).order_by('-id_debate')
     lista_debates = []
     lista_debates_cerrados = []
@@ -95,13 +94,29 @@ def perfil(request):
             porcentaje_c = (float(num_posturas_ec) / float(num_posturas))*100
 
         lista_debates.append([debate, puede_editar, porcentaje_f, porcentaje_c, num_posturas_af, num_posturas_ec, num_posturas])
+
+    stats = estadisticas_usuario(usuario.id)
+    notificacion_usr = verificaNotificacion(request)
+    return render(request, 'perfil_usuario.html', {'usuario': usuario,
+        'alias': alias_usuario,
+        'debates': lista_debates,
+        'alias_form': alias_form, 'notificaciones': notificacion_usr,
+        'stats': stats
+        })
+
+def estadisticas_usuario(id_usuario):
+    debates = Debate.objects.all().order_by('-id_debate')
+    num_debates_usr = Debate.objects.filter(id_usuario_id= id_usuario).count()
+    num_posturas_usr = Postura.objects.filter(id_usuario_id = id_usuario).count()
+    num_argumentos_usr = Argumento.objects.filter(id_usuario_id = id_usuario).count()
+    num_rebates_usr = Respuesta.objects.filter(id_usuario_id = id_usuario).count()
     triunfos = 0
     derrotas = 0
     mejor_arg = 0
     peor_arg = 0
     for debate in debates:
         try:
-            postura_usr = Postura.objects.get(id_debate_id=debate.id_debate, id_usuario_id=usuario.id).postura
+            postura_usr = Postura.objects.get(id_debate_id=debate.id_debate, id_usuario_id=id_usuario).postura
         except:
             postura_usr = "vacia"
         if (debate.estado == "cerrado"):
@@ -111,9 +126,9 @@ def perfil(request):
             if len(argumentos)!=0:
                 mejor_argumento = argumentos[0]
                 peor_argumento = argumentos[len(argumentos)-1]
-                if mejor_argumento.id_usuario.id == usuario.id:
+                if mejor_argumento.id_usuario.id == id_usuario:
                     mejor_arg += 1
-                if peor_argumento.id_usuario.id == usuario.id:
+                if peor_argumento.id_usuario.id == id_usuario:
                     peor_arg += 1
 
             if num_posturas_af>=num_posturas_ec:
@@ -127,29 +142,12 @@ def perfil(request):
                 triunfos += 1
             if postura_perdedora == postura_usr:
                 derrotas += 1
-
-
-    num_debates_usr = debates_usuario.count()
-    num_posturas_usr = Postura.objects.filter(id_usuario_id = usuario.id).count()
-    num_argumentos_usr = Argumento.objects.filter(id_usuario_id = usuario.id).count()
-    num_rebates_usr = Respuesta.objects.filter(id_usuario_id = usuario.id).count()
-
-    # reputacion_usr = perfil.reputacion
-    # puntaje = (num_debates_usr * 5) + (num_posturas_usr * 3) + (num_argumentos_usr * 3) + (mejor_arg * 10) + (peor_arg * -5) + (num_rebates_usr * 3)
-    # reputacion_usr = reputacion_usr + puntaje
-    # perfil.reputacion = reputacion_usr
-    # perfil.save()
     stats = {'debates': num_debates_usr, 'posturas':num_posturas_usr,
              'argumentos': num_argumentos_usr, 'rebates':num_rebates_usr,
              'triunfos': triunfos, 'derrotas':derrotas,
              'mejor_arg':mejor_arg, 'peor_arg':peor_arg}
-    notificacion_usr = verificaNotificacion(request)
-    return render(request, 'perfil_usuario.html', {'usuario': usuario,
-        'alias': alias_usuario,
-        'debates': lista_debates,
-        'alias_form': alias_form, 'notificaciones': notificacion_usr,
-        'stats': stats
-        })
+    return stats
+
 ##@brief Funcion que elimina un debate
 ##@param request solicitud web
 ##@return redirect redirecciona a la vista "perfil"
