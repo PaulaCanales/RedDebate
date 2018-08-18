@@ -319,6 +319,7 @@ def elimina_argumento(request):
 	id_deb=request.POST['id_deb_arg_eliminar']
 	arg = Argumento.objects.get(pk=id_argumento)
 	arg.delete()
+	actualiza_reputacion(request.user.id, -3)
 	return (id_deb)
 
 def ver_notificacion(request, id_debate, id_notificacion):
