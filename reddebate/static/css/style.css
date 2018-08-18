@@ -738,16 +738,14 @@ footer {
   display: block;
   width: 100%;
   color:#fff;
-  background:#18BC9C;
-  border:2px solid #18BC9C;
+  background:rgba(45,62,89);
   font-family: "Montserrat", "Helvetica Neue", Helvetica, Arial, sans-serif;
   text-transform: uppercase;
   padding: 0.5rem;
 }
 .btn-card.active,.btn-card:active,.btn-card:focus,.btn-card:hover {
   color:#fff;
-  border:2px solid #007D65;
-  background:#007D65;
+  background:#1C3146;
   transition:all .3s ease-in-out;
 }
 .cards {

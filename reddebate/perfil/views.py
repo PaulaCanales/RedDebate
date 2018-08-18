@@ -14,7 +14,7 @@ from resumen.models import Debate
 from perfil.models import Perfil
 from debate.models import Postura, Argumento, Respuesta
 from perfil.forms import modificaAlias
-from resumen.views import verificaNotificacion
+from resumen.views import verificaNotificacion, datos_debates
 
 # Create your views here.
 ##@brief Funcion que despliega los datos del usuario, debates abiertos, cerrados y opciones para cada uno.
@@ -78,22 +78,7 @@ def perfil(request):
     usuario = request.user
     alias_usuario = Perfil.objects.get(user=usuario)
     debates_usuario = Debate.objects.filter(id_usuario_id= usuario.id).order_by('-id_debate')
-    lista_debates = []
-    lista_debates_cerrados = []
-    for debate in debates_usuario:
-        num_posturas_af = Postura.objects.filter(id_debate_id=debate.id_debate, postura=1).count()
-        num_posturas_ec = Postura.objects.filter(id_debate_id=debate.id_debate, postura=0).count()
-        num_posturas = num_posturas_af + num_posturas_ec
-    	if (int(num_posturas)==0):
-            puede_editar = "si"
-            porcentaje_c=0
-            porcentaje_f=0
-    	else:
-            puede_editar = "no"
-            porcentaje_f = (float(num_posturas_af) / float(num_posturas))*100
-            porcentaje_c = (float(num_posturas_ec) / float(num_posturas))*100
-
-        lista_debates.append([debate, puede_editar, porcentaje_f, porcentaje_c, num_posturas_af, num_posturas_ec, num_posturas])
+    lista_debates = datos_debates(debates_usuario,usuario)
 
     stats = estadisticas_usuario(usuario.id)
     notificacion_usr = verificaNotificacion(request)

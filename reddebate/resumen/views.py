@@ -53,16 +53,7 @@ def index(request):
         if debate.estado != 'cerrado' and debate.date_fin!= None and debate.date_fin <= ahora :
             debate.estado = 'cerrado'
             debate.save()
-        num_posturas_af = Postura.objects.filter(id_debate_id=debate.id_debate, postura=1).count()
-        num_posturas_ec = Postura.objects.filter(id_debate_id=debate.id_debate, postura=0).count()
-        num_posturas = num_posturas_af + num_posturas_ec
-    	if (int(num_posturas)==0):
-    		porcentaje_c=0
-    		porcentaje_f=0
-    	else:
-    		porcentaje_f = (num_posturas_af // num_posturas)*100
-    		porcentaje_c = (num_posturas_ec // num_posturas)*100
-        object_list.append([debate,porcentaje_f,porcentaje_c])
+    object_list = datos_debates(category_list,usuario)
     print("el usuario activo es_: ", usuario.id)
     perfil_usuario = Perfil.objects.get(user_id= usuario.id)
     alias_usuario = perfil_usuario.alias
@@ -72,6 +63,24 @@ def index(request):
     context = {'category_list':category_list, 'object_list': object_list, 'usuario': usuario, 'alias': alias_usuario,
                 'form':form, 'notificaciones':notificacion_usr, 'top_tags':top_tags}
     return render(request, 'index.html', context)
+
+def datos_debates(debates, usuario):
+    lista_debates = []
+    for debate in debates:
+        num_posturas_af = Postura.objects.filter(id_debate_id=debate.id_debate, postura=1).count()
+        num_posturas_ec = Postura.objects.filter(id_debate_id=debate.id_debate, postura=0).count()
+        num_posturas = num_posturas_af + num_posturas_ec
+    	if (int(num_posturas)==0):
+            puede_editar = "si"
+            porcentaje_c=0
+            porcentaje_f=0
+    	else:
+            puede_editar = "no"
+            porcentaje_f = (float(num_posturas_af) / float(num_posturas))*100
+            porcentaje_c = (float(num_posturas_ec) / float(num_posturas))*100
+
+        lista_debates.append([debate, puede_editar, porcentaje_f, porcentaje_c, num_posturas_af, num_posturas_ec, num_posturas])
+    return lista_debates
 
 def tagged(request, slug):
     usuario = request.user

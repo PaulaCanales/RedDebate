@@ -20,11 +20,13 @@ $(document).ready(function(){
 							{% endifequal %}
 						</div>
 						<div class="col-md-1" style="margin-top: 20px">
+							{% ifequal debate.estado 'abierto' %}
 							<form id="id" method="post" action= "{% url 'resumen:index' %}" enctype="multipart/form-data" onsubmit="return confirm('¿Seguro que desea cerrar el debate?');">{% csrf_token %}
 								 <input type="hidden" value="{{ debate.id_debate  }}" name="id_deb">
 
 								 <button type="submit" class="btn btn-titulo" ><span class="glyphicon glyphicon-remove-circle"></button>
 						 </form>
+						 {% endifequal %}
 						</div>
 					</div>
 			</div>
