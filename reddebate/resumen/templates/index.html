@@ -104,7 +104,6 @@
 										<div class="card">
 											<div class="card__content">
 												<div class="card__title">{{deb.0.titulo}}</div>
-												{% ifequal deb.0.id_usuario_id usuario.id %}
 												<div class="progress">
 													{% ifequal deb.6 0 %}
 														<div class="progress-bar" style="background:rgba(0,0,0,0.4);; width: 100%">
@@ -131,9 +130,6 @@
 														{% endifequal %}
 													{% endifequal %}
 												</div>
-												{% else %}
-												<hr>
-												{% endifequal %}
 												<p class="card__text">
 													<script type='text/javascript'>cortarTexto('{{deb.0.descripcion}}')</script>
 												</p>

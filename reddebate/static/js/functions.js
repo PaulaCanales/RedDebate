@@ -161,7 +161,8 @@ function posturaChart() {
           title: 'Resumen Posturas',
           width:400,
           height:300,
-          colors: ['#18BD9B', '#2D3E50']
+          colors: ['#18BD9B', '#2D3E50'],
+          backgroundColor: { fill: "#f7f7f7" }
         };
 
         var chart = new google.visualization.PieChart(document.getElementById('piechart_postura'));
@@ -178,7 +179,8 @@ function argumentosChart() {
           title: 'Resumen Argumentos',
           width:400,
           height:300,
-          colors: ['#18BD9B', '#2D3E50']
+          colors: ['#18BD9B', '#2D3E50'],
+          backgroundColor: { fill: "#f7f7f7" }
         };
 
         var chart = new google.visualization.PieChart(document.getElementById('piechart_argumento'));
@@ -196,7 +198,8 @@ function cambioPosturaChart() {
           title: 'Usuarios que cambiaron de postura: '+varGlobal.cambio_total,
           width:400,
           height:300,
-          colors: ['#18BD9B', '#2D3E50']
+          colors: ['#18BD9B', '#2D3E50'],
+          backgroundColor: { fill: "#f7f7f7" }
         };
 
         var chart = new google.visualization.PieChart(document.getElementById('piechart_cambioPostura'));
@@ -217,6 +220,7 @@ function mejorArgumentoChart(){
       title: 'Argumentos a favor y en contra más valorados',
       chartArea: {width: '50%'},
       bars: 'horizontal', // Required for Material Bar Charts.
+      backgroundColor: { fill: "#f7f7f7" },
       series: {
         0: { color: '18BD9B'}, // Bind series 0 to an axis named 'distance'.
         1: { color: '2D3E50'} // Bind series 1 to an axis named 'brightness'.
@@ -242,6 +246,7 @@ function razonCambioChart(){
         title: 'Motivos cambio de postura',
         chartArea: {width: '50%'},
         isStacked: true,
+        backgroundColor: { fill: "#f7f7f7" },
         series: {
           0: { color: '18BD9B'}, // Bind series 0 to an axis named 'distance'.
           1: { color: '2D3E50'} // Bind series 1 to an axis named 'brightness'.
