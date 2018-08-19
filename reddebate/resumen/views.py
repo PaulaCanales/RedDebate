@@ -11,7 +11,7 @@ from django.shortcuts import redirect
 import requests
 from django.http import HttpResponse
 from resumen.models import Debate
-from debate.models import Postura, Argumento, Respuesta, Valoracion, Edicion
+from debate.models import Postura, Argumento, Respuesta, Valoracion, Edicion, Participantes
 from perfil.models import Perfil, Notificacion
 from resumen.forms import creaDebateForm, LoginForm
 from taggit.models import Tag
@@ -41,7 +41,7 @@ def index(request):
     iniciando_alias(request, usuario)
     creador=[('username', User.objects.get(id=request.user.id).username),
 	         ('alias',Perfil.objects.get(user= request.user).alias)]
-    total_usuarios = User.objects.all()
+    total_usuarios = User.objects.exclude(id=usuario.id)
     form = creaDebateForm(creador=creador, usuarios=total_usuarios)
     if request.method == 'POST':
         if 'id_deb' in request.POST:
@@ -79,8 +79,14 @@ def datos_debates(debates, usuario):
             puede_editar = "no"
             porcentaje_f = (float(num_posturas_af) / float(num_posturas))*100
             porcentaje_c = (float(num_posturas_ec) / float(num_posturas))*100
-
-        lista_debates.append([debate, puede_editar, porcentaje_f, porcentaje_c, num_posturas_af, num_posturas_ec, num_posturas])
+        if debate.tipo_participacion == 1:
+            try:
+                participa = Participantes.objects.get(id_debate_id=debate.id_debate, id_usuario_id=usuario.id)
+                lista_debates.append([debate, puede_editar, porcentaje_f, porcentaje_c, num_posturas_af, num_posturas_ec, num_posturas])
+            except:
+                participa = False
+        else:
+            lista_debates.append([debate, puede_editar, porcentaje_f, porcentaje_c, num_posturas_af, num_posturas_ec, num_posturas])
     return lista_debates
 
 def tagged(request, slug):

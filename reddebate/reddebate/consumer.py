@@ -46,6 +46,8 @@ def ws_receive(message):
                     usuario = User.objects.get(id=participante)
                     n = Participantes(id_usuario=usuario, id_debate=m)
                     n.save()
+                n = Participantes(id_usuario=message.user, id_debate=m)
+                n.save()
             actualiza_reputacion(message.user.id, 5)
 
         elif set(data.keys()) == set(('descripcion','alias_c','id_debate','postura','id_usuario_id')):

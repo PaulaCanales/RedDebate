@@ -949,6 +949,9 @@ hr {
   color: #18BD9B;
   font-weight: bold;
 }
+#participantesDiv{
+  display: none;
+}
 #containercheckbox {
   border:2px solid #ccc;
   width:auto;
