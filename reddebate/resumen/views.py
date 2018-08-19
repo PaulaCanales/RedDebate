@@ -41,7 +41,8 @@ def index(request):
     iniciando_alias(request, usuario)
     creador=[('username', User.objects.get(id=request.user.id).username),
 	         ('alias',Perfil.objects.get(user= request.user).alias)]
-    form = creaDebateForm(creador=creador)
+    total_usuarios = User.objects.all()
+    form = creaDebateForm(creador=creador, usuarios=total_usuarios)
     if request.method == 'POST':
         if 'id_deb' in request.POST:
             cerrar_debate(request)

@@ -30,6 +30,7 @@ class Debate(models.Model):
     num_cambio_postura = models.IntegerField(default=1)
     num_rebate = models.IntegerField(default=1)
     tipo_rebate = models.IntegerField(default=0)
+    tipo_participacion = models.IntegerField(default=0) #0 debate publico
 
     tags = TaggableManager()
 

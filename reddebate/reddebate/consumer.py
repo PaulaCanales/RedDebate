@@ -6,7 +6,8 @@ import random
 import json
 import logging
 from resumen.models import Debate
-from debate.models import Argumento, Postura
+from debate.models import Argumento, Postura, Participantes
+from django.contrib.auth.models import User
 from perfil.models import Perfil
 from channels.auth import http_session_user, channel_session_user, channel_session_user_from_http
 
@@ -35,24 +36,34 @@ def ws_receive(message):
         return
 
     if data:
-        if set(data.keys()) == set(('titulo', 'descripcion', 'alias_c', 'largo', 'num_argumento', 'num_rebate', 'tipo_rebate', 'num_cambio_postura','date_fin', 'id_usuario_id')):
+        if set(data.keys()) == set(('titulo', 'descripcion', 'alias_c', 'largo', 'num_argumento', 'num_rebate', 'tipo_rebate', 'tipo_participacion', 'num_cambio_postura','date_fin', 'id_usuario_id', 'participantes')):
             data['id_usuario_id'] = message.user.id
-            actualiza_reputacion(message.user.id, 5)
+            participantes = data['participantes']
+            del data['participantes']
             m = Debate.objects.create(**data)
+            if data['tipo_participacion']=='1':
+                for participante in participantes:
+                    usuario = User.objects.get(id=participante)
+                    n = Participantes(id_usuario=usuario, id_debate=m)
+                    n.save()
+            actualiza_reputacion(message.user.id, 5)
+
         elif set(data.keys()) == set(('descripcion','alias_c','id_debate','postura','id_usuario_id')):
             debate = Debate.objects.get(id_debate=data['id_debate'])
             postura = Postura.objects.get(id_debate_id=debate.id_debate, id_usuario_id = message.user.id)
             data['id_usuario_id'] = message.user.id
             data['postura'] = postura.postura
             data['id_debate'] = debate
-            actualiza_reputacion(message.user.id, 3)
             m = Argumento.objects.create(**data)
+            actualiza_reputacion(message.user.id, 3)
+
         elif set(data.keys()) == set(('postura','id_usuario','id_debate')):
             debate = Debate.objects.get(id_debate=data['id_debate'])
             data['id_usuario'] = message.user
             data['id_debate'] = debate
-            actualiza_reputacion(message.user.id, 3)
             m = Postura.objects.create(**data)
+            actualiza_reputacion(message.user.id, 3)
+
 
         elif set(data.keys()) == set(('postura', 'id_debate', 'razon')):
             debate = Debate.objects.get(id_debate=data['id_debate'])

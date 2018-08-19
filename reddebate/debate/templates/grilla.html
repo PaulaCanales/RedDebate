@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+
+<ul class="cards">
+  {% for deb in object_list %}
+  {% ifequal deb.0.estado estado %}
+  {% ifequal deb.0.tipo_participacion tipo %}
+    <li class="cards__item">
+        <div class="card">
+          <div class="card__content">
+            <div class="card__title">{{deb.0.titulo}}</div>
+            {% ifequal deb.0.id_usuario_id usuario.id %}
+            <div class="progress">
+              {% ifequal deb.6 0 %}
+                <div class="progress-bar" style="background:rgba(0,0,0,0.4);; width: 100%">
+                  sin posturas
+                </div>
+              {% else %}
+                {% ifequal deb.2 0 %}
+                  <div class="progress-bar" style="background:#d9534f; width: {{deb.3}}%">
+                    <span class="glyphicon glyphicon-thumbs-down"></span> {{deb.5}}
+                  </div>
+                {% else %}
+                  {% ifequal deb.3 0 %}
+                    <div class="progress-bar" style="background:#18BC9C; width: {{deb.2}}%">
+                      <span class="glyphicon glyphicon-thumbs-up"></span> {{deb.4}}
+                    </div>
+                    {% else %}
+                    <div class="progress-bar" style="background:#18BC9C; width: {{deb.2}}%">
+                      <span class="glyphicon glyphicon-thumbs-up"></span> {{deb.4}}
+                    </div>
+                    <div class="progress-bar" style="background:#d9534f; width: {{deb.3}}%">
+                      <span class="glyphicon glyphicon-thumbs-down"></span> {{deb.5}}
+                    </div>
+                  {% endifequal %}
+                {% endifequal %}
+              {% endifequal %}
+            </div>
+            {% else %}
+            <hr>
+            {% endifequal %}
+            <p class="card__text">
+              <script type='text/javascript'>cortarTexto('{{deb.0.descripcion}}')</script>
+            </p>
+            <form action="{% url 'despliega' deb.0.id_debate %}">
+              <button class="btn btn-card">Ver</button>
+            </form>
+          </div>
+        </div>
+      </li>
+  {%endifequal%}
+  {%endifequal%}
+  {% endfor %}
+</ul>
+
+<!-- <ul class="cards">
+  {% for deb in object_list %}
+  {% ifequal deb.0.estado 'cerrado' %}
+    <li class="cards__item">
+        <div class="card">
+          <div class="card__content">
+            <div class="card__title">{{deb.0.titulo}}</div>
+            <div class="progress">
+              {% ifequal deb.6 0 %}
+                <div class="progress-bar" style="background:rgba(0,0,0,0.4);; width: 100%">
+                  sin posturas
+                </div>
+              {% else %}
+                {% ifequal deb.2 0 %}
+                  <div class="progress-bar" style="background:#d9534f; width: {{deb.3}}%">
+                    <span class="glyphicon glyphicon-thumbs-down"></span> {{deb.5}}
+                  </div>
+                {% else %}
+                  {% ifequal deb.3 0 %}
+                    <div class="progress-bar" style="background:#18BC9C; width: {{deb.2}}%">
+                      <span class="glyphicon glyphicon-thumbs-up"></span> {{deb.4}}
+                    </div>
+                    {% else %}
+                    <div class="progress-bar" style="background:#18BC9C; width: {{deb.2}}%">
+                      <span class="glyphicon glyphicon-thumbs-up"></span> {{deb.4}}
+                    </div>
+                    <div class="progress-bar" style="background:#d9534f; width: {{deb.3}}%">
+                      <span class="glyphicon glyphicon-thumbs-down"></span> {{deb.5}}
+                    </div>
+                  {% endifequal %}
+                {% endifequal %}
+              {% endifequal %}
+            </div>
+            <p class="card__text">
+              <script type='text/javascript'>cortarTexto('{{deb.0.descripcion}}')</script>
+            </p>
+            <form action="{% url 'despliega' deb.0.id_debate %}">
+              <button class="btn btn-card">Ver</button>
+            </form>
+          </div>
+        </div>
+      </li>
+  {%endifequal%}
+  {% endfor %}
+</ul> -->

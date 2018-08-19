@@ -76,6 +76,32 @@
 			  $(this).addClass("active");
 			});
     });
+		$(document).ready(
+	    function(){
+				// get tallest tab__content element
+				 let height = -1;
+
+			 $('.tab__content').each(function() {
+				 height = height > $(this).outerHeight() ? height : $(this).outerHeight();
+						$(this).css('position', 'absolute');
+			 });
+
+				 // set height of tabs + top offset
+			 $('[data-tabs]').css('min-height', height + 40 + 'px');
+			});
+			$(document).ready(
+	    function(){
+				// get tallest tab2__content element
+				 let height = -1;
+
+			 $('.tab2__content').each(function() {
+				 height = height > $(this).outerHeight() ? height : $(this).outerHeight();
+						$(this).css('position', 'absolute');
+			 });
+
+				 // set height of tabs2 + top offset
+			 $('[data-tabs2]').css('min-height', height + 40 + 'px');
+			});
 </script>
 
 	<div class="page-header">

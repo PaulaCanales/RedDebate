@@ -118,3 +118,8 @@ class Edicion(models.Model):
 
     def __unicode__(self): # __unicode__ on Python 2
         return self.descripcion_edicion
+
+class Participantes(models.Model):
+    id = models.AutoField(primary_key=True)
+    id_usuario = models.ForeignKey(User)
+    id_debate = models.ForeignKey(Debate)

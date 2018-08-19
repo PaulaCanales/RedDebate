@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 
+<section class="success" id="nuevodebate" style="display:none">
 <div class="container">
 <form id="nuevodebateform" method="POST" class="post-form" enctype="multipart/form-data">{% csrf_token %}
   <div class="row" id=publicar-debate>
@@ -86,6 +87,18 @@
             </div>
           </div>
         </div>
+        <div class="fieldWrapper">
+          {{ form.tipo_participacion.errors }}
+          {{ form.tipo_participacion.label_tag }}
+          {{ form.tipo_participacion }}
+        </div>
+        <div class="fieldWrapper">
+          {{ form.participantes.errors }}
+          {{ form.participantes.label_tag }}
+          <div id="containercheckbox">
+          {{ form.participantes }}
+          </div>
+        </div>
 
     </div>
   </div>
@@ -93,3 +106,4 @@
   <a onclick="cierra_formulario('#nuevodebate')" class="btn btn-cancelar" >Cancelar</a>
 </form>
 </div>
+</section>

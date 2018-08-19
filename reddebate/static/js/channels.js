@@ -50,6 +50,10 @@ $(document).ready(function(){
     if (fechafin.length === 0){
       var fechafin = null;
     }
+    var selected = [];
+    $('#debParticipantesForm input:checked').each(function() {
+        selected.push($(this).val());
+    });
     var message = {
       titulo: $('#debTituloForm').val(),
       descripcion: $('#debDescripcionForm').val(),
@@ -58,10 +62,12 @@ $(document).ready(function(){
       num_argumento: $('#debArgsForm').val(),
       num_rebate: $('#debRebateForm').val(),
       tipo_rebate: $('#debTipoRebateForm').val(),
+      tipo_participacion: $('#debTipoParticipacionForm').val(),
       num_cambio_postura: $('#debCambioPostForm').val(),
       date_fin: fechafin,
       // img: $('#debImgForm').val(),
-      id_usuario_id: ""
+      id_usuario_id: "",
+      participantes: selected,
     }
     socket.send(JSON.stringify(message));
     location.reload();

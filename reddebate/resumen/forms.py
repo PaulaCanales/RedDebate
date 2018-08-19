@@ -7,6 +7,8 @@ from django.contrib.auth import authenticate, login
 
 tipoRebate = [('0', 'Ambas posturas'),
                 ('1','Postura contraria')]
+tipoParticipacion = [('0', 'Publico'),
+                ('1','Privado')]
 creador=[('username','Nombre Real'),
          ('alias','Alias')]
 
@@ -33,12 +35,16 @@ class LoginForm(forms.Form):
 class creaDebateForm(forms.ModelForm):
     def __init__(self,*args,**kwargs):
         self.creador = kwargs.pop('creador')
+        self.usuarios = kwargs.pop('usuarios')
         super(creaDebateForm,self).__init__(*args,**kwargs)
         if self.creador:
             self.fields['alias_c'].widget=forms.Select(
                     choices=self.creador,
                     attrs={'class': 'form-control', 'id': 'debAliasForm'}
                     )
+        if self.usuarios:
+            self.fields['participantes'].choices = [(x.id, x) for x in self.usuarios]
+
     titulo = forms.CharField(widget=forms.TextInput(
         attrs={
             'class': 'form-control',
@@ -93,10 +99,22 @@ class creaDebateForm(forms.ModelForm):
             choices=tipoRebate,
             attrs={'class': 'form-control', 'id': 'debTipoRebateForm'}
             ))
+    tipo_participacion = forms.CharField(
+        label='Tipo Debate',
+        widget=forms.Select(
+            choices=tipoParticipacion,
+            attrs={'class': 'form-control', 'id': 'debTipoParticipacionForm'}
+            ))
+    participantes = forms.MultipleChoiceField(
+        widget=forms.CheckboxSelectMultiple(
+            attrs={'id': 'debParticipantesForm'}
+        ),
+        label="Usuarios")
+
     img = forms.FileField(label='Añadir imagen', required=False,
         widget=forms.FileInput(
             attrs={'id': 'debImgForm'}
             ))
     class Meta:
         model = Debate
-        fields = ('id_debate', 'titulo', 'descripcion', 'date_fin', 'alias_c', 'largo', 'num_argumento', 'num_rebate', 'num_cambio_postura', 'tipo_rebate','img')
+        fields = ('id_debate', 'titulo', 'descripcion', 'date_fin', 'alias_c', 'largo', 'num_argumento', 'num_rebate', 'num_cambio_postura', 'tipo_rebate', 'tipo_participacion','img')
