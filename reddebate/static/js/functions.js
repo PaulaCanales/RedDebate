@@ -35,7 +35,9 @@ function cierra_formulario(id){
   $(id).slideUp("slow");
   $(nuevoDebateBtn).show();
 }
-
+function probando(){
+  console.log("jejejejejje");
+}
 function formulario_editar_debate(id,id_dbt,titulo,desc,año,mes,dia,alias,largo){
   $(id).slideDown("slow");
   $("html, body").animate({ scrollTop: 0 }, 600);

@@ -1,28 +1,36 @@
 <!DOCTYPE html>
+{% load static %}
 
-<section class="success" id="nuevodebate" style="display:none">
-<div class="container">
-<form id="nuevodebateform" method="POST" class="post-form" enctype="multipart/form-data">{% csrf_token %}
-  <div class="row" id=publicar-debate>
-    <div class="col-md-8">
+
+<section id="nuevodebatesection">
+<form id="nuevodebateform" method="POST" enctype="multipart/form-data">{% csrf_token %}
+  <!-- progressbar -->
+    <ul id="progressbar">
+      <li class="active">Paso 1</li>
+      <li>Paso 2</li>
+      <li>Paso 3</li>
+    </ul>
+    <!-- fieldsets -->
+    <fieldset>
       {{ form.non_field_errors }}
       <div class="fieldWrapper">
           {{ form.titulo.errors }}
           {{ form.titulo.label_tag }}
-          {{ form.titulo }}
+          {{ form.titulo }}<div id="errorTitulo" class="alert alert-danger" role="alert">¡¡Escribe un título!!</div>
       </div>
       <div class="fieldWrapper">
           {{ form.descripcion.errors }}
           {{ form.descripcion.label_tag }}
-          {{ form.descripcion }}
+          {{ form.descripcion }}<div id="errorDesc" class="alert alert-danger" role="alert">¡¡Escribe una descripción!!</div>
       </div>
       <!-- <div class="fieldWrapper">
           {{ form.img.errors }}
           {{ form.img.label_tag }}
           {{ form.img }}
       </div> -->
-    </div>
-    <div class="col-md-2">
+      <input id="nextbtn" type="button" name="next" class="next action-button" value="Next"/>
+    </fieldset>
+    <fieldset>
       <div class="fieldWrapper">
           {{ form.alias_c.errors }}
           {{ form.alias_c.label_tag }}
@@ -58,9 +66,11 @@
               <span class="glyphicon glyphicon-erase" aria-hidden="true"></span>
             </a>
         </div>
-        </div>
-        <div class="col-md-2">
-        <div class="fieldWrapper">
+      <input type="button" name="previous" class="previous action-button" value="Previous" />
+      <input type="button" name="next" class="next action-button" value="Next" />
+    </fieldset>
+    <fieldset>
+      <div class="fieldWrapper">
           {{ form.num_rebate.errors }}
           {{ form.num_rebate.label_tag }}
           <div class="input-group spinner">
@@ -99,11 +109,10 @@
           {{ form.participantes }}
           </div>
         </div>
-
-    </div>
-  </div>
-  <button type="submit" class="btn btn-publicar">Publicar</button>
-  <a onclick="cierra_formulario('#nuevodebate')" class="btn btn-cancelar" >Cancelar</a>
+      <input type="button" name="previous" class="previous action-button" value="Previous" />
+      <input type="submit" name="submit" class="submit action-button" value="Submit" />
+    </fieldset>
 </form>
-</div>
+<script  src="{% static 'js/debateform.js' %}"></script>
+
 </section>
