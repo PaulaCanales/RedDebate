@@ -67,6 +67,15 @@ $(document).ready(function(){
 								<td width=120 ><p1>Tu Postura</p1></td>
 								<td> Creador </td>
 							</tr>
+							{% ifequal debate.tipo_participacion 0 %}
+							<tr>
+								<td width=120 ><p1>Tipo debate</p1></td><td><div id="tu_postura">  Publico </div></td>
+							</tr>
+							{% else %}
+							<tr>
+								<td width=120 ><p1>Tipo debate</p1></td><td><div id="tu_postura"> <a href="javascript:abrir_modal('participantes_modal')"> Privado </a></div></td>
+							</tr>
+							{% endifequal %}
 						</table>
 					</div>
 				</div>

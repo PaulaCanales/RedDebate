@@ -238,10 +238,15 @@ def despliega(request, id_debate): #debate_id
 		razon_contra_favor.append(num)
 		cambio_contra_favor += num
 	notificacion_usr = verificaNotificacion(request)
+	participantes = "publico"
+	participa = True
+	lista_participantes = []
 	if debate.tipo_participacion == 1:
+		participantes = Participantes.objects.filter(id_debate_id=id_debate)
+		for participante in participantes:
+			lista_participantes.append(User.objects.get(id=participante.id_usuario_id))
 		try:
 			p = Participantes.objects.get(id_debate_id=id_debate,id_usuario_id=usuario_actual)
-			participa = True
 		except:
 			participa = False
 
@@ -258,7 +263,7 @@ def despliega(request, id_debate): #debate_id
 		'razon_f_c':razon_favor_contra, 'razon_c_f':razon_contra_favor,
 		'img': debate.img, 'cant_rebates':cant_rebates, 'arg_form1':arg_form1,
 		'arg_form0':arg_form0,'resp_form':resp_form, 'notificaciones': notificacion_usr,
-		'participa': participa}
+		'participa': participa, 'participantes': lista_participantes}
 	return render(request, 'debate.html', datos)
 
 ##@brief Funcion que guarda el comentario del usuario de un argumento.

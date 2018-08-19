@@ -94,6 +94,10 @@ function mostrar_modal(modal, id_arg, respuestas,postura){
   document.getElementById("id_argumento_rebate"+postura+id_arg).value = id_arg;
 };
 
+function abrir_modal(modal){
+  document.getElementById(modal).style.display="block";
+}
+
 function cerrar_modal(modal){
   document.getElementById(modal).style.display="none";
 }

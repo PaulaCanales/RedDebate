@@ -5,7 +5,15 @@
 <html>
 
 {% block content %}
-
+<div id="participantes_modal" class="modal">
+	<div class="modal-content">
+		<span class="close" onclick="cerrar_modal('participantes_modal')">&times;</span>
+		<h3>Participantes <span class="glyphicon glyphicon-user"></span></h3>
+		{% for participante in participantes%}
+			<p> {{participante}} </p>
+		{% endfor %}
+	</div>
+</div>
 {% ifequal usuario_creador.id usuario %}
 	{% include 'debate_creador.html'%}
 {% else %}
@@ -92,6 +100,15 @@
 							<tr>
 								<td width=120 ><p1>Tu Postura</p1></td><td><div id="tu_postura"> {{postura_usr_deb}} </div></td>
 							</tr>
+							{% ifequal debate.tipo_participacion 0 %}
+							<tr>
+								<td width=120 ><p1>Tipo debate</p1></td><td><div id="tu_postura">  Publico </div></td>
+							</tr>
+							{% else %}
+							<tr>
+								<td width=120 ><p1>Tipo debate</p1></td><td><div id="tu_postura"> <a href="javascript:abrir_modal('participantes_modal')"> Privado </a></div></td>
+							</tr>
+							{% endifequal %}
 						</table>
 					</div>
 				</div>
