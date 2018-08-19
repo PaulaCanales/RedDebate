@@ -9,6 +9,7 @@
 {% ifequal usuario_creador.id usuario %}
 	{% include 'debate_creador.html'%}
 {% else %}
+{% if participa %}
 	<div class="container">
 		<div class="blank"><table>
 			<tr>
@@ -159,6 +160,9 @@
 		{% endifequal %}
 		<p class="bottom-three">.</p>
 		</div>
+{% else %}
+no hay permiso
+{% endif %}
 {% endifequal %}
 </div>
 {% endblock content %}

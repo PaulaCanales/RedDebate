@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 
 from resumen.models import Debate
-from debate.models import Postura, Argumento, Valoracion, Respuesta, Edicion
+from debate.models import Postura, Argumento, Valoracion, Respuesta, Edicion, Participantes
 from perfil.models import Perfil, Notificacion
 from debate.forms import publicaArgumentoForm1,publicaArgumentoForm0, publicaRespuestaForm
 from resumen.views import verificaNotificacion
@@ -238,6 +238,13 @@ def despliega(request, id_debate): #debate_id
 		razon_contra_favor.append(num)
 		cambio_contra_favor += num
 	notificacion_usr = verificaNotificacion(request)
+	if debate.tipo_participacion == 1:
+		try:
+			p = Participantes.objects.get(id_debate_id=id_debate,id_usuario_id=usuario_actual)
+			participa = True
+		except:
+			participa = False
+
 	datos = {'debate': debate,
 		'usuario_creador': usuario_creador,
 		'usuario': usuario_actual,
@@ -250,7 +257,8 @@ def despliega(request, id_debate): #debate_id
 		'cambio_f_c':cambio_favor_contra, 'cambio_c_f':cambio_contra_favor,
 		'razon_f_c':razon_favor_contra, 'razon_c_f':razon_contra_favor,
 		'img': debate.img, 'cant_rebates':cant_rebates, 'arg_form1':arg_form1,
-		'arg_form0':arg_form0,'resp_form':resp_form, 'notificaciones': notificacion_usr}
+		'arg_form0':arg_form0,'resp_form':resp_form, 'notificaciones': notificacion_usr,
+		'participa': participa}
 	return render(request, 'debate.html', datos)
 
 ##@brief Funcion que guarda el comentario del usuario de un argumento.
