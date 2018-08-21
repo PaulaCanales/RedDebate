@@ -8,12 +8,14 @@
       <!--<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>-->
 			<script src="{% static 'js/jquery.js' %}"></script>
       <script src="https://www.gstatic.com/charts/loader.js"></script>
-      <link rel="stylesheet" type='text/css' href="{% static '/css/style.css' %}" >
+			<link rel="stylesheet" type='text/css' href="{% static '/css/style.css' %}" >
+      <link rel="stylesheet" type='text/css' href="{% static '/css/bootstrap-tagsinput.css' %}" >
 
       <!-- DatePicker -->
       <link rel="stylesheet" href="{% static 'css/datepicker.css' %}"/>
       <script src="{% static 'js/bootstrap-datepicker.js' %}"></script>
-      <script src="{% static 'js/bootstrap.js' %}"></script>
+			<script src="{% static 'js/bootstrap.js' %}"></script>
+      <script src="{% static 'js/bootstrap-tagsinput.js' %}"></script>
 			<script src="{% static 'js/functions.js' %}"></script>
 			<script src="{% static 'js/channels.js' %}"></script>
       <script src="{% static 'js/reconnecting-websocket.min.js' %}"></script>
@@ -34,13 +36,19 @@
 		js.src = "https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v3.0";
 		fjs.parentNode.insertBefore(js, fjs);
 	}(document, 'script', 'facebook-jssdk'));
-  function valorar(argumento, opcionusr){
-		 $.ajax({
 
-				 url: "{% url 'despliega' 1 %}" ,
+	var deb;
+
+  function valorar(argumento, opcionusr, id){
+		console.log(id);
+		// var deb = parseInt(id)
+
+		 $.ajax({
+				 url: "{% url 'despliega' 23 %}" ,
 				 type: 'POST',
 				 data:{  id_arg : argumento,
 								 opcion: opcionusr,
+								 id_deb: deb,
 								 csrfmiddlewaretoken: '{{ csrf_token }}'
 							 } ,
 							 success: function(data) {
@@ -57,6 +65,27 @@
 
   $(document).ready(
     function(){
+			$.getJSON("{% static 'stopwords.json' %}", function(json) {
+				var stopword = json;
+
+				$("#siguienteTagsForm").click(function(){
+					var text = $("#debTituloForm").val()
+    			text = text.split(" ");
+					for (var i = 0; i < stopword.length; i++) {
+						text = text.filter(e => e !== stopword[i]);
+					};
+					$('#tagsForms').tagsinput('add', text.join());
+				});
+
+			});
+
+			$('#nuevodebateform').on('keyup keypress', function(e) {
+				  var keyCode = e.keyCode || e.which;
+				  if (keyCode === 13) {
+				    e.preventDefault();
+				    return false;
+				  }
+				});
 			$('#debTipoParticipacionForm').on('change', function() {
 			  if (this.value == 1){
 					$('#participantesDiv').css("display","block")

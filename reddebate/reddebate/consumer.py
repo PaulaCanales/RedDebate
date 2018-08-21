@@ -36,9 +36,11 @@ def ws_receive(message):
         return
 
     if data:
-        if set(data.keys()) == set(('titulo', 'descripcion', 'alias_c', 'largo', 'num_argumento', 'num_rebate', 'tipo_rebate', 'tipo_participacion', 'num_cambio_postura','date_fin', 'id_usuario_id', 'participantes')):
+        if set(data.keys()) == set(('titulo', 'descripcion', 'alias_c', 'largo', 'num_argumento', 'num_rebate', 'tipo_rebate', 'tipo_participacion', 'num_cambio_postura','date_fin', 'id_usuario_id', 'participantes','tags')):
             data['id_usuario_id'] = message.user.id
             participantes = data['participantes']
+            tags = data['tags']
+            del data['tags']
             del data['participantes']
             m = Debate.objects.create(**data)
             if data['tipo_participacion']=='1':
@@ -48,6 +50,8 @@ def ws_receive(message):
                     n.save()
                 n = Participantes(id_usuario=message.user, id_debate=m)
                 n.save()
+            for tag in tags:
+                m.tags.add(tag)
             actualiza_reputacion(message.user.id, 5)
 
         elif set(data.keys()) == set(('descripcion','alias_c','id_debate','postura','id_usuario_id')):

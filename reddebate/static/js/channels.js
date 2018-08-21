@@ -68,6 +68,7 @@ $(document).ready(function(){
       // img: $('#debImgForm').val(),
       id_usuario_id: "",
       participantes: selected,
+      tags: $("#tagsForms").tagsinput('items'),
     }
     socket.send(JSON.stringify(message));
     location.reload();

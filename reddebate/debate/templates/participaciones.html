@@ -12,11 +12,11 @@
       <tr>
         <td style="border-bottom: #fff;">
           {% ifequal arg.4.0 'no' %}
-            <button id="sumar_val{{arg.3}}" type="submit" class="btn btn-valorar" onclick='javascript:valorar("{{arg.3}}","sumar");'>
+            <button id="sumar_val{{arg.3}}" type="submit" class="btn btn-valorar" onclick='javascript:valorar("{{arg.3}}","sumar","{{debate.id_debate}}");'>
             <span class="glyphicon glyphicon-triangle-top" aria-hidden="true"></span>
             </button>
           {% else %}
-            <button id="nulo_sumar_val{{arg.3}}" type="submit" class="btn btn-nulo" onclick='javascript:valorar("{{arg.3}}","nulo-sumar");'>
+            <button id="nulo_sumar_val{{arg.3}}" type="submit" class="btn btn-nulo" onclick='javascript:valorar("{{arg.3}}","nulo-sumar","{{debate.id_debate}}");'>
             <span class="glyphicon glyphicon-triangle-top" aria-hidden="true"></span>
             </button>
           {% endifequal %}
@@ -77,11 +77,11 @@
       <tr>
         <td>
           {% ifequal arg.4.1 'no' %}
-          <button id="quitar_val{{arg.3}}" type="submit" class="btn btn-valorar" onclick='javascript:valorar("{{arg.3}}","quitar");'>
+          <button id="quitar_val{{arg.3}}" type="submit" class="btn btn-valorar" onclick='javascript:valorar("{{arg.3}}","quitar","{{debate.id_debate}}");'>
           <span class="glyphicon glyphicon-triangle-bottom" aria-hidden="true"></span>
           </button>
           {% else %}
-          <button id="nulo_quitar_val{{arg.3}}" type="submit" class="btn btn-nulo" onclick='javascript:valorar("{{arg.3}}","nulo-quitar");'>
+          <button id="nulo_quitar_val{{arg.3}}" type="submit" class="btn btn-nulo" onclick='javascript:valorar("{{arg.3}}","nulo-quitar","{{debate.id_debate}}");'>
           <span class="glyphicon glyphicon-triangle-bottom" aria-hidden="true"></span>
           </button>
           {% endifequal %}

@@ -154,6 +154,14 @@ function cortarTexto(texto){
 
     document.write(texto);
 }
+
+function creartags(){
+  var texto = $("#debTituloForm").val();
+  var res = texto.split(" ");
+  console.log(res);
+
+};
+
 // Gráficos
 
 function posturaChart() {

@@ -366,14 +366,18 @@ footer {
           box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(24, 189, 155, .6);
 }
 #debFinForm{
-  width: 70%;
+  width: 20% !important;
   height: 34px;
+  display: inline-block;
+}
+.spinner{
+  width: 20%;
 }
 .input-group-btn-vertical {
   position: relative;
   white-space: nowrap;
   width: 1%;
-  vertical-align: middle;
+  vertical-align: top;
   display: table-cell;
 }
 .input-group-btn-vertical > .btn {
@@ -382,7 +386,7 @@ footer {
   width: 50px;
   height: 23.5px;
   max-width: 100%;
-  padding: 8px;
+  /* padding: 8px; */
   margin-left: -1px;
   position: relative;
   border-radius: 0;
@@ -962,6 +966,9 @@ hr {
   list-style: none;
   padding-left: 0;
 }
+.containercheckbox{
+  text-align: left;
+}
 
 .tabs {
 	clear: both;
@@ -1056,17 +1063,16 @@ hr {
 	opacity: 1;
 }
 
-#nuevodebatesection{
-  background:#18BD9B;
-  display: none;
-}
-
 /*form styles*/
 #nuevodebateform {
 	width: 100%;
 	margin: 50px auto;
 	text-align: center;
 	position: relative;
+  background: #18BD9B;
+  z-index: 1;
+  padding: 50px 0 50px 0;
+  display: none;
 }
 #nuevodebateform fieldset {
 	background: white;
@@ -1086,7 +1092,7 @@ hr {
 	display: none;
 }
 /*inputs*/
-#nuevodebateform input, #nuevodebateform textarea {
+/* #nuevodebateform input, #nuevodebateform textarea {
 	padding: 15px;
 	border: 1px solid #ccc;
 	border-radius: 3px;
@@ -1096,11 +1102,11 @@ hr {
 	font-family: montserrat;
 	color: #2C3E50;
 	font-size: 13px;
-}
+} */
 /*buttons*/
 #nuevodebateform .action-button {
 	width: 100px;
-	background: #27AE60;
+	background: #2D3E50;
 	font-weight: bold;
 	color: white;
 	border: 0 none;
@@ -1110,7 +1116,7 @@ hr {
 	margin: 10px 5px;
 }
 #nuevodebateform .action-button:hover, #nuevodebateform .action-button:focus {
-	box-shadow: 0 0 0 2px white, 0 0 0 3px #27AE60;
+	box-shadow: 0 0 0 2px white, 0 0 0 3px #2D3E50;
 }
 /*headings*/
 .fs-title {
@@ -1140,7 +1146,6 @@ hr {
 	width: 33.33%;
 	float: left;
 	position: relative;
-  z-index: 1;
 }
 #progressbar li:before {
 	content: counter(step);
@@ -1172,9 +1177,40 @@ hr {
 /*marking active/completed steps green*/
 /*The number of the step and the connector before it = green*/
 #progressbar li.active:before,  #progressbar li.active:after{
-	background: #27AE60;
+	background: #2D3E50;
 	color: white;
 }
 #errorTitulo, #errorDesc{
   display: none;
+}
+.tooltipform {
+    position: relative;
+    display: inline-block;
+}
+
+.tooltipform .tooltipformtext {
+    visibility: hidden;
+    width: 300px;
+    background-color: #2D3E50;
+    color: #fff;
+    text-align: justify;
+    border-radius: 6px;
+    padding: 5px 10px;
+    position: absolute;
+    z-index: 1;
+    top: -5px;
+    left: 110%;
+}
+
+.tooltipform .tooltipformtext::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    right: 100%;
+    margin-top: -5px;
+    border-width: 5px;
+    border-style: solid;
+}
+.tooltipform:hover .tooltipformtext {
+    visibility: visible;
 }

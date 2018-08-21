@@ -14,11 +14,9 @@ $(document).ready(
 		$("#debDescripcionForm").on("keyup", function(){
 		    if($(this).val() != "" && $("#debTituloForm").val() != ""){
 		        sigue = true;
-						console.log(sigue);
 
 		    } else {
 		        sigue = false;
-						console.log(sigue);
 		    }});
 
 		//jQuery time

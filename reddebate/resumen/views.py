@@ -93,13 +93,16 @@ def tagged(request, slug):
     usuario = request.user
     perfil_usuario = Perfil.objects.get(user_id= usuario.id)
     notificacion_usr = verificaNotificacion(request)
+    total_usuarios = User.objects.exclude(id=usuario.id)
     creador=[('username', User.objects.get(id=request.user.id).username),
 	         ('alias',perfil_usuario.alias)]
-    form = creaDebateForm(creador=creador)
+    form = creaDebateForm(creador=creador, usuarios=total_usuarios)
     debate_list = Debate.objects.filter(tags__slug=slug)
+    object_list = datos_debates(debate_list, usuario)
     top_tags = Debate.tags.most_common()[:5]
-    context = {'category_list':debate_list, 'usuario': usuario, 'alias': perfil_usuario.alias,
-                'form':form, 'notificaciones':notificacion_usr, 'top_tags':top_tags}
+    context = {'object_list':object_list, 'usuario': usuario, 'alias': perfil_usuario.alias,
+                 'form':form, 'notificaciones':notificacion_usr, 'top_tags':top_tags}
+    # context = {'object_list':object_list}
     return render(request, 'index.html', context)
 
 @login_required
