@@ -1,13 +1,17 @@
 $(document).ready(
 	function(){
 		var sigue = false;
+		$('#nextbtn').click(function(){
+			var text = $("#debTituloForm").val()
+			// $("#titulodebform").text(text)
+			document.getElementById("titulodebform1").innerHTML = text;
+			document.getElementById("titulodebform2").innerHTML = text;
+		});
 		$("#debTituloForm").on("keyup", function(){
 		    if($(this).val() != "" && $("#debDescripcionForm").val() != ""){
 		        sigue = true;
-						console.log(sigue);
 		    } else {
 						sigue = false;
-		        console.log(sigue);
 		    }
 		});
 
@@ -18,7 +22,18 @@ $(document).ready(
 		    } else {
 		        sigue = false;
 		    }});
-
+		$('#debTipoParticipacionForm').on('change', function() {
+			if (this.value == 1){
+				$("input[name='participantes']").removeAttr('disabled');
+				$("#containercheckbox").removeClass("userscheckbox_disabled");
+				$("#containercheckbox").addClass("userscheckbox");
+			}
+			else{
+				$("input[name='participantes']").attr('disabled','disabled');
+				$("#containercheckbox").removeClass("userscheckbox");
+				$("#containercheckbox").addClass("userscheckbox_disabled");
+			}
+		});
 		//jQuery time
 		var current_fs, next_fs, previous_fs; //fieldsets
 		var left, opacity, scale; //fieldset properties which we will animate

@@ -55,14 +55,17 @@ def index(request):
             debate.estado = 'cerrado'
             debate.save()
     object_list = datos_debates(category_list,usuario)
-    print("el usuario activo es_: ", usuario.id)
+    top_debates = sorted(object_list, key=lambda k: k['num_posturas'], reverse=True)[:5]
+    print("top_debates")
+    print(top_debates)
+    print("el usuario activo es: ", usuario.id)
     perfil_usuario = Perfil.objects.get(user_id= usuario.id)
     alias_usuario = perfil_usuario.alias
     notificacion_usr = verificaNotificacion(request)
     tags_list = [tag.name for tag in Tag.objects.all()]
     top_tags = Debate.tags.most_common()[:5]
     context = {'category_list':category_list, 'object_list': object_list, 'usuario': usuario, 'alias': alias_usuario,
-                'form':form, 'notificaciones':notificacion_usr, 'top_tags':top_tags}
+                'form':form, 'notificaciones':notificacion_usr, 'top_tags':top_tags, 'top_deb':top_debates}
     return render(request, 'index.html', context)
 
 def datos_debates(debates, usuario):
@@ -82,11 +85,14 @@ def datos_debates(debates, usuario):
         if debate.tipo_participacion == 1:
             try:
                 participa = Participantes.objects.get(id_debate_id=debate.id_debate, id_usuario_id=usuario.id)
-                lista_debates.append([debate, puede_editar, porcentaje_f, porcentaje_c, num_posturas_af, num_posturas_ec, num_posturas])
+                lista_debates.append({"datos":debate, "porcentaje_f":porcentaje_f, "porcentaje_c":porcentaje_c,
+                                        "num_posturas_af":num_posturas_af, "num_posturas_ec":num_posturas_ec, "num_posturas":num_posturas})
+
             except:
                 participa = False
         else:
-            lista_debates.append([debate, puede_editar, porcentaje_f, porcentaje_c, num_posturas_af, num_posturas_ec, num_posturas])
+            lista_debates.append({"datos":debate, "porcentaje_f":porcentaje_f, "porcentaje_c":porcentaje_c,
+                                    "num_posturas_af":num_posturas_af, "num_posturas_ec":num_posturas_ec, "num_posturas":num_posturas})
     return lista_debates
 
 def tagged(request, slug):

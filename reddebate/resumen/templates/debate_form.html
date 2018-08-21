@@ -13,7 +13,7 @@
       {{ form.non_field_errors }}
       <div class="fieldWrapper">
           {{ form.titulo.errors }}
-          {{ form.titulo.label_tag }}
+          <label>Titulo Debate</label>
           <div class="tooltipform"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
             <span class="tooltipformtext">Corresponde al título del debate. Se recomienda que sea una afirmación</span>
           </div>
@@ -21,7 +21,7 @@
       </div>
       <div class="fieldWrapper">
           {{ form.descripcion.errors }}
-          {{ form.descripcion.label_tag }}
+          <label>Descripción Debate</label>
           <div class="tooltipform"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
             <span class="tooltipformtext">Corresponde a la descripción de tu debate, donde puedes detallar la información correspondiente a tu afirmación</span>
           </div>
@@ -36,9 +36,12 @@
       <a href="javascript:cierra_formulario('#nuevodebateform')">Cancelar</a>
     </fieldset>
     <fieldset>
-      <div class="fieldWrapper">
+      <h2 id="titulodebform1"class="fs-title">Titulo Debate</h2>
+      <div class="row leftAlign">
+      <div class="col-md-1"></div>
+      <div class="col-md-5">
         {{ form.num_cambio_postura.errors }}
-        {{ form.num_cambio_postura.label_tag }}
+        <label>Cambios de postura por cada usuario</label>
         <div class="tooltipform"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
           <span class="tooltipformtext">Indica la cantidad de veces que los usuarios pueden cambiar de postura en tu debate</span>
         </div>
@@ -50,9 +53,14 @@
           </div>
         </div>
       </div>
-        <div class="fieldWrapper">
+      <div class="col-md-5"></div>
+      <div class="col-md-1"></div>
+      </div>
+      <div class="row leftAlign">
+      <div class="col-md-1"></div>
+        <div class="col-md-5">
           {{ form.num_argumento.errors }}
-          {{ form.num_argumento.label_tag }}
+          <label> Cantidad de argumentos por cada usuario </label>
           <div class="tooltipform"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
             <span class="tooltipformtext">Indica la cantidad máxima de argumentos que los usuarios pueden publicar en tu debate</span>
           </div>
@@ -64,9 +72,9 @@
             </div>
           </div>
         </div>
-        <div class="fieldWrapper">
+        <div class="col-md-5">
           {{ form.largo.errors }}
-          {{ form.largo.label_tag }}
+          <label>Cantidad de caracteres por cada argumento</label>
           <div class="tooltipform"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
             <span class="tooltipformtext">Indica la cantidad máxima de caracteres que tendrá cada argumento que sea publicado en tu debate</span>
           </div>
@@ -78,9 +86,13 @@
             </div>
           </div>
         </div>
-        <div class="fieldWrapper">
+        <div class="col-md-1"></div>
+        </div>
+        <div class="row leftAlign">
+        <div class="col-md-1"></div>
+        <div class="col-md-5">
             {{ form.num_rebate.errors }}
-            {{ form.num_rebate.label_tag }}
+            <label>Cantidad de rebates por cada usuario</label>
             <div class="tooltipform"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
               <span class="tooltipformtext">Indica la cantidad máxima de rebates que los usuarios pueden responder a los argumentos de tu debate</span>
             </div>
@@ -92,13 +104,15 @@
               </div>
             </div>
           </div>
-          <div class="fieldWrapper">
+          <div class="col-md-5">
             {{ form.tipo_rebate.errors }}
-            {{ form.tipo_rebate.label_tag }}
+            <label>Tipo de rebate</label>
             <div class="tooltipform"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
               <span class="tooltipformtext">Indica si deseas que los usuarios puedan responder a argumentos de la postura contraria o a ambas posturas</span>
             </div>
             {{ form.tipo_rebate }}
+          </div>
+          <div class="col-md-1"></div>
           </div>
       <input type="button" name="previous" class="previous action-button" value="Atrás" />
       <input id="siguienteTagsForm" type="button" name="next" class="next action-button" value="Siguiente" />
@@ -106,10 +120,11 @@
 
     </fieldset>
     <fieldset>
-      <div class="row containercheckbox">
+      <h2 id="titulodebform2"class="fs-title">Titulo Debate</h2>
+      <div class="row leftAlign">
         <div class="col-md-6">
           {{ form.tipo_participacion.errors }}
-          {{ form.tipo_participacion.label_tag }}
+          <label>Privacidad de debate</label>
           <div class="tooltipform"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
             <span class="tooltipformtext">Indica si deseas que tu debate sea publico o privado. Si es privado, debes seleccionar a los usuarios que tendrán acceso</span>
           </div>
@@ -117,23 +132,22 @@
         </div>
         <div id="participantesDiv" class="col-md-6">
           {{ form.participantes.errors }}
-          {{ form.participantes.label_tag }}
-          <div id="containercheckbox">
+          <label>Usuarios</label>
+          <div id="containercheckbox" class="userscheckbox_disabled">
           {{ form.participantes }}
           </div>
         </div>
-      </div>
-      <div class="fieldWrapper">
+      <div class="col-md-6">
           {{ form.alias_c.errors }}
-          {{ form.alias_c.label_tag }}
+          <label>Nombre a mostrar</label>
           <div class="tooltipform"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
             <span class="tooltipformtext">Indica si deseas publicar el debate con tu nombre o con tu alias. Este estará visible a quienes participen del debate</span>
           </div>
           {{ form.alias_c }}
       </div>
-      <div class="fieldWrapper">
+      <div class="col-md-6">
           {{ form.date_fin.errors }}
-          {{ form.date_fin.label_tag }}
+          <label>Fecha fin del debate</label>
           <div class="tooltipform"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
             <span class="tooltipformtext">Indica la fecha de cierre automático de tu debate. Si la dejas vacía, no se cerrará hasta que tu mismo lo hagas</span>
           </div><br>
@@ -142,12 +156,13 @@
             <span class="glyphicon glyphicon-erase" aria-hidden="true"></span>
           </a>
       </div>
-      <div class="fieldWrapper">
-        <label> Tags </label>
+      <div class="col-md-12">
+        <label> Tags del debate </label>
         <div class="tooltipform"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
           <span class="tooltipformtext">Una etiqueta o tag es una palabra clave asignada al debate. Ayudan a clasificar y agrupar debates por temas</span>
         </div><br>
         <input id="tagsForms" type="text" data-role="tagsinput"/>
+      </div>
       </div>
 
       <input type="button" name="previous" class="previous action-button" value="Atrás" />

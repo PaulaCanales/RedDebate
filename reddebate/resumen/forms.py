@@ -107,7 +107,7 @@ class creaDebateForm(forms.ModelForm):
             ))
     participantes = forms.MultipleChoiceField(
         widget=forms.CheckboxSelectMultiple(
-            attrs={'id': 'debParticipantesForm'}
+            attrs={'id': 'debParticipantesForm', 'disabled':"disabled"}
         ),
         label="Usuarios")
 
