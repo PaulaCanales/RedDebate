@@ -59,13 +59,20 @@ def index(request):
     print("top_debates")
     print(top_debates)
     print("el usuario activo es: ", usuario.id)
+    num_publico_abierto = Debate.objects.filter(estado='abierto', tipo_participacion=0).count()
+    num_publico_cerrado = Debate.objects.filter(estado='cerrado', tipo_participacion=0).count()
+    num_privado_abierto = Debate.objects.filter(estado='abierto', tipo_participacion=1, id_usuario=usuario).count()
+    num_privado_cerrado = Debate.objects.filter(estado='cerrado', tipo_participacion=1, id_usuario=usuario).count()
+
     perfil_usuario = Perfil.objects.get(user_id= usuario.id)
     alias_usuario = perfil_usuario.alias
     notificacion_usr = verificaNotificacion(request)
     tags_list = [tag.name for tag in Tag.objects.all()]
     top_tags = Debate.tags.most_common()[:5]
     context = {'category_list':category_list, 'object_list': object_list, 'usuario': usuario, 'alias': alias_usuario,
-                'form':form, 'notificaciones':notificacion_usr, 'top_tags':top_tags, 'top_deb':top_debates}
+                'form':form, 'notificaciones':notificacion_usr, 'top_tags':top_tags, 'top_deb':top_debates,
+                'publico_abierto':num_publico_abierto, 'publico_cerrado':num_publico_cerrado,
+                'privado_abierto':num_privado_abierto, 'privado_cerrado':num_privado_cerrado,}
     return render(request, 'index.html', context)
 
 def datos_debates(debates, usuario):

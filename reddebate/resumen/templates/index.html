@@ -58,14 +58,14 @@
 						<div data-tabs class="tabs">
 							<div class="tab">
 					      <input type="radio" name="tabgroup" id="tab-1" checked>
-					      <label for="tab-1">Públicos</label>
+					      <label for="tab-1">Públicos</label><span class="badge">{{publico_abierto}}</span>
 					      <div class="tab__content">
 					         {% include 'grilla.html' with estado='abierto' tipo=0 %}
 					      </div>
 					   </div>
 					   <div class="tab">
 					      <input type="radio" name="tabgroup" id="tab-2">
-					      <label for="tab-2">Privados</label>
+					      <label for="tab-2">Privados</label><span class="badge">{{privado_abierto}}</span>
 					      <div class="tab__content">
 					         {% include 'grilla.html' with estado='abierto' tipo=1%}
 					      </div>
@@ -76,14 +76,14 @@
 						<div data-tab2s2 class="tabs2">
 							<div class="tab2">
 					      <input type="radio" name="tab2group" id="tab2-1" checked>
-					      <label for="tab2-1">Públicos</label>
+					      <label for="tab2-1">Públicos</label><span class="badge">{{publico_cerrado}}</span>
 					      <div class="tab2__content">
 					         {% include 'grilla.html' with estado='cerrado' tipo=0 %}
 					      </div>
 					   </div>
 					   <div class="tab2">
 					      <input type="radio" name="tab2group" id="tab2-2">
-					      <label for="tab2-2">Privados</label>
+					      <label for="tab2-2">Privados</label><span class="badge">{{privado_cerrado}}</span>
 					      <div class="tab2__content">
 					         {% include 'grilla.html' with estado='cerrado' tipo=1%}
 					      </div>
