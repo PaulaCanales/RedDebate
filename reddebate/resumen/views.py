@@ -52,9 +52,16 @@ def index(request):
     if request.method == 'GET':
         if 'q' in request.GET:
             deb = busqueda(request)
+            deb_publicos = 0
+            deb_privados = 0
+            for d in deb:
+                if(d.tipo_participacion == 0): deb_publicos+=1
+                if(d.tipo_participacion == 1): deb_privados+=1
             debates = datos_debates(deb, usuario)
+
             context = {'object_list': debates, 'usuario': usuario, 'alias': Perfil.objects.get(user_id= usuario.id).alias,
-                        'form':form, 'notificaciones':notificacion_usr, 'query':request.GET.get('q')}
+                        'form':form, 'notificaciones':notificacion_usr, 'query':request.GET.get('q'),
+                        'deb_pub': deb_publicos, 'deb_pri': deb_privados}
             return render(request, "filtro.html" , context)
 
     category_list = Debate.objects.all().order_by('-id_debate')

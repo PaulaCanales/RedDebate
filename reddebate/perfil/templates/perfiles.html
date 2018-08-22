@@ -71,52 +71,6 @@
       </div> -->
   </main>
 </div>
-<!-- <div class="container">
-    <div class="col-md-4">
-      {% ifequal usa_alias 'username' %}
-        <h3>{{ usuario.first_name }} {{ usuario.last_name }} </h3>
-        <div class="container-perfil">
-        <br>
-        <p1>Usuario: </p1>{{ usuario.username}}
-        <br>
-        <br>
-        <p1>Email: </p1>{{ usuario.email }}
-        <br>
-        <br>
-        <p1>Reputación: </p1>{{alias.reputacion}}
-        <br>
-        <br>
-        <p1>Fecha de ingreso : </p1>{{ usuario.date_joined }}
-        <br>
-        <br>
-         </div>
-        <br>
-      {% else %}
-        <h3>{{ alias.alias }}</h3>
-        <div class="container-perfil">
-        <br>
-        <p1>Reputación: </p1>{{alias.reputacion}}
-        <br>
-        <br>
-        <p1>Fecha de ingreso : </p1>{{ usuario.date_joined }}
-        <br>
-        <br>
-         </div>
-        <br>
-      {%endifequal%}
-    </div>
-    <div class="col-md-8">
-      <h3> Usuarios </h3>
-
-        <ul class="list-group">
-        {% for usr in total_usuarios %}
-           <li class="list-group-item">{{usr.username}}</li>
-        {% endfor %}
-        </ul>
-
-    </div>
-</div> -->
-
 {% endblock content %}
 
 </html>
