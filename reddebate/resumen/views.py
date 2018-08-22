@@ -9,12 +9,14 @@ from taggit.models import Tag
 from django.http import HttpResponse
 from django.shortcuts import redirect
 import requests
+from django.db.models import Q
 from django.http import HttpResponse
 from resumen.models import Debate
 from debate.models import Postura, Argumento, Respuesta, Valoracion, Edicion, Participantes
 from perfil.models import Perfil, Notificacion
 from resumen.forms import creaDebateForm, LoginForm
 from taggit.models import Tag
+from django.db.models import Q
 
 def home(request):
     form = LoginForm(request.POST or None)
@@ -39,6 +41,7 @@ def logout(request):
 def index(request):
     usuario = request.user
     iniciando_alias(request, usuario)
+    notificacion_usr = verificaNotificacion(request)
     creador=[('username', User.objects.get(id=request.user.id).username),
 	         ('alias',Perfil.objects.get(user= request.user).alias)]
     total_usuarios = User.objects.exclude(id=usuario.id)
@@ -46,6 +49,13 @@ def index(request):
     if request.method == 'POST':
         if 'id_deb' in request.POST:
             cerrar_debate(request)
+    if request.method == 'GET':
+        if 'q' in request.GET:
+            deb = busqueda(request)
+            debates = datos_debates(deb, usuario)
+            context = {'object_list': debates, 'usuario': usuario, 'alias': Perfil.objects.get(user_id= usuario.id).alias,
+                        'form':form, 'notificaciones':notificacion_usr, 'query':request.GET.get('q')}
+            return render(request, "filtro.html" , context)
 
     category_list = Debate.objects.all().order_by('-id_debate')
     object_list = []
@@ -56,23 +66,17 @@ def index(request):
             debate.save()
     object_list = datos_debates(category_list,usuario)
     top_debates = sorted(object_list, key=lambda k: k['num_posturas'], reverse=True)[:5]
-    print("top_debates")
-    print(top_debates)
     print("el usuario activo es: ", usuario.id)
-    num_publico_abierto = Debate.objects.filter(estado='abierto', tipo_participacion=0).count()
-    num_publico_cerrado = Debate.objects.filter(estado='cerrado', tipo_participacion=0).count()
-    num_privado_abierto = Debate.objects.filter(estado='abierto', tipo_participacion=1, id_usuario=usuario).count()
-    num_privado_cerrado = Debate.objects.filter(estado='cerrado', tipo_participacion=1, id_usuario=usuario).count()
 
     perfil_usuario = Perfil.objects.get(user_id= usuario.id)
     alias_usuario = perfil_usuario.alias
-    notificacion_usr = verificaNotificacion(request)
+
     tags_list = [tag.name for tag in Tag.objects.all()]
-    top_tags = Debate.tags.most_common()[:5]
+    debates_publicos = Debate.objects.filter(tipo_participacion=0)
+    top_tags = Debate.tags.most_common(extra_filters={'debate__in': debates_publicos})[:5]
+    # buscar = busqueda(request)
     context = {'category_list':category_list, 'object_list': object_list, 'usuario': usuario, 'alias': alias_usuario,
-                'form':form, 'notificaciones':notificacion_usr, 'top_tags':top_tags, 'top_deb':top_debates,
-                'publico_abierto':num_publico_abierto, 'publico_cerrado':num_publico_cerrado,
-                'privado_abierto':num_privado_abierto, 'privado_cerrado':num_privado_cerrado,}
+                'form':form, 'notificaciones':notificacion_usr, 'top_tags':top_tags, 'top_deb':top_debates}
     return render(request, 'index.html', context)
 
 def datos_debates(debates, usuario):
@@ -114,9 +118,9 @@ def tagged(request, slug):
     object_list = datos_debates(debate_list, usuario)
     top_tags = Debate.tags.most_common()[:5]
     context = {'object_list':object_list, 'usuario': usuario, 'alias': perfil_usuario.alias,
-                 'form':form, 'notificaciones':notificacion_usr, 'top_tags':top_tags}
+                 'form':form, 'notificaciones':notificacion_usr, 'top_tags':top_tags, 'query':slug}
     # context = {'object_list':object_list}
-    return render(request, 'index.html', context)
+    return render(request, 'filtro.html', context)
 
 @login_required
 def verificaNotificacion(request):
@@ -167,3 +171,8 @@ def crear_debate(request):
                 post.id_usuario = request.user
                 post.save()
     return form
+
+def busqueda(request):
+    query = request.GET.get('q')
+    results = Debate.objects.filter(Q(titulo__icontains=query) | Q(descripcion__icontains=query))
+    return results

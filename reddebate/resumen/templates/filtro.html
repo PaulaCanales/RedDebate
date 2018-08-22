@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+{% extends 'base.html' %}
+{% load static %}
+<html>
+
+	{% block content %}
+  <div class="container">
+    <div class="row">
+			<div class="col-md-2">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h3 class="panel-title">¡Hola!</h3>
+				 </div>
+	 				<div class="panel-body">
+						<p>{{ user.get_full_name }}</p>
+						<a href="{% url 'logout' %}"> Cerrar Sesión</a>
+					</div>
+	     </div>
+			</div>
+			<div class="col-md-10">
+        <h2>Hay {{object_list|length}} debates con: {{query}}</h2>
+      {% include 'grilla.html' with estado='abierto' tipo=0 %}
+      </div>
+    </div>
+  </div>
+  {% endblock content %}
+
+</html>

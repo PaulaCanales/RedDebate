@@ -39,23 +39,4 @@ class Debate(models.Model):
     def __getitem__(self, key):
         return getattr(self, key)
     def as_dict(self):
-        return {'titulo': self.titulo, 'descripcion': self.descripcion,
-                'id': self.id_debate}
-
-# def elimina_tildes(cadena):
-#     s = ''.join((c for c in unicodedata.normalize('NFD',unicode(cadena)) if unicodedata.category(c) != 'Mn'))
-#     return s.decode()
-#
-# @receiver(post_save, sender=Debate)
-# def crea_notificacion(sender, instance, **kwargs):
-#     if kwargs['created']:
-#         id = instance['id_debate']
-#         debate = Debate.objects.get(id_debate=id)
-#         frase = debate.titulo
-#         frase = elimina_tildes(frase)
-#         stop_words = set(stopwords.words('spanish'))
-#         tokens = word_tokenize(frase)
-#         tokens = [x.lower() for x in tokens]
-#         tags = [w for w in tokens if not w in stop_words]
-#         for tag in tags:
-#             debate.tags.add(tag)
+        return {'titulo': self.titulo, 'tipo':self.tipo_participacion}

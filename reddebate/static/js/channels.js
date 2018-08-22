@@ -25,9 +25,8 @@ $(document).ready(function(){
         console.log("onmassage");
         var url = "/debate/"+data.id+"/"
         if (data.titulo){
-          var nuevoDebate = $("#alertaDebate");
-          var nuevo = $('<a onclick="javascript:location.reload()" id="nuevoDebate" class="list-group-item"> </a>').text("Hay nuevos debates...");
-          nuevoDebate.append(nuevo);
+          // var alerta = $("#alertaDebAb"+data.tipo);
+          $("#alertaDebAb"+data.tipo).css("display","block");
         }
         else if (data.postura_f || data.postura_c){
           var porcentaje_f = Math.round(parseFloat(data.porc_f)*100)/100;
@@ -71,7 +70,7 @@ $(document).ready(function(){
       tags: $("#tagsForms").tagsinput('items'),
     }
     socket.send(JSON.stringify(message));
-    location.reload();
+    window.location.reload();
     return false;
   });
 
