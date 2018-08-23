@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from django.shortcuts import render, render_to_response
 from django.contrib.auth.models import User
 import datetime
@@ -58,9 +60,9 @@ def index(request):
                 if(d.tipo_participacion == 0): deb_publicos+=1
                 if(d.tipo_participacion == 1): deb_privados+=1
             debates = datos_debates(deb, usuario)
-
+            label = "Resultados de la búsqueda: "+str(request.GET.get('q'))
             context = {'object_list': debates, 'usuario': usuario, 'alias': Perfil.objects.get(user_id= usuario.id).alias,
-                        'form':form, 'notificaciones':notificacion_usr, 'query':request.GET.get('q'),
+                        'form':form, 'notificaciones':notificacion_usr, 'label':label,
                         'deb_pub': deb_publicos, 'deb_pri': deb_privados}
             return render(request, "filtro.html" , context)
 
@@ -130,8 +132,9 @@ def tagged(request, slug):
     debate_list = Debate.objects.filter(tags__slug=slug)
     object_list = datos_debates(debate_list, usuario)
     top_tags = Debate.tags.most_common()[:5]
+    label = "Tags relacionados: "+slug
     context = {'object_list':object_list, 'usuario': usuario, 'alias': perfil_usuario.alias,
-                 'form':form, 'notificaciones':notificacion_usr, 'top_tags':top_tags, 'query':slug}
+                 'form':form, 'notificaciones':notificacion_usr, 'top_tags':top_tags, 'label':label}
     # context = {'object_list':object_list}
     return render(request, 'filtro.html', context)
 

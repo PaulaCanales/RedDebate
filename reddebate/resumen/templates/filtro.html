@@ -6,7 +6,7 @@
 	{% block content %}
   <div class="container-search">
         <header>
-          <h2> Resultados de la búsqueda: {{query}}</h2>
+          <h2>{{label}}</h2>
           <p>{{object_list|length}} debates | {{deb_pub}} publicos | {{deb_pri}} privados </p>
         </header>
         {% ifequal object_list|length 0 %}
