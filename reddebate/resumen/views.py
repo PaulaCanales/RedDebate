@@ -81,9 +81,15 @@ def index(request):
     tags_list = [tag.name for tag in Tag.objects.all()]
     debates_publicos = Debate.objects.filter(tipo_participacion=0)
     top_tags = Debate.tags.most_common(extra_filters={'debate__in': debates_publicos})[:5]
-    # buscar = busqueda(request)
+    top_reputacion = Perfil.objects.all().order_by('-reputacion')[:5]
+    top_usuario = []
+    for usuario in top_reputacion:
+        top_usuario.append(User.objects.get(id=usuario.user_id))
+    debates_recientes = Debate.objects.filter(tipo_participacion=0).order_by('-id_debate')[:5]
+    debates_recientes = datos_debates(debates_recientes,usuario)
     context = {'category_list':category_list, 'object_list': object_list, 'usuario': usuario, 'alias': alias_usuario,
-                'form':form, 'notificaciones':notificacion_usr, 'top_tags':top_tags, 'top_deb':top_debates}
+                'form':form, 'notificaciones':notificacion_usr, 'top_tags':top_tags, 'top_deb':top_debates,
+                'top_user':top_usuario, 'recientes': debates_recientes}
     return render(request, 'index.html', context)
 
 def datos_debates(debates, usuario):
@@ -154,17 +160,6 @@ def iniciando_alias(request, u):
         usuario_2 = Perfil.objects.get(user= u)
         alias_usuario = usuario_2.alias
 
-##@brief Funcion que cierra el debate
-##@param request solicitud web
-##@return redirect redirecciona a la vista "index"
-##@warning Login is required
-@login_required
-def cerrar_debate(request):
-    id_deb = request.POST['id_deb']
-    deb = Debate.objects.get(pk=id_deb)
-    deb.estado = 'cerrado'
-    deb.save()
-    return redirect('index')
 
 ##@brief Funcion que guarda un nuevo debate
 ##@param request solicitud web

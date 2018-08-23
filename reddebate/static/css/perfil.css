@@ -1,3 +1,4 @@
+@import url('https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css');
 .container-profile {
   /* max-width: 1250px; */
   margin: 50px auto 30px;
@@ -97,8 +98,9 @@ main {
   color: #2D3E50;
 }
 .desc-datos{
-  margin-bottom: -10px;
+  margin-bottom: -5px;
   font-size: 9pt;
+  font-family: 'Montserrat', sans-serif;
   color: #18BD9B;
 }
 .datos a{
@@ -227,15 +229,6 @@ main {
   max-width: 100%;
 }
 
-.gallery > .cards > .cards__item > .card {
-  background-color: rgba(0,0,0,0.10);
-  height: 200px;
-}
-.gallery > .cards > .cards__item > .card > .card__content > .card__text {
-  text-overflow:ellipsis;
-  white-space:nowrap;
-  overflow:hidden;
-}
 .btn-card2 {
   display: block;
   width: 100%;
@@ -262,58 +255,103 @@ main {
 .progress{
   margin-top: 5px;
 }
-.tab .nav-tabs{
-    display: inline-block;
-    background: #fff;
-    border-radius: 50px;
-    border: none;
-    padding: 6px;
+.main main {
+  min-width: inherit;
+  max-width: 800px;
+  margin: 0 auto;
+  background: #fff;
 }
-.tab .nav-tabs li{
-    float: none;
-    display: inline-block;
-    position: relative;
+
+.main section {
+  display: none;
+  padding: 20px 0 0;
+  border-top: 1px solid #ddd;
 }
-.tab .nav-tabs li a{
-    font-size: 16px;
-    font-weight: 700;
-    background: #2D3E50;
-    color: #fff;
-    border: none;
-    padding: 10px 15px;
-    border-radius: 10px 10px 0 0;
-    transition: all 0.5s ease 0s;
+
+.main input {
+  display: none;
 }
-.tab .nav-tabs li a:hover{
-    background: #18BD9B;
-    color: #fff;
-    border: none;
+#formulario_alias input{
+  display: block;
 }
-.tab .nav-tabs li.active a,
-.tab .nav-tabs li.active a:focus,
-.tab .nav-tabs li.active a:hover{
-    border: none;
-    background: #18BD9B;
-    color: #fff;
+
+.main label {
+  display: inline-block;
+  margin: 0 0 -1px;
+  padding: 15px 25px;
+  font-weight: 600;
+  text-align: center;
+  color: #bbb;
+  border: 1px solid transparent;
 }
-.tab .tab-content{
-    font-size: 14px;
-    color: #686868;
-    line-height: 25px;
-    text-align: left;
-    padding: 5px 20px;
+
+.main label:before {
+  font-family: fontawesome;
+  font-weight: normal;
+  margin-right: 10px;
 }
-.tab .tab-content h3{
-    font-size: 22px;
-    color: #5b5a5a;
+
+.main label[for*='1']:before {
+  content: '\f129';
 }
-@media only screen and (max-width: 480px){
-    .tab .nav-tabs{
-        border-radius: 10px;
-    }
-    .tab .nav-tabs li{
-        width: 100%;
-        text-align: center;
-        margin-bottom: 5px;
-    }
+
+.main label[for*='2']:before {
+  content: '\f086';
+}
+
+.main label[for*='3']:before {
+  content: '\f187';
+}
+
+.main label[for*='4']:before {
+  content: '\f1a9';
+}
+
+.main label:hover {
+  color: #888;
+  cursor: pointer;
+}
+
+.main input:checked + label {
+  color: #2D3E50;
+  border: 1px solid #ddd;
+  border-top: 2px solid #18BD9B;
+  border-bottom: 1px solid #fff;
+}
+.card {
+  background-color: rgba(0,0,0,0.10);
+  height: 220px;
+}
+.card__text {
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  overflow:hidden;
+}
+[type=radio]:checked ~ label {
+    border-bottom: 0px;
+    color: #bbb;
+    z-index: 2;
+}
+
+#tab1:checked ~ #content1,
+#tab2:checked ~ #content2,
+#tab3:checked ~ #content3,
+#tab4:checked ~ #content4 {
+  display: block;
+}
+
+@media screen and (max-width: 730px) {
+  .main label {
+    font-size: 0;
+  }
+
+  .main label:before {
+    margin: 0;
+    font-size: 18px;
+  }
+}
+@media screen and (max-width: 400px) {
+  .main label {
+    padding: 15px;
+  }
 }

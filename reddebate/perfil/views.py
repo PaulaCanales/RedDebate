@@ -85,7 +85,7 @@ def perfil(request):
     notificacion_usr = verificaNotificacion(request)
     return render(request, 'perfil_usuario.html', {'usuario': usuario,
         'alias': alias_usuario,
-        'debates': lista_debates,
+        'object_list': lista_debates,
         'alias_form': alias_form, 'notificaciones': notificacion_usr,
         'stats': stats
         })
@@ -133,6 +133,18 @@ def estadisticas_usuario(id_usuario):
              'triunfos': triunfos, 'derrotas':derrotas,
              'mejor_arg':mejor_arg, 'peor_arg':peor_arg}
     return stats
+
+##@brief Funcion que cierra el debate
+##@param request solicitud web
+##@return redirect redirecciona a la vista "index"
+##@warning Login is required
+@login_required
+def cerrar_debate(request):
+    id_deb = request.POST['id_deb']
+    deb = Debate.objects.get(pk=id_deb)
+    deb.estado = 'cerrado'
+    deb.save()
+    return redirect('perfil')
 
 ##@brief Funcion que elimina un debate
 ##@param request solicitud web

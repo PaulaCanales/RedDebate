@@ -5,12 +5,41 @@
 
 
 	{% block content %}
-	<div id="search">
+	<div id="search" class="morphsearch">
   <button type="button" class="close">×</button>
-	<form action="{% url 'index' %}" method="get" accept-charset="utf-8">
+	<form action="{% url 'index' %}" method="get" accept-charset="utf-8" class="morphsearch-form">
 		<input name="q" type="search" placeholder="¿Qué buscas?" autocomplete="off">
 		<button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
 	</form>
+	<div class="morphsearch-content">
+					<div class="dummy-column">
+						<h2>Usuarios</h2>
+						{% for user in top_user %}
+ 						 <a class="dummy-media-object" href="#">
+							 <img class="round" src="{% static 'img/RDLogo05.png' %}"/>
+							 <h3>{{ user.username }}</h3>
+						 </a>
+ 					 {% endfor %}
+					</div>
+					<div class="dummy-column">
+						<h2>Popular</h2>
+						{% for deb in top_deb %}
+ 						 <a class="dummy-media-object" href="{% url 'despliega' deb.datos.id_debate %}">
+							 <label><span class="glyphicon glyphicon-user" aria-hidden="true"></span> {{deb.num_posturas}}</label>
+							 <h3>{{ deb.datos.titulo }}</h3>
+						 </a>
+ 					 {% endfor %}
+					</div>
+					<div class="dummy-column">
+						<h2>Reciente</h2>
+						{% for deb in recientes %}
+ 						 <a class="dummy-media-object" href="{% url 'despliega' deb.datos.id_debate %}">
+							 <label><span class="glyphicon glyphicon-user" aria-hidden="true"></span> {{deb.num_posturas}}</label>
+							 <h3>{{ deb.datos.titulo }}</h3>
+						 </a>
+ 					 {% endfor %}
+					</div>
+				</div><!-- /morphsearch-content -->
 </div>
 	<div id="nuevoDebateBtn" align="right" >
 		<a href="#search" class="btn btn-busqueda"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a>
@@ -30,7 +59,7 @@
 						<a href="{% url 'logout' %}"> Cerrar Sesión</a>
 					</div>
 	     </div>
-			 <div class="panel panel-default">
+			 <!-- <div class="panel panel-default">
 				 <div class="panel-heading">
 					 <h3 class="panel-title">Top Debates</h3>
 				</div>
@@ -40,7 +69,7 @@
 						 <p> {{deb.num_posturas}}</p>
 					 {% endfor %}
 				 </div>
-			</div>
+			</div> -->
 				<div class="panel panel-default">
 				  <div class="panel-heading">
 				    <h3 class="panel-title">Top Tags</h3>
@@ -71,7 +100,7 @@
 									<div id="alertaDebAb0" class="alert alert-info" role="alert">
 									  <a href="javascript:location.reload()" class="alert-link">Hay nuevos debates...</a>
 									</div>
-					         {% include 'grilla.html' with estado='abierto' tipo=0 %}
+					         {% include 'grilla.html' with estado='abierto' tipo=0 index=True %}
 					      </div>
 					   </div>
 					   <div class="tab">
@@ -81,7 +110,7 @@
 									<div id="alertaDebAb1" class="alert alert-info" role="alert">
 									  <!-- <a href="javascript:location.reload()" class="alert-link">Hay nuevos debates...</a> -->
 									</div>
-					         {% include 'grilla.html' with estado='abierto' tipo=1%}
+					         {% include 'grilla.html' with estado='abierto' tipo=1 index=True%}
 					      </div>
 					   </div>
 						</div>
@@ -92,14 +121,14 @@
 					      <input type="radio" name="tab2group" id="tab2-1" checked>
 					      <label for="tab2-1">Públicos</label>
 					      <div class="tab2__content">
-					         {% include 'grilla.html' with estado='cerrado' tipo=0 %}
+					         {% include 'grilla.html' with estado='cerrado' tipo=0 index=True %}
 					      </div>
 					   </div>
 					   <div class="tab2">
 					      <input type="radio" name="tab2group" id="tab2-2">
 					      <label for="tab2-2">Privados</label>
 					      <div class="tab2__content">
-					         {% include 'grilla.html' with estado='cerrado' tipo=1%}
+					         {% include 'grilla.html' with estado='cerrado' tipo=1 index=True%}
 					      </div>
 					   </div>
 						</div>
