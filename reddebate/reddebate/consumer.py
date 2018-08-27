@@ -43,16 +43,24 @@ def ws_receive(message):
             del data['tags']
             del data['participantes']
             m = Debate.objects.create(**data)
-            if data['tipo_participacion']=='1':
-                for participante in participantes:
-                    usuario = User.objects.get(id=participante)
-                    n = Participantes(id_usuario=usuario, id_debate=m)
-                    n.save()
-                n = Participantes(id_usuario=message.user, id_debate=m)
-                n.save()
             for tag in tags:
                 m.tags.add(tag)
             actualiza_reputacion(message.user.id, 5)
+            if data['tipo_participacion']=='1':
+                lista=[]
+                for participante in participantes:
+                    usuario = User.objects.get(id=participante)
+                    lista.append(usuario.id)
+                    n = Participantes(id_usuario_id=usuario.id, id_debate_id=m.id_debate)
+                    n.save()
+
+                n = Participantes(id_usuario_id=message.user.id, id_debate_id=m.id_debate)
+                n.save()
+
+                Group(grupo).send({'text': json.dumps(n.as_dict(lista))})
+
+            else:
+                Group(grupo).send({'text': json.dumps(m.as_dict())})
 
         elif set(data.keys()) == set(('descripcion','alias_c','id_debate','postura','id_usuario_id')):
             debate = Debate.objects.get(id_debate=data['id_debate'])
@@ -62,6 +70,7 @@ def ws_receive(message):
             data['id_debate'] = debate
             m = Argumento.objects.create(**data)
             actualiza_reputacion(message.user.id, 3)
+            Group(grupo).send({'text': json.dumps(m.as_dict())})
 
         elif set(data.keys()) == set(('postura','id_usuario','id_debate')):
             debate = Debate.objects.get(id_debate=data['id_debate'])
@@ -69,6 +78,7 @@ def ws_receive(message):
             data['id_debate'] = debate
             m = Postura.objects.create(**data)
             actualiza_reputacion(message.user.id, 3)
+            Group(grupo).send({'text': json.dumps(m.as_dict())})
 
 
         elif set(data.keys()) == set(('postura', 'id_debate', 'razon')):
@@ -79,8 +89,9 @@ def ws_receive(message):
             m.cambio_postura = data['razon']
             m.cuenta_cambios = m.cuenta_cambios + 1
             m.save()
+            Group(grupo).send({'text': json.dumps(m.as_dict())})
 
-        Group(grupo).send({'text': json.dumps(m.as_dict())})
+
 
 @channel_session_user
 def ws_disconnect(message):

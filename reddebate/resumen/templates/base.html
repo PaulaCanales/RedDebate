@@ -65,6 +65,26 @@
 
   $(document).ready(
     function(){
+			$('input[name=radioDeb]').change(function(){
+		        // $('#tipoDeb').submit();
+						var opcion = $("input[name=radioDeb]:checked")
+						if (opcion.val() == 0){
+							document.getElementById('publicos').style.display = 'flex';
+							document.getElementById('privados').style.display = 'none';
+							document.getElementById('todos').style.display = 'none';
+						}
+						else if (opcion.val() == 1) {
+							document.getElementById('privados').style.display = 'flex';
+							document.getElementById('publicos').style.display = 'none';
+							document.getElementById('todos').style.display = 'none';
+
+						}
+						else{
+							document.getElementById('todos').style.display = 'flex';
+							document.getElementById('publicos').style.display = 'none';
+							document.getElementById('privados').style.display = 'none';
+						}
+		   });
 
 			$.getJSON("{% static 'stopwords.json' %}", function(json) {
 				var stopword = json;
@@ -150,16 +170,14 @@
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav navbar-right">
                     <li>
-                        <a href="{% url 'index' %}">Todos los Debates</a>
+                        <a href="{% url 'index' %}">Debates Abiertos</a>
                     </li>
-
+										<li>
+                        <a href="{% url 'cerrados' %}">Debates Cerrados</a>
+                    </li>
                     <li>
                         <a href="{% url 'perfil' %}"> Perfil </a>
                     </li>
-
-										<!-- <li>
-											 <a href="#"> <span class="glyphicon glyphicon-bell"></span> <span class="badge"> 42</span></a>
-										</li> -->
 										<li>
 											<a href="#" rel="popover" title="Notificaciones" data-toggle="popover" data-trigger="focus" data-placement="bottom" data-popover-content="#popoverNotificaciones">
 												<span class="glyphicon glyphicon-bell"></span> <span id="num_notif" class="badge"> {{notificaciones|length}}</span>

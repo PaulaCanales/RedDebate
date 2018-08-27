@@ -42,7 +42,7 @@
 				</div><!-- /morphsearch-content -->
 </div>
 	<div id="nuevoDebateBtn" align="right" >
-		<a href="#search" class="btn btn-busqueda"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a>
+		<a href="#search" class="btn btn-debate"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a>
 		<button onclick="despliega_formulario('#nuevodebateform')" type="submit" class="btn btn-debate" > + </button>
 	</div>
 		{% include 'debate_form.html' %}
@@ -59,17 +59,7 @@
 						<a href="{% url 'logout' %}"> Cerrar Sesión</a>
 					</div>
 	     </div>
-			 <!-- <div class="panel panel-default">
-				 <div class="panel-heading">
-					 <h3 class="panel-title">Top Debates</h3>
-				</div>
-				 <div class="panel-body">
-					 {% for deb in top_deb %}
-						 <a href="{% url 'despliega' deb.datos.id_debate %}">{{ deb.datos.titulo }}</a><br>
-						 <p> {{deb.num_posturas}}</p>
-					 {% endfor %}
-				 </div>
-			</div> -->
+
 				<div class="panel panel-default">
 				  <div class="panel-heading">
 				    <h3 class="panel-title">Top Tags</h3>
@@ -83,57 +73,46 @@
 				</div>
 			</div>
 			<div class="col-md-10">
-				<div class="tab-slider--nav">
-					<ul class="tab-slider--tabs">
-						<li class="tab-slider--trigger active" rel="tab1">Debates Abiertos</li>
-						<li class="tab-slider--trigger" rel="tab2">Debates Cerrados</li>
-					</ul>
+				<div class="control-group">
+					<!-- <form id="tipoDeb" method="post" action= "{% url 'index' %}" enctype="multipart/form-data">{% csrf_token %} -->
+						<label class="control control--radio">Todos
+							<input id="r1" type="radio" name="radioDeb" value="2" checked/>
+							<div class="control__indicator"></div>
+						</label>
+						<label class="control control--radio">Públicos
+							<input id="r2" type="radio" name="radioDeb" value="0"/>
+							<div class="control__indicator"></div>
+						</label>
+						<label class="control control--radio">Privados
+							<input id="r3" type="radio" name="radioDeb" value="1"/>
+							<div class="control__indicator"></div>
+					</label>
 				</div>
-				<!-- <ul id="alertaDebate" class="list-group"></ul> -->
-				<div class="tab-slider--container">
-					<div id="tab1" class="tab-slider--body">
-						<div data-tabs class="tabs">
-							<div class="tab">
-					      <input type="radio" name="tabgroup" id="tab-1" checked>
-					      <label for="tab-1">Públicos</label>
-					      <div class="tab__content">
-									<div id="alertaDebAb0" class="alert alert-info" role="alert">
-									  <a href="javascript:location.reload()" class="alert-link">Hay nuevos debates...</a>
-									</div>
-					         {% include 'grilla.html' with estado='abierto' tipo=0 index=True %}
-					      </div>
-					   </div>
-					   <div class="tab">
-					      <input type="radio" name="tabgroup" id="tab-2">
-					      <label for="tab-2">Privados</label>
-					      <div class="tab__content">
-									<div id="alertaDebAb1" class="alert alert-info" role="alert">
-									  <!-- <a href="javascript:location.reload()" class="alert-link">Hay nuevos debates...</a> -->
-									</div>
-					         {% include 'grilla.html' with estado='abierto' tipo=1 index=True%}
-					      </div>
-					   </div>
-						</div>
-					</div>
-					<div id="tab2" class="tab-slider--body">
-						<div data-tab2s2 class="tabs2">
-							<div class="tab2">
-					      <input type="radio" name="tab2group" id="tab2-1" checked>
-					      <label for="tab2-1">Públicos</label>
-					      <div class="tab2__content">
-					         {% include 'grilla.html' with estado='cerrado' tipo=0 index=True %}
-					      </div>
-					   </div>
-					   <div class="tab2">
-					      <input type="radio" name="tab2group" id="tab2-2">
-					      <label for="tab2-2">Privados</label>
-					      <div class="tab2__content">
-					         {% include 'grilla.html' with estado='cerrado' tipo=1 index=True%}
-					      </div>
-					   </div>
-						</div>
-					</div>
+				<div id="alertaDeb0" class="alert alert-info" role="alert">
+					<a href="javascript:location.reload()" class="alert-link">Hay nuevos debates...</a>
 				</div>
+				<div id="alertaDeb1" class="alert alert-info" role="alert">
+					<a href="javascript:location.reload()" class="alert-link">Hay nuevos debates privados...</a>
+				</div>
+				<ul id="todos" class="cards">
+					{% for deb in object_list %}
+						{% include 'grilla.html' with index=True%}
+					{% endfor %}
+				</ul>
+				<ul id="publicos" class="cards">
+					{% for deb in object_list %}
+						{% ifequal deb.datos.tipo_participacion 0 %}
+							{% include 'grilla.html' with index=True%}
+						{% endifequal %}
+					{% endfor %}
+				</ul>
+				<ul id="privados" class="cards">
+					{% for deb in object_list %}
+						{% ifequal deb.datos.tipo_participacion 1 %}
+							{% include 'grilla.html' with index=True%}
+						{% endifequal %}
+					{% endfor %}
+				</ul>
 			</div>
 		</div>
 	</div>

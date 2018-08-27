@@ -1,91 +1,89 @@
 <!DOCTYPE html>
-
-<ul class="cards">
-  {% for deb in object_list %}
-  {% ifequal deb.datos.estado estado %}
-  {% ifequal deb.datos.tipo_participacion tipo %}
-    <li class="cards__item">
-        <div class="card">
-          <div class="card__content">
-            <div class="card__title">{{deb.datos.titulo}}</div>
-            {% ifequal deb.datos.id_usuario_id usuario.id %}
-            <div class="progress">
-              {% ifequal deb.num_posturas 0 %}
-                <div class="progress-bar" style="background:rgba(0,0,0,0.4);; width: 100%">
-                  sin posturas
-                </div>
-              {% else %}
-                {% ifequal deb.porcentaje_f 0 %}
-                  <div class="progress-bar" style="background:#d9534f; width: {{deb.porcentaje_c}}%">
-                    <span class="glyphicon glyphicon-thumbs-down"></span> {{deb.num_posturas_ec}}
-                  </div>
-                {% else %}
-                  {% ifequal deb.porcentaje_c 0 %}
-                    <div class="progress-bar" style="background:#18BC9C; width: {{deb.porcentaje_f}}%">
-                      <span class="glyphicon glyphicon-thumbs-up"></span> {{deb.num_posturas_af}}
-                    </div>
-                    {% else %}
-                    <div class="progress-bar" style="background:#18BC9C; width: {{deb.porcentaje_f}}%">
-                      <span class="glyphicon glyphicon-thumbs-up"></span> {{deb.num_posturas_af}}
-                    </div>
-                    <div class="progress-bar" style="background:#d9534f; width: {{deb.porcentaje_c}}%">
-                      <span class="glyphicon glyphicon-thumbs-down"></span> {{deb.num_posturas_ec}}
-                    </div>
-                  {% endifequal %}
-                {% endifequal %}
-              {% endifequal %}
-            </div>
-            {% else %}
-            <hr>
-            {% endifequal %}
-            <p class="card__text">
-              <script type='text/javascript'>cortarTexto('{{deb.datos.descripcion}}')</script>
-            </p>
-            {% if index %}
-            <form action="{% url 'despliega' deb.datos.id_debate %}">
-              <button class="btn btn-card">Ver</button>
-            </form>
-            {% else %}
-            <div class="dropdown">
-              <button class="btn btn-card2 dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                Opciones
-                <span class="caret"></span>
-              </button>
-              <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                <li>
-                  <form action="{% url 'despliega' deb.datos.id_debate %}">
-                    <button class="btn btn-dropdown-card">Ver</button>
-                  </form>
-                </li>
-                {% ifequal deb.datos.estado 'abierto' %}
-                <li>
-                  <form id="id" method="post" action= "{% url 'perfil' %}" enctype="multipart/form-data" onsubmit="return confirm('¿Seguro que desea cerrar el debate?');">{% csrf_token %}
-                      <input type="hidden" value="{{ deb.datos.id_debate }}" name="id_deb">
-                      <button type="submit" class="btn btn-dropdown-card">Cerrar</button>
-                  </form>
-                </li>
-                {% else %}
-                <li>
-                  <form id="id" method="post" action= "{% url 'perfil' %}" enctype="multipart/form-data" onsubmit="return confirm('¿Seguro que desea republicar el debate?');">{% csrf_token %}
-                    <input type="hidden" value="{{ deb.datos.id_debate }}" name="id_deb_republicar">
-                    <button type="submit" class="btn btn-dropdown-card">Republicar</button>
-                  </form>
-                </li>
-                {% endifequal %}
-                <li role="separator" class="divider"></li>
-                <li>
-                  <form id="id" method="post" action= "{% url 'perfil' %}" enctype="multipart/form-data" onsubmit="return confirm('¿Seguro que desea eliminar el debate?');">{% csrf_token %}
-                  <input type="hidden" value="{{ deb.datos.id_debate }}" name="id_deb_eliminar">
-                  <button type="submit" class="btn btn-dropdown-card">Eliminar</button>
-                  </form>
-                </li>
-              </ul>
-            </div>
-            {% endif %}
-          </div>
+<li class="cards__item">
+    <div class="card">
+      {% ifequal deb.datos.tipo_participacion 1 %}
+      <div class="ribbon"><span>Privado</span></div>
+      {% else %}
+      <div class="ribbon"><span></span></div>
+      {% endifequal %}
+      <div class="card__content">
+        <div class="card__title">
+          {{deb.datos.titulo}}
         </div>
-      </li>
-  {%endifequal%}
-  {%endifequal%}
-  {% endfor %}
-</ul>
+        {% ifequal deb.datos.id_usuario_id usuario.id %}
+        <div class="progress">
+          {% ifequal deb.num_posturas 0 %}
+            <div class="progress-bar" style="background:rgba(0,0,0,0.4);; width: 100%">
+              sin posturas
+            </div>
+          {% else %}
+            {% ifequal deb.porcentaje_f 0 %}
+              <div class="progress-bar" style="background:#d9534f; width: {{deb.porcentaje_c}}%">
+                <span class="glyphicon glyphicon-thumbs-down"></span> {{deb.num_posturas_ec}}
+              </div>
+            {% else %}
+              {% ifequal deb.porcentaje_c 0 %}
+                <div class="progress-bar" style="background:#18BC9C; width: {{deb.porcentaje_f}}%">
+                  <span class="glyphicon glyphicon-thumbs-up"></span> {{deb.num_posturas_af}}
+                </div>
+                {% else %}
+                <div class="progress-bar" style="background:#18BC9C; width: {{deb.porcentaje_f}}%">
+                  <span class="glyphicon glyphicon-thumbs-up"></span> {{deb.num_posturas_af}}
+                </div>
+                <div class="progress-bar" style="background:#d9534f; width: {{deb.porcentaje_c}}%">
+                  <span class="glyphicon glyphicon-thumbs-down"></span> {{deb.num_posturas_ec}}
+                </div>
+              {% endifequal %}
+            {% endifequal %}
+          {% endifequal %}
+        </div>
+        {% else %}
+        <hr>
+        {% endifequal %}
+        <p class="card__text">
+          <script type='text/javascript'>cortarTexto('{{deb.datos.descripcion}}')</script>
+        </p>
+        {% if index %}
+        <form action="{% url 'despliega' deb.datos.id_debate %}">
+          <button class="btn btn-card">Ver</button>
+        </form>
+        {% else %}
+        <div class="dropdown">
+          <button class="btn btn-card2 dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+            Opciones
+            <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+            <li>
+              <form action="{% url 'despliega' deb.datos.id_debate %}">
+                <button class="btn btn-dropdown-card">Ver</button>
+              </form>
+            </li>
+            {% ifequal deb.datos.estado 'abierto' %}
+            <li>
+              <form id="id" method="post" action= "{% url 'perfil' %}" enctype="multipart/form-data" onsubmit="return confirm('¿Seguro que desea cerrar el debate?');">{% csrf_token %}
+                  <input type="hidden" value="{{ deb.datos.id_debate }}" name="id_deb">
+                  <button type="submit" class="btn btn-dropdown-card">Cerrar</button>
+              </form>
+            </li>
+            {% else %}
+            <li>
+              <form id="id" method="post" action= "{% url 'perfil' %}" enctype="multipart/form-data" onsubmit="return confirm('¿Seguro que desea republicar el debate?');">{% csrf_token %}
+                <input type="hidden" value="{{ deb.datos.id_debate }}" name="id_deb_republicar">
+                <button type="submit" class="btn btn-dropdown-card">Republicar</button>
+              </form>
+            </li>
+            {% endifequal %}
+            <li role="separator" class="divider"></li>
+            <li>
+              <form id="id" method="post" action= "{% url 'perfil' %}" enctype="multipart/form-data" onsubmit="return confirm('¿Seguro que desea eliminar el debate?');">{% csrf_token %}
+              <input type="hidden" value="{{ deb.datos.id_debate }}" name="id_deb_eliminar">
+              <button type="submit" class="btn btn-dropdown-card">Eliminar</button>
+              </form>
+            </li>
+          </ul>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </li>

@@ -21,12 +21,26 @@ $(document).ready(function(){
     }
   };
   socket.onmessage = function(message) {
+        var id_usr_actual = $("#id_usuario_actual").text();
         var data = JSON.parse(message.data);
         console.log("onmassage");
         var url = "/debate/"+data.id+"/"
         if (data.titulo){
-          // var alerta = $("#alertaDebAb"+data.tipo);
-          $("#alertaDebAb"+data.tipo).css("display","block");
+          $("#alertaDeb0").css("display","block");
+        }
+        if (data.usuario_participa){
+          console.log(data.usuario_participa);
+          id_usr = data.usuario_participa
+          for (i=0 ; i<id_usr.length ; i++){
+            if (id_usr[i] == id_usr_actual){
+              $("#alertaDeb1").css("display","block");
+            }
+          }
+          // var id_usr_actual = $("#id_usuario_actual").text();
+          // if (id_usr_actual == data.usuario_participa){
+          //   $("#alertaDeb1").css("display","block");
+          // }
+
         }
         else if (data.postura_f || data.postura_c){
           var porcentaje_f = Math.round(parseFloat(data.porc_f)*100)/100;

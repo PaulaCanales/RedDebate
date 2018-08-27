@@ -12,14 +12,11 @@
         {% ifequal object_list|length 0 %}
           <h3> ¡No hay resultados!</h3>
         {% else %}
-        {% if deb_pub != 0%}
-          <h3> Publicos </h3>
-          {% include 'grilla.html' with estado='abierto' tipo=0 index=True%}
-        {% endif %}
-        {% if deb_pri != 0%}
-          <h3> Privados </h3>
-          {% include 'grilla.html' with estado='abierto' tipo=1 index=True%}
-        {% endif %}
+					<ul class="cards">
+						{% for deb in object_list %}
+          		{% include 'grilla.html' with index=True%}
+						{% endfor %}
+					</ul>
         {%endifequal%}
 
   </div>

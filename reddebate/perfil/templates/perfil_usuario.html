@@ -102,11 +102,23 @@
             </section>
 
             <section id="content2">
-              {% include 'grilla.html' with estado='abierto' tipo=0 index=False%}
+              <ul class="cards">
+                {% for deb in object_list %}
+                  {% ifequal deb.datos.estado 'abierto'%}
+                    {% include 'grilla.html' with index=False %}
+                  {%endifequal%}
+                {% endfor %}
+              </ul>
             </section>
 
             <section id="content3">
-              {% include 'grilla.html' with estado='cerrado' tipo=0 index=False%}
+              <ul class="cards">
+                {% for deb in object_list %}
+                  {% ifequal deb.datos.estado 'cerrado'%}
+                    {% include 'grilla.html' with index=False %}
+                  {%endifequal%}
+                {% endfor %}
+              </ul>
             </section>
 
           </main>

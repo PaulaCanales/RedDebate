@@ -123,3 +123,7 @@ class Participantes(models.Model):
     id = models.AutoField(primary_key=True)
     id_usuario = models.ForeignKey(User)
     id_debate = models.ForeignKey(Debate)
+    def __unicode__(self): # __unicode__ on Python 2
+		return self.id
+    def as_dict(self, lista):
+        return {'usuario_participa': lista, 'id': self.id}

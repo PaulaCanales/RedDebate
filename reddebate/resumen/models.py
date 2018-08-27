@@ -8,9 +8,6 @@ from django.db import models
 from django.dispatch import receiver
 from django.db.models.signals import post_save
 from taggit.managers import TaggableManager
-import nltk
-from nltk.corpus import stopwords
-from nltk.tokenize import word_tokenize
 import unicodedata
 
 # Create your models here.

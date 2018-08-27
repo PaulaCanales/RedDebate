@@ -35,6 +35,31 @@ def logout(request):
     django_logout(request)
     return redirect('home')
 
+def indexCerrados(request):
+    usuario = request.user
+    iniciando_alias(request, usuario)
+    notificacion_usr = verificaNotificacion(request)
+    creador=[('username', User.objects.get(id=request.user.id).username),
+	         ('alias',Perfil.objects.get(user= request.user).alias)]
+    total_usuarios = User.objects.exclude(id=usuario.id)
+    form = creaDebateForm(creador=creador, usuarios=total_usuarios)
+    if request.method == 'GET':
+        if 'q' in request.GET:
+            deb = busqueda(request)
+            deb_publicos = 0
+            deb_privados = 0
+            for d in deb:
+                if(d.tipo_participacion == 0): deb_publicos+=1
+                if(d.tipo_participacion == 1): deb_privados+=1
+            debates = datos_debates(deb, usuario)
+            label = "Resultados de la búsqueda: "+str(request.GET.get('q'))
+            context = {'object_list': debates, 'usuario': request.user, 'alias': Perfil.objects.get(user_id= usuario.id).alias,
+                        'form':form, 'notificaciones':notificacion_usr, 'label':label,
+                        'deb_pub': deb_publicos, 'deb_pri': deb_privados}
+            return render(request, "filtro.html" , context)
+    context = generaDatos(request, usuario, form, notificacion_usr, 'cerrado')
+    return render(request, "index.html", context)
+
 ##@brief Funcion que despliega todos los debates
 ##@param request solicitud web
 ##@return render redirecciona a "index.html" con la lista de todos los debates
@@ -48,9 +73,6 @@ def index(request):
 	         ('alias',Perfil.objects.get(user= request.user).alias)]
     total_usuarios = User.objects.exclude(id=usuario.id)
     form = creaDebateForm(creador=creador, usuarios=total_usuarios)
-    if request.method == 'POST':
-        if 'id_deb' in request.POST:
-            cerrar_debate(request)
     if request.method == 'GET':
         if 'q' in request.GET:
             deb = busqueda(request)
@@ -61,19 +83,25 @@ def index(request):
                 if(d.tipo_participacion == 1): deb_privados+=1
             debates = datos_debates(deb, usuario)
             label = "Resultados de la búsqueda: "+str(request.GET.get('q'))
-            context = {'object_list': debates, 'usuario': usuario, 'alias': Perfil.objects.get(user_id= usuario.id).alias,
+            context = {'object_list': debates, 'usuario': request.user, 'alias': Perfil.objects.get(user_id= usuario.id).alias,
                         'form':form, 'notificaciones':notificacion_usr, 'label':label,
                         'deb_pub': deb_publicos, 'deb_pri': deb_privados}
             return render(request, "filtro.html" , context)
+    context = generaDatos(request, usuario, form, notificacion_usr, 'abierto')
+    return render(request, 'index.html', context)
 
+def generaDatos(request, usuario, form, notificacion_usr, estado):
     category_list = Debate.objects.all().order_by('-id_debate')
     object_list = []
+
     for debate in category_list:
         ahora = datetime.date.today()
         if debate.estado != 'cerrado' and debate.date_fin!= None and debate.date_fin <= ahora :
             debate.estado = 'cerrado'
             debate.save()
+    category_list = Debate.objects.filter(estado=estado).order_by('-id_debate')
     object_list = datos_debates(category_list,usuario)
+
     top_debates = sorted(object_list, key=lambda k: k['num_posturas'], reverse=True)[:5]
     print("el usuario activo es: ", usuario.id)
 
@@ -89,10 +117,11 @@ def index(request):
         top_usuario.append(User.objects.get(id=usuario.user_id))
     debates_recientes = Debate.objects.filter(tipo_participacion=0).order_by('-id_debate')[:5]
     debates_recientes = datos_debates(debates_recientes,usuario)
-    context = {'category_list':category_list, 'object_list': object_list, 'usuario': usuario, 'alias': alias_usuario,
+
+    context = {'category_list':category_list, 'object_list': object_list, 'usuario': request.user, 'alias': alias_usuario,
                 'form':form, 'notificaciones':notificacion_usr, 'top_tags':top_tags, 'top_deb':top_debates,
                 'top_user':top_usuario, 'recientes': debates_recientes}
-    return render(request, 'index.html', context)
+    return context
 
 def datos_debates(debates, usuario):
     lista_debates = []

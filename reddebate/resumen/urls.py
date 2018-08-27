@@ -6,6 +6,7 @@ urlpatterns = [
 
     url(r'^$', views.home, name='home'),
     url(r'^resumen/', views.index, name='index'),
+    url(r'^cerrados/$', views.indexCerrados, name='cerrados'),
     url(r'^tag/(?P<slug>[-\w]+)/$', views.tagged, name='tagged'),
     url(r'^logout/', views.logout, name='logout'),
     url(r'^post/new/$', views.crear_debate, name='post_new'),
