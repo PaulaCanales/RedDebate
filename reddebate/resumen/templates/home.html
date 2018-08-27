@@ -12,7 +12,7 @@
   <title>Inicia Sesión</title>
 </head>
 <body>
-  <div class="materialContainer">
+  <!-- <div class="materialContainer">
    <div class="box">
       <div class="title">Inicia Sesión</div>
       <div class="error-login">
@@ -37,10 +37,13 @@
         <div class="button login">
            <button type="submit" ><span>Ingresar</span> <i class="fa fa-check"></i></button>
         </div>
-    </form>
+        <a class="btn btn-block btn-social btn-facebook" href="{% url 'social:begin' 'facebook' %}" align="center" >
+			  	<span class="fa fa-facebook"></span> <div align="center">Ingresa con Facebook </div>
+			  </a>
+    </form> -->
 
       <!-- <a href="" class="pass-forgot">¿Olvidaste contraseña?</a> -->
-   </div>
+   <!-- </div>
 
    <div class="overbox">
       <div class="material-button alt-2"><IMG SRC="{% static 'img/RDLogo02.png' %}" WIDTH='150' ALT="RedDebateLogo"></div>
@@ -64,18 +67,18 @@
          <button><span>Siguiente</span></button>
       </div>
    </div>
-</div>
-	<!-- <br>
+</div> -->
+	<br>
 	<br>
 	<div align="center">
 		  <IMG SRC="{% static 'img/RDLogo02.png' %}" WIDTH='300' VSPACE='3' HSPACE='3' ALT="RedDebateLogo">
-      <form method="POST" class="post-form" enctype="multipart/form-data">{% csrf_token %}
+      <!-- <form method="POST" class="post-form" enctype="multipart/form-data">{% csrf_token %}
           {{ form.as_p }}
           <button type="submit" class="btn btn-publicar">Ingresar</button>
-      </form>
+      </form> -->
 	</div>
-		<br> -->
-		<!-- <div class="col-md-4"></div>
+		<br>
+		<div class="col-md-4"></div>
 		<div class="col-md-4">
 			<br>
 				</a>
@@ -86,7 +89,7 @@
           <a class="btn btn-block btn-social btn-twitter" href="{% url 'social:begin' 'twitter' %}?next={{ request.path }}">
            <span class="fa fa-twitter"></span> <div align="center">Ingresa con Twitter </div>
          </a>
-    </div> -->
+    </div>
 </body>
 
 </html>

@@ -154,8 +154,8 @@ AUTHENTICATION_BACKENDS = (
  )
 
 #Facebook inicio de sesión con social-auth
-SOCIAL_AUTH_FACEBOOK_KEY = '671191633038377'
-SOCIAL_AUTH_FACEBOOK_SECRET = '1a94e2cf456e1c20b98a1ac8a2cb50f7'
+SOCIAL_AUTH_FACEBOOK_KEY = '644604552363752'
+SOCIAL_AUTH_FACEBOOK_SECRET = '84c5cbb25d73be84f4f4d050b9877a78'
 
 #Twitter inicio de sesión con social-auth
 SOCIAL_AUTH_TWITTER_KEY = 'XTnczMpQ7tq6uQcQEGFNUl3jR'
@@ -165,8 +165,8 @@ SOCIAL_AUTH_URL_NAMESPACE = 'social'
 
 #luego de la autentificacion del usuario redirecciona a la URL, entonces solo será necesario el decorador @login_required.
 SOCIAL_AUTH_LOGIN_REDIRECT_URL =  '/resumen/'
-LOGIN_URL = '/'
-LOGOUT_REDIRECT_URL = '/resumen/'
+LOGIN_URL = '/reddebate/'
+# LOGOUT_REDIRECT_URL = '/resumen/'
 SOCIAL_AUTH_FACEBOOK_SCOPE =['email']
 SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {
     'fields': 'id,name,email',
