@@ -29,6 +29,7 @@ SECRET_KEY = 'vlf=awhlkhl@b1q7bo92mj^-@dh0fv0zx5mz%qsitx7zfc3s62'
 DEBUG = True
 
 ALLOWED_HOSTS = [
+    'www.reddebate.cl',
     'reddebate.cl',
     '146.83.216.233',
     'localhost'
@@ -154,8 +155,8 @@ AUTHENTICATION_BACKENDS = (
  )
 
 #Facebook inicio de sesión con social-auth
-SOCIAL_AUTH_FACEBOOK_KEY = '644604552363752'
-SOCIAL_AUTH_FACEBOOK_SECRET = '84c5cbb25d73be84f4f4d050b9877a78'
+SOCIAL_AUTH_FACEBOOK_KEY = '309804006235802'
+SOCIAL_AUTH_FACEBOOK_SECRET = '99e58f77068352b2814e8dc7313a3a42'
 
 #Twitter inicio de sesión con social-auth
 SOCIAL_AUTH_TWITTER_KEY = 'XTnczMpQ7tq6uQcQEGFNUl3jR'
