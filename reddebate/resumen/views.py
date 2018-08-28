@@ -35,7 +35,7 @@ def logout(request):
     django_logout(request)
     return redirect('home')
 
-def indexCerrados(request):
+def cerrados(request):
     usuario = request.user
     iniciando_alias(request, usuario)
     notificacion_usr = verificaNotificacion(request)

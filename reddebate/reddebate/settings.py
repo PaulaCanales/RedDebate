@@ -46,16 +46,29 @@ INSTALLED_APPS = [
     'perfil',
     'django.contrib.admin',
     'django.contrib.auth',
+    'django.contrib.sites',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'social.apps.django_app.default',
-    'social_django',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.facebook',
     'channels',
     'reddebate',
     'taggit',
+    # 'social_django',
+    'django_extensions',
 ]
+
+# ACCOUNT_DEFAULT_HTTP_PROTOCOL = "https"
+
+LOGIN_REDIRECT_URL = '/'
+
+SITE_ID = 1
+
 CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'asgi_redis.RedisChannelLayer',
@@ -82,7 +95,7 @@ ROOT_URLCONF = 'reddebate.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates'), os.path.join(BASE_DIR, 'templates', 'allauth')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -137,69 +150,10 @@ AUTH_PASSWORD_VALIDATORS = [
 
 APPEND_SLASH=False
 
-#AUTHENTICATION_BACKENDS = (
-    # Facebook 'social.backends.facebook.FacebookOAuth2',
-    # Twitter 'social.backends.twitter.TwitterOAuth',
-    # Django 'django.contrib.auth.backends.ModelBackend', )
-    # Facebook Keys SOCIAL_AUTH_FACEBOOK_KEY = 'q23456uhgf'
-    #SOCIAL_AUTH_FACEBOOK_SECRET = 'qw4trgfdxc'
-    # Twitter Keys SOCIAL_AUTH_TWITTER_KEY = '123456yhgfdsvc'
-    #SOCIAL_AUTH_TWITTER_SECRET = '123456789okjhgfd'
-
-
 AUTHENTICATION_BACKENDS = (
- #'social.backends.facebook.FacebookAppOAuth2',
- 'social.backends.facebook.FacebookOAuth2',
- 'social.backends.twitter.TwitterOAuth',
  'django.contrib.auth.backends.ModelBackend',
+ 'allauth.account.auth_backends.AuthenticationBackend',
  )
-
-#Facebook inicio de sesión con social-auth
-SOCIAL_AUTH_FACEBOOK_KEY = '309804006235802'
-SOCIAL_AUTH_FACEBOOK_SECRET = '99e58f77068352b2814e8dc7313a3a42'
-
-#Twitter inicio de sesión con social-auth
-SOCIAL_AUTH_TWITTER_KEY = 'XTnczMpQ7tq6uQcQEGFNUl3jR'
-SOCIAL_AUTH_TWITTER_SECRET = 'HsiSFdrB3IB7e1IPr1Hs4LTxRpB2Tbd61I97YTEDAUNjLovSjt'
-
-SOCIAL_AUTH_URL_NAMESPACE = 'social'
-
-#luego de la autentificacion del usuario redirecciona a la URL, entonces solo será necesario el decorador @login_required.
-SOCIAL_AUTH_LOGIN_REDIRECT_URL =  '/resumen/'
-LOGIN_URL = '/reddebate/'
-# LOGOUT_REDIRECT_URL = '/resumen/'
-SOCIAL_AUTH_FACEBOOK_SCOPE =['email']
-SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {
-    'fields': 'id,name,email',
-    }
-#SOCIAL_AUTH_STRATEGY = 'social.strategies.django_strategy.DjangoStrategy'
-#SOCIAL_AUTH_STORAGE = 'social.apps.django_app.default.models.DjangoStorage'
-
-
-#SOCIAL_AUTH_USER_MODEL = 'auth.User'
-
-#SOCIAL_AUTH_PIPELINE = (
-#Obtiene las instancias de social_user y user
-#'social.pipeline.social_auth.social_details',
-#'social.pipeline.social_auth.social_uid',
-#'social.pipeline.social_auth.auth_allowed',
-#Recibe según el user.email la instancia del usuario y lo reemplaza con uno que recibió anteriormente
-#'social.pipeline.social_auth.social_user',
-#'social.pipeline.social_auth.associate_by_email',
-#Intenta crear un username válido
-#'social.pipeline.user.get_username',
-#Crea un nuevo usuario si todavía no existe
-#'social.pipeline.user.create_user',
-#Trata de asociar las cuentas
-#'social.pipeline.social_auth.associate_user',
-#Recibe y actualiza social_user.extra_data
-#'social.pipeline.social_auth.load_extra_data',
-#Actualiza los campos de la instancia user con la información que obtiene vía backend
-#'social.pipeline.user.user_details',
-#Función creado por mi que termina de realizar la autenticación
-#'apps.reddebate.pipelines.login',
-#)
-
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.10/topics/i18n/
