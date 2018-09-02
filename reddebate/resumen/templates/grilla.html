@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <li class="cards__item">
+  <a href="{% url 'despliega' deb.datos.id_debate %}">
     <div class="card">
       {% ifequal deb.datos.tipo_participacion 1 %}
       <div class="ribbon"><span>Privado</span></div>
@@ -10,43 +11,20 @@
         <div class="card__title">
           {{deb.datos.titulo}}
         </div>
-        {% ifequal deb.datos.id_usuario_id usuario.id %}
-        <div class="progress">
-          {% ifequal deb.num_posturas 0 %}
-            <div class="progress-bar" style="background:rgba(0,0,0,0.4);; width: 100%">
-              sin posturas
-            </div>
-          {% else %}
-            {% ifequal deb.porcentaje_f 0 %}
-              <div class="progress-bar" style="background:#d9534f; width: {{deb.porcentaje_c}}%">
-                <span class="glyphicon glyphicon-thumbs-down"></span> {{deb.num_posturas_ec}}
-              </div>
-            {% else %}
-              {% ifequal deb.porcentaje_c 0 %}
-                <div class="progress-bar" style="background:#18BC9C; width: {{deb.porcentaje_f}}%">
-                  <span class="glyphicon glyphicon-thumbs-up"></span> {{deb.num_posturas_af}}
-                </div>
-                {% else %}
-                <div class="progress-bar" style="background:#18BC9C; width: {{deb.porcentaje_f}}%">
-                  <span class="glyphicon glyphicon-thumbs-up"></span> {{deb.num_posturas_af}}
-                </div>
-                <div class="progress-bar" style="background:#d9534f; width: {{deb.porcentaje_c}}%">
-                  <span class="glyphicon glyphicon-thumbs-down"></span> {{deb.num_posturas_ec}}
-                </div>
-              {% endifequal %}
-            {% endifequal %}
-          {% endifequal %}
-        </div>
-        {% else %}
         <hr>
-        {% endifequal %}
         <p class="card__text">
           <script type='text/javascript'>cortarTexto('{{deb.datos.descripcion}}')</script>
         </p>
         {% if index %}
-        <form action="{% url 'despliega' deb.datos.id_debate %}">
+        <!-- <form action="{% url 'despliega' deb.datos.id_debate %}">
           <button class="btn btn-card">Ver</button>
-        </form>
+        </form> -->
+        {% ifequal deb.datos.id_usuario_id usuario.id %}
+        <div style="text-align: right">
+          <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span> {{deb.num_posturas_af}}
+          <span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span> {{deb.num_posturas_ec}}
+        </div>
+        {% endifequal %}
         {% else %}
         <div class="dropdown">
           <button class="btn btn-card2 dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
@@ -86,4 +64,5 @@
         {% endif %}
       </div>
     </div>
+  </a>
   </li>

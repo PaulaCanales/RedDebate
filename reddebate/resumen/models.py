@@ -15,7 +15,7 @@ class Debate(models.Model):
     #parametros de la tabla.
     id_debate = models.AutoField(primary_key=True)
     titulo = models.CharField(max_length=100)
-    descripcion = models.CharField(max_length=300)
+    descripcion = models.CharField(max_length=1000)
     date = models.DateField(default=datetime.now, blank=True)
     date_fin = models.DateField(default=None, blank=True, null=True)
     alias_c = models.CharField(max_length=50, default='username')

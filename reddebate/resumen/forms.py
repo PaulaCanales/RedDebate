@@ -57,7 +57,7 @@ class creaDebateForm(forms.ModelForm):
             'placeholder': 'Escribe una descripción...',
             'rows': 8,
             'id': 'debDescripcionForm',
-            'maxlength': 300,
+            'maxlength': 1000,
         }))
     date_fin = forms.DateField(
         required=False,
@@ -91,7 +91,7 @@ class creaDebateForm(forms.ModelForm):
         label='Cambio postura/usr',
         widget=forms.TextInput(
             # choices=rebates,
-            attrs={'class': 'form-control', 'id': 'debCambioPostForm', 'value':'1','readonly': True}
+            attrs={'class': 'form-control', 'id': 'debCambioPostForm', 'value':'3','readonly': True}
             ))
     tipo_rebate = forms.CharField(
         label='Tipo Redebate',

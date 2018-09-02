@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<div class="datagrid">
+<div class="datagrid{{postura}}">
   <table id="Tabla_Argumentos{{postura}}">
     <tr><thead>
       	<th> # </th>
@@ -12,23 +12,23 @@
       <tr>
         <td style="border-bottom: #fff;">
           {% ifequal arg.t_val.0 'no' %}
-            <button id="sumar_val{{arg.id_arg}}" type="submit" class="btn btn-valorar" onclick='javascript:valorar("{{arg.id_arg}}","sumar","{{debate.id_debate}}");'>
+            <button id="sumar_val{{arg.id_arg}}" type="submit" class="btn btn-valorar{{postura}}" onclick='javascript:valorar("{{arg.id_arg}}","sumar","{{debate.id_debate}}");'>
             <span class="glyphicon glyphicon-triangle-top" aria-hidden="true"></span>
             </button>
           {% else %}
-            <button id="nulo_sumar_val{{arg.id_arg}}" type="submit" class="btn btn-nulo" onclick='javascript:valorar("{{arg.id_arg}}","nulo-sumar","{{debate.id_debate}}");'>
+            <button id="nulo_sumar_val{{arg.id_arg}}" type="submit" class="btn btn-nulo{{postura}}" onclick='javascript:valorar("{{arg.id_arg}}","nulo-sumar","{{debate.id_debate}}");'>
             <span class="glyphicon glyphicon-triangle-top" aria-hidden="true"></span>
             </button>
           {% endifequal %}
         </td>
-        <td rowspan="3"><!-- comentario-->
+        <td id="bordeTabla{{postura}}" rowspan="3"><!-- comentario-->
           {% with name=arg.id_arg|stringformat:"i"|add:"Xargumento" %}
             <p><a href="{% url 'perfiles' name %}"><p1>{{arg.usr_deb}}:</p1></a> {{arg.descripcion}}</p>
           {% endwith %}
         </td>
         <td style="border-bottom: #fff; text-align: center;"> <!-- boton editar/rebatir-->
       		<div style="float:right">
-            <button id="bot_rebatir{{postura}}" type="submit" class="btn btn-args" data-whatever="{{arg.redebates}}" onclick='javascript:mostrar_modal("respuesta_modal{{postura}}{{arg.id_arg}}","{{arg.id_arg}}","{{arg.redebates}}","{{postura}}");' >
+            <button id="bot_rebatir{{postura}}" type="submit" class="btn btn-args{{postura}}" data-whatever="{{arg.redebates}}" onclick='javascript:mostrar_modal("respuesta_modal{{postura}}{{arg.id_arg}}","{{arg.id_arg}}","{{arg.redebates}}","{{postura}}");' >
               {{ arg.redebates|length }} <span class="glyphicon glyphicon-comment"  ></span>
             </button>
           </div>
@@ -59,9 +59,9 @@
                         <form method="POST" class="post-form" enctype="multipart/form-data">{% csrf_token %}
                           {{resp_form.as_p}}
                           <input type="hidden" value="{{arg.id_arg}}" name="id_argumento{{postura}}">
-                          <button name="responder{{postura}}"type="submit" class="btn btn-perfil">Responder</button>
+                          <button name="responder{{postura}}"type="submit" class="btn btn-deb{{postura}}">Responder</button>
                         </form>
-                        <button type="submit" class="btn btn-perfil" onclick="cerrar_modal('respuesta_modal{{postura}}{{arg.id_arg}}')">Cancelar</button>
+                        <button type="submit" class="btn btn-deb{{postura}}" onclick="cerrar_modal('respuesta_modal{{postura}}{{arg.id_arg}}')">Cancelar</button>
                       </div>
                       {% else %}
                       <div>Ya no puedes rebatir</div>
@@ -73,9 +73,9 @@
                       <form method="POST" class="post-form" enctype="multipart/form-data">{% csrf_token %}
                         {{resp_form.as_p}}
                         <input type="hidden" value="{{arg.id_arg}}" name="id_argumento{{postura}}">
-                        <button name="responder{{postura}}"type="submit" class="btn btn-perfil">Responder</button>
+                        <button name="responder{{postura}}"type="submit" class="btn btn-deb{{postura}}">Responder</button>
                       </form>
-                      <button type="submit" class="btn btn-perfil" onclick="cerrar_modal('respuesta_modal{{postura}}{{arg.id_arg}}')">Cancelar</button>
+                      <button type="submit" class="btn btn-deb{{postura}}" onclick="cerrar_modal('respuesta_modal{{postura}}{{arg.id_arg}}')">Cancelar</button>
                     </div>
                     {% else %}
                     <div>Ya no puedes rebatir</div>
@@ -93,14 +93,14 @@
         <td style="border-bottom: #fff; text-align: center; display:block" id="cambio_postura{{arg.id_arg}}"> <span class="glyphicon glyphicon-transfer" aria-hidden="true"></span> </td>
         {% endifequal %}
       </tr>
-      <tr>
+      <tr id="bordeTabla{{postura}}">
         <td>
           {% ifequal arg.t_val.1 'no' %}
-          <button id="quitar_val{{arg.id_arg}}" type="submit" class="btn btn-valorar" onclick='javascript:valorar("{{arg.id_arg}}","quitar","{{debate.id_debate}}");'>
+          <button id="quitar_val{{arg.id_arg}}" type="submit" class="btn btn-valorar{{postura}}" onclick='javascript:valorar("{{arg.id_arg}}","quitar","{{debate.id_debate}}");'>
           <span class="glyphicon glyphicon-triangle-bottom" aria-hidden="true"></span>
           </button>
           {% else %}
-          <button id="nulo_quitar_val{{arg.id_arg}}" type="submit" class="btn btn-nulo" onclick='javascript:valorar("{{arg.id_arg}}","nulo-quitar","{{debate.id_debate}}");'>
+          <button id="nulo_quitar_val{{arg.id_arg}}" type="submit" class="btn btn-nulo{{postura}}" onclick='javascript:valorar("{{arg.id_arg}}","nulo-quitar","{{debate.id_debate}}");'>
           <span class="glyphicon glyphicon-triangle-bottom" aria-hidden="true"></span>
           </button>
           {% endifequal %}
@@ -110,10 +110,10 @@
             <form id="eliminar_arg" method="post" action= "{% url 'despliega' debate.id_debate %}" enctype="multipart/form-data" onsubmit="return confirm('¿Seguro que desea eliminar el argumento?');">{% csrf_token %}
               <input type="hidden" value="{{ arg.id_arg }}" name="id_arg_eliminar">
               <input type="hidden" value="{{ debate.id_debate }}" name="id_deb_arg_eliminar">
-              <button type="submit" class="btn btn-args" > <span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
+              <button type="submit" class="btn btn-args{{postura}}" > <span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
             </form>
           {% else %}
-            <button id="bot_reportar" type="submit" class="btn btn-args" onclick='' ><span class="glyphicon glyphicon-bullhorn"></span></button>
+            <button id="bot_reportar" type="submit" class="btn btn-args{{postura}}" onclick='' ><span class="glyphicon glyphicon-bullhorn"></span></button>
           {%endifequal%}
         </div></td>
       </tr>
@@ -123,13 +123,13 @@
   </table>
 </div> <!-- datagrid -->
 <!-- {% ifequal postura_usr_deb 'No definido' %}
-  <button id="bot_argumento{{postura}}" type="submit" class="btn btn-perfil" onclick=" javascript:fomulario_argumento('{{postura}}');"  style="display: none;" >Da tu Argumento</button>
+  <button id="bot_argumento{{postura}}" type="submit" class="btn btn-deb{{postura}}" onclick=" javascript:fomulario_argumento('{{postura}}');"  style="display: none;" >Da tu Argumento</button>
 {% else %}
   {% ifequal t_arg 'no' %}
     {% ifequal postura_usr_deb frase%}
-      <button id="bot_argumento{{postura}}" type="submit" class="btn btn-perfil" onclick=" javascript:fomulario_argumento('{{postura}}');"  style="display: block;" >Da tu Argumento</button>
+      <button id="bot_argumento{{postura}}" type="submit" class="btn btn-deb{{postura}}" onclick=" javascript:fomulario_argumento('{{postura}}');"  style="display: block;" >Da tu Argumento</button>
     {% else %}
-      <button id="bot_argumento{{postura}}" type="submit" class="btn btn-perfil" onclick=" javascript:fomulario_argumento('{{postura}}');"  style="display: none;" >Da tu Argumento</button>
+      <button id="bot_argumento{{postura}}" type="submit" class="btn btn-deb{{postura}}" onclick=" javascript:fomulario_argumento('{{postura}}');"  style="display: none;" >Da tu Argumento</button>
     {%endifequal%}
   {%endifequal%}
 {%endifequal%}
@@ -143,6 +143,6 @@
     {% else %}
       {{arg_form0.as_p}}
     {% endifequal %}
-    <button name="argumento" type="submit" class="btn btn-perfil">Publicar</button>
+    <button name="argumento" type="submit" class="btn btn-deb{{postura}}">Publicar</button>
   </form>
 </div> -->

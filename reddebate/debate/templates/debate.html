@@ -18,22 +18,19 @@
 	{% include 'debate_creador.html'%}
 {% else %}
 {% if participa %}
-	<div class="container">
-		<div class="blank"><table>
-			<tr>
-				<td>
-					<div class="container-titulo">
-						<h3 class="h3-t1"> {{ debate.titulo }}</h3>
-						<input id="idDebate" type="hidden" value={{debate.id_debate}}>
-						{% ifequal debate.alias_c 'alias' %}
-							<h5>Creado por {{alias}} en modo anónimo</h5>
-						{%else%}
-							<h5>Debate creado por {{usuario_creador}}</h5>
-						{%endifequal%}
-					</div>
-				</td>
-			</tr>
-		</table></div>
+	<div class="container-debate">
+		<header>
+			<h2>{{ debate.titulo }}</h2>
+			<p>
+				<input id="idDebate" type="hidden" value={{debate.id_debate}}>
+				{% ifequal debate.alias_c 'alias' %}
+					<h5>Creado por {{alias}} en modo anónimo</h5>
+				{%else%}
+					<h5>Debate creado por {{usuario_creador}}</h5>
+				{%endifequal%}
+			</p>
+		</header>
+		{{ debate.descripcion }}
 		<div id="fb-root"></div>
 		<div style="text-align: right">
 		<div class="fb-share-button"
@@ -50,8 +47,8 @@
 								<div class="radio"> <label><input type="radio" value="1" name="razon" checked> Cambié de opinión </label></div>
 								<div class="radio"> <label><input type="radio" value="2" name="razon"> Me equivoqué de botón </label></div>
 								<div class="radio"> <label><input type="radio" value="3" name="razon"> Otro </label></div>
-	              <button id="bot_cambiar_post" type="submit" class="btn btn-perfil" > Aceptar </button>
-								<a class="btn btn-perfil" onclick="cerrar_modal('cambioPostura_modal')">Cancelar</a>
+	              <button id="bot_cambiar_post" type="submit" class="btn btn-deb1" > Aceptar </button>
+								<a class="btn btn-deb1" onclick="cerrar_modal('cambioPostura_modal')">Cancelar</a>
 						</div>
 				{% else %}
 					<h3> Ya no puedes cambiar de postura </h3>
@@ -63,19 +60,22 @@
 				<div class="col-md-3 panel">
 					{% ifequal postura_usr_deb 'No definido' %}
 						<!-- <button id = "bot_af" type="submit" class="btn btn-postura" onclick='javascript:definir_postura("{{ debate.id_debate }}", "1", "{{num_post_f}}", "{{num_post_c}}");'> -->
-						<button id = "bot_af_init" type="submit" class="btn btn-postura" >
-							<span class="glyphicon glyphicon-thumbs-up"></span>
+						<button id = "bot_af_init" type="submit" class="btn btn-postura1" >
+							<!-- <span class="glyphicon glyphicon-thumbs-up"></span>
 							A Favor <br><br>
-							<label id="label_porc_f1"></label>
+							<label id="label_porc_f1"></label> -->
+							<!-- <img src="{% static 'img/thumbs-up.png' %}" alt="A favor"> -->
 						</button>
 					{% else %}
 						{% ifequal postura_usr_deb 'A Favor' %}
-							<button id = "bot_af" type="submit" class="btn btn-posturactual" disabled >
-								<span class="glyphicon glyphicon-thumbs-up"></span> A Favor <br><br><label id="label_porc_f">{{porc_f}}%</label>
+							<button id = "bot_af" type="submit" class="btn btn-posturactual1" disabled >
+								<!-- <span class="glyphicon glyphicon-thumbs-up"></span> A Favor <br><br> -->
+								<!-- <img src="{% static 'img/thumbs-up.png' %}" alt="A favor"> -->
 							</button>
 						{% else %}
-							<button id = "bot_af" type="submit" class="btn btn-postura" onclick = "confirmar_cambio('1')">
-								<span class="glyphicon glyphicon-thumbs-up"></span> A Favor <br><br> <label id="label_porc_f">{{porc_f}}%</label>
+							<button id = "bot_af" type="submit" class="btn btn-postura1" onclick = "confirmar_cambio('1')">
+								<!-- <span class="glyphicon glyphicon-thumbs-up"></span> A Favor <br><br> -->
+								<!-- <img src="{% static 'img/thumbs-up.png' %}" alt="A favor"> -->
 							</button>
 						{% endifequal%}
 					{% endifequal %}
@@ -83,14 +83,6 @@
 				<div class="col-md-6">
 					<div class="blank">
 							<table>
-							<tr>
-								<td width=120 ><p1>Descripción</p1></td><td>
-									{{ debate.descripcion }}
-									{% if img %}
-									<a href="{{ img.url }}"> Adjunto </a>
-									{% endif %}
-								</td>
-							</tr>
 							<tr>
 								<td width=120 ><p1>Fecha inicio</p1></td><td>{{ debate.date }}</td>
 							</tr>
@@ -115,19 +107,22 @@
 				<div class="col-md-3 panel">
 					{% ifequal postura_usr_deb 'No definido' %}
 						<!-- <button id = "bot_ec" type="submit" class="btn btn-postura" onclick='javascript:definir_postura("{{ debate.id_debate }}", "0", "{{num_post_f}}", "{{num_post_c}}");'> -->
-						<button id = "bot_ec_init" type="submit" class="btn btn-postura">
-							<span class="glyphicon glyphicon-thumbs-down"></span>
+						<button id = "bot_ec_init" type="submit" class="btn btn-postura0">
+							<!-- <span class="glyphicon glyphicon-thumbs-down"></span>
 							En Contra <br><br>
-						<label id="label_porc_c1"></label>
+						<label id="label_porc_c1"></label> -->
+						<!-- <img src="{% static 'img/thumbs-down.png' %}" alt="En Contra"> -->
 					</button>
 					{% else %}
 						{% ifequal postura_usr_deb 'A Favor' %}
-							<button id = "bot_ec" type="submit" class="btn btn-postura" onclick = "confirmar_cambio('0')">
-								<span class="glyphicon glyphicon-thumbs-down"></span> En Contra <br><br> <label id="label_porc_c">{{porc_c}}%</label>
+							<button id = "bot_ec" type="submit" class="btn btn-postura0" onclick = "confirmar_cambio('0')">
+								<!-- <span class="glyphicon glyphicon-thumbs-down"></span> En Contra <br><br> -->
+								<!-- <img src="{% static 'img/thumbs-down.png' %}" alt="En Contra"> -->
 							</button>
 						{% else %}
-							<button id = "bot_ec" type="submit" class="btn btn-posturactual" disabled >
-								<span class="glyphicon glyphicon-thumbs-down"></span> En Contra <br><br> <label id="label_porc_c">{{porc_c}}%</label>
+							<button id = "bot_ec" type="submit" class="btn btn-posturactual0" disabled >
+								<!-- <span class="glyphicon glyphicon-thumbs-down"></span> En Contra <br><br> -->
+								<!-- <img src="{% static 'img/thumbs-down.png' %}" alt="En Contra"> -->
 							</button>
 						{% endifequal%}
 					{% endifequal %}
@@ -142,9 +137,28 @@
 					<h2> Debes definir una postura para ver la discusión </h2>
 				</div>
 			{% else %}
+			<div id="progresoDebate">
+					{% ifequal porc_f 0 %}
+		        <div id="progreso"class="progress-bar" style="background:#d9534f; width: {{porc_c}}%">
+		          <span class="glyphicon glyphicon-thumbs-down"></span> <label id="label_porc_c">{{porc_c}}%</label>
+		        </div>
+		      {% else %}
+		        {% ifequal porc_c 0 %}
+		          <div id="progreso"class="progress-bar" style="background:#18BC9C; width: {{porc_f}}%">
+		            <span class="glyphicon glyphicon-thumbs-up"></span> <label id="label_porc_f">{{porc_f}}%</label>
+		          </div>
+		          {% else %}
+		          <div id="progresoFavor"class="progress-bar" style="width: {{porc_f}}%">
+		            <span class="glyphicon glyphicon-thumbs-up"></span> <label id="label_porc_f">{{porc_f}}%</label>
+		          </div>
+		          <div id="progresoContra"class="progress-bar" style="width: {{porc_c}}%">
+		            <span class="glyphicon glyphicon-thumbs-down"></span> <label id="label_porc_c">{{porc_c}}%</label>
+		          </div>
+		        {% endifequal %}
+		      {% endifequal %}
+				</div>
 					<!-- argumentos -->
 				<div id="argumentos" style="display: block;" >
-				<h2>Argumentos</h2>
 				<div name="argumentos-debate">
 					<div class="row">
 				    <div class="col-md-6">
@@ -154,7 +168,7 @@
 							{% ifequal postura_usr_deb 'A Favor' %}
 								<form id="nuevoArgForm1" method="POST" class="post-form" enctype="multipart/form-data">{% csrf_token %}
 					      {{arg_form1.as_p}}
-								<button name="argumento" type="submit" class="btn btn-perfil">Publicar</button>
+								<button name="argumento" type="submit" class="btn btn-deb1">Publicar</button>
 								</form>
 							{% endifequal %}
 							{% endif %}
@@ -166,7 +180,7 @@
 							{% ifequal postura_usr_deb 'En Contra' %}
 							<form id="nuevoArgForm0" method="POST" class="post-form" enctype="multipart/form-data">{% csrf_token %}
 								{{arg_form0.as_p}}
-								<button name="argumento" type="submit" class="btn btn-perfil">Publicar</button>
+								<button name="argumento" type="submit" class="btn btn-deb0">Publicar</button>
 							</form>
 					    {% endifequal %}
 							{% endif %}
