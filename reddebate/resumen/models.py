@@ -24,9 +24,9 @@ class Debate(models.Model):
     estado = models.CharField(max_length=20, default='abierto')
     img = models.FileField(blank=True, null=True)
     num_argumento = models.IntegerField(default=1)
-    num_cambio_postura = models.IntegerField(default=1)
+    num_cambio_postura = models.IntegerField(default=3)
     num_rebate = models.IntegerField(default=1)
-    tipo_rebate = models.IntegerField(default=0)
+    tipo_rebate = models.IntegerField(default=0) # 0:ambas # 1: contraria
     tipo_participacion = models.IntegerField(default=0) #0 debate publico
 
     tags = TaggableManager()

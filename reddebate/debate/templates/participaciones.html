@@ -11,36 +11,38 @@
     {% for arg in comentario %}
       <tr>
         <td style="border-bottom: #fff;">
-          {% ifequal arg.4.0 'no' %}
-            <button id="sumar_val{{arg.3}}" type="submit" class="btn btn-valorar" onclick='javascript:valorar("{{arg.3}}","sumar","{{debate.id_debate}}");'>
+          {% ifequal arg.t_val.0 'no' %}
+            <button id="sumar_val{{arg.id_arg}}" type="submit" class="btn btn-valorar" onclick='javascript:valorar("{{arg.id_arg}}","sumar","{{debate.id_debate}}");'>
             <span class="glyphicon glyphicon-triangle-top" aria-hidden="true"></span>
             </button>
           {% else %}
-            <button id="nulo_sumar_val{{arg.3}}" type="submit" class="btn btn-nulo" onclick='javascript:valorar("{{arg.3}}","nulo-sumar","{{debate.id_debate}}");'>
+            <button id="nulo_sumar_val{{arg.id_arg}}" type="submit" class="btn btn-nulo" onclick='javascript:valorar("{{arg.id_arg}}","nulo-sumar","{{debate.id_debate}}");'>
             <span class="glyphicon glyphicon-triangle-top" aria-hidden="true"></span>
             </button>
           {% endifequal %}
         </td>
         <td rowspan="3"><!-- comentario-->
-          {% with name=arg.3|stringformat:"i"|add:"Xargumento" %}
-            <p><a href="{% url 'perfiles' name %}"><p1>{{arg.1}}:</p1></a> {{arg.0}}</p>
+          {% with name=arg.id_arg|stringformat:"i"|add:"Xargumento" %}
+            <p><a href="{% url 'perfiles' name %}"><p1>{{arg.usr_deb}}:</p1></a> {{arg.descripcion}}</p>
           {% endwith %}
         </td>
         <td style="border-bottom: #fff; text-align: center;"> <!-- boton editar/rebatir-->
       		<div style="float:right">
-            <button id="bot_rebatir{{postura}}" type="submit" class="btn btn-args" data-whatever="{{arg.6}}" onclick='javascript:mostrar_modal("respuesta_modal{{postura}}{{arg.3}}","{{arg.3}}","{{arg.6}}","{{postura}}");' >{{ arg.6|length }} <span class="glyphicon glyphicon-comment"  ></span></button>
+            <button id="bot_rebatir{{postura}}" type="submit" class="btn btn-args" data-whatever="{{arg.redebates}}" onclick='javascript:mostrar_modal("respuesta_modal{{postura}}{{arg.id_arg}}","{{arg.id_arg}}","{{arg.redebates}}","{{postura}}");' >
+              {{ arg.redebates|length }} <span class="glyphicon glyphicon-comment"  ></span>
+            </button>
           </div>
         </td>
 
-          <div id="respuesta_modal{{postura}}{{arg.3}}" class="modal">
+          <div id="respuesta_modal{{postura}}{{arg.id_arg}}" class="modal">
             <div class="modal-content">
-              <span class="close" onclick="cerrar_modal('respuesta_modal{{postura}}{{arg.3}}')">&times;</span>
+              <span class="close" onclick="cerrar_modal('respuesta_modal{{postura}}{{arg.id_arg}}')">&times;</span>
               <h3>Respuestas <span class="glyphicon glyphicon-comment"></span></h3>
                 <div id="descripcion_argumento">
-                  {{arg.0}}
+                  {{arg.descripcion}}
                 </div>
                   <div id="respuestas" class="modal-body">
-                    {% for respuesta in arg.6%}
+                    {% for respuesta in arg.redebates%}
                       <div class="panel panel-default">
                         <div class="panel-body">
                         {% with name=respuesta.2|stringformat:"i"|add:"Xrespuesta" %}
@@ -50,46 +52,63 @@
                       </div>
                     {% endfor %}
                   </div>
-                  {% if arg.7 %}
-                  <div id="form_rebatir">
-                    <form method="POST" class="post-form" enctype="multipart/form-data">{% csrf_token %}
-                      {{resp_form.as_p}}
-                      <input type="hidden" value="{{arg.3}}" name="id_argumento{{postura}}">
-                      <button name="responder{{postura}}"type="submit" class="btn btn-perfil">Responder</button>
-                    </form>
-                    <button type="submit" class="btn btn-perfil" onclick="cerrar_modal('respuesta_modal{{postura}}{{arg.3}}')">Cancelar</button>
-                  </div>
+                  {% ifequal tipo_rebate 1 %}
+                    {% ifequal rebate frase %}
+                      {% if arg.rebatir %}
+                      <div id="form_rebatir">
+                        <form method="POST" class="post-form" enctype="multipart/form-data">{% csrf_token %}
+                          {{resp_form.as_p}}
+                          <input type="hidden" value="{{arg.id_arg}}" name="id_argumento{{postura}}">
+                          <button name="responder{{postura}}"type="submit" class="btn btn-perfil">Responder</button>
+                        </form>
+                        <button type="submit" class="btn btn-perfil" onclick="cerrar_modal('respuesta_modal{{postura}}{{arg.id_arg}}')">Cancelar</button>
+                      </div>
+                      {% else %}
+                      <div>Ya no puedes rebatir</div>
+                      {% endif %}
+                    {% endifequal %}
                   {% else %}
-                  <div>Ya no puedes rebatir</div>
-                  {% endif %}
+                    {% if arg.rebatir %}
+                    <div id="form_rebatir">
+                      <form method="POST" class="post-form" enctype="multipart/form-data">{% csrf_token %}
+                        {{resp_form.as_p}}
+                        <input type="hidden" value="{{arg.id_arg}}" name="id_argumento{{postura}}">
+                        <button name="responder{{postura}}"type="submit" class="btn btn-perfil">Responder</button>
+                      </form>
+                      <button type="submit" class="btn btn-perfil" onclick="cerrar_modal('respuesta_modal{{postura}}{{arg.id_arg}}')">Cancelar</button>
+                    </div>
+                    {% else %}
+                    <div>Ya no puedes rebatir</div>
+                    {% endif %}
+                  {% endifequal %}
             </div>
           </div>
 
       </tr>
       <tr>
-        <td style="border-bottom: #fff; text-align: center;" id="val{{arg.3}}"> {{arg.2}}</td>
-        {% ifequal arg.10 arg.11%}
-        <td style="border-bottom: #fff; text-align: center; display:none" id="cambio_postura{{arg.3}}"> <span class="glyphicon glyphicon-transfer" aria-hidden="true"></span> </td>
+        <td style="border-bottom: #fff; text-align: center;" id="val{{arg.id_arg}}"> {{arg.valoracion}}</td>
+        {% ifequal arg.post_usr_arg arg.11%}
+        <td style="border-bottom: #fff; text-align: center; display:none" id="cambio_postura{{arg.id_arg}}"> <span class="glyphicon glyphicon-transfer" aria-hidden="true"></span> </td>
         {% else %}
-        <td style="border-bottom: #fff; text-align: center; display:block" id="cambio_postura{{arg.3}}"> <span class="glyphicon glyphicon-transfer" aria-hidden="true"></span> </td>
+        <td style="border-bottom: #fff; text-align: center; display:block" id="cambio_postura{{arg.id_arg}}"> <span class="glyphicon glyphicon-transfer" aria-hidden="true"></span> </td>
         {% endifequal %}
       </tr>
       <tr>
         <td>
-          {% ifequal arg.4.1 'no' %}
-          <button id="quitar_val{{arg.3}}" type="submit" class="btn btn-valorar" onclick='javascript:valorar("{{arg.3}}","quitar","{{debate.id_debate}}");'>
+          {% ifequal arg.t_val.1 'no' %}
+          <button id="quitar_val{{arg.id_arg}}" type="submit" class="btn btn-valorar" onclick='javascript:valorar("{{arg.id_arg}}","quitar","{{debate.id_debate}}");'>
           <span class="glyphicon glyphicon-triangle-bottom" aria-hidden="true"></span>
           </button>
           {% else %}
-          <button id="nulo_quitar_val{{arg.3}}" type="submit" class="btn btn-nulo" onclick='javascript:valorar("{{arg.3}}","nulo-quitar","{{debate.id_debate}}");'>
+          <button id="nulo_quitar_val{{arg.id_arg}}" type="submit" class="btn btn-nulo" onclick='javascript:valorar("{{arg.id_arg}}","nulo-quitar","{{debate.id_debate}}");'>
           <span class="glyphicon glyphicon-triangle-bottom" aria-hidden="true"></span>
           </button>
           {% endifequal %}
         </td>
         <td><div style="float:right">
-          {% ifequal arg.5 usuario %}
+          {% ifequal arg.id_usr usuario %}
             <form id="eliminar_arg" method="post" action= "{% url 'despliega' debate.id_debate %}" enctype="multipart/form-data" onsubmit="return confirm('¿Seguro que desea eliminar el argumento?');">{% csrf_token %}
-              <input type="hidden" value="{{ arg.3 }}" name="id_arg_eliminar">
+              <input type="hidden" value="{{ arg.id_arg }}" name="id_arg_eliminar">
               <input type="hidden" value="{{ debate.id_debate }}" name="id_deb_arg_eliminar">
               <button type="submit" class="btn btn-args" > <span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
             </form>

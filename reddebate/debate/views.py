@@ -108,18 +108,9 @@ def despliega(request, id_debate): #debate_id
 		argumento.puntaje = valoracion_argF
 		argumento.save()
 		post_usr_arg = Postura.objects.get(id_usuario_id= argumento.id_usuario_id, id_debate_id=id_debate).postura
-		argumentos_F.append([argumento.descripcion,
-							usuario_debate,
-							valoracion_argF,
-							argumento.id_argumento,
-							t_valoracion,
-							usuario_id,
-							redebates_lista ,
-							puede_rebatir1,
-							ediciones,
-							argumento.alias_c,
-							argumento.postura,
-							post_usr_arg])
+		argumentos_F.append({'descripcion': argumento.descripcion, 'usr_deb': usuario_debate, 'valoracion': valoracion_argF,
+							'id_arg': argumento.id_argumento, 't_val': t_valoracion, 'id_usr': usuario_id, 'redebates': redebates_lista ,
+							'rebatir': puede_rebatir1, 'alias': argumento.alias_c, 'postura':argumento.postura, 'postura_arg': post_usr_arg})
 
 		# if (request.user.id == argumento.id_usuario_id):
 		# 	tiene_argumento ='si'
@@ -169,22 +160,13 @@ def despliega(request, id_debate): #debate_id
 		argumento.puntaje = valoracion_argC
 		argumento.save()
 		post_usr_arg = Postura.objects.get(id_usuario_id= argumento.id_usuario_id, id_debate_id=id_debate).postura
-		argumentos_C.append([argumento.descripcion,
-							usuario_debate,
-							valoracion_argC,
-							argumento.id_argumento,
-							t_valoracion,
-							usuario_id,
-							redebates_lista,
-							puede_rebatir0,
-							ediciones,
-							argumento.alias_c,
-							argumento.postura,
-							post_usr_arg ])
+		argumentos_C.append({'descripcion': argumento.descripcion,'usr_deb': usuario_debate,'valoracion': valoracion_argC,
+							'id_arg':argumento.id_argumento,'t_val':t_valoracion,'id_usr':usuario_id,'redebates':redebates_lista,
+							'rebatir': puede_rebatir0,'alias': argumento.alias_c, 'postura': argumento.postura, 'postura_arg': post_usr_arg })
 		# if (request.user.id == argumento.id_usuario_id):
 		# 	tiene_argumento = 'si'
-	argumentos_C = sorted(argumentos_C, key=lambda valoracion: valoracion[2], reverse=True)
-	argumentos_F = sorted(argumentos_F, key=lambda valoracion: valoracion[2], reverse=True)
+	argumentos_C = sorted(argumentos_C, key=lambda valoracion: valoracion['valoracion'], reverse=True)
+	argumentos_F = sorted(argumentos_F, key=lambda valoracion: valoracion['valoracion'], reverse=True)
 
 	argumentos_usr = Argumento.objects.filter(id_debate_id= id_debate, id_usuario_id=request.user ).count()
 	if argumentos_usr < cant_argumentos:
@@ -205,12 +187,16 @@ def despliega(request, id_debate): #debate_id
 		puede_cambiar_postura = True
 	else:
 		puede_cambiar_postura = False
-
+	rebate = "Ambos"
 	if tiene_postura:
 		if postura_debate_usuario.postura == 1:
 			postura_debate_usuario = "A Favor"
+			if tipo_rebate == 1:
+				rebate = "En Contra"
 		else:
 			postura_debate_usuario = "En Contra"
+			if tipo_rebate == 1:
+				rebate = "A Favor"
 	posturas_f=Postura.objects.filter(id_debate_id=id_debate, postura=1)
 	posturas_c=Postura.objects.filter(id_debate_id=id_debate, postura=0)
 	numpost_f=posturas_f.count()
@@ -223,8 +209,6 @@ def despliega(request, id_debate): #debate_id
 		porcentaje_c = round(float(numpost_c) / float(numpost_c+numpost_f),3)*100
 
 	posturas_total = Postura.objects.filter(id_debate_id= id_debate)
-	# cambio_favor_contra = Postura.objects.filter(id_debate_id=id_debate, postura_inicial=0, postura=1).count()
-	# cambio_contra_favor = Postura.objects.filter(id_debate_id=id_debate, postura_inicial=1, postura=0).count()
 	cambio_favor_contra = 0
 	cambio_contra_favor = 0
 	razon_favor_contra = []
@@ -263,7 +247,7 @@ def despliega(request, id_debate): #debate_id
 		'razon_f_c':razon_favor_contra, 'razon_c_f':razon_contra_favor,
 		'img': debate.img, 'cant_rebates':cant_rebates, 'arg_form1':arg_form1,
 		'arg_form0':arg_form0,'resp_form':resp_form, 'notificaciones': notificacion_usr,
-		'participa': participa, 'participantes': lista_participantes}
+		'participa': participa, 'participantes': lista_participantes, 'tipo_rebate': tipo_rebate, 'rebate': rebate}
 	return render(request, 'debate.html', datos)
 
 ##@brief Funcion que guarda el comentario del usuario de un argumento.
