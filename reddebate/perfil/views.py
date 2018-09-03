@@ -17,78 +17,69 @@ from perfil.forms import modificaAlias
 from resumen.views import verificaNotificacion, datos_debates
 from debate.views import actualiza_reputacion
 
-# Create your views here.
 ##@brief Funcion que despliega los datos del usuario, debates abiertos, cerrados y opciones para cada uno.
 ##@param request solicitud web
 ##@return redirect redirecciona a la vista "perfil"
 ##@warning Login is required
 @login_required
-def perfiles(request, id):
-    input  = id.split("X")
-    if input[1]=="argumento":
-        argumento = Argumento.objects.get(id_argumento=input[0])
-        usa_alias = argumento.alias_c
-        usuario = User.objects.get(id=argumento.id_usuario_id)
-        alias_usuario = Perfil.objects.get(user_id=usuario)
+def perfil(request, id_usr=None, id_arg=None, id_reb=None):
+    if id_usr!=None:
+        perfil= Perfil.objects.get(user=request.user)
+        alias_form = modificaAlias(instance=perfil)
+        if request.method == 'POST':
+            if 'id_deb' in request.POST:
+                cerrar_debate(request)
+                return redirect('perfil',id_usr=request.user.id)
 
-    elif input[1]=="respuesta":
-        respuesta = Respuesta.objects.get(id_respuesta=input[0])
-        usa_alias = respuesta.alias_c
-        usuario = User.objects.get(id=respuesta.id_usuario_id)
-        alias_usuario = Perfil.objects.get(user_id=usuario)
-    stats = estadisticas_usuario(usuario.id)
-    total_usuarios = User.objects.all()
-    notificacion_usr = verificaNotificacion(request)
-    return render(request, 'perfiles.html', {'usuario': usuario,
-        'alias': alias_usuario, 'usa_alias': usa_alias, 'total_usuarios': total_usuarios,
-        'notificaciones': notificacion_usr, 'stats': stats})
+            if 'nuevo_alias' in request.POST:
+                alias_form = modificaAlias(request.POST, instance=perfil)
+                if alias_form.is_valid():
+                    perfil = alias_form.save(commit=False)
+                    perfil.save()
+                    return redirect('perfil',id_usr=request.user.id)
 
+            if 'id_debate_editar' in request.POST:
+                crear_debate(request)
+                return redirect('perfil',id_usr=request.user.id)
 
+            if 'id_deb_eliminar' in request.POST:
+                eliminar_debate(request)
 
-##@brief Funcion que despliega los datos del usuario, debates abiertos, cerrados y opciones para cada uno.
-##@param request solicitud web
-##@return redirect redirecciona a la vista "perfil"
-##@warning Login is required
-@login_required
-def perfil(request):
-    perfil= Perfil.objects.get(user=request.user)
-    alias_form = modificaAlias(instance=perfil)
-    if request.method == 'POST':
-        if 'id_deb' in request.POST:
-            cerrar_debate(request)
-            return redirect('perfil')
-
-        if 'nuevo_alias' in request.POST:
-            alias_form = modificaAlias(request.POST, instance=perfil)
-            if alias_form.is_valid():
-                perfil = alias_form.save(commit=False)
-                perfil.save()
-                return redirect('perfil')
-
-        if 'id_debate_editar' in request.POST:
-            crear_debate(request)
-            return redirect('perfil')
-
-        if 'id_deb_eliminar' in request.POST:
-            eliminar_debate(request)
-
-        if 'id_deb_republicar' in request.POST:
-            republicar_debate(request)
+            if 'id_deb_republicar' in request.POST:
+                republicar_debate(request)
 
 
-    usuario = request.user
-    alias_usuario = Perfil.objects.get(user=usuario)
-    debates_usuario = Debate.objects.filter(id_usuario_id= usuario.id).order_by('-id_debate')
-    lista_debates = datos_debates(debates_usuario,usuario)
+        usuario = request.user
+        alias_usuario = Perfil.objects.get(user=usuario)
+        debates_usuario = Debate.objects.filter(id_usuario_id= usuario.id).order_by('-id_debate')
+        lista_debates = datos_debates(debates_usuario,usuario)
 
-    stats = estadisticas_usuario(usuario.id)
-    notificacion_usr = verificaNotificacion(request)
-    return render(request, 'perfil_usuario.html', {'usuario': usuario,
-        'alias': alias_usuario,
-        'object_list': lista_debates,
-        'alias_form': alias_form, 'notificaciones': notificacion_usr,
-        'stats': stats
-        })
+        stats = estadisticas_usuario(usuario.id)
+        notificacion_usr = verificaNotificacion(request)
+        return render(request, 'perfil_usuario.html', {'usuario': usuario,
+            'alias': alias_usuario,
+            'object_list': lista_debates,
+            'alias_form': alias_form, 'notificaciones': notificacion_usr,
+            'stats': stats
+            })
+    else:
+        if id_reb!=None:
+            respuesta = Respuesta.objects.get(id_respuesta=id_reb)
+            usa_alias = respuesta.alias_c
+            usuario = User.objects.get(id=respuesta.id_usuario_id)
+            alias_usuario = Perfil.objects.get(user_id=usuario)
+        else:
+            argumento = Argumento.objects.get(id_argumento=id_arg)
+            usa_alias = argumento.alias_c
+            usuario = User.objects.get(id=argumento.id_usuario_id)
+            alias_usuario = Perfil.objects.get(user_id=usuario)
+        stats = estadisticas_usuario(usuario.id)
+        total_usuarios = User.objects.all()
+        notificacion_usr = verificaNotificacion(request)
+        return render(request, 'perfiles.html', {'usuario': usuario,
+            'alias': alias_usuario, 'usa_alias': usa_alias, 'total_usuarios': total_usuarios,
+            'notificaciones': notificacion_usr, 'stats': stats})
+
 
 def estadisticas_usuario(id_usuario):
     debates = Debate.objects.all().order_by('-id_debate')
@@ -144,7 +135,7 @@ def cerrar_debate(request):
     deb = Debate.objects.get(pk=id_deb)
     deb.estado = 'cerrado'
     deb.save()
-    return redirect('perfil')
+    return redirect('perfil',id_usr=request.user.id)
 
 ##@brief Funcion que elimina un debate
 ##@param request solicitud web
@@ -156,7 +147,7 @@ def eliminar_debate(request):
     deb = Debate.objects.get(pk=id_deb)
     deb.delete()
     actualiza_reputacion(request.user.id, -5)
-    return redirect('perfil')
+    return redirect('perfil',id_usr=request.user.id)
 ##@brief Funcion que actualiza el debate "cerrado" a "abierto"
 ##@param request solicitud web
 ##@return redirect redirecciona a la vista "perfil"
@@ -170,4 +161,4 @@ def republicar_debate(request):
         deb.date_fin = None
     deb.estado = 'abierto'
     deb.save()
-    return redirect('perfil')
+    return redirect('perfil',id_usr=request.user.id)

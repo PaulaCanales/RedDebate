@@ -81,7 +81,8 @@ def despliega(request, id_debate): #debate_id
 			else:
 				usuario_redebate = usuario_redebate.username
 
-			redebates_lista.append([descripcion_redebate, usuario_redebate, id_respuesta])
+			redebates_lista.append({'descripcion': descripcion_redebate, 'usr_creador': usuario_redebate,
+									'id_rebate': id_respuesta, 'id_creador': redebate.id_usuario_id})
 			if rebates_usr < cant_rebates:
 				puede_rebatir1 = True
 			else:
@@ -108,8 +109,8 @@ def despliega(request, id_debate): #debate_id
 		argumento.puntaje = valoracion_argF
 		argumento.save()
 		post_usr_arg = Postura.objects.get(id_usuario_id= argumento.id_usuario_id, id_debate_id=id_debate).postura
-		argumentos_F.append({'descripcion': argumento.descripcion, 'usr_deb': usuario_debate, 'valoracion': valoracion_argF,
-							'id_arg': argumento.id_argumento, 't_val': t_valoracion, 'id_usr': usuario_id, 'redebates': redebates_lista ,
+		argumentos_F.append({'descripcion': argumento.descripcion, 'usr_creador': usuario_debate, 'valoracion': valoracion_argF,
+							'id_arg': argumento.id_argumento, 't_val': t_valoracion, 'id_creador': usuario_id, 'redebates': redebates_lista ,
 							'rebatir': puede_rebatir1, 'alias': argumento.alias_c, 'postura':argumento.postura, 'postura_arg': post_usr_arg})
 
 		# if (request.user.id == argumento.id_usuario_id):
@@ -132,7 +133,8 @@ def despliega(request, id_debate): #debate_id
 			else:
 				usuario_redebate = usuario_redebate.username
 
-			redebates_lista.append([descripcion_redebate, usuario_redebate, id_respuesta])
+			redebates_lista.append({'descripcion': descripcion_redebate, 'usr_creador': usuario_redebate,
+									'id_rebate': id_respuesta, 'id_creador': redebate.id_usuario_id})
 			if rebates_usr < cant_rebates:
 				puede_rebatir0 = True
 			else:
@@ -160,8 +162,8 @@ def despliega(request, id_debate): #debate_id
 		argumento.puntaje = valoracion_argC
 		argumento.save()
 		post_usr_arg = Postura.objects.get(id_usuario_id= argumento.id_usuario_id, id_debate_id=id_debate).postura
-		argumentos_C.append({'descripcion': argumento.descripcion,'usr_deb': usuario_debate,'valoracion': valoracion_argC,
-							'id_arg':argumento.id_argumento,'t_val':t_valoracion,'id_usr':usuario_id,'redebates':redebates_lista,
+		argumentos_C.append({'descripcion': argumento.descripcion, 'usr_creador': usuario_debate,'valoracion': valoracion_argC,
+							'id_arg':argumento.id_argumento,'t_val':t_valoracion,'id_creador':usuario_id,'redebates':redebates_lista,
 							'rebatir': puede_rebatir0,'alias': argumento.alias_c, 'postura': argumento.postura, 'postura_arg': post_usr_arg })
 		# if (request.user.id == argumento.id_usuario_id):
 		# 	tiene_argumento = 'si'

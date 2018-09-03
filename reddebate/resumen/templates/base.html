@@ -176,7 +176,7 @@
                         <a href="{% url 'cerrados' %}">Debates Cerrados</a>
                     </li>
                     <li>
-                        <a href="{% url 'perfil' %}"> Perfil </a>
+                        <a href="{% url 'perfil' id_usr=user.id %}"> Perfil </a>
                     </li>
 										<li>
 											<a href="#" rel="popover" title="Notificaciones" data-toggle="popover" data-trigger="focus" data-placement="bottom" data-popover-content="#popoverNotificaciones">
@@ -195,6 +195,7 @@
 						{% endfor %}
 						</div>
         </div>
+				{{user.id}}
     	</nav>
 			<label id="id_usuario_actual" class="hide" value="{{user.id}}">{{user.id}}</label>
     </div>

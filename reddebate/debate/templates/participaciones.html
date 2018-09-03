@@ -22,9 +22,7 @@
           {% endifequal %}
         </td>
         <td id="bordeTabla{{postura}}" rowspan="3"><!-- comentario-->
-          {% with name=arg.id_arg|stringformat:"i"|add:"Xargumento" %}
-            <p><a href="{% url 'perfiles' name %}"><p1>{{arg.usr_deb}}:</p1></a> {{arg.descripcion}}</p>
-          {% endwith %}
+            <p><a href="{% url 'perfil' id_arg=arg.id_arg %}"><p1>{{arg.usr_creador}}:</p1></a> {{arg.descripcion}}</p>
         </td>
         <td style="border-bottom: #fff; text-align: center;"> <!-- boton editar/rebatir-->
       		<div style="float:right">
@@ -39,7 +37,7 @@
               <h3><span class="close" onclick="cerrar_modal('respuesta_modal{{postura}}{{arg.id_arg}}')">&times;</span>
               <span class="glyphicon glyphicon-comment"></span> Redebates</h3>
                 <div id="descripcion_argumento">
-                  <p1>{{arg.usr_deb}}</p1> argumentó...
+                  <p1>{{arg.usr_creador}}</p1> argumentó...
                   <h4>"{{arg.descripcion}}"</h4>
                 </div>
                   <div id="respuestas" class="modal-body">
@@ -48,9 +46,7 @@
                         <div class="body">
                           <span class="tip tip-up"></span>
                           <div class="message">
-                            {% with name=respuesta.2|stringformat:"i"|add:"Xrespuesta" %}
-                            <p><a href="{% url 'perfiles' name %}"><p1>{{respuesta.1}}:</p1></a> {{respuesta.0}}</p>
-                            {% endwith %}
+                            <p><a href="{% url 'perfil' id_arg=arg.id_arg id_reb=respuesta.id_creador %}"><p1>{{respuesta.usr_creador}}:</p1></a> {{respuesta.descripcion}}</p>
                           </div>
                         </div>
                       </div>
@@ -109,7 +105,7 @@
           {% endifequal %}
         </td>
         <td><div style="float:right">
-          {% ifequal arg.id_usr usuario %}
+          {% ifequal arg.id_creador usuario %}
             <form id="eliminar_arg" method="post" action= "{% url 'despliega' debate.id_debate %}" enctype="multipart/form-data" onsubmit="return confirm('¿Seguro que desea eliminar el argumento?');">{% csrf_token %}
               <input type="hidden" value="{{ arg.id_arg }}" name="id_arg_eliminar">
               <input type="hidden" value="{{ debate.id_debate }}" name="id_deb_arg_eliminar">
