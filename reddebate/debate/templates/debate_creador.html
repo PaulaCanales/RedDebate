@@ -5,34 +5,26 @@ $(document).ready(function(){
 		catch(err){}});
 </script>
 <html>
-<div class="container">
-	<div class="blank"><table>
-		<tr>
-			<td>
-				<div class="container-titulo">
-					<div class="row">
-						<div class="col-md-11" style="padding-left: 15px">
-							<h3>{{ debate.titulo }}</h3>
-							{% ifequal debate.alias_c 'alias' %}
-								<h5>Creado por {{alias}} en modo anónimo</h5>
-							{% else %}
-								<h5>Debate creado por {{usuario_creador}}</h5>
-							{% endifequal %}
-						</div>
-						<div class="col-md-1" style="margin-top: 20px">
-							{% ifequal debate.estado 'abierto' %}
-							<form id="id" method="post" action= "{% url 'resumen:index' %}" enctype="multipart/form-data" onsubmit="return confirm('¿Seguro que desea cerrar el debate?');">{% csrf_token %}
-								 <input type="hidden" value="{{ debate.id_debate  }}" name="id_deb">
+<div class="container-debate">
+	<header>
+		{% ifequal debate.estado 'abierto' %}
+		<form id="id" method="post" action= "{% url 'resumen:index' %}" enctype="multipart/form-data" onsubmit="return confirm('¿Seguro que desea cerrar el debate?');">{% csrf_token %}
+			 <input type="hidden" value="{{ debate.id_debate  }}" name="id_deb">
 
-								 <button type="submit" class="btn btn-titulo" ><span class="glyphicon glyphicon-remove-circle"></button>
-						 </form>
-						 {% endifequal %}
-						</div>
-					</div>
-			</div>
-			</td>
-		</tr>
-	</table></div>
+			 <button type="submit" class="btn btn-titulo" ><span class="glyphicon glyphicon-remove-circle"></button>
+	 </form>
+	 {% endifequal %}
+		<h2>{{ debate.titulo }}</h2>
+		<p>
+			<input id="idDebate" type="hidden" value={{debate.id_debate}}>
+			{% ifequal debate.alias_c 'alias' %}
+				<h5>Creado por {{alias}} en modo anónimo</h5>
+			{%else%}
+				<h5>Debate creado por {{usuario_creador}}</h5>
+			{%endifequal%}
+		</p>
+	</header>
+	{{ debate.descripcion }}
 	<div id="fb-root"></div>
 	<div style="text-align: right">
 	<div class="fb-share-button"
@@ -42,19 +34,11 @@ $(document).ready(function(){
 	<div name="detalle-debate">
 			<div class="row" id="my-row">
 				<div class="col-md-3 panel">
-					<button id="bot_af" type="submit" class="btn btn-postura" disabled ><span class="glyphicon glyphicon-thumbs-up"></span> A Favor <br><br><label id="label_porc_f">{{porc_f}}%</label></button>
+					<button id="bot_af" type="submit" class="btn btn-postura1" disabled ></button>
 				</div>
 				<div class="col-md-6">
 					<div class="blank">
 							<table>
-							<tr>
-								<td width=120 ><p1>Descripción</p1></td>
-								<td>{{ debate.descripcion }}
-									{% if img %}
-									<a href="{{ img.url }}"> Adjunto </a>
-									{% endif %}
-								</td>
-							</tr>
 							<tr>
 								<td width=120 ><p1>Fecha inicio</p1></td>
 								<td>{{ debate.date }}</td>
@@ -80,7 +64,7 @@ $(document).ready(function(){
 					</div>
 				</div>
 				<div class="col-md-3 panel">
-					<button id="bot_ec" type="submit" class="btn btn-postura" disabled><span class="glyphicon glyphicon-thumbs-down"></span> En Contra <br><br> <label id="label_porc_c">{{porc_c}}%</label> </button>
+					<button id="bot_ec" type="submit" class="btn btn-postura0" disabled></button>
 				</div>
 			</div>
 		</div>
@@ -93,7 +77,6 @@ $(document).ready(function(){
 		</div>
 		<div class="tab-slider--container">
 			<div id="tab1" class="tab-slider--body">
-				<h2>Argumentos</h2>
 				<div name="argumentos-debate">
 					<div class="row">
 				    <div class="col-md-6">

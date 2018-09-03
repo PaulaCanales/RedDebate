@@ -68,15 +68,9 @@
 						</button>
 					{% else %}
 						{% ifequal postura_usr_deb 'A Favor' %}
-							<button id = "bot_af" type="submit" class="btn btn-posturactual1" disabled >
-								<!-- <span class="glyphicon glyphicon-thumbs-up"></span> A Favor <br><br> -->
-								<!-- <img src="{% static 'img/thumbs-up.png' %}" alt="A favor"> -->
-							</button>
+							<button id = "bot_af" type="submit" class="btn btn-posturactual1" disabled ></button>
 						{% else %}
-							<button id = "bot_af" type="submit" class="btn btn-postura1" onclick = "confirmar_cambio('1')">
-								<!-- <span class="glyphicon glyphicon-thumbs-up"></span> A Favor <br><br> -->
-								<!-- <img src="{% static 'img/thumbs-up.png' %}" alt="A favor"> -->
-							</button>
+							<button id = "bot_af" type="submit" class="btn btn-postura1" onclick = "confirmar_cambio('1')"></button>
 						{% endifequal%}
 					{% endifequal %}
 				</div>
@@ -106,24 +100,12 @@
 				</div>
 				<div class="col-md-3 panel">
 					{% ifequal postura_usr_deb 'No definido' %}
-						<!-- <button id = "bot_ec" type="submit" class="btn btn-postura" onclick='javascript:definir_postura("{{ debate.id_debate }}", "0", "{{num_post_f}}", "{{num_post_c}}");'> -->
-						<button id = "bot_ec_init" type="submit" class="btn btn-postura0">
-							<!-- <span class="glyphicon glyphicon-thumbs-down"></span>
-							En Contra <br><br>
-						<label id="label_porc_c1"></label> -->
-						<!-- <img src="{% static 'img/thumbs-down.png' %}" alt="En Contra"> -->
-					</button>
+						<button id = "bot_ec_init" type="submit" class="btn btn-postura0"></button>
 					{% else %}
 						{% ifequal postura_usr_deb 'A Favor' %}
-							<button id = "bot_ec" type="submit" class="btn btn-postura0" onclick = "confirmar_cambio('0')">
-								<!-- <span class="glyphicon glyphicon-thumbs-down"></span> En Contra <br><br> -->
-								<!-- <img src="{% static 'img/thumbs-down.png' %}" alt="En Contra"> -->
-							</button>
+							<button id = "bot_ec" type="submit" class="btn btn-postura0" onclick = "confirmar_cambio('0')"></button>
 						{% else %}
-							<button id = "bot_ec" type="submit" class="btn btn-posturactual0" disabled >
-								<!-- <span class="glyphicon glyphicon-thumbs-down"></span> En Contra <br><br> -->
-								<!-- <img src="{% static 'img/thumbs-down.png' %}" alt="En Contra"> -->
-							</button>
+							<button id = "bot_ec" type="submit" class="btn btn-posturactual0" disabled ></button>
 						{% endifequal%}
 					{% endifequal %}
 				</div>

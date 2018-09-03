@@ -530,12 +530,14 @@ footer {
 .btn-titulo {
   width: auto;
   color:#fff;
-  background:#2D3E50;
+  background:transparent;
   border:0px;
   font-size: 25px;
+  position: relative;
+  float: right;
 }
 .btn-titulo.active,.btn-titulo:active,.btn-titulo:focus,.btn-titulo:hover {
-  color:#18BC9C;
+  color:#2D3E50;
   transition:all .3s ease-in-out;
 }
 .btn-index {
@@ -887,7 +889,7 @@ hr {
   position: relative;
   border-radius: 35px;
   overflow: hidden;
-  background: #2D3E50;
+  background: #43586D;
   height: 35px;
   -webkit-user-select: none;
      -moz-user-select: none;
@@ -897,7 +899,7 @@ hr {
 .tab-slider--tabs:after {
   content: "";
   width: 50%;
-  background: #18BD9B;
+  background: #2D3E50;
   height: 100%;
   position: absolute;
   top: 0;
