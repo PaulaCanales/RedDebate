@@ -111,7 +111,7 @@ function debate_estado(evt, estadoDbt) {
 
 function mostrar_modal(modal, id_arg, respuestas,postura){
   document.getElementById(modal).style.display="block";
-  document.getElementById("id_argumento_rebate"+postura+id_arg).value = id_arg;
+  // document.getElementById("id_argumento_rebate"+postura+id_arg).value = id_arg;
 };
 
 function abrir_modal(modal){

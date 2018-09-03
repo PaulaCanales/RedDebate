@@ -36,18 +36,22 @@
 
           <div id="respuesta_modal{{postura}}{{arg.id_arg}}" class="modal">
             <div class="modal-content">
-              <span class="close" onclick="cerrar_modal('respuesta_modal{{postura}}{{arg.id_arg}}')">&times;</span>
-              <h3>Respuestas <span class="glyphicon glyphicon-comment"></span></h3>
+              <h3><span class="close" onclick="cerrar_modal('respuesta_modal{{postura}}{{arg.id_arg}}')">&times;</span>
+              <span class="glyphicon glyphicon-comment"></span> Redebates</h3>
                 <div id="descripcion_argumento">
-                  {{arg.descripcion}}
+                  <p1>{{arg.usr_deb}}</p1> argumentó...
+                  <h4>"{{arg.descripcion}}"</h4>
                 </div>
                   <div id="respuestas" class="modal-body">
                     {% for respuesta in arg.redebates%}
-                      <div class="panel panel-default">
-                        <div class="panel-body">
-                        {% with name=respuesta.2|stringformat:"i"|add:"Xrespuesta" %}
-                        <p><a href="{% url 'perfiles' name %}"><p1>{{respuesta.1}}:</p1></a> {{respuesta.0}}</p>
-                        {% endwith %}
+                      <div class="dialogbox">
+                        <div class="body">
+                          <span class="tip tip-up"></span>
+                          <div class="message">
+                            {% with name=respuesta.2|stringformat:"i"|add:"Xrespuesta" %}
+                            <p><a href="{% url 'perfiles' name %}"><p1>{{respuesta.1}}:</p1></a> {{respuesta.0}}</p>
+                            {% endwith %}
+                          </div>
                         </div>
                       </div>
                     {% endfor %}
@@ -55,13 +59,12 @@
                   {% ifequal tipo_rebate 1 %}
                     {% ifequal rebate frase %}
                       {% if arg.rebatir %}
-                      <div id="form_rebatir">
+                      <div id="form_rebatir" class="modal-footer">
                         <form method="POST" class="post-form" enctype="multipart/form-data">{% csrf_token %}
                           {{resp_form.as_p}}
                           <input type="hidden" value="{{arg.id_arg}}" name="id_argumento{{postura}}">
                           <button name="responder{{postura}}"type="submit" class="btn btn-deb{{postura}}">Responder</button>
                         </form>
-                        <button type="submit" class="btn btn-deb{{postura}}" onclick="cerrar_modal('respuesta_modal{{postura}}{{arg.id_arg}}')">Cancelar</button>
                       </div>
                       {% else %}
                       <div>Ya no puedes rebatir</div>
@@ -69,13 +72,13 @@
                     {% endifequal %}
                   {% else %}
                     {% if arg.rebatir %}
-                    <div id="form_rebatir">
+                    <div id="form_rebatir" class="modal-footer">
                       <form method="POST" class="post-form" enctype="multipart/form-data">{% csrf_token %}
-                        {{resp_form.as_p}}
+                        {{resp_form.descripcion}}
+                        {{resp_form.alias_c}}
                         <input type="hidden" value="{{arg.id_arg}}" name="id_argumento{{postura}}">
                         <button name="responder{{postura}}"type="submit" class="btn btn-deb{{postura}}">Responder</button>
                       </form>
-                      <button type="submit" class="btn btn-deb{{postura}}" onclick="cerrar_modal('respuesta_modal{{postura}}{{arg.id_arg}}')">Cancelar</button>
                     </div>
                     {% else %}
                     <div>Ya no puedes rebatir</div>
@@ -121,28 +124,4 @@
       <tr><td class="vacio"> </td></tr>
     {% endfor %}
   </table>
-</div> <!-- datagrid -->
-<!-- {% ifequal postura_usr_deb 'No definido' %}
-  <button id="bot_argumento{{postura}}" type="submit" class="btn btn-deb{{postura}}" onclick=" javascript:fomulario_argumento('{{postura}}');"  style="display: none;" >Da tu Argumento</button>
-{% else %}
-  {% ifequal t_arg 'no' %}
-    {% ifequal postura_usr_deb frase%}
-      <button id="bot_argumento{{postura}}" type="submit" class="btn btn-deb{{postura}}" onclick=" javascript:fomulario_argumento('{{postura}}');"  style="display: block;" >Da tu Argumento</button>
-    {% else %}
-      <button id="bot_argumento{{postura}}" type="submit" class="btn btn-deb{{postura}}" onclick=" javascript:fomulario_argumento('{{postura}}');"  style="display: none;" >Da tu Argumento</button>
-    {%endifequal%}
-  {%endifequal%}
-{%endifequal%}
-<ul id="alertaArgumento{{postura}}" class="list-group">
-
-</ul>
-<div id="form_argumento{{postura}}" style="display: none;" >
-  <form id="nuevoArgForm{{postura}}" method="POST" class="post-form" enctype="multipart/form-data">{% csrf_token %}
-    {% ifequal postura_usr_deb 'A Favor' %}
-      {{arg_form1.as_p}}
-    {% else %}
-      {{arg_form0.as_p}}
-    {% endifequal %}
-    <button name="argumento" type="submit" class="btn btn-deb{{postura}}">Publicar</button>
-  </form>
-</div> -->
+</div>

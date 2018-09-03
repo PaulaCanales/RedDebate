@@ -19,12 +19,12 @@ class publicaArgumentoForm1(forms.ModelForm):
                     attrs={
                         'class': 'form-control',
                         'placeholder': 'Escribe un argumento...',
-                        'rows': 4,
+                        'rows': 3,
                         'maxlength': self.max_length,
                         'id': 'descArg1'
                 })
     descripcion = forms.CharField(label=False)
-    alias_c = forms.CharField(label='Publicar como')
+    alias_c = forms.CharField(label=False)
     class Meta:
         model = Argumento
         fields = ('id_argumento', 'descripcion', 'alias_c')
@@ -43,13 +43,13 @@ class publicaArgumentoForm0(forms.ModelForm):
                     attrs={
                         'class': 'form-control',
                         'placeholder': 'Escribe un argumento...',
-                        'rows': 4,
+                        'rows': 3,
                         'maxlength': self.max_length,
                         'id': 'descArg0'
                 })
 
     descripcion = forms.CharField(label=False)
-    alias_c = forms.CharField(label='Publicar como')
+    alias_c = forms.CharField(label=False)
     class Meta:
         model = Argumento
         fields = ('id_argumento', 'descripcion', 'alias_c')
@@ -67,14 +67,15 @@ class publicaRespuestaForm(forms.ModelForm):
         if self.max_length:
             self.fields['descripcion'].widget=forms.Textarea(
                     attrs={
+                        'id': 'rebateDesc',
                         'class': 'form-control',
-                        'placeholder': 'Escribe un argumento...',
-                        'rows': 4,
+                        'placeholder': 'Escribe un rebate...',
+                        'rows': 2,
                         'maxlength': self.max_length
                 })
 
     descripcion = forms.CharField(label=False)
-    alias_c = forms.CharField(label='Publicar como')
+    alias_c = forms.CharField(label=False)
     class Meta:
         model = Respuesta
         fields = ('id_respuesta', 'descripcion', 'alias_c')

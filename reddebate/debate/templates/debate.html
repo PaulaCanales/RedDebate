@@ -166,10 +166,10 @@
 							<ul id="alertaArgumento1" class="list-group"></ul>
 							{% if t_arg %}
 							{% ifequal postura_usr_deb 'A Favor' %}
-								<form id="nuevoArgForm1" method="POST" class="post-form" enctype="multipart/form-data">{% csrf_token %}
+								<form id="nuevoArgForm1" method="POST" class="post-form publicarArgumento" enctype="multipart/form-data">{% csrf_token %}
 					      {{arg_form1.as_p}}
 								<button name="argumento" type="submit" class="btn btn-deb1">Publicar</button>
-								</form>
+							</form>
 							{% endifequal %}
 							{% endif %}
 						</div>
@@ -178,7 +178,7 @@
 							<ul id="alertaArgumento0" class="list-group"></ul>
 							{% if t_arg %}
 							{% ifequal postura_usr_deb 'En Contra' %}
-							<form id="nuevoArgForm0" method="POST" class="post-form" enctype="multipart/form-data">{% csrf_token %}
+							<form id="nuevoArgForm0" method="POST" class="post-form publicarArgumento" enctype="multipart/form-data">{% csrf_token %}
 								{{arg_form0.as_p}}
 								<button name="argumento" type="submit" class="btn btn-deb0">Publicar</button>
 							</form>

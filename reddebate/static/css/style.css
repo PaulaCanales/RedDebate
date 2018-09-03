@@ -215,13 +215,45 @@ section.success {
     background-color: #fefefe;
     margin: auto;
     padding: 20px;
-    border: 1px solid #888;
-    width: 80%;
+    border: 0px solid #888;
+    width: 70%;
 }
-
+.modal-content h3{
+  background: linear-gradient(-30deg, #18BD9B, #2D3E50);
+  color: white;
+  padding: 20px;
+  margin: -20px -20px 20px -20px;
+  border-radius: 5px 5px 0 0;
+  text-transform: uppercase;
+  font-family: montserrat;
+}
+.modal-content h4{
+  font-size: 20px;
+  font-family: montserrat;
+  font-style: italic;
+}
+.modal-body{
+    max-height: 500px;
+    overflow-y: auto;
+    padding: 0px;
+}
+.modal-footer{
+  background: #cccccc70;
+  margin: 10px -20px -20px -20px;
+  border-radius: 0 0 5px 5px;
+  padding-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+}
+.form-control#rebateDesc, .form-control#id_alias_c{
+  margin-right: 5px;
+}
+.form-control#id_alias_c{
+  width: 30%;
+}
 /* The Close Button */
 .close {
-    color: #aaaaaa;
+    color: #2D3E50;
     float: right;
     font-size: 28px;
     font-weight: bold;
@@ -229,7 +261,7 @@ section.success {
 
 .close:hover,
 .close:focus {
-    color: #000;
+    color: #fff;
     text-decoration: none;
     cursor: pointer;
 }
@@ -411,7 +443,7 @@ footer {
   width: auto;
   height: 45px;
   color:white;
-  float: right;
+  /* float: right; */
 }
 .btn-deb1{
   background-color: #18BC9C;
@@ -422,15 +454,21 @@ footer {
 .btn-deb1:hover, .btn-deb0:hover{
   color:white;
 }
-.post-form#nuevoArgForm1, .post-form#nuevoArgForm1 p,
-.post-form#nuevoArgForm0, .post-form#nuevoArgForm0 p{
-  display: inline;
-}
-.form-control#aliasArg0, .form-control#aliasArg1, .form-control#id_alias_c{
-  width: 50%;
-  display: inline;
-}
 
+.publicarArgumento{
+  background-color: #cccccc70;
+  border-radius: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  padding: 15px 10px 0 10px;
+}
+.publicarArgumento p{
+  margin-right: 5px;
+}
+.form-control#descArg1, .form-control#descArg0 {
+  resize: vertical;
+}
 .btn-args1 {
   width: auto;
   color:#18BC9C;
@@ -658,10 +696,6 @@ footer {
 }
 .navbar-inverse .btn-link {
   color: #ffffff;
-}
-.modal-body{
-    max-height: 500px;
-    overflow-y: auto;
 }
 *,
 *::before,
@@ -1576,4 +1610,28 @@ hr {
   border-radius: 0px 10px 10px 0px;
   height: 30px;
   padding-top: 5px;
+}
+.tip {
+  width: 0px;
+  height: 0px;
+  position: absolute;
+  background: transparent;
+  border: 10px solid #cccccc70;
+}
+.tip-up {
+  top: -25px; /* Same as body margin top + border */
+  left: 10px;
+  border-right-color: transparent;
+  border-left-color: transparent;
+  border-top-color: transparent;
+}
+.dialogbox .body {
+  position: relative;
+  max-width: 300px;
+  height: auto;
+  margin: 20px 0px;
+  padding: 5px;
+  background-color: #DADADA70;
+  border-radius: 3px;
+  border: 5px solid #cccccc2e;
 }
