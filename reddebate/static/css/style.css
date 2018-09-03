@@ -808,6 +808,14 @@ footer {
   line-height: 1.5;
   margin-bottom: 1.25rem; */
 }
+.card__content > .datosIndex{
+  text-align: right;
+  background: rgba(0,0,0,0.1);
+  color: #2D3E50;
+  margin: -10px;
+  border-radius: 0 0 3px 3px;
+  padding: 4px;
+}
 .card__footer {
   position: fixed;
   left: 0;
@@ -1572,7 +1580,8 @@ hr {
   width: 100px;
   display: block;
   background: #79A70A;
-  background: linear-gradient(#18BD9D 0%, #18BD9D 100%);
+  /* background: linear-gradient(#18BD9D 0%, #18BD9D 100%); */
+  background: rgba(24, 189, 157,0.8);
   box-shadow: 0 3px 10px -5px rgba(0, 0, 0, 1);
   position: absolute;
   top: 19px; right: -21px;

@@ -24,44 +24,56 @@ from debate.views import actualiza_reputacion
 @login_required
 def perfil(request, id_usr=None, id_arg=None, id_reb=None):
     if id_usr!=None:
-        perfil= Perfil.objects.get(user=request.user)
-        alias_form = modificaAlias(instance=perfil)
-        if request.method == 'POST':
-            if 'id_deb' in request.POST:
-                cerrar_debate(request)
-                return redirect('perfil',id_usr=request.user.id)
-
-            if 'nuevo_alias' in request.POST:
-                alias_form = modificaAlias(request.POST, instance=perfil)
-                if alias_form.is_valid():
-                    perfil = alias_form.save(commit=False)
-                    perfil.save()
+        if int(request.user.id)==int(id_usr):
+            perfil= Perfil.objects.get(user=request.user)
+            alias_form = modificaAlias(instance=perfil)
+            if request.method == 'POST':
+                if 'id_deb' in request.POST:
+                    cerrar_debate(request)
                     return redirect('perfil',id_usr=request.user.id)
 
-            if 'id_debate_editar' in request.POST:
-                crear_debate(request)
-                return redirect('perfil',id_usr=request.user.id)
+                if 'nuevo_alias' in request.POST:
+                    alias_form = modificaAlias(request.POST, instance=perfil)
+                    if alias_form.is_valid():
+                        perfil = alias_form.save(commit=False)
+                        perfil.save()
+                        return redirect('perfil',id_usr=request.user.id)
 
-            if 'id_deb_eliminar' in request.POST:
-                eliminar_debate(request)
+                if 'id_debate_editar' in request.POST:
+                    crear_debate(request)
+                    return redirect('perfil',id_usr=request.user.id)
 
-            if 'id_deb_republicar' in request.POST:
-                republicar_debate(request)
+                if 'id_deb_eliminar' in request.POST:
+                    eliminar_debate(request)
+
+                if 'id_deb_republicar' in request.POST:
+                    republicar_debate(request)
 
 
-        usuario = request.user
-        alias_usuario = Perfil.objects.get(user=usuario)
-        debates_usuario = Debate.objects.filter(id_usuario_id= usuario.id).order_by('-id_debate')
-        lista_debates = datos_debates(debates_usuario,usuario)
+            usuario = request.user
+            alias_usuario = Perfil.objects.get(user=usuario)
+            debates_usuario = Debate.objects.filter(id_usuario_id= usuario.id).order_by('-id_debate')
+            lista_debates = datos_debates(debates_usuario,usuario)
 
-        stats = estadisticas_usuario(usuario.id)
-        notificacion_usr = verificaNotificacion(request)
-        return render(request, 'perfil_usuario.html', {'usuario': usuario,
-            'alias': alias_usuario,
-            'object_list': lista_debates,
-            'alias_form': alias_form, 'notificaciones': notificacion_usr,
-            'stats': stats
-            })
+            stats = estadisticas_usuario(usuario.id)
+            notificacion_usr = verificaNotificacion(request)
+            return render(request, 'perfil_usuario.html', {'usuario': usuario,
+                'alias': alias_usuario,
+                'object_list': lista_debates,
+                'alias_form': alias_form, 'notificaciones': notificacion_usr,
+                'stats': stats
+                })
+        else:
+            usa_alias = 'username'
+            usuario = User.objects.get(id=id_usr)
+            alias_usuario = Perfil.objects.get(user_id=usuario)
+            stats = estadisticas_usuario(usuario.id)
+            total_usuarios = User.objects.all()
+            notificacion_usr = verificaNotificacion(request)
+            return render(request, 'perfiles.html', {'usuario': usuario,
+                'alias': alias_usuario, 'usa_alias': usa_alias, 'total_usuarios': total_usuarios,
+                'notificaciones': notificacion_usr, 'stats': stats})
+
     else:
         if id_reb!=None:
             respuesta = Respuesta.objects.get(id_respuesta=id_reb)

@@ -3,7 +3,13 @@
 {% load static %}
 
 <html>
-
+<head>
+	<meta property="og:url" content="http://reddebate.cl/debate/10/"/>
+	<meta property="og:type" content="website" />
+	<meta property="og:title" content="{{debate.titulo}}"/>
+	<meta property="og:description" content="{{debate.descripcion}}"/>
+	<meta property="og:image" content="{% static 'img/RDLogo02.png'%}"/>
+</head>
 {% block content %}
 <div id="participantes_modal" class="modal">
 	<div class="modal-content">
@@ -34,9 +40,10 @@
 		<div id="fb-root"></div>
 		<div style="text-align: right">
 		<div class="fb-share-button"
-    	data-href="http://reddebate.cl/reddebate/debate/{{debate.id_debate}}/"
+    	data-href="http://reddebate.cl/debate/10/"
     	data-layout="button_count">
   	</div></div><br>
+		<!-- data-href="http://reddebate.cl/debate/{{debate.id_debate}}/" -->
 		<div id="cambioPostura_modal" class="modal">
 			<div class="modal-content">
 				<span class="close" onclick="cerrar_modal('cambioPostura_modal')">&times;</span>

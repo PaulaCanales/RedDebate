@@ -15,7 +15,7 @@
 					<div class="dummy-column">
 						<h2>Usuarios</h2>
 						{% for user in top_user %}
- 						 <a class="dummy-media-object" href="#">
+ 						 <a class="dummy-media-object" href="{% url 'perfil' id_usr=user.id %}">
 							 <img class="round" src="{% static 'img/RDLogo05.png' %}"/>
 							 <h3>{{ user.username }}</h3>
 						 </a>
