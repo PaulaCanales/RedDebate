@@ -36,13 +36,10 @@
 		js.src = "https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v3.0";
 		fjs.parentNode.insertBefore(js, fjs);
 	}(document, 'script', 'facebook-jssdk'));
-
 	var deb;
-
   function valorar(argumento, opcionusr, id){
 		console.log(id);
 		// var deb = parseInt(id)
-
 		 $.ajax({
 				 url: "{% url 'despliega' 23 %}" ,
 				 type: 'POST',
@@ -53,16 +50,13 @@
 							 } ,
 							 success: function(data) {
 								 location.reload()
-
 							 },
-
 							 failure: function(data) {
 									 alert('Error de conexión');
 							 },
 							 crossDomain: true
 					 });
    }
-
   $(document).ready(
     function(){
 			$('input[name=radioDeb]').change(function(){
@@ -77,7 +71,6 @@
 							document.getElementById('privados').style.display = 'flex';
 							document.getElementById('publicos').style.display = 'none';
 							document.getElementById('todos').style.display = 'none';
-
 						}
 						else{
 							document.getElementById('todos').style.display = 'flex';
@@ -85,10 +78,8 @@
 							document.getElementById('privados').style.display = 'none';
 						}
 		   });
-
 			$.getJSON("{% static 'stopwords.json' %}", function(json) {
 				var stopword = json;
-
 				$("#siguienteTagsForm").click(function(){
 					var text = $("#debTituloForm").val()
     			text = text.split(" ");
@@ -97,9 +88,7 @@
 					};
 					$('#tagsForms').tagsinput('add', text.join());
 				});
-
 			});
-
 			$('#nuevodebateform').on('keyup keypress', function(e) {
 				  var keyCode = e.keyCode || e.which;
 				  if (keyCode === 13) {
@@ -107,7 +96,6 @@
 				    return false;
 				  }
 				});
-
       try{
 				$('[data-toggle="popover"]').popover();
         document.getElementById("dbt_abiertos").click();}
@@ -131,12 +119,10 @@
 	    function(){
 				// get tallest tab__content element
 				 let height = -1;
-
 			 $('.tab__content').each(function() {
 				 height = height > $(this).outerHeight() ? height : $(this).outerHeight();
 						$(this).css('position', 'absolute');
 			 });
-
 				 // set height of tabs + top offset
 			 $('[data-tabs]').css('min-height', height + 40 + 'px');
 			});
@@ -144,12 +130,10 @@
 	    function(){
 				// get tallest tab2__content element
 				 let height = -1;
-
 			 $('.tab2__content').each(function() {
 				 height = height > $(this).outerHeight() ? height : $(this).outerHeight();
 						$(this).css('position', 'absolute');
 			 });
-
 				 // set height of tabs2 + top offset
 			 $('[data-tabs2]').css('min-height', height + 40 + 'px');
 			});
