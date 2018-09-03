@@ -1254,13 +1254,6 @@ hr {
 .container-debate > .cards > .cards__item > .card{
   background-color: rgba(0,0,0,0.10);
 }
-.cards__item a{
-  width: 100%;
-  color: inherit;
-}
-.cards__item a:hover, a:focus{
-  text-decoration: None;
-}
 .container-debate header {
   color: white;
   background-repeat: no-repeat;
@@ -1274,7 +1267,21 @@ hr {
 }
 .container-debate h2{
   margin-top: 0;
+  font-family: montserrat;
+  text-transform: uppercase;
 }
+.debateDescripcion{
+  font-size: 14px;
+  font-family: montserrat;
+}
+.cards__item a{
+  width: 100%;
+  color: inherit;
+}
+.cards__item a:hover, a:focus{
+  text-decoration: None;
+}
+
 .morphsearch-content {
 	color: #333;
 	margin-top: 4.5em;
