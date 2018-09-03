@@ -1083,7 +1083,6 @@ hr {
 #progressbar {
 	margin-bottom: 30px;
 	overflow: hidden;
-	/*CSS counters to number the steps*/
 	counter-reset: step;
 }
 #progressbar li {
