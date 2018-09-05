@@ -10,8 +10,9 @@ $(document).ready(function(){
 		{% ifequal debate.estado 'abierto' %}
 		<form id="id" method="post" action= "{% url 'resumen:index' %}" enctype="multipart/form-data" onsubmit="return confirm('¿Seguro que desea cerrar el debate?');">{% csrf_token %}
 			 <input type="hidden" value="{{ debate.id_debate  }}" name="id_deb">
-
-			 <button type="submit" class="btn btn-titulo" ><span class="glyphicon glyphicon-remove-circle"></button>
+			 <button type="submit" class="btn btn-titulo" data-toggle="tooltip" title="Cerrar debate" >
+				 <i class="fa fa-archive"></i>
+			 </button>
 	 </form>
 	 {% endifequal %}
 		<h2>{{ debate.titulo }}</h2>

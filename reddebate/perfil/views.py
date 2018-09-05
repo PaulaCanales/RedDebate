@@ -14,7 +14,7 @@ from resumen.models import Debate
 from perfil.models import Perfil
 from debate.models import Postura, Argumento, Respuesta
 from perfil.forms import modificaAlias
-from resumen.views import verificaNotificacion, datos_debates
+from resumen.views import verificaNotificacion, datos_debates, cerrar_debate
 from debate.views import actualiza_reputacion
 
 ##@brief Funcion que despliega los datos del usuario, debates abiertos, cerrados y opciones para cada uno.
@@ -136,18 +136,6 @@ def estadisticas_usuario(id_usuario):
              'triunfos': triunfos, 'derrotas':derrotas,
              'mejor_arg':mejor_arg, 'peor_arg':peor_arg}
     return stats
-
-##@brief Funcion que cierra el debate
-##@param request solicitud web
-##@return redirect redirecciona a la vista "index"
-##@warning Login is required
-@login_required
-def cerrar_debate(request):
-    id_deb = request.POST['id_deb']
-    deb = Debate.objects.get(pk=id_deb)
-    deb.estado = 'cerrado'
-    deb.save()
-    return redirect('perfil',id_usr=request.user.id)
 
 ##@brief Funcion que elimina un debate
 ##@param request solicitud web

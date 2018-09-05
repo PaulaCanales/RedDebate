@@ -1,4 +1,6 @@
 @import url("bootstrap.css");
+@import url('https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css');
+
 body{
   text-align: justify;
   background-color: #f7f7f7;
@@ -1163,6 +1165,14 @@ hr {
 }
 .tooltipform:hover .tooltipformtext {
     visibility: visible;
+}
+.tooltip-inner{
+  font-family: montserrat;
+  text-transform: uppercase;
+  background: #2D3E50;
+}
+.tooltip.top .tooltip-arrow{
+  border-top-color: #2D3E50;
 }
 
 #alertaDeb0, #alertaDeb1{
