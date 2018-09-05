@@ -7,23 +7,29 @@ $(document).ready(function(){
 <html>
 <div class="container-debate">
 	<header>
-		{% ifequal debate.estado 'abierto' %}
-		<form id="id" method="post" action= "{% url 'resumen:index' %}" enctype="multipart/form-data" onsubmit="return confirm('¿Seguro que desea cerrar el debate?');">{% csrf_token %}
-			 <input type="hidden" value="{{ debate.id_debate  }}" name="id_deb">
-			 <button type="submit" class="btn btn-titulo" data-toggle="tooltip" title="Cerrar debate" >
-				 <i class="fa fa-archive"></i>
-			 </button>
-	 </form>
-	 {% endifequal %}
-		<h2>{{ debate.titulo }}</h2>
-		<p>
-			<input id="idDebate" type="hidden" value={{debate.id_debate}}>
-			{% ifequal debate.alias_c 'alias' %}
-				<h5>Creado por {{alias}} en modo anónimo</h5>
-			{%else%}
-				<h5>Debate creado por {{usuario_creador}}</h5>
-			{%endifequal%}
-		</p>
+		<div class="row">
+			<div class="col-md-11">
+				<h2>{{ debate.titulo }}</h2>
+				<p>
+					<input id="idDebate" type="hidden" value={{debate.id_debate}}>
+					{% ifequal debate.alias_c 'alias' %}
+						<h5>Creado por {{alias}} en modo anónimo</h5>
+					{%else%}
+						<h5>Debate creado por {{usuario_creador}}</h5>
+					{%endifequal%}
+				</p>
+			</div>
+			<div class="col-md-1">
+				{% ifequal debate.estado 'abierto' %}
+				<form id="id" method="post" action= "{% url 'resumen:index' %}" enctype="multipart/form-data" onsubmit="return confirm('¿Seguro que desea cerrar el debate?');">{% csrf_token %}
+					 <input type="hidden" value="{{ debate.id_debate  }}" name="id_deb">
+					 <button type="submit" class="btn btn-titulo" data-toggle="tooltip" title="Cerrar debate" >
+						 <i class="fa fa-archive"></i>
+					 </button>
+			 </form>
+			 {% endifequal %}
+			</div>
+		</div>
 	</header>
 	<p class="debateDescripcion">{{ debate.descripcion }}</p>
 	<div id="fb-root"></div>

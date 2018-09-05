@@ -49,7 +49,8 @@ class creaDebateForm(forms.ModelForm):
         attrs={
             'class': 'form-control',
             'placeholder': 'Escribe un título...',
-            'id': 'debTituloForm'
+            'id': 'debTituloForm',
+            'maxlength': 100,
         }))
     descripcion = forms.CharField(widget=forms.Textarea(
         attrs={
