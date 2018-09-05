@@ -73,6 +73,11 @@ def index(request):
 	         ('alias',Perfil.objects.get(user= request.user).alias)]
     total_usuarios = User.objects.exclude(id=usuario.id)
     form = creaDebateForm(creador=creador, usuarios=total_usuarios)
+    if request.method == 'POST':
+        if 'id_deb' in request.POST:
+            cerrar_debate(request)
+            return redirect('index')
+            
     if request.method == 'GET':
         if 'q' in request.GET:
             deb = busqueda(request)
@@ -205,6 +210,18 @@ def crear_debate(request):
                 post.id_usuario = request.user
                 post.save()
     return form
+
+##@brief Funcion que cierra el debate
+##@param request solicitud web
+##@return redirect redirecciona a la vista "index"
+##@warning Login is required
+@login_required
+def cerrar_debate(request):
+    id_deb = request.POST['id_deb']
+    deb = Debate.objects.get(pk=id_deb)
+    deb.estado = 'cerrado'
+    deb.save()
+    return redirect('perfil',id_usr=request.user.id)
 
 def busqueda(request):
     query = request.GET.get('q')

@@ -1,4 +1,6 @@
 @import url("bootstrap.css");
+@import url('https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css');
+
 body{
   text-align: justify;
   background-color: #f7f7f7;
@@ -1163,6 +1165,17 @@ hr {
 .tooltipform:hover .tooltipformtext {
     visibility: visible;
 }
+.tooltip-inner{
+  font-family: montserrat;
+  font-size: 10px;
+  background: #2D3E50;
+}
+.tooltip.bottom .tooltip-arrow{
+  border-bottom-color: #2D3E50;
+}
+.tooltip.top .tooltip-arrow{
+  border-top-color: #2D3E50;
+}
 
 #alertaDeb0, #alertaDeb1{
   display: none;
@@ -1267,10 +1280,10 @@ hr {
   background-position: center;
   background-size: cover;
   background: linear-gradient(-30deg, #18BD9B, #2D3E50);
-  height: 150px;
+  height: auto;
   border-radius: 10px 10px 0 0;
-      margin: -30px -30px 15px -30px;
-  padding: 5%;
+  margin: -30px -30px 15px -30px;
+  padding: 5% 5% 15px 5%;
 }
 .container-debate h2{
   margin-top: 0;
