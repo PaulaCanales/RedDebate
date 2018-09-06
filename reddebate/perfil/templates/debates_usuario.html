@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+{% extends 'base.html' %}
+{% load static %}
+<html>
+{% block content %}
+
+<link rel="stylesheet" type='text/css' href="{% static '/css/dataTables.css' %}" >
+<body>
+  <div class="container-debate">
+    <header>
+      <h2>Mis Debates</h2>
+      <p>{{usuario.get_full_name}}</p>
+    </header>
+  <!-- <button id="btnValoresSeleccionados" type="button" class="btn btn-primary">Valores Seleccionadas</button> -->
+<table id="myTable" class="table" cellspacing="0" width="100%">
+    <thead>
+        <tr>
+            <th>Título</th>
+            <th>Estado</th>
+            <th>Tipo</th>
+            <th>Posturas</th>
+            <th>Argumentos</th>
+            <th>Visitas</th>
+            <th>Inicio</th>
+            <th>Fin</th>
+        </tr>
+    </thead>
+    <tbody>
+      {% for deb in object_list %}
+        <tr>
+            <td>{{deb.datos.titulo}}</td>
+            <td>{{deb.datos.estado}}</td>
+            {% ifequal deb.datos.tipo_participacion 1%}
+              <td> Privado </td>
+            {% else %}
+              <td> Público </td>
+            {% endifequal %}
+            <td style="text-align:center;">{{deb.num_posturas}}</td>
+            <td style="text-align:center;">{{deb.num_args}}</td>
+            <td>En proceso...</td>
+            <td>{{deb.datos.date|date:"d/m/Y"}}</td>
+            {% if deb.datos.date_fin %}
+            <td>{{deb.datos.date_fin|date:"d/m/Y"}}</td>
+            {% else %}
+            <td> No definido </td>
+            {% endif %}
+        </tr>
+      {% endfor %}
+    </tbody>
+    </table>
+  <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+  <script src='https://cdn.datatables.net/1.10.10/js/jquery.dataTables.min.js'></script>
+  <script src="{% static 'js/dataTable.js' %}"></script>
+</div>
+</body>
+
+{% endblock content %}
+</html>

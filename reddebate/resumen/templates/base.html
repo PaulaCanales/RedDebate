@@ -12,18 +12,18 @@
       <link rel="stylesheet" type='text/css' href="{% static '/css/bootstrap-tagsinput.css' %}" >
 
       <!-- DatePicker -->
-      <link rel="stylesheet" href="{% static 'css/datepicker.css' %}"/>
-      <script src="{% static 'js/bootstrap-datepicker.js' %}"></script>
+      <!-- <link rel="stylesheet" href="{% static 'css/datepicker.css' %}"/>
+      <script src="{% static 'js/bootstrap-datepicker.js' %}"></script> -->
 			<script src="{% static 'js/bootstrap.js' %}"></script>
       <script src="{% static 'js/bootstrap-tagsinput.js' %}"></script>
 			<script src="{% static 'js/functions.js' %}"></script>
 			<script src="{% static 'js/channels.js' %}"></script>
       <script src="{% static 'js/reconnecting-websocket.min.js' %}"></script>
-      <script>
+      <!-- <script>
         $(function() {
           $('.datepicker').datepicker();
         });
-      </script>
+      </script> -->
 
        <title>RED DE DEBATE</title>
 	</head>
@@ -59,7 +59,11 @@
    }
   $(document).ready(
     function(){
-			$('[data-toggle="tooltip"]').tooltip();  
+			try {
+				$('[data-toggle="tooltip"]').tooltip();
+			} catch (e) {
+				// no hay tooltip
+			}
 			$('input[name=radioDeb]').change(function(){
 		        // $('#tipoDeb').submit();
 						var opcion = $("input[name=radioDeb]:checked")
@@ -159,6 +163,9 @@
                     </li>
 										<li>
                         <a href="{% url 'cerrados' %}">Debates Cerrados</a>
+                    </li>
+										<li>
+                        <a href="{% url 'debates' %}">Mis Debates</a>
                     </li>
                     <li>
                         <a href="{% url 'perfil' id_usr=user.id %}"> Perfil </a>

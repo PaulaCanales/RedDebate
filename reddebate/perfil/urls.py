@@ -10,6 +10,6 @@ urlpatterns = [
     url(r'^(?P<id_usr>[0-9]+)/$', views.perfil, name='perfil'),
     url(r'^usr/(?P<id_arg>[0-9]+)/$', views.perfil, name='perfil'),
     url(r'^usr/(?P<id_arg>[0-9]+)/(?P<id_reb>[0-9]+)/$', views.perfil, name='perfil'),
-    # url(r'^(?P<id_usr>[0-9]+)/$', views.perfiles, name='perfiles'),
+    url(r'^debates$', views.debates_usuario, name='debates'),
     url(r'^', include('resumen.urls', namespace='resumen'))
 ]
