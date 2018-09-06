@@ -77,7 +77,7 @@ def index(request):
         if 'id_deb' in request.POST:
             cerrar_debate(request)
             return redirect('index')
-            
+
     if request.method == 'GET':
         if 'q' in request.GET:
             deb = busqueda(request)
@@ -133,6 +133,7 @@ def datos_debates(debates, usuario):
     for debate in debates:
         num_posturas_af = Postura.objects.filter(id_debate_id=debate.id_debate, postura=1).count()
         num_posturas_ec = Postura.objects.filter(id_debate_id=debate.id_debate, postura=0).count()
+        num_argumentos = Argumento.objects.filter(id_debate_id=debate.id_debate).count()
         num_posturas = num_posturas_af + num_posturas_ec
     	if (int(num_posturas)==0):
             puede_editar = "si"
@@ -146,13 +147,15 @@ def datos_debates(debates, usuario):
             try:
                 participa = Participantes.objects.get(id_debate_id=debate.id_debate, id_usuario_id=usuario.id)
                 lista_debates.append({"datos":debate, "porcentaje_f":porcentaje_f, "porcentaje_c":porcentaje_c,
-                                        "num_posturas_af":num_posturas_af, "num_posturas_ec":num_posturas_ec, "num_posturas":num_posturas})
+                                        "num_posturas_af":num_posturas_af, "num_posturas_ec":num_posturas_ec,
+                                        "num_posturas":num_posturas, "num_args":num_argumentos})
 
             except:
                 participa = False
         else:
             lista_debates.append({"datos":debate, "porcentaje_f":porcentaje_f, "porcentaje_c":porcentaje_c,
-                                    "num_posturas_af":num_posturas_af, "num_posturas_ec":num_posturas_ec, "num_posturas":num_posturas})
+                                    "num_posturas_af":num_posturas_af, "num_posturas_ec":num_posturas_ec,
+                                    "num_posturas":num_posturas, "num_args":num_argumentos})
     return lista_debates
 
 def tagged(request, slug):

@@ -59,7 +59,7 @@
    }
   $(document).ready(
     function(){
-			$('[data-toggle="tooltip"]').tooltip();  
+			$('[data-toggle="tooltip"]').tooltip();
 			$('input[name=radioDeb]').change(function(){
 		        // $('#tipoDeb').submit();
 						var opcion = $("input[name=radioDeb]:checked")
@@ -159,6 +159,9 @@
                     </li>
 										<li>
                         <a href="{% url 'cerrados' %}">Debates Cerrados</a>
+                    </li>
+										<li>
+                        <a href="{% url 'debates' %}">Mis Debates</a>
                     </li>
                     <li>
                         <a href="{% url 'perfil' id_usr=user.id %}"> Perfil </a>

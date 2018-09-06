@@ -59,16 +59,6 @@
         <div class="right col-lg-8">
           <div class="main">
           <main>
-            <input id="tab1" type="radio" name="tabs" checked>
-            <label for="tab1">Información</label>
-
-            <input id="tab2" type="radio" name="tabs">
-            <label for="tab2">Debates Abiertos</label>
-
-            <input id="tab3" type="radio" name="tabs">
-            <label for="tab3">Debates Cerrados</label>
-
-            <section id="content1">
               <h4 class="fullname">{{usuario.get_full_name}}</h4>
               <p class="desc-datos">Username</p>
               <p class="datos">{{usuario.username}}</p>
@@ -99,28 +89,6 @@
                   <label type="button" onclick='cancelar_alias();'> Cancelar </label>
                 </form>
                </div>
-            </section>
-
-            <section id="content2">
-              <ul class="cards">
-                {% for deb in object_list %}
-                  {% ifequal deb.datos.estado 'abierto'%}
-                    {% include 'grilla.html' with index=False %}
-                  {%endifequal%}
-                {% endfor %}
-              </ul>
-            </section>
-
-            <section id="content3">
-              <ul class="cards">
-                {% for deb in object_list %}
-                  {% ifequal deb.datos.estado 'cerrado'%}
-                    {% include 'grilla.html' with index=False %}
-                  {%endifequal%}
-                {% endfor %}
-              </ul>
-            </section>
-
           </main>
         </div>
         </div>
