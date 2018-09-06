@@ -1,18 +1,18 @@
 $(document).ready(function() { //Inicio
     var myTable = $('#myTable').DataTable();
-  
+
     $('#myTable tbody').on( 'click', 'tr', function () {
        $(this).toggleClass('selected');
     });
-        
+
     //Contar filas seleccionadas
     $('#btnValoresSeleccionados').click(function() {
        //alert(myTable.rows().data().length+' row(s) selected' );
-      
+
       //Recorre las filas de la tabla
         $('#myTable tbody tr').each(function(indexFila){
-          //verifica si  la fila seleccionada tiene la clase 'selected'  
-          if($(this).hasClass('selected')) { 
+          //verifica si  la fila seleccionada tiene la clase 'selected'
+          if($(this).hasClass('selected')) {
 							alert("La fila: "+indexFila+" se ha seleccionado");
 						}
           //Recorre las columnas de la tabla
@@ -22,18 +22,21 @@ $(document).ready(function() { //Inicio
               alert(campo1+" :children");
             };
           });
-          
+
         });//fin de '#myTable tbody tr'
-      
+
     });//fin (btnSeleccionados)
     // alert(myTable.rows('.selected').data().length+' row(s) selected' );
-  
+
     //Obtener valor de las filas a las que se hace click
-    var myFila= myTable.row( this ).data(); //Obtiene datos de una fila
-    $.each(myFila,function(index, contenido){ //Recorre un array
-       if(index==2){
-          alert(contenido);
-       };
-    }); 
-  
+    // var myFila= myTable.row( this ).data(); //Obtiene datos de una fila
+    // $.each(myFila,function(index, contenido){ //Recorre un array
+    //    if(index==2){
+    //       alert(contenido);
+    //    };
+    // // });
+    //
+    // document.getElementById('myTable_previous').text="Anterior";
+    // document.getElementById('myTable_next').text="Siguiente";
+
 } );//Fin
