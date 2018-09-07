@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 
 from resumen.models import Debate
-from debate.models import Postura, Argumento, Valoracion, Respuesta, Edicion, Participantes
+from debate.models import Postura, Argumento, Valoracion, Respuesta, Edicion, Participantes, Visita
 from perfil.models import Perfil, Notificacion
 from debate.forms import publicaArgumentoForm1,publicaArgumentoForm0, publicaRespuestaForm
 from resumen.views import verificaNotificacion
@@ -24,8 +24,11 @@ def despliega(request, id_debate): #debate_id
 	arg_form0 = publicaArgumentoForm0(creador=creador,max_length=max_length)
 	arg_form1 = publicaArgumentoForm1(creador=creador,max_length=max_length)
 	resp_form = publicaRespuestaForm(creador=creador,max_length=max_length)
+	debate = Debate.objects.get(id_debate= id_debate)
+	vistas = cuenta_visitas(debate)
 	if request.method == 'POST':
-
+		visita = Visita.objects.filter(id_debate=debate)
+		visita.update(num=visita.num-1)
 		if 'id_arg' in request.POST:
 			respuesta = valorar_argumento(request)
 			return HttpResponse(respuesta)
@@ -42,7 +45,6 @@ def despliega(request, id_debate): #debate_id
 			id_debate = elimina_argumento(request)
 			return redirect(despliega,id_debate)
 
-	debate = Debate.objects.get(id_debate= id_debate)
 	usuario_id = debate.id_usuario_id #usuario creador
 	usuario_creador = User.objects.get(id= usuario_id)
 	cant_rebates = debate.num_rebate
@@ -249,7 +251,8 @@ def despliega(request, id_debate): #debate_id
 		'razon_f_c':razon_favor_contra, 'razon_c_f':razon_contra_favor,
 		'img': debate.img, 'cant_rebates':cant_rebates, 'arg_form1':arg_form1,
 		'arg_form0':arg_form0,'resp_form':resp_form, 'notificaciones': notificacion_usr,
-		'participa': participa, 'participantes': lista_participantes, 'tipo_rebate': tipo_rebate, 'rebate': rebate}
+		'participa': participa, 'participantes': lista_participantes, 'tipo_rebate': tipo_rebate,
+		'rebate': rebate, 'visitas': vistas}
 	return render(request, 'debate.html', datos)
 
 ##@brief Funcion que guarda el comentario del usuario de un argumento.
@@ -327,3 +330,12 @@ def ver_notificacion(request, id_debate, id_notificacion):
 	notificacion.estado = 1
 	notificacion.save()
 	return redirect(despliega,id_debate)
+
+def cuenta_visitas(debate):
+	try:
+		vista = Visita.objects.get(id_debate=debate)
+	except:
+		vista = Visita.objects.create(id_debate=debate)
+	vista.num = vista.num + 1
+	vista.save()
+	return vista.num
