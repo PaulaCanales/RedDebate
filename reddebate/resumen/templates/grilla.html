@@ -19,12 +19,10 @@
         <!-- <form action="{% url 'despliega' deb.datos.id_debate %}">
           <button class="btn btn-card">Ver</button>
         </form> -->
-        {% ifequal deb.datos.id_usuario_id usuario.id %}
         <div class="datosIndex">
-          <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true" style="color: #18BD9D"></span> {{deb.num_posturas_af}}
-          <span class="glyphicon glyphicon-thumbs-down" aria-hidden="true" style="color: #d9534f"></span> {{deb.num_posturas_ec}}
+          <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span> {{deb.visitas}}
+          <i class="fa fa-group"></i> {{deb.num_posturas}}
         </div>
-        {% endifequal %}
         {% else %}
         <div class="dropdown">
           <button class="btn btn-card2 dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
