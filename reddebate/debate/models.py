@@ -131,9 +131,10 @@ class Participantes(models.Model):
 class Visita(models.Model):
     #parametros de la tabla.
     id = models.AutoField(primary_key=True)
-    num = models.IntegerField(default=0)
+    num = models.IntegerField(default=1)
     date = models.DateTimeField(default=datetime.now)
     id_debate = models.ForeignKey(Debate)
+    id_usuario = models.ForeignKey(User)
 
     def __unicode__(self): # __unicode__ on Python 2
         return self.num

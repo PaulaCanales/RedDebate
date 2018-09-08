@@ -9,9 +9,12 @@ from resumen.views import verificaNotificacion
 from django.http import HttpResponse
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
-
+from django.db.models import Sum
+from datetime import *
 import itertools
 import json
+import datetime
+import pytz
 
 ##@brief Funcion que despliega el debate
 ##@param request solicitud web
@@ -27,7 +30,7 @@ def despliega(request, id_debate): #debate_id
 	arg_form1 = publicaArgumentoForm1(creador=creador,max_length=max_length)
 	resp_form = publicaRespuestaForm(creador=creador,max_length=max_length)
 	debate = Debate.objects.get(id_debate= id_debate)
-	vistas = cuenta_visitas(debate)
+	vistas = cuenta_visitas(debate, request.user)
 	if request.method == 'POST':
 		# visita = Visita.objects.filter(id_debate=debate)
 		# visita.update(num=visita.num-1)
@@ -345,11 +348,21 @@ def ver_notificacion(request, id_debate, id_notificacion):
 	notificacion.save()
 	return redirect(despliega,id_debate)
 
-def cuenta_visitas(debate):
+def cuenta_visitas(debate, usuario):
+	utc=pytz.UTC
 	try:
-		vista = Visita.objects.get(id_debate=debate)
+		vista = Visita.objects.get(id_debate=debate, id_usuario_id=usuario.id)
+		delta = vista.date + timedelta(minutes=30)
+
 	except:
-		vista = Visita.objects.create(id_debate=debate)
-	vista.num = vista.num + 1
-	vista.save()
-	return vista.num
+		vista = Visita.objects.create(id_debate=debate, id_usuario_id=usuario.id)
+		delta = utc.localize(vista.date) + timedelta(minutes=30)
+	ahora = utc.localize(datetime.datetime.today())
+
+	if delta <= ahora:
+		vista.num = vista.num + 1
+		vista.date = ahora
+		vista.save()
+	total = Visita.objects.filter(id_debate=debate).aggregate(Sum('num'))
+	print(total)
+	return total.values()[0]

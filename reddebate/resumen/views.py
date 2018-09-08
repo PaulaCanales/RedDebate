@@ -18,7 +18,7 @@ from debate.models import Postura, Argumento, Respuesta, Valoracion, Edicion, Pa
 from perfil.models import Perfil, Notificacion
 from resumen.forms import creaDebateForm, LoginForm
 from taggit.models import Tag
-from django.db.models import Q
+from django.db.models import Q, Sum
 
 def home(request):
     form = LoginForm(request.POST or None)
@@ -135,12 +135,7 @@ def datos_debates(debates, usuario):
         num_posturas_ec = Postura.objects.filter(id_debate_id=debate.id_debate, postura=0).count()
         num_argumentos = Argumento.objects.filter(id_debate_id=debate.id_debate).count()
         num_posturas = num_posturas_af + num_posturas_ec
-        try:
-            visitas = Visita.objects.get(id_debate=debate).num
-        except:
-            visitas = 0
-        print("visitas")
-        print(visitas)
+        visitas = Visita.objects.filter(id_debate=debate).aggregate(Sum('num')).values()[0]
     	if (int(num_posturas)==0):
             puede_editar = "si"
             porcentaje_c=0
