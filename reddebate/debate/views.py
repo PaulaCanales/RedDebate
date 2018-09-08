@@ -10,6 +10,8 @@ from django.http import HttpResponse
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 
+import itertools
+import json
 
 ##@brief Funcion que despliega el debate
 ##@param request solicitud web
@@ -27,8 +29,8 @@ def despliega(request, id_debate): #debate_id
 	debate = Debate.objects.get(id_debate= id_debate)
 	vistas = cuenta_visitas(debate)
 	if request.method == 'POST':
-		visita = Visita.objects.filter(id_debate=debate)
-		visita.update(num=visita.num-1)
+		# visita = Visita.objects.filter(id_debate=debate)
+		# visita.update(num=visita.num-1)
 		if 'id_arg' in request.POST:
 			respuesta = valorar_argumento(request)
 			return HttpResponse(respuesta)
@@ -212,7 +214,19 @@ def despliega(request, id_debate): #debate_id
 		porcentaje_f = round(float(numpost_f) / float(numpost_c+numpost_f),3)*100
 		porcentaje_c = round(float(numpost_c) / float(numpost_c+numpost_f),3)*100
 
-	posturas_total = Postura.objects.filter(id_debate_id= id_debate)
+	posturas_total = Postura.objects.all().order_by('-date_Postura')
+
+	fecha = Postura.objects.filter(id_debate_id = id_debate).values("date_Postura")
+	grupo = itertools.groupby(fecha, lambda record: record.get("date_Postura").strftime("%Y-%m-%d"))
+	suma = 0
+	posturas_por_dia = [[debate.date.strftime("%Y-%m-%d"),0]]
+	for dia,postura_dia in grupo:
+		suma += len(list(postura_dia))
+		posturas_por_dia.append([dia, suma])
+	# posturas_por_dia = [[dia, len(list(postura_dia)), suma+len(list(postura_dia))] for dia, postura_dia in grupo]
+	# posturas_por_dia.insert(0,[debate.date.strftime("%Y-%m-%d"),0])
+	print(posturas_por_dia)
+	fecha_posturas = json.dumps(posturas_por_dia)
 	cambio_favor_contra = 0
 	cambio_contra_favor = 0
 	razon_favor_contra = []
@@ -252,7 +266,7 @@ def despliega(request, id_debate): #debate_id
 		'img': debate.img, 'cant_rebates':cant_rebates, 'arg_form1':arg_form1,
 		'arg_form0':arg_form0,'resp_form':resp_form, 'notificaciones': notificacion_usr,
 		'participa': participa, 'participantes': lista_participantes, 'tipo_rebate': tipo_rebate,
-		'rebate': rebate, 'visitas': vistas}
+		'rebate': rebate, 'visitas': vistas, 'fecha_posturas':posturas_por_dia}
 	return render(request, 'debate.html', datos)
 
 ##@brief Funcion que guarda el comentario del usuario de un argumento.

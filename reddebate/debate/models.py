@@ -23,7 +23,7 @@ class Postura(models.Model):
     id_debate = models.ForeignKey(Debate)
 
     def __unicode__(self): # __unicode__ on Python 2
-        return self.postura
+        return unicode(self.postura)
     def __getitem__(self, key):
         return getattr(self, key)
     def as_dict(self):

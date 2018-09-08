@@ -10,12 +10,13 @@ $(document).ready(function(){
     document.getElementById("bot_af_init").disabled = true;
     document.getElementById("bot_ec_init").disabled = true;
   }
-	google.charts.load('current', {'packages':['corechart', 'bar']});
+	google.charts.load('current', {'packages':['corechart', 'bar', 'annotationchart']});
 	google.charts.setOnLoadCallback(posturaChart);
 	google.charts.setOnLoadCallback(argumentosChart);
 	google.charts.setOnLoadCallback(mejorArgumentoChart);
 	google.charts.setOnLoadCallback(cambioPosturaChart);
-	google.charts.setOnLoadCallback(razonCambioChart);
+  google.charts.setOnLoadCallback(razonCambioChart);
+	google.charts.setOnLoadCallback(posturasTiempo);
 	});
 	var varGlobal = {
 		postura_f : {{num_post_f}},
@@ -30,8 +31,10 @@ $(document).ready(function(){
 		cambio_contra_favor: {{cambio_c_f}},
 		cambio_total: {{cambio_f_c}} + {{cambio_c_f}},
 		razon_favor_contra: {{razon_f_c}},
-		razon_contra_favor: {{razon_c_f}}
-	}
+		razon_contra_favor: {{razon_c_f}},
+	};
+  var fecha_posturas = {{fecha_posturas|safe}};
+  console.log({{argF.valoracion}});
 	{% if argF.0.2 %} varGlobal.primer_arg_f={{ argF.0.2}}; {% endif %}
 	{% if argF.1.2 %} varGlobal.segundo_arg_f={{ argF.1.2}}; {% endif %}
 	{% if argC.0.2 %} varGlobal.primer_arg_c={{ argC.0.2}}; {% endif %}
@@ -40,7 +43,7 @@ $(document).ready(function(){
 <!-- <div class="container"> -->
   <div id="estadisticas" >
     <h3>Estadísticas</h3>
-
+    <div id="chart_div" style="width: 100%; height: 200px"></div>
     <div class="row">
        <div class="col-md-4"> <div id="piechart_postura"></div></div>
        <div class="col-md-4"> <div id="piechart_argumento"></div></div>

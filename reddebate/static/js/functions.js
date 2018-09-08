@@ -187,7 +187,7 @@ function posturaChart() {
 
         var chart = new google.visualization.PieChart(document.getElementById('piechart_postura'));
         chart.draw(data, options);
-}
+};
 function argumentosChart() {
   var data = google.visualization.arrayToDataTable([
           ['Argumentos', 'Cantidad'],
@@ -205,7 +205,7 @@ function argumentosChart() {
 
         var chart = new google.visualization.PieChart(document.getElementById('piechart_argumento'));
         chart.draw(data, options);
-}
+};
 
 function cambioPosturaChart() {
   var data = google.visualization.arrayToDataTable([
@@ -229,7 +229,7 @@ function cambioPosturaChart() {
           var selectedItem = chart.getSelection()[0].row;
          }
         google.visualization.events.addListener(chart, 'select', selectHandler);
-}
+};
 
 function mejorArgumentoChart(){
   var data = new google.visualization.arrayToDataTable([
@@ -281,4 +281,21 @@ function razonCambioChart(){
       };
       var chart = new google.visualization.BarChart(document.getElementById('chart_razonCambio'));
       chart.draw(data, options);
-    }
+    };
+  function posturasTiempo() {
+    var data = new google.visualization.DataTable();
+    data.addColumn('date', 'Fecha');
+    data.addColumn('number', 'Posturas');
+    for (i=0 ; i<fecha_posturas.length ; i++){
+      data.addRow([new Date(fecha_posturas[i][0]),fecha_posturas[i][1]]);
+    };
+    var chart = new google.visualization.AnnotationChart(document.getElementById('chart_div'));
+
+    var options = {
+      displayAnnotations: true,
+      colors: ['#18BD9B'],
+      width:"100%",
+    };
+
+    chart.draw(data, options);
+  };
