@@ -35,8 +35,24 @@ function despliega_formulario(id){
   $(id).slideDown("slow");
   $('html, body').animate({scrollTop : 0},800);
   $(nuevoDebateBtn).hide();
-}
-
+};
+function confirm_modal_show(id, deb, titulo) {
+  $(".modalcontainerconfirm").fadeIn("slow");
+  if (id==1){
+    $("#cerrarDebate").fadeIn("slow");
+    $("#iddebacerrar").val(deb);
+    $("#titulodebcerrar").text(titulo);
+  }
+  else{
+    $("#republicarDebate").fadeIn("slow");
+    $("#iddebarepublicar").val(deb);
+    $("#titulodebrepublicar").text(titulo);
+  }
+};
+function confirm_modal_close() {
+  $(".modalcontainerconfirm").fadeOut("slow");
+  $(".modalconfirm").fadeOut("slow");
+};
 function cierra_formulario(id){
   $(id).slideUp("slow");
   $(nuevoDebateBtn).show();
@@ -167,6 +183,20 @@ function creartags(){
   console.log(res);
 
 };
+
+function mostrarFecha(){
+  document.getElementById("fechafin2").disabled = false;
+  var fecha = new Date()
+  dd = fecha.getDate();
+  mm = fecha.getMonth() + 1;
+  yyyy = fecha.getFullYear()
+  if (dd<10){dd='0'+dd};
+  if (mm<10){mm='0'+mm};
+  $("#fechafin2").val(yyyy+'-'+mm+'-'+dd)
+}
+function quitarFecha(){
+  document.getElementById("fechafin2").disabled = true;
+}
 
 // Gráficos
 

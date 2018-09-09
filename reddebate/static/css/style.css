@@ -1085,7 +1085,6 @@ hr {
 #progressbar {
 	margin-bottom: 30px;
 	overflow: hidden;
-	/*CSS counters to number the steps*/
 	counter-reset: step;
 }
 #progressbar li {
@@ -1665,4 +1664,90 @@ hr {
   background-color: #DADADA70;
   border-radius: 3px;
   border: 5px solid #cccccc2e;
+}
+.flexconfirm {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modalcontainerconfirm {
+  display: none;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 2;
+}
+.modalcontainerconfirm.active {
+  display: block;
+}
+
+.modalconfirm {
+  display: none;
+  position: relative;
+  width: 600px;
+  height: 330px;
+  background-color: #FFF;
+  border-radius: 10px;
+}
+.modalconfirm.active {
+  display: block;
+}
+.modalconfirm .content {
+  padding: 30px;
+}
+.modalconfirm .close {
+  font-family: "Source Sans Pro", sans-serif;
+  cursor: pointer;
+  color: #FFF;
+  width: 50px;
+  height: 50px;
+  text-align: center;
+  line-height: 50px;
+  position: absolute;
+  right: 0;
+  color: #999;
+  font-size: 40px;
+}
+.modalconfirm .close span {
+  transform: rotate(45deg);
+  display: block;
+}
+.modalconfirm .buttons {
+  width: 600px;
+  position: absolute;
+  bottom: 0;
+  height: 50px;
+  background-color: #FFF;
+}
+.modalconfirm .buttons a, .modalconfirm .buttons button{
+  width: 50%;
+  height: 50px;
+  line-height: 50px;
+  text-align: center;
+  float: left;
+  background-color: #EEE;
+  color: #4d5c6e;
+  transition: 0.3s;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+.modalconfirm .buttons button{
+  background-color: #18BD9D;
+  color: #FFF;
+}
+.modalconfirm .buttons a:hover {
+  background-color: #e1e1e1;
+}
+.modalconfirm .buttons a:nth-of-type(2) {
+  float: right;
+  color: #FFF;
+  background-color: #00c06d;
+}
+.modalconfirm .buttons butt:nth-of-type(2):hover {
+  background-color: #18BD9D;
 }
