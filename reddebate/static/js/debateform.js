@@ -24,14 +24,10 @@ $(document).ready(
 		    }});
 		$('#debTipoParticipacionForm').on('change', function() {
 			if (this.value == 1){
-				$("input[name='participantes']").removeAttr('disabled');
-				$("#containercheckbox").removeClass("userscheckbox_disabled");
-				$("#containercheckbox").addClass("userscheckbox");
+				document.getElementById('usuariosPrivado_modal').style.display="block";
 			}
 			else{
-				$("input[name='participantes']").attr('disabled','disabled');
-				$("#containercheckbox").removeClass("userscheckbox");
-				$("#containercheckbox").addClass("userscheckbox_disabled");
+				document.getElementById('usuariosPrivado_modal').style.display="None";
 			}
 		});
 		//jQuery time
@@ -129,3 +125,24 @@ $(document).ready(
 		});
 
 	});
+
+	$(document).ready(function(){
+
+	    $("#searchColumn").on("input",function(){
+
+	        var searchTxt = $(this).val();
+	        searchTxt = searchTxt.replace(/[.()+]/g,"\\$&");
+
+	        var patt = new RegExp("^" + searchTxt,"i");
+
+	        $(":checkbox").each(function(){
+							var label = $(this).parent().text().trim();
+	            if(patt.test(label))
+	                $(this).closest("div").show();
+
+	            else
+	                $(this).closest("div").hide();
+
+	        })
+	    })
+	})
