@@ -25,8 +25,10 @@ $(document).ready(
 		$('#debTipoParticipacionForm').on('change', function() {
 			if (this.value == 1){
 				document.getElementById('usuariosPrivado_modal').style.display="block";
+				document.getElementById('agregarusr').style.display="block";
 			}
 			else{
+				document.getElementById('agregarusr').style.display="None";
 				document.getElementById('usuariosPrivado_modal').style.display="None";
 			}
 		});

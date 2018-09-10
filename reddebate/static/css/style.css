@@ -229,6 +229,17 @@ section.success {
   text-transform: uppercase;
   font-family: montserrat;
 }
+.modal-content h5{
+  background: #e5e5e5;
+  color: #2D3E50;
+  border-bottom: 1px solid lightgray;
+  padding: 5px 20px 5px 20px;
+  margin: -20px -20px 20px -20px;
+  border-radius: 5px 5px 0 0;
+  text-transform: uppercase;
+  font-family: montserrat;
+  text-align: left;
+}
 .modal-content h4{
   font-size: 20px;
   font-family: montserrat;
@@ -962,29 +973,41 @@ hr {
 #participantesDiv{
   display: block;
 }
-.userscheckbox_disabled {
-  border:2px solid #ccc;
-  width:auto;
-  height: 100px;
-  overflow-y: scroll;
-}
-.userscheckbox_disabled ul {
-  list-style: none;
-  background: lightgray;
-  padding-left: 0;
-  color: gray;
-}
 .userscheckbox {
   border:2px solid #ccc;
   width:auto;
-  height: 100px;
+  height: 300px;
   overflow-y: scroll;
   color: #2D3E50;
+  margin: 25px 0px 25px 0px;
 }
 .userscheckbox ul{
   list-style: none;
   background: transparent;
   padding-left: 0;
+}
+.inputGroup {
+  background-color: #fff;
+  display: block;
+  margin: 10px 0;
+  position: relative;
+  padding: 10px;
+}
+.inputGroup input {
+  width: 32px;
+  height: 32px;
+  order: 1;
+  z-index: 2;
+  position: absolute;
+  right: 30px;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+          transform: translateY(-50%);
+  cursor: pointer;
+  /*visibility: hidden;*/
+}
+#usuariosPrivado_modal .modal-content{
+  width: 40%;
 }
 .leftAlign{
   text-align: left;
@@ -1065,7 +1088,7 @@ hr {
 	margin: 10px 5px;
 }
 #nuevodebateform .action-button:hover, #nuevodebateform .action-button:focus {
-	box-shadow: 0 0 0 2px white, 0 0 0 3px #2D3E50;
+	background: #0D2033;
 }
 /*headings*/
 .fs-title {
@@ -1750,4 +1773,7 @@ hr {
 }
 .modalconfirm .buttons butt:nth-of-type(2):hover {
   background-color: #18BD9D;
+}
+#searchColumn{
+  width: 100%;
 }

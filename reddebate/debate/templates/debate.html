@@ -16,7 +16,9 @@
 		<span class="close" onclick="cerrar_modal('participantes_modal')">&times;</span>
 		<h3>Participantes <span class="glyphicon glyphicon-user"></span></h3>
 		{% for participante in participantes%}
+		<a class="dummy-media-object" href="{% url 'perfil' id_usr=participante.id %}">
 			<p> {{participante}} </p>
+		</a>
 		{% endfor %}
 	</div>
 </div>

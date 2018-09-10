@@ -38,6 +38,7 @@
               <span class="tooltipformtext">Indica si deseas que tu debate sea publico o privado. Si es privado, debes seleccionar a los usuarios que tendrán acceso</span>
             </div>
             {{ form.tipo_participacion }}
+            <a id="agregarusr" href="javascript:abrir_modal('usuariosPrivado_modal')" style="display:none"> Añadir usuarios</a>
           </div>
           <div class="fieldWrapper">
             {{ form.alias_c.errors }}
@@ -142,16 +143,19 @@
       </div>
       <div id="usuariosPrivado_modal" class="modal">
       	<div class="modal-content">
-      		<span class="close" onclick="cerrar_modal('usuariosPrivado_modal')">&times;</span>
+          <h5>
+            <span class="close" onclick="cerrar_modal('usuariosPrivado_modal')">&times;</span><br>
+            Usuarios
+          </h5>
           <div class="fieldWrapper">
             {{form.participantes.errors }}
-            <label>Usuarios</label>
-            <input type="text" value="" name="searchColumn" id="searchColumn"/>
+            <input type="text" value="" name="searchColumn" id="searchColumn" placeholder="Busca a un usuario..."/>
             <div id="containercheckbox" class="userscheckbox">
             {% for field in form.participantes %}
-            <div>{{field}}</div>
+            <div class="inputGroup">{{field}}</div>
             {%endfor%}
             </div>
+            <a href="javascript:cerrar_modal('usuariosPrivado_modal')" class="submit action-button"> Aceptar </a>
           </div>
       	</div>
       </div>

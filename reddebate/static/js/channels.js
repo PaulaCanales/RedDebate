@@ -64,7 +64,7 @@ $(document).ready(function(){
       var fechafin = null;
     }
     var selected = [];
-    $('#debParticipantesForm input:checked').each(function() {
+    $("input[name*='participantes']:checked").each(function() {
         selected.push($(this).val());
     });
     var message = {
