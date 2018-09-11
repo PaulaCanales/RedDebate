@@ -2,7 +2,6 @@
 {% load static %}
 <html>
 	<head>
-		<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
     <link rel="shortcut icon" type="image/png" href="{% static 'img/RDLogo02.png' %}"/>
 
     <!--Load the AJAX API google charts-->
@@ -37,16 +36,14 @@
 		js.src = "https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v3.0";
 		fjs.parentNode.insertBefore(js, fjs);
 	}(document, 'script', 'facebook-jssdk'));
-	var deb;
+
   function valorar(argumento, opcionusr, id){
-		console.log(id);
-		// var deb = parseInt(id)
 		 $.ajax({
-				 url: "{% url 'despliega' 10 %}" ,
+				 url:  $(this).attr("href"),
 				 type: 'POST',
 				 data:{  id_arg : argumento,
 								 opcion: opcionusr,
-								 id_deb: deb,
+								 id_deb: id,
 								 csrfmiddlewaretoken: '{{ csrf_token }}'
 							 } ,
 							 success: function(data) {
