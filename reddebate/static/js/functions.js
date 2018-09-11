@@ -198,6 +198,14 @@ function quitarFecha(){
   document.getElementById("fechafin2").disabled = true;
 }
 
+function openNav() {
+    document.getElementById("mySidenav").style.width = "250px";
+}
+
+function closeNav() {
+    document.getElementById("mySidenav").style.width = "0";
+}
+
 // Gráficos
 
 function posturaChart() {

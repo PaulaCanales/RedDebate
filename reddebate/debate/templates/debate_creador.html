@@ -77,6 +77,26 @@ $(document).ready(function(){
 			</div>
 		</div>
 		{% ifequal debate.estado 'abierto'%}
+		<div id="progresoDebate">
+				{% ifequal porc_f 0 %}
+					<div id="progreso"class="progress-bar" style="background:#d9534f; width: {{porc_c}}%">
+						<span class="glyphicon glyphicon-thumbs-down"></span> <label id="label_porc_c">{{porc_c}}%</label>
+					</div>
+				{% else %}
+					{% ifequal porc_c 0 %}
+						<div id="progreso"class="progress-bar" style="background:#18BC9C; width: {{porc_f}}%">
+							<span class="glyphicon glyphicon-thumbs-up"></span> <label id="label_porc_f">{{porc_f}}%</label>
+						</div>
+						{% else %}
+						<div id="progresoFavor"class="progress-bar" style="width: {{porc_f}}%">
+							<span class="glyphicon glyphicon-thumbs-up"></span> <label id="label_porc_f">{{porc_f}}%</label>
+						</div>
+						<div id="progresoContra"class="progress-bar" style="width: {{porc_c}}%">
+							<span class="glyphicon glyphicon-thumbs-down"></span> <label id="label_porc_c">{{porc_c}}%</label>
+						</div>
+					{% endifequal %}
+				{% endifequal %}
+			</div>
 		<div class="tab-slider--nav">
 			<ul class="tab-slider--tabs">
 				<li class="tab-slider--trigger active" rel="tab1">Discusión</li>

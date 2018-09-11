@@ -169,18 +169,19 @@
                         <a href="{% url 'perfil' id_usr=user.id %}"> Perfil </a>
                     </li>
 										<li>
-											<a href="#" rel="popover" title="Notificaciones" data-toggle="popover" data-trigger="focus" data-placement="bottom" data-popover-content="#popoverNotificaciones">
-												<span class="glyphicon glyphicon-bell"></span> <span id="num_notif" class="badge"> {{notificaciones|length}}</span>
+											<a href="javascript:openNav()" rel="popover" title="Notificaciones">
+												<span id="alertaSpan"class="glyphicon glyphicon-bell alerta_notificacion"></span>
 											</a>
 										</li>
                 </ul>
             </div>
-						<div id ="popoverNotificaciones" class="hide">
-						{% for notificacion in notificaciones  %}
-							<div id="notificacion{{notificacion.id}}" class="alert alert-info" role="alert">
-								<a href="{% url 'ver_notificacion' notificacion.id_debate_id notificacion.id %}">{{notificacion}}</a>
-							</div>
-						{% endfor %}
+						<div id="mySidenav" class="sidenav">
+						  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+							{% for notificacion in notificaciones  %}
+								<div id="notificacion{{notificacion.id}}" class="notificacion{{notificacion.estado}}">
+									<a href="{% url 'ver_notificacion' notificacion.id_debate_id notificacion.id %}">{{notificacion}}</a>
+								</div>
+							{% endfor %}
 						</div>
         </div>
     	</nav>

@@ -75,6 +75,8 @@ class Argumento(models.Model):
 
     def __unicode__(self): # __unicode__ on Python 2
         return self.descripcion
+    def __getitem__(self, key):
+        return getattr(self, key)
     def as_dict(self):
         if self.alias_c == "username":
             usr = User.objects.get(id = self.id_usuario.id).username
@@ -82,6 +84,31 @@ class Argumento(models.Model):
             usr = Perfil.objects.get(user_id = self.id_usuario.id).alias
 
         return {'descripcion': self.descripcion, 'nombre': usr, 'postura': self.postura}
+
+@receiver(post_save, sender=Argumento)
+def crea_notificacion(sender, instance, **kwargs):
+    if kwargs['created']:
+        print("argumento")
+        argumento = instance['id_argumento']
+        debate = instance['id_debate']
+        id_creador = debate.id_usuario_id
+        num_argumentos = Argumento.objects.filter(id_debate=debate.id_debate).count()
+        try:
+            notificacion = Notificacion.objects.get(id_debate_id=debate.id_debate, tipo="argumento")
+            print("segunda o mas")
+            notificacion.mensaje = str(num_argumentos)+" usuarios ha argumentado en "+str(debate)
+            notificacion.estado = 0
+            notificacion.save()
+        except:
+            print("primera")
+            msj = str(num_argumentos)+" usuario han argumentado en "+str(debate)
+            notificacion = Notificacion.objects.create(id_debate = debate, mensaje=msj, tipo="agumento")
+        Group("notificacion").send({'text': json.dumps(
+                                            {'id_creador': str(id_creador),
+                                            'mensaje': notificacion.mensaje,
+                                            'id_notificacion': notificacion.id,
+                                            'id_debate': debate.id_debate
+                                            })})
 
 class Respuesta(models.Model):
     #parametros de la tabla.

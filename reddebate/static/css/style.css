@@ -1777,3 +1777,56 @@ hr {
 #searchColumn{
   width: 100%;
 }
+.sidenav {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    right: 0;
+    background-color: rgba(13, 32, 51,0.9);
+    overflow-x: hidden;
+    transition: 0.5s;
+    padding-top: 60px;
+}
+
+.sidenav a {
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    color: #2D3E50;
+    display: block;
+    transition: 0.3s;
+}
+
+.sidenav a:hover {
+    color: #818181;
+}
+
+.sidenav .closebtn {
+    position: absolute;
+    top: 0;
+    right: 25px;
+    font-size: 36px;
+    margin-left: 50px;
+}
+
+.notificacion1 {
+  background: lightgray;
+  border-radius: 10px;
+  margin: 10px 5px;
+  font-size: 12px;
+}
+.notificacion0 {
+  background: #18BD9D;
+  border-radius: 10px;
+  margin: 10px 5px;
+  font-size: 12px;
+}
+.alerta_notificacion{
+    color: white;
+    background: transparent;
+    border-radius: 50%;
+    padding: 10px;
+    position: absolute;
+    top: 5px;
+}

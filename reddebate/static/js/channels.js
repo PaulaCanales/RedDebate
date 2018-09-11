@@ -6,17 +6,17 @@ $(document).ready(function(){
     var data = JSON.parse(notificacion.data);
     var id_usr_actual = $("#id_usuario_actual").text();
     if (id_usr_actual == data.id_creador){
-      $("#num_notif").text("!")
-      var popup = $("#popoverNotificaciones")
-      var url = "/debate/"+data.id_debate+"/"+data.id_notificacion
-      var item = document.getElementById("notificacion"+data.id_notificacion)
+      $("#alertaSpan").css('background-color', '#d9534f');
+      var menu = $("#mySidenav");
+      var url = "/debate/"+data.id_debate+"/"+data.id_notificacion;
+      var item = document.getElementById("notificacion"+data.id_notificacion);
       if(item){
-        $("#notificacion"+data.id_notificacion).text(data.mensaje)
+        $("#notificacion"+data.id_notificacion).text(data.mensaje);
       }
       else{
-        var ele = $('<div class="alert alert-danger" role="alert"> </div>')
-        ele.append($('<a href="'+url+'"></a>').text(data.mensaje))
-        popup.append(ele)
+        var ele = $('<div id="notificacion{{notificacion.id}}" class="notificacion0">');
+        ele.append($('<a href="'+url+'"></a>').text(data.mensaje));
+        menu.prepend(ele);
       }
     }
   };
