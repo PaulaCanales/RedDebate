@@ -1,6 +1,6 @@
 $(document).ready(function(){
-  var socket = new ReconnectingWebSocket('ws://' + window.location.host + window.location.pathname);
-  var socket_notificacion = new ReconnectingWebSocket('ws://' + window.location.host + '/notificacion/');
+  var socket = new WebSocket('wss://' + window.location.host + window.location.pathname);
+  var socket_notificacion = new WebSocket('wss://' + window.location.host + '/notificacion/');
 
   socket_notificacion.onmessage = function(notificacion){
     var data = JSON.parse(notificacion.data);
