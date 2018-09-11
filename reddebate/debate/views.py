@@ -4,7 +4,6 @@ from resumen.models import Debate
 from debate.models import Postura, Argumento, Valoracion, Respuesta, Edicion, Participantes, Visita
 from perfil.models import Perfil, Notificacion
 from debate.forms import publicaArgumentoForm1,publicaArgumentoForm0, publicaRespuestaForm
-from resumen.views import verificaNotificacion
 
 from django.http import HttpResponse
 from django.contrib.auth.models import User
@@ -242,7 +241,6 @@ def despliega(request, id_debate): #debate_id
 		num = Postura.objects.filter(id_debate_id=id_debate, postura=1, cambio_postura=i).count()
 		razon_contra_favor.append(num)
 		cambio_contra_favor += num
-	notificacion_usr = verificaNotificacion(request)
 	participantes = "publico"
 	participa = True
 	lista_participantes = []
@@ -267,7 +265,7 @@ def despliega(request, id_debate): #debate_id
 		'cambio_f_c':cambio_favor_contra, 'cambio_c_f':cambio_contra_favor,
 		'razon_f_c':razon_favor_contra, 'razon_c_f':razon_contra_favor,
 		'img': debate.img, 'cant_rebates':cant_rebates, 'arg_form1':arg_form1,
-		'arg_form0':arg_form0,'resp_form':resp_form, 'notificaciones': notificacion_usr,
+		'arg_form0':arg_form0,'resp_form':resp_form,
 		'participa': participa, 'participantes': lista_participantes, 'tipo_rebate': tipo_rebate,
 		'rebate': rebate, 'visitas': vistas, 'fecha_posturas':posturas_por_dia}
 	return render(request, 'debate.html', datos)

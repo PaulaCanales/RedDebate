@@ -14,7 +14,7 @@ from resumen.models import Debate
 from perfil.models import Perfil
 from debate.models import Postura, Argumento, Respuesta
 from perfil.forms import modificaAlias
-from resumen.views import verificaNotificacion, datos_debates, cerrar_debate
+from resumen.views import datos_debates, cerrar_debate
 from debate.views import actualiza_reputacion
 
 ##@brief Funcion que despliega los datos del usuario, debates abiertos, cerrados y opciones para cada uno.
@@ -39,10 +39,9 @@ def perfil(request, id_usr=None, id_arg=None, id_reb=None):
             alias_usuario = Perfil.objects.get(user=usuario)
 
             stats = estadisticas_usuario(usuario.id)
-            notificacion_usr = verificaNotificacion(request)
             return render(request, 'perfil_usuario.html', {'usuario': usuario,
                 'alias': alias_usuario, 'alias_form': alias_form,
-                'notificaciones': notificacion_usr, 'stats': stats
+                'stats': stats
                 })
         else:
             usa_alias = 'username'
@@ -50,10 +49,9 @@ def perfil(request, id_usr=None, id_arg=None, id_reb=None):
             alias_usuario = Perfil.objects.get(user_id=usuario)
             stats = estadisticas_usuario(usuario.id)
             total_usuarios = User.objects.all()
-            notificacion_usr = verificaNotificacion(request)
             return render(request, 'perfiles.html', {'usuario': usuario,
                 'alias': alias_usuario, 'usa_alias': usa_alias, 'total_usuarios': total_usuarios,
-                'notificaciones': notificacion_usr, 'stats': stats})
+                'stats': stats})
 
     else:
         if id_reb!=None:
@@ -68,10 +66,9 @@ def perfil(request, id_usr=None, id_arg=None, id_reb=None):
             alias_usuario = Perfil.objects.get(user_id=usuario)
         stats = estadisticas_usuario(usuario.id)
         total_usuarios = User.objects.all()
-        notificacion_usr = verificaNotificacion(request)
         return render(request, 'perfiles.html', {'usuario': usuario,
             'alias': alias_usuario, 'usa_alias': usa_alias, 'total_usuarios': total_usuarios,
-            'notificaciones': notificacion_usr, 'stats': stats})
+            'stats': stats})
 
 
 def estadisticas_usuario(id_usuario):

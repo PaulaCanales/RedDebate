@@ -177,11 +177,9 @@
             </div>
 						<div id ="popoverNotificaciones" class="hide">
 						{% for notificacion in notificaciones  %}
-						{% ifequal notificacion.estado 0 %}
 							<div id="notificacion{{notificacion.id}}" class="alert alert-info" role="alert">
 								<a href="{% url 'ver_notificacion' notificacion.id_debate_id notificacion.id %}">{{notificacion}}</a>
 							</div>
-						{% endifequal %}
 						{% endfor %}
 						</div>
         </div>

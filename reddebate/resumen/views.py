@@ -38,7 +38,6 @@ def logout(request):
 def indexCerrados(request):
     usuario = request.user
     iniciando_alias(request, usuario)
-    notificacion_usr = verificaNotificacion(request)
     creador=[('username', User.objects.get(id=request.user.id).username),
 	         ('alias',Perfil.objects.get(user= request.user).alias)]
     total_usuarios = User.objects.exclude(id=usuario.id)
@@ -54,10 +53,10 @@ def indexCerrados(request):
             debates = datos_debates(deb, usuario)
             label = "Resultados de la búsqueda: "+str(request.GET.get('q'))
             context = {'object_list': debates, 'usuario': request.user, 'alias': Perfil.objects.get(user_id= usuario.id).alias,
-                        'form':form, 'notificaciones':notificacion_usr, 'label':label,
+                        'form':form, 'label':label,
                         'deb_pub': deb_publicos, 'deb_pri': deb_privados}
             return render(request, "filtro.html" , context)
-    context = generaDatos(request, usuario, form, notificacion_usr, 'cerrado')
+    context = generaDatos(request, usuario, form, 'cerrado')
     return render(request, "index.html", context)
 
 ##@brief Funcion que despliega todos los debates
@@ -68,7 +67,6 @@ def indexCerrados(request):
 def index(request):
     usuario = request.user
     iniciando_alias(request, usuario)
-    notificacion_usr = verificaNotificacion(request)
     creador=[('username', User.objects.get(id=request.user.id).username),
 	         ('alias',Perfil.objects.get(user= request.user).alias)]
     total_usuarios = User.objects.exclude(id=usuario.id)
@@ -89,13 +87,13 @@ def index(request):
             debates = datos_debates(deb, usuario)
             label = "Resultados de la búsqueda: "+str(request.GET.get('q'))
             context = {'object_list': debates, 'usuario': request.user, 'alias': Perfil.objects.get(user_id= usuario.id).alias,
-                        'form':form, 'notificaciones':notificacion_usr, 'label':label,
+                        'form':form,'label':label,
                         'deb_pub': deb_publicos, 'deb_pri': deb_privados}
             return render(request, "filtro.html" , context)
-    context = generaDatos(request, usuario, form, notificacion_usr, 'abierto')
+    context = generaDatos(request, usuario, form, 'abierto')
     return render(request, 'index.html', context)
 
-def generaDatos(request, usuario, form, notificacion_usr, estado):
+def generaDatos(request, usuario, form, estado):
     category_list = Debate.objects.all().order_by('-id_debate')
     object_list = []
 
@@ -124,7 +122,7 @@ def generaDatos(request, usuario, form, notificacion_usr, estado):
     debates_recientes = datos_debates(debates_recientes,usuario)
 
     context = {'category_list':category_list, 'object_list': object_list, 'usuario': request.user, 'alias': alias_usuario,
-                'form':form, 'notificaciones':notificacion_usr, 'top_tags':top_tags, 'top_deb':top_debates,
+                'form':form, 'top_tags':top_tags, 'top_deb':top_debates,
                 'top_user':top_usuario, 'recientes': debates_recientes}
     return context
 
@@ -164,7 +162,6 @@ def datos_debates(debates, usuario):
 def tagged(request, slug):
     usuario = request.user
     perfil_usuario = Perfil.objects.get(user_id= usuario.id)
-    notificacion_usr = verificaNotificacion(request)
     total_usuarios = User.objects.exclude(id=usuario.id)
     creador=[('username', User.objects.get(id=request.user.id).username),
 	         ('alias',perfil_usuario.alias)]
@@ -174,19 +171,9 @@ def tagged(request, slug):
     top_tags = Debate.tags.most_common()[:5]
     label = "Tags relacionados: "+slug
     context = {'object_list':object_list, 'usuario': usuario, 'alias': perfil_usuario.alias,
-                 'form':form, 'notificaciones':notificacion_usr, 'top_tags':top_tags, 'label':label}
+                 'form':form, 'top_tags':top_tags, 'label':label}
     # context = {'object_list':object_list}
     return render(request, 'filtro.html', context)
-
-@login_required
-def verificaNotificacion(request):
-    notificaciones = Notificacion.objects.all()
-    notificacion_usr = []
-    for n in notificaciones:
-        deb_usr=Debate.objects.get(id_debate = n.id_debate.id_debate).id_usuario
-        if deb_usr == request.user:
-            notificacion_usr.append(n)
-    return notificacion_usr
 
 ##@brief Funcion que inicializa el alias del usuario actual, en caso de no tener alias sera "anonimo".
 ##@param request solicitud web

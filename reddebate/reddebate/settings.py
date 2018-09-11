@@ -105,6 +105,7 @@ TEMPLATES = [
                 'django.template.context_processors.media',
                 'social_django.context_processors.backends',
                 'social_django.context_processors.login_redirect',
+                'resumen.context_processors.listado_notificacion',
             ],
         },
     },
