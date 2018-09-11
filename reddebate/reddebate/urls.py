@@ -26,16 +26,16 @@ urlpatterns = [
     url(r'^debate/', include('debate.urls')),
     url(r'^perfil/', include('perfil.urls')),
     url(r'^admin/', admin.site.urls),
-
+    url(r'^oauth/', include('social_django.urls', namespace='social')),
 
     #Python social auth
-    url('social/', include('social.apps.django_app.urls', namespace='social')),
+    # url('social/', include('social.apps.django_app.urls', namespace='social')),
 	# Home URL Fuente: "https://platzi.com/blog/login-redes-sociales-django/"
 	# url(r'^$', TemplateView.as_view(template_name="home.html"), name='social'),
 
     # Logout URL
-    url( r'^users/logout/$',logout_social,
-    {'next_page': '/reddebate'}, name="user-logout"),
+    # url( r'^users/logout/$',logout_social,
+    # {'next_page': '/reddebate'}, name="user-logout"),
 
 ]
 if settings.DEBUG:

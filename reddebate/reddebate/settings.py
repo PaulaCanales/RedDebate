@@ -52,7 +52,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'social.apps.django_app.default',
-    #'social_django',
+    'social_django',
     'channels',
     'reddebate',
     'taggit',
@@ -84,6 +84,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'social_django.middleware.SocialAuthExceptionMiddleware',
 ]
 
 ROOT_URLCONF = 'reddebate.urls'
@@ -102,7 +103,8 @@ TEMPLATES = [
                 'social.apps.django_app.context_processors.backends',
                 'social.apps.django_app.context_processors.login_redirect',
                 'django.template.context_processors.media',
-
+                'social_django.context_processors.backends',
+                'social_django.context_processors.login_redirect',
             ],
         },
     },
@@ -148,19 +150,24 @@ APPEND_SLASH=False
 
 AUTHENTICATION_BACKENDS = (
  'django.contrib.auth.backends.ModelBackend',
- 'allauth.account.auth_backends.AuthenticationBackend',
- 'social.backends.facebook.FacebookOAuth2',
- 'social.backends.google.GoogleOAuth2',
- 'social.backends.twitter.TwitterOAuth',
+ 'social_core.backends.github.GithubOAuth2',
+ 'social_core.backends.twitter.TwitterOAuth',
+ 'social_core.backends.facebook.FacebookOAuth2',
  )
 
+LOGIN_URL = 'home'
+LOGOUT_URL = 'home'
+LOGIN_REDIRECT_URL = 'index'
+
  # Facebook Keys
- # SOCIAL_AUTH_FACEBOOK_KEY = 'q23456uhgf'
- # SOCIAL_AUTH_FACEBOOK_SECRET = 'qw4trgfdxc'
+SOCIAL_AUTH_FACEBOOK_KEY = '309804006235802'
+SOCIAL_AUTH_FACEBOOK_SECRET = '99e58f77068352b2814e8dc7313a3a42'
  # Twitter Keys
 SOCIAL_AUTH_TWITTER_KEY = 'nJ962jcMQu7TZsUSkQMuw2eJQ'
 SOCIAL_AUTH_TWITTER_SECRET = 'nna8b4j1exRNQTKH2XaX1TCHI7UQXdaECajws6gXLRqpUBNzhD'
 
+SOCIAL_AUTH_GITHUB_KEY = '7f30c97d73bb43ceb0eb'
+SOCIAL_AUTH_GITHUB_SECRET = '2e0beb0062ddbe1520126cecc0e9316d186bc346'
 # Internationalization
 # https://docs.djangoproject.com/en/1.10/topics/i18n/
 
