@@ -153,6 +153,9 @@ AUTHENTICATION_BACKENDS = (
  'social_core.backends.github.GithubOAuth2',
  'social_core.backends.twitter.TwitterOAuth',
  'social_core.backends.facebook.FacebookOAuth2',
+ 'social_core.backends.open_id.OpenIdAuth',  # for Google authentication
+ 'social_core.backends.google.GoogleOpenId',  # for Google authentication
+ 'social_core.backends.google.GoogleOAuth2',  # for Google authentication
  )
 
 LOGIN_URL = 'home'
@@ -168,6 +171,9 @@ SOCIAL_AUTH_TWITTER_SECRET = 'nna8b4j1exRNQTKH2XaX1TCHI7UQXdaECajws6gXLRqpUBNzhD
 
 SOCIAL_AUTH_GITHUB_KEY = '7f30c97d73bb43ceb0eb'
 SOCIAL_AUTH_GITHUB_SECRET = '2e0beb0062ddbe1520126cecc0e9316d186bc346'
+
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY ='731660534155-f03jnm6o1fa7abisiujult4t85qq2316.apps.googleusercontent.com'  #Paste CLient Key
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'bSVqtrLWEmvYHIRDn82VN1lb' #Paste Secret Key
 # Internationalization
 # https://docs.djangoproject.com/en/1.10/topics/i18n/
 
