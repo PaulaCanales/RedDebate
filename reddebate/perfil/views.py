@@ -122,10 +122,10 @@ def debates_usuario(request):
     if request.method == 'POST':
         if 'id_deb' in request.POST:
             cerrar_debate(request)
-            return redirect(debates_usuario)
+            return redirect('debates')
         if 'id_debate_editar' in request.POST:
             crear_debate(request)
-            return redirect(debates_usuario)
+            return redirect('debates')
 
         if 'id_deb_eliminar' in request.POST:
             eliminar_debate(request)
@@ -147,7 +147,7 @@ def eliminar_debate(request):
     deb = Debate.objects.get(pk=id_deb)
     deb.delete()
     actualiza_reputacion(request.user.id, -5)
-    return redirect(debates_usuario)
+    return redirect('debates')
 ##@brief Funcion que actualiza el debate "cerrado" a "abierto"
 ##@param request solicitud web
 ##@return redirect redirecciona a la vista "perfil"
@@ -155,10 +155,13 @@ def eliminar_debate(request):
 @login_required
 def republicar_debate(request):
     id_deb=request.POST['id_deb_republicar']
+    opc=request.POST['tab']
     deb = Debate.objects.get(pk=id_deb)
-    ahora = datetime.date.today()
-    if (deb.date_fin != None) and deb.date_fin <= ahora :
+    if opc == "NULL":
         deb.date_fin = None
+    else:
+        yyyy,mm,dd=str(request.POST['nuevafecha']).split("-")
+        deb.date_fin = datetime.date(int(yyyy),int(mm),int(dd))
     deb.estado = 'abierto'
     deb.save()
-    return redirect(debates_usuario)
+    return redirect('debates')

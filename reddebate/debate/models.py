@@ -23,7 +23,7 @@ class Postura(models.Model):
     id_debate = models.ForeignKey(Debate)
 
     def __unicode__(self): # __unicode__ on Python 2
-        return self.postura
+        return unicode(self.postura)
     def __getitem__(self, key):
         return getattr(self, key)
     def as_dict(self):
@@ -127,3 +127,14 @@ class Participantes(models.Model):
 		return self.id
     def as_dict(self, lista):
         return {'usuario_participa': lista, 'id': self.id}
+
+class Visita(models.Model):
+    #parametros de la tabla.
+    id = models.AutoField(primary_key=True)
+    num = models.IntegerField(default=1)
+    date = models.DateTimeField(default=datetime.now)
+    id_debate = models.ForeignKey(Debate)
+    id_usuario = models.ForeignKey(User)
+
+    def __unicode__(self): # __unicode__ on Python 2
+        return self.num

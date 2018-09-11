@@ -35,8 +35,24 @@ function despliega_formulario(id){
   $(id).slideDown("slow");
   $('html, body').animate({scrollTop : 0},800);
   $(nuevoDebateBtn).hide();
-}
-
+};
+function confirm_modal_show(id, deb, titulo) {
+  $(".modalcontainerconfirm").fadeIn("slow");
+  if (id==1){
+    $("#cerrarDebate").fadeIn("slow");
+    $("#iddebacerrar").val(deb);
+    $("#titulodebcerrar").text(titulo);
+  }
+  else{
+    $("#republicarDebate").fadeIn("slow");
+    $("#iddebarepublicar").val(deb);
+    $("#titulodebrepublicar").text(titulo);
+  }
+};
+function confirm_modal_close() {
+  $(".modalcontainerconfirm").fadeOut("slow");
+  $(".modalconfirm").fadeOut("slow");
+};
 function cierra_formulario(id){
   $(id).slideUp("slow");
   $(nuevoDebateBtn).show();
@@ -168,6 +184,20 @@ function creartags(){
 
 };
 
+function mostrarFecha(){
+  document.getElementById("fechafin2").disabled = false;
+  var fecha = new Date()
+  dd = fecha.getDate();
+  mm = fecha.getMonth() + 1;
+  yyyy = fecha.getFullYear()
+  if (dd<10){dd='0'+dd};
+  if (mm<10){mm='0'+mm};
+  $("#fechafin2").val(yyyy+'-'+mm+'-'+dd)
+}
+function quitarFecha(){
+  document.getElementById("fechafin2").disabled = true;
+}
+
 // Gráficos
 
 function posturaChart() {
@@ -187,7 +217,7 @@ function posturaChart() {
 
         var chart = new google.visualization.PieChart(document.getElementById('piechart_postura'));
         chart.draw(data, options);
-}
+};
 function argumentosChart() {
   var data = google.visualization.arrayToDataTable([
           ['Argumentos', 'Cantidad'],
@@ -205,7 +235,7 @@ function argumentosChart() {
 
         var chart = new google.visualization.PieChart(document.getElementById('piechart_argumento'));
         chart.draw(data, options);
-}
+};
 
 function cambioPosturaChart() {
   var data = google.visualization.arrayToDataTable([
@@ -229,7 +259,7 @@ function cambioPosturaChart() {
           var selectedItem = chart.getSelection()[0].row;
          }
         google.visualization.events.addListener(chart, 'select', selectHandler);
-}
+};
 
 function mejorArgumentoChart(){
   var data = new google.visualization.arrayToDataTable([
@@ -281,4 +311,21 @@ function razonCambioChart(){
       };
       var chart = new google.visualization.BarChart(document.getElementById('chart_razonCambio'));
       chart.draw(data, options);
-    }
+    };
+  function posturasTiempo() {
+    var data = new google.visualization.DataTable();
+    data.addColumn('date', 'Fecha');
+    data.addColumn('number', 'Posturas');
+    for (i=0 ; i<fecha_posturas.length ; i++){
+      data.addRow([new Date(fecha_posturas[i][0]),fecha_posturas[i][1]]);
+    };
+    var chart = new google.visualization.AnnotationChart(document.getElementById('chart_div'));
+
+    var options = {
+      displayAnnotations: true,
+      colors: ['#18BD9B'],
+      width:"100%",
+    };
+
+    chart.draw(data, options);
+  };

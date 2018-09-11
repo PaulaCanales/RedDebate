@@ -149,7 +149,17 @@ APPEND_SLASH=False
 AUTHENTICATION_BACKENDS = (
  'django.contrib.auth.backends.ModelBackend',
  'allauth.account.auth_backends.AuthenticationBackend',
+ 'social.backends.facebook.FacebookOAuth2',
+ 'social.backends.google.GoogleOAuth2',
+ 'social.backends.twitter.TwitterOAuth',
  )
+
+ # Facebook Keys
+ # SOCIAL_AUTH_FACEBOOK_KEY = 'q23456uhgf'
+ # SOCIAL_AUTH_FACEBOOK_SECRET = 'qw4trgfdxc'
+ # Twitter Keys
+SOCIAL_AUTH_TWITTER_KEY = 'nJ962jcMQu7TZsUSkQMuw2eJQ'
+SOCIAL_AUTH_TWITTER_SECRET = 'nna8b4j1exRNQTKH2XaX1TCHI7UQXdaECajws6gXLRqpUBNzhD'
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.10/topics/i18n/

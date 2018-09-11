@@ -5,54 +5,98 @@
 {% block content %}
 
 <link rel="stylesheet" type='text/css' href="{% static '/css/dataTables.css' %}" >
-<body>
-  <div class="container-debate">
-    <header>
-      <h2>Mis Debates</h2>
-      <p>{{usuario.get_full_name}}</p>
-    </header>
+<div class="modalcontainerconfirm">
+  <div class="flexconfirm">
+    <div id="cerrarDebate" class="modalconfirm">
+      <div class="close"><span onclick="confirm_modal_close()">&#43;</span></div>
+      <div class="content">
+        <h2>¿Desea cerrar el debate?</h2>
+        <p id="titulodebcerrar"> </p>
+        <form id="id" method="post" action= "{% url 'debates' %}"  enctype="multipart/form-data">{% csrf_token %}
+            <input type="hidden" id="iddebacerrar" value="" name="id_deb">
+      </div>
+      <div class="buttons">
+        <a href="javascript:confirm_modal_close()">Cancelar</a>
+        <button type="submit">Aceptar</a>
+      </div>
+      </form>
+    </div>
+    <div id="republicarDebate" class="modalconfirm">
+      <div class="close"><span onclick="confirm_modal_close()">&#43;</span></div>
+      <div class="content">
+        <h2>¿Desea volver a publicar el debate?</h2>
+        <p id="titulodebrepublicar"> </p>
+        <form id="id" method="post" action= "{% url 'debates' %}"  enctype="multipart/form-data">{% csrf_token %}
+            <input type="hidden" id="iddebarepublicar" value="" name="id_deb_republicar">
+            <p>¿Nueva fecha de cierre?</p>
+            <input type="radio" name="tab" value="NULL" onclick="quitarFecha();" checked/> Sin fecha límite<br>
+            <input type="radio" name="tab" value="fechafin" onclick="mostrarFecha();" /> Con fecha<br>
+            <input type="date" name="nuevafecha" class="form-control" id="fechafin2" disabled>
+      </div>
+      <div class="buttons">
+        <a href="javascript:confirm_modal_close()">Cancelar</a>
+        <button type="submit">Aceptar</a>
+      </div>
+      </form>
+    </div>
+  </div>
+</div>
+<div class="container-debate">
+  <header>
+    <h2>Mis Debates</h2>
+    <p>{{usuario.get_full_name}}</p>
+  </header>
   <!-- <button id="btnValoresSeleccionados" type="button" class="btn btn-primary">Valores Seleccionadas</button> -->
-<table id="myTable" class="table" cellspacing="0" width="100%">
-    <thead>
-        <tr>
-            <th>Título</th>
-            <th>Estado</th>
-            <th>Tipo</th>
-            <th>Posturas</th>
-            <th>Argumentos</th>
-            <th>Visitas</th>
-            <th>Inicio</th>
-            <th>Fin</th>
-        </tr>
-    </thead>
-    <tbody>
-      {% for deb in object_list %}
-        <tr>
-            <td>{{deb.datos.titulo}}</td>
-            <td>{{deb.datos.estado}}</td>
-            {% ifequal deb.datos.tipo_participacion 1%}
-              <td> Privado </td>
-            {% else %}
-              <td> Público </td>
-            {% endifequal %}
-            <td style="text-align:center;">{{deb.num_posturas}}</td>
-            <td style="text-align:center;">{{deb.num_args}}</td>
-            <td>En proceso...</td>
-            <td>{{deb.datos.date|date:"d/m/Y"}}</td>
-            {% if deb.datos.date_fin %}
-            <td>{{deb.datos.date_fin|date:"d/m/Y"}}</td>
-            {% else %}
-            <td> No definido </td>
-            {% endif %}
-        </tr>
-      {% endfor %}
-    </tbody>
+  <table id="myTable" class="table" cellspacing="0" width="100%">
+      <thead>
+          <tr>
+              <th>Título</th>
+              <th>Estado</th>
+              <th>Tipo</th>
+              <th>Posturas</th>
+              <th>Argumentos</th>
+              <th>Visitas</th>
+              <th>Inicio</th>
+              <th>Fin</th>
+          </tr>
+      </thead>
+      <tbody>
+        {% for deb in object_list %}
+          <tr>
+              <td>
+                <a href="{% url 'despliega' deb.datos.id_debate %}">{{deb.datos.titulo}}</a>
+              </td>
+              {% ifequal deb.datos.estado 'abierto'  %}
+              <td>
+                <a href="javascript:confirm_modal_show(1,'{{deb.datos.id_debate}}', '{{deb.datos.titulo}}')"> Abierto </a>
+              </td>
+              {% else %}
+              <td>
+                <a href="javascript:confirm_modal_show(2,'{{deb.datos.id_debate}}', '{{deb.datos.titulo}}')"> Cerrado </a>
+              </td>
+              {% endifequal %}
+              {% ifequal deb.datos.tipo_participacion 1%}
+                <td> Privado </td>
+              {% else %}
+                <td> Público </td>
+              {% endifequal %}
+              <td >{{deb.num_posturas}}</td>
+              <td >{{deb.num_args}}</td>
+              <td >{{deb.visitas}}</td>
+              <td>{{deb.datos.date|date:"d/m/Y"}}</td>
+              {% if deb.datos.date_fin %}
+              <td>{{deb.datos.date_fin|date:"d/m/Y"}}</td>
+              {% else %}
+              <td> No definido </td>
+              {% endif %}
+          </tr>
+        {% endfor %}
+      </tbody>
     </table>
   <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
-  <script src='https://cdn.datatables.net/1.10.10/js/jquery.dataTables.min.js'></script>
   <script src="{% static 'js/dataTable.js' %}"></script>
 </div>
-</body>
+
 
 {% endblock content %}
 </html>

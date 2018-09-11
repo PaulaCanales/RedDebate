@@ -14,11 +14,11 @@ import requests
 from django.db.models import Q
 from django.http import HttpResponse
 from resumen.models import Debate
-from debate.models import Postura, Argumento, Respuesta, Valoracion, Edicion, Participantes
+from debate.models import Postura, Argumento, Respuesta, Valoracion, Edicion, Participantes, Visita
 from perfil.models import Perfil, Notificacion
 from resumen.forms import creaDebateForm, LoginForm
 from taggit.models import Tag
-from django.db.models import Q
+from django.db.models import Q, Sum
 
 def home(request):
     form = LoginForm(request.POST or None)
@@ -135,6 +135,7 @@ def datos_debates(debates, usuario):
         num_posturas_ec = Postura.objects.filter(id_debate_id=debate.id_debate, postura=0).count()
         num_argumentos = Argumento.objects.filter(id_debate_id=debate.id_debate).count()
         num_posturas = num_posturas_af + num_posturas_ec
+        visitas = Visita.objects.filter(id_debate=debate).aggregate(Sum('num')).values()[0]
     	if (int(num_posturas)==0):
             puede_editar = "si"
             porcentaje_c=0
@@ -148,14 +149,16 @@ def datos_debates(debates, usuario):
                 participa = Participantes.objects.get(id_debate_id=debate.id_debate, id_usuario_id=usuario.id)
                 lista_debates.append({"datos":debate, "porcentaje_f":porcentaje_f, "porcentaje_c":porcentaje_c,
                                         "num_posturas_af":num_posturas_af, "num_posturas_ec":num_posturas_ec,
-                                        "num_posturas":num_posturas, "num_args":num_argumentos})
+                                        "num_posturas":num_posturas, "num_args":num_argumentos,
+                                        "visitas": visitas})
 
             except:
                 participa = False
         else:
             lista_debates.append({"datos":debate, "porcentaje_f":porcentaje_f, "porcentaje_c":porcentaje_c,
                                     "num_posturas_af":num_posturas_af, "num_posturas_ec":num_posturas_ec,
-                                    "num_posturas":num_posturas, "num_args":num_argumentos})
+                                    "num_posturas":num_posturas, "num_args":num_argumentos,
+                                    "visitas": visitas})
     return lista_debates
 
 def tagged(request, slug):

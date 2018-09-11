@@ -65,9 +65,10 @@ class creaDebateForm(forms.ModelForm):
         label='Fecha fin',
         widget=forms.TextInput(
             attrs={
-                'class': 'datepicker',
+                'type': 'date',
+                'class': 'form-control',
                 'id': 'debFinForm',
-                'readonly': True,
+                # 'readonly': True,
             }))
     alias_c = forms.CharField(label='Publicar debate como')
     largo = forms.CharField(
@@ -108,7 +109,7 @@ class creaDebateForm(forms.ModelForm):
             ))
     participantes = forms.MultipleChoiceField(
         widget=forms.CheckboxSelectMultiple(
-            attrs={'id': 'debParticipantesForm', 'disabled':"disabled"}
+            attrs={'id': 'debParticipantesForm'}
         ),
         label="Usuarios")
 
