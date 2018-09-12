@@ -189,8 +189,13 @@
 						  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
 							<ul id="myList">
 								{% for notificacion in notificaciones  %}
-								<li id="notificacion{{notificacion.id}}" class="notificacion{{notificacion.estado}}">
-									<a href="{% url 'ver_notificacion' notificacion.id_debate_id notificacion.id %}">{{notificacion}}</a>
+
+								<li id="notificacion{{notificacion.object.id}}" class="notificacion{{notificacion.object.estado}}">
+									<i class="{{notificacion.object.tipo}}"></i>
+									<a href="{% url 'ver_notificacion' notificacion.object.id_debate_id notificacion.object.id %}">
+										{{notificacion.object}}<br>
+										<label>{{notificacion.tiempo}}</label>
+									</a>
 								</li>
 								{% endfor %}
 							</ul>

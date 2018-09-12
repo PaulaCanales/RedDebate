@@ -1832,6 +1832,40 @@ hr {
 }
 #myList li{ display:none;
 }
+#myList label{
+    text-align: right;
+    display: block;
+    font-weight: lighter;
+    font-size: 10px;
+}
+#myList i{
+    color: #2D3E50;
+    position: absolute;
+    font-size: 15px;
+    margin: 5px;
+    font-style: normal;
+}
+#myList .postura:before{
+  content: '\f25a';
+  font-family: FontAwesome;
+}
+#myList .argumento:before{
+  content: '\f086';
+  font-family: FontAwesome;
+}
+#myList .valoracion:before{
+  content: '\f27a';
+  font-family: FontAwesome;
+}
+#myList .rebate:before{
+  content: '\f122';
+  font-family: FontAwesome;
+}
+#myList .debprivado:before{
+  content: '\f234';
+  font-family: FontAwesome;
+}
+
 #myList{ padding: 0px;
 }
 #loadMore{
