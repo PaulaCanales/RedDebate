@@ -134,6 +134,7 @@ def datos_debates(debates, usuario):
         num_argumentos = Argumento.objects.filter(id_debate_id=debate.id_debate).count()
         num_posturas = num_posturas_af + num_posturas_ec
         visitas = Visita.objects.filter(id_debate=debate).aggregate(Sum('num')).values()[0]
+        if not visitas: visitas=0
     	if (int(num_posturas)==0):
             puede_editar = "si"
             porcentaje_c=0
