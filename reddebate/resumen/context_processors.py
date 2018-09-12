@@ -1,13 +1,10 @@
 from resumen.models import Debate
-from debate.models import Notificacion
+from debate.models import Notificacion, Argumento
 
 def listado_notificacion(request):
-    notificaciones = Notificacion.objects.all()
+    notificaciones = Notificacion.objects.all().order_by('-id')
     notificacion_usr = []
     for n in notificaciones:
-        deb_usr=Debate.objects.get(id_debate = n.id_debate.id_debate).id_usuario
-        if deb_usr == request.user:
+        if n.id_usuario_id == request.user.id:
             notificacion_usr.append(n)
-    print("notificacion_usr")
-    print(notificacion_usr)
     return {'notificaciones': notificacion_usr}

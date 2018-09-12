@@ -40,13 +40,13 @@ class Postura(models.Model):
                 'porc_f':porcentaje_f, 'porc_c':porcentaje_c}
 
 @receiver(post_save, sender=Postura)
-def crea_notificacion(sender, instance, **kwargs):
+def notificacion_postura(sender, instance, **kwargs):
     if kwargs['created']:
         debate = instance['id_debate']
         id_creador = debate.id_usuario_id
         num_postura = Postura.objects.filter(id_debate=debate.id_debate).count()
         try:
-            notificacion = Notificacion.objects.get(id_debate_id=debate.id_debate, tipo="postura")
+            notificacion = Notificacion.objects.get(id_debate_id=debate.id_debate, id_usuario_id=id_creador, tipo="postura")
             print("segunda o mas")
             notificacion.mensaje = str(num_postura)+" usuarios han definido postura en "+str(debate)
             notificacion.estado = 0
@@ -54,7 +54,7 @@ def crea_notificacion(sender, instance, **kwargs):
         except:
             print("primera")
             msj = str(num_postura)+" usuario ha definido postura en "+str(debate)
-            notificacion = Notificacion.objects.create(id_debate = debate, mensaje=msj)
+            notificacion = Notificacion.objects.create(id_debate = debate, id_usuario_id=id_creador, mensaje=msj, tipo="postura")
         Group("notificacion").send({'text': json.dumps(
                                             {'id_creador': str(id_creador),
                                             'mensaje': notificacion.mensaje,
@@ -86,23 +86,22 @@ class Argumento(models.Model):
         return {'descripcion': self.descripcion, 'nombre': usr, 'postura': self.postura}
 
 @receiver(post_save, sender=Argumento)
-def crea_notificacion(sender, instance, **kwargs):
+def notificacion_argumento(sender, instance, **kwargs):
     if kwargs['created']:
-        print("argumento")
         argumento = instance['id_argumento']
         debate = instance['id_debate']
         id_creador = debate.id_usuario_id
         num_argumentos = Argumento.objects.filter(id_debate=debate.id_debate).count()
         try:
-            notificacion = Notificacion.objects.get(id_debate_id=debate.id_debate, tipo="argumento")
+            notificacion = Notificacion.objects.get(id_debate_id=debate.id_debate, id_usuario_id=id_creador, tipo="argumento")
             print("segunda o mas")
-            notificacion.mensaje = str(num_argumentos)+" usuarios ha argumentado en "+str(debate)
+            notificacion.mensaje = str(num_argumentos)+" usuarios han argumentado en "+str(debate)
             notificacion.estado = 0
             notificacion.save()
         except:
             print("primera")
-            msj = str(num_argumentos)+" usuario han argumentado en "+str(debate)
-            notificacion = Notificacion.objects.create(id_debate = debate, mensaje=msj, tipo="agumento")
+            msj = str(num_argumentos)+" usuario ha argumentado en "+str(debate)
+            notificacion = Notificacion.objects.create(id_debate = debate, id_usuario_id=id_creador, mensaje=msj, tipo="agumento")
         Group("notificacion").send({'text': json.dumps(
                                             {'id_creador': str(id_creador),
                                             'mensaje': notificacion.mensaje,
@@ -119,8 +118,33 @@ class Respuesta(models.Model):
     id_usuario = models.ForeignKey(User)
     id_argumento = models.ForeignKey(Argumento)
 
+    def __getitem__(self, key):
+        return getattr(self, key)
     def __unicode__(self): # __unicode__ on Python 2
         return self.descripcion
+
+@receiver(post_save, sender=Respuesta)
+def notificacion_rebate(sender, instance, **kwargs):
+    argumento = instance['id_argumento']
+    debate = argumento.id_debate
+    id_creador = argumento.id_usuario_id
+    descripcion = (argumento[:30] + '..') if len(argumento.descripcion) > 75 else argumento
+    try:
+        notificacion = Notificacion.objects.get(id_debate_id=debate.id_debate, id_usuario_id=id_creador, tipo="rebate")
+        print("segunda o mas")
+        notificacion.mensaje = "Han rebatido tu argumento: "+str(descripcion)
+        notificacion.estado = 0
+        notificacion.save()
+    except:
+        print("primera")
+        msj = "Han rebatido tu argumento: "+str(descripcion)
+        notificacion = Notificacion.objects.create(id_debate = debate, id_usuario_id=id_creador, mensaje=msj, tipo="rebate")
+    Group("notificacion").send({'text': json.dumps(
+                                        {'id_creador': str(id_creador),
+                                        'mensaje': notificacion.mensaje,
+                                        'id_notificacion': notificacion.id,
+                                        'id_debate': debate.id_debate
+                                        })})
 
 class Valoracion(models.Model):
     #parametros de la tabla.
@@ -130,9 +154,33 @@ class Valoracion(models.Model):
     id_usuario = models.ForeignKey(User)
     id_argumento = models.ForeignKey(Argumento)
 
-
+    def __getitem__(self, key):
+        return getattr(self, key)
     def __unicode__(self): # __unicode__ on Python 2
         return self.id_valoracion
+
+@receiver(post_save, sender=Valoracion)
+def notificacion_valoracion(sender, instance, **kwargs):
+    argumento = instance['id_argumento']
+    debate = argumento.id_debate
+    id_creador = argumento.id_usuario_id
+    descripcion = (argumento[:30] + '..') if len(argumento.descripcion) > 75 else argumento
+    try:
+        notificacion = Notificacion.objects.get(id_debate_id=debate.id_debate, id_usuario_id=id_creador, tipo="valoracion")
+        print("segunda o mas")
+        notificacion.mensaje = "Han valorado tu argumento: "+str(descripcion)
+        notificacion.estado = 0
+        notificacion.save()
+    except:
+        print("primera")
+        msj = "Han valorado tu argumento: "+str(descripcion)
+        notificacion = Notificacion.objects.create(id_debate = debate, id_usuario_id=id_creador, mensaje=msj, tipo="valoracion")
+    Group("notificacion").send({'text': json.dumps(
+                                        {'id_creador': str(id_creador),
+                                        'mensaje': notificacion.mensaje,
+                                        'id_notificacion': notificacion.id,
+                                        'id_debate': debate.id_debate
+                                        })})
 
 class Edicion(models.Model):
     #parametros de la tabla.
@@ -152,8 +200,33 @@ class Participantes(models.Model):
     id_debate = models.ForeignKey(Debate)
     def __unicode__(self): # __unicode__ on Python 2
 		return self.id
+    def __getitem__(self, key):
+        return getattr(self, key)
     def as_dict(self, lista):
         return {'usuario_participa': lista, 'id': self.id}
+
+@receiver(post_save, sender=Participantes)
+def notificacion_participantes(sender, instance, **kwargs):
+    debate = instance['id_debate']
+    id_creador = instance['id_usuario'].id
+    if debate.id_usuario_id != id_creador:
+        descripcion = (debate[:30] + '..') if len(debate.descripcion) > 75 else debate
+        try:
+            notificacion = Notificacion.objects.get(id_debate_id=debate.id_debate, id_usuario_id=id_creador, tipo="debprivado")
+            print("segunda o mas")
+            notificacion.mensaje = "Te han agregado un debate privado: "+str(descripcion)
+            notificacion.estado = 0
+            notificacion.save()
+        except:
+            print("primera")
+            msj = "Te han agregado un debate privado: "+str(descripcion)
+            notificacion = Notificacion.objects.create(id_debate = debate, id_usuario_id=id_creador, mensaje=msj, tipo="debprivado")
+        Group("notificacion").send({'text': json.dumps(
+                                            {'id_creador': str(id_creador),
+                                            'mensaje': notificacion.mensaje,
+                                            'id_notificacion': notificacion.id,
+                                            'id_debate': debate.id_debate
+                                            })})
 
 class Visita(models.Model):
     #parametros de la tabla.

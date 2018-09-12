@@ -21,8 +21,10 @@ class Perfil(models.Model):
 
 class Notificacion(models.Model):
     id = models.AutoField(primary_key=True)
+    id_usuario = models.ForeignKey(User)
     id_debate = models.ForeignKey(Debate)
     mensaje = models.CharField(max_length=300, null=False)
+    fecha = models.DateTimeField(default=datetime.now)
     tipo = models.CharField(max_length=50, null=False, default="postura")
     estado = models.IntegerField(default=0)
     def __unicode__(self): # __unicode__ on Python 2
