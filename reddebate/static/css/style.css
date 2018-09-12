@@ -1830,3 +1830,17 @@ hr {
     position: absolute;
     top: 5px;
 }
+#myList li{ display:none;
+}
+#myList{ padding: 0px;
+}
+#loadMore{
+  background: white;
+  width: 230px;
+  text-align: center;
+  margin: 10px;
+  border-radius: 10px;
+  padding: 5px;
+  font-size: 12px;
+  cursor: pointer;
+}

@@ -81,24 +81,7 @@
 							document.getElementById('privados').style.display = 'none';
 						}
 		   });
-			$.getJSON("{% static 'stopwords.json' %}", function(json) {
-				var stopword = json;
-				$("#siguienteTagsForm").click(function(){
-					var text = $("#debTituloForm").val()
-    			text = text.split(" ");
-					for (var i = 0; i < stopword.length; i++) {
-						text = text.filter(e => e !== stopword[i]);
-					};
-					$('#tagsForms').tagsinput('add', text.join());
-				});
-			});
-			$('#nuevodebateform').on('keyup keypress', function(e) {
-				  var keyCode = e.keyCode || e.which;
-				  if (keyCode === 13) {
-				    e.preventDefault();
-				    return false;
-				  }
-				});
+
       try{
 				$('[data-toggle="popover"]').popover();
         document.getElementById("dbt_abiertos").click();}
@@ -140,6 +123,33 @@
 				 // set height of tabs2 + top offset
 			 $('[data-tabs2]').css('min-height', height + 40 + 'px');
 			});
+			size_li = $("#myList li").size();
+    x=3;
+    $('#myList li:lt('+x+')').show();
+    $('#loadMore').click(function () {
+        x= (x+5 <= size_li) ? x+5 : size_li;
+        $('#myList li:lt('+x+')').show();
+    });
+    $('#showLess').click(function () {
+        x=(x-5<0) ? 3 : x-5;
+        $('#myList li').not(':lt('+x+')').hide();
+    });
+		$(document).ready(function () {
+    size_li = $("#myList li").size();
+    x=3;
+    $('#myList li:lt('+x+')').show();
+    $('#loadMore').click(function () {
+        x= (x+5 <= size_li) ? x+5 : size_li;
+        $('#myList li:lt('+x+')').show();
+				if (x==size_li){
+					$('#loadMore').hide();
+				}
+    });
+    $('#showLess').click(function () {
+        x=(x-5<0) ? 3 : x-5;
+        $('#myList li').not(':lt('+x+')').hide();
+    });
+});
 </script>
 
 	<div class="page-header">
@@ -177,11 +187,14 @@
             </div>
 						<div id="mySidenav" class="sidenav">
 						  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-							{% for notificacion in notificaciones  %}
-								<div id="notificacion{{notificacion.id}}" class="notificacion{{notificacion.estado}}">
+							<ul id="myList">
+								{% for notificacion in notificaciones  %}
+								<li id="notificacion{{notificacion.id}}" class="notificacion{{notificacion.estado}}">
 									<a href="{% url 'ver_notificacion' notificacion.id_debate_id notificacion.id %}">{{notificacion}}</a>
-								</div>
-							{% endfor %}
+								</li>
+								{% endfor %}
+							</ul>
+							<div id="loadMore">Ver más</div>
 						</div>
         </div>
     	</nav>

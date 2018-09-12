@@ -11,13 +11,11 @@ $(document).ready(function(){
       var url = "/debate/"+data.id_debate+"/"+data.id_notificacion;
       var item = document.getElementById("notificacion"+data.id_notificacion);
       if(item){
-        $("#notificacion"+data.id_notificacion).text(data.mensaje);
+        $("#notificacion"+data.id_notificacion).hide()
       }
-      else{
-        var ele = $('<div id="notificacion{{notificacion.id}}" class="notificacion0">');
-        ele.append($('<a href="'+url+'"></a>').text(data.mensaje));
-        menu.prepend(ele);
-      }
+      var ele = $('<li id="notificacion{{notificacion.id}}" class="notificacion0"></li>');
+      ele.append($('<a href="'+url+'"></a>').text(data.mensaje));
+      menu.prepend(ele);
     }
   };
   socket.onmessage = function(message) {

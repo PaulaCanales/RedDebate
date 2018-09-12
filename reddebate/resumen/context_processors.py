@@ -2,7 +2,7 @@ from resumen.models import Debate
 from debate.models import Notificacion, Argumento
 
 def listado_notificacion(request):
-    notificaciones = Notificacion.objects.all().order_by('-id')
+    notificaciones = Notificacion.objects.all().order_by('-fecha')
     notificacion_usr = []
     for n in notificaciones:
         if n.id_usuario_id == request.user.id:

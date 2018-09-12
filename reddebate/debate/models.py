@@ -1,3 +1,4 @@
+# coding=utf-8
 from __future__ import unicode_literals
 from django.db.models.fields.related import ForeignKey
 from django.contrib.auth.models import User
@@ -45,15 +46,17 @@ def notificacion_postura(sender, instance, **kwargs):
         debate = instance['id_debate']
         id_creador = debate.id_usuario_id
         num_postura = Postura.objects.filter(id_debate=debate.id_debate).count()
+        titulo = '"'+unicode(debate.titulo)+'"'
         try:
             notificacion = Notificacion.objects.get(id_debate_id=debate.id_debate, id_usuario_id=id_creador, tipo="postura")
             print("segunda o mas")
-            notificacion.mensaje = str(num_postura)+" usuarios han definido postura en "+str(debate)
+            notificacion.mensaje = str(num_postura)+" usuarios han definido postura en "+titulo
             notificacion.estado = 0
+            notificacion.fecha = datetime.now()
             notificacion.save()
         except:
             print("primera")
-            msj = str(num_postura)+" usuario ha definido postura en "+str(debate)
+            msj = str(num_postura)+" usuario ha definido postura en "+titulo
             notificacion = Notificacion.objects.create(id_debate = debate, id_usuario_id=id_creador, mensaje=msj, tipo="postura")
         Group("notificacion").send({'text': json.dumps(
                                             {'id_creador': str(id_creador),
@@ -91,16 +94,18 @@ def notificacion_argumento(sender, instance, **kwargs):
         argumento = instance['id_argumento']
         debate = instance['id_debate']
         id_creador = debate.id_usuario_id
+        titulo = '"'+unicode(debate.titulo)+'"'
         num_argumentos = Argumento.objects.filter(id_debate=debate.id_debate).count()
         try:
             notificacion = Notificacion.objects.get(id_debate_id=debate.id_debate, id_usuario_id=id_creador, tipo="argumento")
             print("segunda o mas")
-            notificacion.mensaje = str(num_argumentos)+" usuarios han argumentado en "+str(debate)
+            notificacion.mensaje = str(num_argumentos)+" usuarios han argumentado en "+titulo
             notificacion.estado = 0
+            notificacion.fecha = datetime.now()
             notificacion.save()
         except:
             print("primera")
-            msj = str(num_argumentos)+" usuario ha argumentado en "+str(debate)
+            msj = str(num_argumentos)+" usuario ha argumentado en "+titulo
             notificacion = Notificacion.objects.create(id_debate = debate, id_usuario_id=id_creador, mensaje=msj, tipo="agumento")
         Group("notificacion").send({'text': json.dumps(
                                             {'id_creador': str(id_creador),
@@ -128,16 +133,18 @@ def notificacion_rebate(sender, instance, **kwargs):
     argumento = instance['id_argumento']
     debate = argumento.id_debate
     id_creador = argumento.id_usuario_id
-    descripcion = (argumento[:30] + '..') if len(argumento.descripcion) > 75 else argumento
+    texto = unicode(argumento.descripcion)
+    descripcion = '"'+(texto[:30] + '..') if len(texto) > 75 else texto +'"'
     try:
         notificacion = Notificacion.objects.get(id_debate_id=debate.id_debate, id_usuario_id=id_creador, tipo="rebate")
         print("segunda o mas")
-        notificacion.mensaje = "Han rebatido tu argumento: "+str(descripcion)
+        notificacion.mensaje = "Han rebatido tu argumento: "+(descripcion)
         notificacion.estado = 0
+        notificacion.fecha = datetime.now()
         notificacion.save()
     except:
         print("primera")
-        msj = "Han rebatido tu argumento: "+str(descripcion)
+        msj = "Han rebatido tu argumento: "+(descripcion)
         notificacion = Notificacion.objects.create(id_debate = debate, id_usuario_id=id_creador, mensaje=msj, tipo="rebate")
     Group("notificacion").send({'text': json.dumps(
                                         {'id_creador': str(id_creador),
@@ -164,16 +171,18 @@ def notificacion_valoracion(sender, instance, **kwargs):
     argumento = instance['id_argumento']
     debate = argumento.id_debate
     id_creador = argumento.id_usuario_id
-    descripcion = (argumento[:30] + '..') if len(argumento.descripcion) > 75 else argumento
+    texto = unicode(argumento.descripcion)
+    descripcion = '"'+(texto[:30] + '..') if len(texto) > 75 else texto+'"'
     try:
         notificacion = Notificacion.objects.get(id_debate_id=debate.id_debate, id_usuario_id=id_creador, tipo="valoracion")
         print("segunda o mas")
-        notificacion.mensaje = "Han valorado tu argumento: "+str(descripcion)
+        notificacion.mensaje = "Han valorado tu argumento: "+(descripcion)
         notificacion.estado = 0
+        notificacion.fecha = datetime.now()
         notificacion.save()
     except:
         print("primera")
-        msj = "Han valorado tu argumento: "+str(descripcion)
+        msj = "Han valorado tu argumento: "+(descripcion)
         notificacion = Notificacion.objects.create(id_debate = debate, id_usuario_id=id_creador, mensaje=msj, tipo="valoracion")
     Group("notificacion").send({'text': json.dumps(
                                         {'id_creador': str(id_creador),
@@ -209,17 +218,18 @@ class Participantes(models.Model):
 def notificacion_participantes(sender, instance, **kwargs):
     debate = instance['id_debate']
     id_creador = instance['id_usuario'].id
+    titulo = '"'+unicode(debate.titulo)+'"'
     if debate.id_usuario_id != id_creador:
-        descripcion = (debate[:30] + '..') if len(debate.descripcion) > 75 else debate
         try:
             notificacion = Notificacion.objects.get(id_debate_id=debate.id_debate, id_usuario_id=id_creador, tipo="debprivado")
             print("segunda o mas")
-            notificacion.mensaje = "Te han agregado un debate privado: "+str(descripcion)
+            notificacion.mensaje = "Te han agregado un debate privado: "+titulo
             notificacion.estado = 0
+            notificacion.fecha = datetime.now()
             notificacion.save()
         except:
             print("primera")
-            msj = "Te han agregado un debate privado: "+str(descripcion)
+            msj = "Te han agregado un debate privado: "+titulo
             notificacion = Notificacion.objects.create(id_debate = debate, id_usuario_id=id_creador, mensaje=msj, tipo="debprivado")
         Group("notificacion").send({'text': json.dumps(
                                             {'id_creador': str(id_creador),
