@@ -98,9 +98,7 @@
                </div>
              </section>
              <section id="content2">
-               <a id = 'boton_lista' onclick='javascript:form_perfil("boton_lista", "formulario_lista" );'> Agregar</a>
-               <a id = 'boton_usrlista' onclick='javascript:form_perfil("boton_usrlista", "formulario_usrlista" );'> Agregar</a>
-              
+               <a id = 'boton_lista' onclick='javascript:form_perfil("boton_lista", "formulario_lista" );'><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Agregar Lista </a>
                <div class="panel-group">
                 {% for lista in listado %}
                 <div class="panel panel-default">
@@ -117,11 +115,14 @@
                       {% endifequal %}
                       {% endfor %}
                     </div>
+                    <div class="panel-footer">
+                      <a href="{% url 'lista' lista.id %}"> <span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Editar </a>
+                    </div>
                   </div>
                 </div>
+                {% endfor %}
               </div>
-              {% endfor %}
-               <div id='formulario_lista' style="display: none;" >
+              <div id='formulario_lista' style="display: none;" >
                  <form method="POST" class="post-form" enctype="multipart/form-data">{% csrf_token %}
                  <div class="fieldWrapper">
                    {{ lista_form.non_field_errors }}

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+{% extends 'base.html' %}
+{% load static %}
+<html>
+{% block content %}
+<div class="container-debate">
+      <header>
+        <h2>{{lista.nombre}}</h2>
+        <p>Lista de usuarios</p>
+      </header>
+      {% for usuario in usuarios %}
+      <a class="dummy-media-object usuarioLista" href="{% url 'perfil' id_usr=usuario.usuario_id %}">
+        <img class="round" src="{% static 'img/RDLogo05.png' %}"/>
+        <h3>{{usuario}}</h3>
+        <form method="post" action= "{% url 'lista' lista.id  %}" enctype="multipart/form-data" onsubmit="return confirm('¿Seguro que desea eliminar el usuario?');">{% csrf_token %}
+          <input type="hidden" value="{{ usuario.usuario_id }}" name="id_usr_lista">
+          <input type="hidden" value="{{ lista.id }}" name="id_lista">
+          <button type="submit"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
+        </form>
+      </a>
+      {% endfor %}
+      <form method="POST" class="post-form" enctype="multipart/form-data">{% csrf_token %}
+        <div class="fieldWrapper">
+          {{ form.non_field_errors }}
+          {{ form.as_p }}
+        </div>
+        <button name="nuevoUsrLista" type="submit" class="btn btn-index">Agregar</button>
+        <label type="button" onclick='cancelar_form("boton_usrlista", "formulario_usrlista");'> Cancelar </label>
+      </form>
+</div>
+
+{% endblock content %}
+
+</html>

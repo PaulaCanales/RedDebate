@@ -38,7 +38,6 @@ def perfil(request, id_usr=None, id_arg=None, id_reb=None):
 
             alias_form = modificaAlias(instance=perfil)
             lista_form = creaListado()
-            usrlista_form = agregaUsuarioListado()
             if request.method == 'POST':
                 if 'nuevo_alias' in request.POST:
                     alias_form = modificaAlias(request.POST, instance=perfil)
@@ -53,12 +52,6 @@ def perfil(request, id_usr=None, id_arg=None, id_reb=None):
                         lista.creador = request.user
                         lista.save()
                         return redirect('perfil', id_usr=request.user.id)
-                if 'lista' in request.POST:
-                    usrlista_form = agregaUsuarioListado(request.POST)
-                    if usrlista_form.is_valid():
-                        usrlista = usrlista_form.save(commit=False)
-                        usrlista.save()
-                        return redirect('perfil', id_usr=request.user.id)
 
             usuario = request.user
             alias_usuario = Perfil.objects.get(user=usuario)
@@ -67,7 +60,7 @@ def perfil(request, id_usr=None, id_arg=None, id_reb=None):
             return render(request, 'perfil_usuario.html', {'usuario': usuario,
                 'alias': alias_usuario, 'alias_form': alias_form,
                 'stats': stats, 'listado': listado, 'lista_form': lista_form,
-                'listado_usuarios': listado_usuarios, 'usrlista_form': usrlista_form,
+                'listado_usuarios': listado_usuarios,
                 })
         else:
             usa_alias = 'username'
@@ -159,6 +152,25 @@ def debates_usuario(request):
     debates_usuario = Debate.objects.filter(id_usuario_id= usuario.id).order_by('-id_debate')
     lista_debates = datos_debates(debates_usuario,usuario)
     return render(request, 'debates_usuario.html', {'usuario': usuario, 'object_list': lista_debates})
+
+def lista(request, id_lista):
+    lista = Listado.objects.get(id=id_lista)
+    usrlista_form = agregaUsuarioListado()
+    usuarios = UsuarioListado.objects.filter(lista_id=id_lista)
+    if request.method == 'POST':
+        if 'lista' in request.POST:
+            usrlista_form = agregaUsuarioListado(request.POST)
+            if usrlista_form.is_valid():
+                usrlista = usrlista_form.save(commit=False)
+                usrlista.save()
+                return redirect('lista', usrlista.lista_id)
+        if 'id_usr_lista' in request.POST:
+            id_usr = request.POST['id_usr_lista']
+            id_lista = request.POST['id_lista']
+            usuarioLista = UsuarioListado.objects.get(lista_id=id_lista, usuario_id=id_usr)
+            usuarioLista.delete()
+            return redirect('lista', id_lista)
+    return render(request, 'lista.html', {'lista': lista, 'usuarios': usuarios, 'form': usrlista_form})
 
 ##@brief Funcion que elimina un debate
 ##@param request solicitud web
