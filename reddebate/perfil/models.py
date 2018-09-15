@@ -29,3 +29,15 @@ class Notificacion(models.Model):
     estado = models.IntegerField(default=0)
     def __unicode__(self): # __unicode__ on Python 2
 		return self.mensaje
+
+class Listado(models.Model):
+    id = models.AutoField(primary_key=True)
+    nombre = models.CharField(max_length=50)
+    creador = models.ForeignKey(User)
+
+class UsuarioListado(models.Model):
+    id = models.AutoField(primary_key=True)
+    lista = models.ForeignKey(Listado)
+    usuario = models.ForeignKey(User)
+    def __unicode__(self): # __unicode__ on Python 2
+		return self.usuario.username

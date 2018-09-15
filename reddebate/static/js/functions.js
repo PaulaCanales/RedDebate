@@ -16,14 +16,14 @@ $(function() {
   });
 });
 
-function cambiar_alias(){
-  document.getElementById('boton_alias').style.display = 'none';
-  document.getElementById('formulario_alias').style.display = 'block';
+function form_perfil(boton, form){
+  document.getElementById(boton).style.display = 'none';
+  document.getElementById(form).style.display = 'block';
 }
 
-function cancelar_alias(){
-  document.getElementById('formulario_alias').style.display = 'none';
-  document.getElementById('boton_alias').style.display = 'inline-block';
+function cancelar_form(boton, form){
+  document.getElementById(form).style.display = 'none';
+  document.getElementById(boton).style.display = 'inline-block';
 }
 
 function fomulario_argumento(postura){

@@ -274,7 +274,9 @@ main {
 #formulario_alias input{
   display: block;
 }
-
+#formulario_lista input{
+  display: block;
+}
 .main label {
   display: inline-block;
   margin: 0 0 -1px;
@@ -296,7 +298,7 @@ main {
 }
 
 .main label[for*='2']:before {
-  content: '\f086';
+  content: '\f2c0';
 }
 
 .main label[for*='3']:before {
@@ -313,6 +315,7 @@ main {
 }
 
 .main input:checked + label {
+  font-family: montserrat;
   color: #2D3E50;
   border: 1px solid #ddd;
   border-top: 2px solid #18BD9B;
