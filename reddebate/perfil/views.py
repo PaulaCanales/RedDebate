@@ -32,7 +32,6 @@ def perfil(request, id_usr=None, id_arg=None, id_reb=None):
             for item in listado:
                 usr_lista = UsuarioListado.objects.filter(lista_id=item['id']).values()
                 for user in usr_lista:
-                    print(user['usuario_id'])
                     username = User.objects.get(id=user['usuario_id'])
                     listado_usuarios.append({'nombre':username, 'lista_id':user['lista_id']})
 
@@ -51,7 +50,12 @@ def perfil(request, id_usr=None, id_arg=None, id_reb=None):
                         lista = lista_form.save(commit=False)
                         lista.creador = request.user
                         lista.save()
-                        return redirect('perfil', id_usr=request.user.id)
+                        return redirect('lista', lista.id)
+                if 'id_lista' in request.POST:
+                    id_lista = request.POST['id_lista']
+                    usuarioLista = Listado.objects.get(id=id_lista)
+                    usuarioLista.delete()
+                    return redirect('perfil', id_usr=request.user.id)
 
             usuario = request.user
             alias_usuario = Perfil.objects.get(user=usuario)

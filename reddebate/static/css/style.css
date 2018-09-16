@@ -1876,6 +1876,17 @@ hr {
 .usuarioLista h3{
   color: #18BD9D;
 }
+.panel-lista button,
 .usuarioLista button{
   display: contents;
+  color: #2D3E50;
+}
+.panel-lista > .panel-heading {
+  background: lightgray;
+}
+.panel-lista form{
+  display: inline;
+}
+.panel-lista a{
+  color: #2D3E50;
 }
