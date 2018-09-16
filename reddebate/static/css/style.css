@@ -993,22 +993,12 @@ hr {
   position: relative;
   padding: 10px;
 }
-.inputGroup input {
-  width: 32px;
-  height: 32px;
-  order: 1;
-  z-index: 2;
-  position: absolute;
-  right: 30px;
-  top: 50%;
-  -webkit-transform: translateY(-50%);
-          transform: translateY(-50%);
-  cursor: pointer;
-  /*visibility: hidden;*/
-}
-#usuariosPrivado_modal .modal-content{
+
+#usuariosPrivado_modal .modal-content,
+#usuariosLista_modal .modal-content{
   width: 40%;
 }
+
 .leftAlign{
   text-align: left;
   padding: 0 5% 0 5%;
@@ -1885,4 +1875,7 @@ hr {
 }
 .usuarioLista h3{
   color: #18BD9D;
+}
+.usuarioLista button{
+  display: contents;
 }

@@ -155,15 +155,20 @@ def debates_usuario(request):
 
 def lista(request, id_lista):
     lista = Listado.objects.get(id=id_lista)
-    usrlista_form = agregaUsuarioListado()
     usuarios = UsuarioListado.objects.filter(lista_id=id_lista)
+    excluir = [request.user.id]
+    for item in usuarios:
+        excluir.append(item.usuario_id)
+    total_usuarios = User.objects.exclude(id__in=excluir)
+    usrlista_form = agregaUsuarioListado(usuarios=total_usuarios, lista=id_lista)
+
     if request.method == 'POST':
-        if 'lista' in request.POST:
-            usrlista_form = agregaUsuarioListado(request.POST)
-            if usrlista_form.is_valid():
-                usrlista = usrlista_form.save(commit=False)
-                usrlista.save()
-                return redirect('lista', usrlista.lista_id)
+        if 'usuario' in request.POST:
+            seleccion = request.POST.getlist('usuario')
+            for usr in seleccion:
+                post = UsuarioListado(usuario_id=usr, lista_id=request.POST['lista_id'])
+                post.save()
+            return redirect('lista', request.POST['lista_id'])
         if 'id_usr_lista' in request.POST:
             id_usr = request.POST['id_usr_lista']
             id_lista = request.POST['id_lista']

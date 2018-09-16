@@ -30,6 +30,24 @@ class creaListado(forms.ModelForm):
         fields = ('id','nombre')
 
 class agregaUsuarioListado(forms.ModelForm):
+    def __init__(self,*args,**kwargs):
+        self.usuarios = kwargs.pop('usuarios')
+        self.lista = kwargs.pop('lista')
+        super(agregaUsuarioListado,self).__init__(*args,**kwargs)
+        if self.usuarios:
+            self.fields['usuario'].choices = [(x.id, x) for x in self.usuarios]
+        if self.lista:
+            self.fields['lista_id'].widget=forms.TextInput(
+                attrs={
+                    'value': self.lista,
+                    'type': 'hidden',
+                })
+    lista_id = forms.CharField(widget=forms.TextInput())
+    usuario = forms.MultipleChoiceField(
+        widget=forms.CheckboxSelectMultiple(
+            attrs={'id': 'usuarioListadoForm'}
+        ),
+        label="Usuarios")
     class Meta:
         model = UsuarioListado
-        fields = ('id', 'lista', 'usuario')
+        fields = ('id', 'usuario', 'lista_id')
