@@ -1001,6 +1001,7 @@ hr {
 
 #agregarUsuario_modal .modal-content,
 #usuariosPrivado_modal .modal-content,
+#usuariosPrivadoLista_modal .modal-content,
 #usuariosLista_modal .modal-content{
   width: 40%;
 }
@@ -1985,4 +1986,13 @@ hr {
   text-align: center;
   margin-top: 15px;
   font-family: montserrat;
+}
+.radioFiltro ul {
+  list-style: none;
+  display: inline;
+  padding: 0px;
+}
+.radioFiltro li {
+  display: inline;
+  margin: 5px;
 }

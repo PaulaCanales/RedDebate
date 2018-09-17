@@ -25,11 +25,21 @@ $(document).ready(
 		$('#debTipoParticipacionForm').on('change', function() {
 			if (this.value == 1){
 				document.getElementById('usuariosPrivado_modal').style.display="block";
-				document.getElementById('agregarusr').style.display="block";
+				document.getElementById('modificarusr').style.display="block";
+				document.getElementById('moficarlista').style.display="None";
+				document.getElementById('usuariosPrivadoLista_modal').style.display="None";
+			}
+			else if (this.value == 2) {
+				document.getElementById('usuariosPrivadoLista_modal').style.display="block";
+				document.getElementById('moficarlista').style.display="block";
+				document.getElementById('modificarusr').style.display="None";
+				document.getElementById('usuariosPrivado_modal').style.display="None";
 			}
 			else{
-				document.getElementById('agregarusr').style.display="None";
+				document.getElementById('modificarusr').style.display="None";
+				document.getElementById('moficarlista').style.display="None";
 				document.getElementById('usuariosPrivado_modal').style.display="None";
+				document.getElementById('usuariosPrivadoLista_modal').style.display="None";
 			}
 		});
 		//jQuery time
@@ -129,22 +139,6 @@ $(document).ready(
 	});
 
 	$(document).ready(function(){
-
-	    $("#searchColumn").on("input",function(){
-
-	        var searchTxt = $(this).val();
-	        searchTxt = searchTxt.replace(/[.()+]/g,"\\$&");
-
-	        var patt = new RegExp("^" + searchTxt,"i");
-
-	        $(":checkbox").each(function(){
-							var label = $(this).parent().text().trim();
-	            if(patt.test(label))
-	                $(this).closest("div").show();
-
-	            else
-	                $(this).closest("div").hide();
-
-	        })
-	    })
-	})
+		filtroCheckbox('#searchUser1');
+		filtroCheckbox('#searchLista1');
+	});

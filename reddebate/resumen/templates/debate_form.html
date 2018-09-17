@@ -38,7 +38,8 @@
               <span class="tooltipformtext">Indica si deseas que tu debate sea publico o privado. Si es privado, debes seleccionar a los usuarios que tendrán acceso</span>
             </div>
             {{ form.tipo_participacion }}
-            <a id="agregarusr" href="javascript:abrir_modal('usuariosPrivado_modal')" style="display:none"> Añadir usuarios</a>
+            <a id="modificarusr" href="javascript:abrir_modal('usuariosPrivado_modal')" style="display:none"> Modificar usuarios</a>
+            <a id="moficarlista" href="javascript:abrir_modal('usuariosPrivadoLista_modal')" style="display:none"> Modificar lista</a>
           </div>
           <div class="fieldWrapper">
             {{ form.alias_c.errors }}
@@ -149,7 +150,7 @@
           </h5>
           <div class="fieldWrapper">
             {{form.participantes.errors }}
-            <input type="text" value="" name="searchColumn" id="searchColumn" placeholder="Busca a un usuario..."/>
+            <input type="text" value="" name="searchColumn" id="searchUser1" placeholder="Busca a un usuario..."/>
             <div id="containercheckbox" class="userscheckbox">
             {% for field in form.participantes %}
             <div class="inputGroup">{{field}}</div>
@@ -157,7 +158,26 @@
             </div>
             <a href="javascript:cerrar_modal('usuariosPrivado_modal')" class="submit action-button"> Aceptar </a>
           </div>
-      	</div>
+        </div>
+      </div>
+      <div id="usuariosPrivadoLista_modal" class="modal">
+        <div class="modal-content">
+          <h5>
+            <span class="close" onclick="cerrar_modal('usuariosPrivadoLista_modal')">&times;</span><br>
+            Listas
+          </h5>
+          <div class="fieldWrapper">
+            {{form.participantes.errors }}
+            <input type="text" value="" name="searchColumn" id="searchLista1" placeholder="Busca a un usuario..."/>
+            <div class="radioFiltro">{{ form.filtro }}</div>
+            <div id="containercheckbox" class="userscheckbox">
+              {% for field in form.listado %}
+              <div class="inputGroup">{{field}}</div>
+              {%endfor%}
+            </div>
+            <a href="javascript:cerrar_modal('usuariosPrivadoLista_modal')" class="submit action-button"> Aceptar </a>
+          </div>
+        </div>
       </div>
       <div class="leftAlign">
         <a href="javascript:abrir_modal('opcionesAvanzadas_modal')"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a>

@@ -85,6 +85,7 @@
             </div>
             {% endif %}
             <p>Agregar en:</p>
+            <input type="text" value="" name="searchColumn" id="searchLista2" placeholder="Busca a un usuario..."/>
             <form method="POST" class="post-form" enctype="multipart/form-data">{% csrf_token %}
               <div class="fieldWrapper">
                 {{form.errors }}

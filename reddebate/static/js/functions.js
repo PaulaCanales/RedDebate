@@ -25,8 +25,6 @@ function cancelar_form(boton, form){
   document.getElementById(form).style.display = 'none';
   document.getElementById(boton).style.display = 'inline-block';
   $('#'+form+' :input').each(function() {
-    console.log('aki');
-    console.log($(this));
     $(this).val('');
   });
 }
@@ -207,7 +205,26 @@ function openNav() {
 function closeNav() {
     document.getElementById("mySidenav").style.width = "0";
 }
+function filtroCheckbox(id){
+  $(id).on("input",function(){
 
+      var searchTxt = $(this).val();
+      searchTxt = searchTxt.replace(/[.()+]/g,"\\$&");
+      var patt = new RegExp("^" + searchTxt,"i");
+      $(":checkbox").each(function(){
+          var label = $(this).parent().text().trim();
+          if(patt.test(label)){
+            $(this).closest("div").show();
+            console.log(label);
+          }
+          else{
+            $(this).closest("div").hide();
+          }
+
+
+      })
+  });
+};
 // Gráficos
 
 function posturaChart() {

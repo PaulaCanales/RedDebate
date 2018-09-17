@@ -15,7 +15,7 @@ from django.db.models import Q
 from django.http import HttpResponse
 from resumen.models import Debate
 from debate.models import Postura, Argumento, Respuesta, Valoracion, Edicion, Participantes, Visita
-from perfil.models import Perfil, Notificacion
+from perfil.models import Perfil, Notificacion, Listado, UsuarioListado
 from resumen.forms import creaDebateForm, LoginForm
 from taggit.models import Tag
 from django.db.models import Q, Sum
@@ -41,7 +41,8 @@ def indexCerrados(request):
     creador=[('username', User.objects.get(id=request.user.id).username),
 	         ('alias',Perfil.objects.get(user= request.user).alias)]
     total_usuarios = User.objects.exclude(id=usuario.id)
-    form = creaDebateForm(creador=creador, usuarios=total_usuarios)
+    listas = Listado.objects.filter(creador_id=usuario.id).values()
+    form = creaDebateForm(creador=creador, usuarios=total_usuarios, listado=listas)
     if request.method == 'GET':
         if 'q' in request.GET:
             deb = busqueda(request)
@@ -70,7 +71,8 @@ def index(request):
     creador=[('username', User.objects.get(id=request.user.id).username),
 	         ('alias',Perfil.objects.get(user= request.user).alias)]
     total_usuarios = User.objects.exclude(id=usuario.id)
-    form = creaDebateForm(creador=creador, usuarios=total_usuarios)
+    listas = Listado.objects.filter(creador_id=usuario.id).values()
+    form = creaDebateForm(creador=creador, usuarios=total_usuarios, listado=listas)
     if request.method == 'POST':
         if 'id_deb' in request.POST:
             cerrar_debate(request)
@@ -121,9 +123,11 @@ def generaDatos(request, usuario, form, estado):
     debates_recientes = Debate.objects.filter(tipo_participacion=0).order_by('-id_debate')[:5]
     debates_recientes = datos_debates(debates_recientes,usuario)
 
+    listado = Listado.objects.filter(creador=request.user).values()
     context = {'category_list':category_list, 'object_list': object_list, 'usuario': request.user, 'alias': alias_usuario,
                 'form':form, 'top_tags':top_tags, 'top_deb':top_debates,
-                'top_user':top_usuario, 'recientes': debates_recientes}
+                'top_user':top_usuario, 'recientes': debates_recientes,
+                'listado':listado}
     return context
 
 def datos_debates(debates, usuario):
@@ -166,7 +170,8 @@ def tagged(request, slug):
     total_usuarios = User.objects.exclude(id=usuario.id)
     creador=[('username', User.objects.get(id=request.user.id).username),
 	         ('alias',perfil_usuario.alias)]
-    form = creaDebateForm(creador=creador, usuarios=total_usuarios)
+    listas = Listado.objects.filter(creador_id=usuario.id).values()
+    form = creaDebateForm(creador=creador, usuarios=total_usuarios, listado=listas)
     debate_list = Debate.objects.filter(tags__slug=slug)
     object_list = datos_debates(debate_list, usuario)
     top_tags = Debate.tags.most_common()[:5]

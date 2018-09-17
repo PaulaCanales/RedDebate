@@ -4,43 +4,45 @@
 <html>
 {% block content %}
 <div class="container-debate">
-      <header>
-        <h2>{{lista.nombre}}</h2>
-        <p>Lista de usuarios</p>
-      </header>
-      <a href="javascript:abrir_modal('usuariosLista_modal')"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>Agregar</a>
-      {% for usuario in usuarios %}
-      <a class="dummy-media-object usuarioLista" href="{% url 'perfil' id_usr=usuario.usuario_id %}">
-        <img class="round" src="{% static 'img/RDLogo05.png' %}"/>
-        <h3>{{usuario}}</h3>
-        <form method="post" action= "{% url 'lista' lista.id  %}" enctype="multipart/form-data" onsubmit="return confirm('¿Seguro que desea eliminar el usuario?');">{% csrf_token %}
-          <input type="hidden" value="{{ usuario.usuario_id }}" name="id_usr_lista">
-          <input type="hidden" value="{{ lista.id }}" name="id_lista">
-          <button type="submit"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
-        </form>
-      </a>
-      {% endfor %}
-      <div id="usuariosLista_modal" class="modal">
-      	<div class="modal-content">
-          <h5>
-            <span class="close" onclick="cerrar_modal('usuariosLista_modal')">&times;</span><br>
-            Usuarios
-          </h5>
-          <form method="POST" class="post-form" enctype="multipart/form-data">{% csrf_token %}
-            <div class="fieldWrapper">
-              {{form.errors }}
-              <input type="text" value="" name="searchColumn" id="searchColumn" placeholder="Busca a un usuario..."/>
-              <div id="containercheckbox" class="userscheckbox">
-              {% for field in form %}
-              <div class="inputGroup">{{field}}</div>
-              {%endfor%}
-              </div>
-              <button name="nuevoUsrLista" type="submit" class="btn btn-index">Agregar</button>
-              <label type="button" onclick="cerrar_modal('usuariosLista_modal')"> Cancelar </label>
+  <header>
+    <h2>{{lista.nombre}}</h2>
+    <p>Lista de usuarios</p>
+  </header>
+  <main>
+    <a href="javascript:abrir_modal('usuariosLista_modal')"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>Agregar</a>
+    {% for usuario in usuarios %}
+    <a class="dummy-media-object usuarioLista" href="{% url 'perfil' id_usr=usuario.usuario_id %}">
+      <img class="round" src="{% static 'img/RDLogo05.png' %}"/>
+      <h3>{{usuario}}</h3>
+      <form method="post" action= "{% url 'lista' lista.id  %}" enctype="multipart/form-data" onsubmit="return confirm('¿Seguro que desea eliminar el usuario?');">{% csrf_token %}
+        <input type="hidden" value="{{ usuario.usuario_id }}" name="id_usr_lista">
+        <input type="hidden" value="{{ lista.id }}" name="id_lista">
+        <button type="submit"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
+      </form>
+    </a>
+    {% endfor %}
+    <div id="usuariosLista_modal" class="modal">
+      <div class="modal-content">
+        <h5>
+          <span class="close" onclick="cerrar_modal('usuariosLista_modal')">&times;</span><br>
+          Usuarios
+        </h5>
+        <form method="POST" class="post-form" enctype="multipart/form-data">{% csrf_token %}
+          <div class="fieldWrapper">
+            {{form.errors }}
+            <input type="text" value="" name="searchColumn" id="searchUser2" placeholder="Busca a un usuario..."/>
+            <div id="containercheckbox2" class="userscheckbox">
+            {% for field in form.usuario %}
+            <div class="inputGroup">{{field}}</div>
+            {%endfor%}
             </div>
-          </form>
-      	</div>
+            <button name="nuevoUsrLista" type="submit" class="btn btn-index">Agregar</button>
+            <label type="button" onclick="cerrar_modal('usuariosLista_modal')"> Cancelar </label>
+          </div>
+        </form>
       </div>
+    </div>
+  </main>
 </div>
 
 {% endblock content %}
