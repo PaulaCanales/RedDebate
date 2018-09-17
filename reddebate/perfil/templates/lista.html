@@ -31,6 +31,7 @@
           <div class="fieldWrapper">
             {{form.errors }}
             <input type="text" value="" name="searchColumn" id="searchUser2" placeholder="Busca a un usuario..."/>
+            {{ form.lista_id }}
             <div id="containercheckbox2" class="userscheckbox">
             {% for field in form.usuario %}
             <div class="inputGroup">{{field}}</div>

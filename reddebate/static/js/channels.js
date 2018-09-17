@@ -62,9 +62,18 @@ $(document).ready(function(){
       var fechafin = null;
     }
     var selected = [];
-    $("input[name*='participantes']:checked").each(function() {
-        selected.push($(this).val());
-    });
+    if ($('#debTipoParticipacionForm').val()==1){
+      $("input[name*='participantes']:checked").each(function() {
+          selected.push($(this).val());
+      });
+    }
+    else if ($('#debTipoParticipacionForm').val()==2){
+      $("input[name*='listado']:checked").each(function() {
+          selected.push($(this).val());
+      });
+      console.log(selected);
+    }
+
     var message = {
       titulo: $('#debTituloForm').val(),
       descripcion: $('#debDescripcionForm').val(),
