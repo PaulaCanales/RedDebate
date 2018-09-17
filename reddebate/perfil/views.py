@@ -13,7 +13,7 @@ from django.http import HttpResponse
 from resumen.models import Debate
 from perfil.models import Perfil, Listado, UsuarioListado
 from debate.models import Postura, Argumento, Respuesta
-from perfil.forms import modificaAlias, creaListado, agregaUsuarioListado
+from perfil.forms import modificaAlias, creaListado, seleccionaUsuarios, seleccionaListados
 from resumen.views import datos_debates, cerrar_debate
 from debate.views import actualiza_reputacion
 
@@ -72,9 +72,30 @@ def perfil(request, id_usr=None, id_arg=None, id_reb=None):
             alias_usuario = Perfil.objects.get(user_id=usuario)
             stats = estadisticas_usuario(usuario.id)
             total_usuarios = User.objects.all()
+            listas_de_usuario = UsuarioListado.objects.filter(usuario_id = usuario.id)
+            listas = Listado.objects.filter(creador_id=request.user.id)
+            listas = listas.exclude(id__in=listas_de_usuario.values('lista_id')).values()
+            nombre_listas_de_usuario = Listado.objects.filter(id__in=listas_de_usuario.values('lista_id')).values()
+            form = seleccionaListados(listas=listas, usuario=usuario.id)
+            if request.method == 'POST':
+                if 'nuevoUsrLista' in request.POST:
+                    usr = request.POST['usuario']
+                    seleccion = request.POST.getlist('lista_id')
+                    if (len(seleccion)>0):
+                        for lista in seleccion:
+                            post = UsuarioListado(usuario_id=usr, lista_id=lista)
+                            post.save()
+                    if request.POST['nueva']:
+                        nombre = request.POST['nueva']
+                        nueva_lista = Listado(nombre=nombre, creador_id=request.user.id)
+                        nueva_lista.save()
+                        nuevo_usr = UsuarioListado(usuario_id=usr, lista_id=nueva_lista.id)
+                        nuevo_usr.save()
+                    return redirect('perfil', id_usr=usr)
+
             return render(request, 'perfiles.html', {'usuario': usuario,
                 'alias': alias_usuario, 'usa_alias': usa_alias, 'total_usuarios': total_usuarios,
-                'stats': stats})
+                'stats': stats, 'form':form, 'listas_de_usuario':nombre_listas_de_usuario})
 
     else:
         if id_reb!=None:
@@ -91,7 +112,7 @@ def perfil(request, id_usr=None, id_arg=None, id_reb=None):
         total_usuarios = User.objects.all()
         return render(request, 'perfiles.html', {'usuario': usuario,
             'alias': alias_usuario, 'usa_alias': usa_alias, 'total_usuarios': total_usuarios,
-            'stats': stats})
+            'stats': stat})
 
 
 def estadisticas_usuario(id_usuario):
@@ -164,7 +185,7 @@ def lista(request, id_lista):
     for item in usuarios:
         excluir.append(item.usuario_id)
     total_usuarios = User.objects.exclude(id__in=excluir)
-    usrlista_form = agregaUsuarioListado(usuarios=total_usuarios, lista=id_lista)
+    usrlista_form = seleccionaUsuarios(usuarios=total_usuarios, lista=id_lista)
 
     if request.method == 'POST':
         if 'usuario' in request.POST:

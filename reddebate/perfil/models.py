@@ -32,7 +32,7 @@ class Notificacion(models.Model):
 
 class Listado(models.Model):
     id = models.AutoField(primary_key=True)
-    nombre = models.CharField(max_length=50, unique=True)
+    nombre = models.CharField(max_length=50, null=False)
     creador = models.ForeignKey(User)
 
 class UsuarioListado(models.Model):
@@ -40,4 +40,4 @@ class UsuarioListado(models.Model):
     lista = models.ForeignKey(Listado)
     usuario = models.ForeignKey(User)
     def __unicode__(self): # __unicode__ on Python 2
-		return self.usuario.username
+        return self.usuario.username
