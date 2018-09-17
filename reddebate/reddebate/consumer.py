@@ -69,7 +69,6 @@ def ws_receive(message):
                     lista.append(usuario.id)
                     try:
                         n = Participantes.objects.get(id_usuario_id=usuario.id, id_debate_id=m.id_debate)
-                        print("ya existe")
                     except:
                         n = Participantes(id_usuario_id=usuario.id, id_debate_id=m.id_debate)
                         n.save()

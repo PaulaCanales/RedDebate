@@ -225,6 +225,27 @@ function filtroCheckbox(id){
       })
   });
 };
+function filtroPanel(id){
+  $(id).on("input",function(){
+
+      var searchTxt = $(this).val();
+      searchTxt = searchTxt.replace(/[.()+]/g,"\\$&");
+      var patt = new RegExp("^" + searchTxt,"i");
+      $(".dummy-media-object").each(function(){
+          var label = $(this).text().trim();
+          console.log(label);
+          if(patt.test(label)){
+            $(this).closest("a").show();
+            console.log(label);
+          }
+          else{
+            $(this).closest("a").hide();
+          }
+
+
+      })
+  });
+};
 // Gráficos
 
 function posturaChart() {
