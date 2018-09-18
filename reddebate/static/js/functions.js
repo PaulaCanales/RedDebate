@@ -16,14 +16,17 @@ $(function() {
   });
 });
 
-function cambiar_alias(){
-  document.getElementById('boton_alias').style.display = 'none';
-  document.getElementById('formulario_alias').style.display = 'block';
+function form_perfil(boton, form){
+  document.getElementById(boton).style.display = 'none';
+  document.getElementById(form).style.display = 'block';
 }
 
-function cancelar_alias(){
-  document.getElementById('formulario_alias').style.display = 'none';
-  document.getElementById('boton_alias').style.display = 'inline-block';
+function cancelar_form(boton, form){
+  document.getElementById(form).style.display = 'none';
+  document.getElementById(boton).style.display = 'inline-block';
+  $('#'+form+' :input').each(function() {
+    $(this).val('');
+  });
 }
 
 function fomulario_argumento(postura){
@@ -56,9 +59,6 @@ function confirm_modal_close() {
 function cierra_formulario(id){
   $(id).slideUp("slow");
   $(nuevoDebateBtn).show();
-}
-function probando(){
-  console.log("jejejejejje");
 }
 function formulario_editar_debate(id,id_dbt,titulo,desc,año,mes,dia,alias,largo){
   $(id).slideDown("slow");
@@ -205,7 +205,47 @@ function openNav() {
 function closeNav() {
     document.getElementById("mySidenav").style.width = "0";
 }
+function filtroCheckbox(id){
+  $(id).on("input",function(){
 
+      var searchTxt = $(this).val();
+      searchTxt = searchTxt.replace(/[.()+]/g,"\\$&");
+      var patt = new RegExp("^" + searchTxt,"i");
+      $(":checkbox").each(function(){
+          var label = $(this).parent().text().trim();
+          if(patt.test(label)){
+            $(this).closest("div").show();
+            console.log(label);
+          }
+          else{
+            $(this).closest("div").hide();
+          }
+
+
+      })
+  });
+};
+function filtroPanel(id){
+  $(id).on("input",function(){
+
+      var searchTxt = $(this).val();
+      searchTxt = searchTxt.replace(/[.()+]/g,"\\$&");
+      var patt = new RegExp("^" + searchTxt,"i");
+      $(".dummy-media-object").each(function(){
+          var label = $(this).text().trim();
+          console.log(label);
+          if(patt.test(label)){
+            $(this).closest("a").show();
+            console.log(label);
+          }
+          else{
+            $(this).closest("a").hide();
+          }
+
+
+      })
+  });
+};
 // Gráficos
 
 function posturaChart() {

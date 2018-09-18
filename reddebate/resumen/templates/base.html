@@ -151,6 +151,11 @@
         $('#myList li').not(':lt('+x+')').hide();
     });
 });
+$(document).ready(function(){
+	filtroCheckbox('#searchUser2');
+	filtroPanel('#searchUser3');
+  filtroCheckbox('#searchLista2');
+});
 </script>
 
 	<div class="page-header">
@@ -173,15 +178,21 @@
 										<li>
                         <a href="{% url 'cerrados' %}">Debates Cerrados</a>
                     </li>
-										<li>
-                        <a href="{% url 'debates' %}">Mis Debates</a>
-                    </li>
-                    <li>
-                        <a href="{% url 'perfil' id_usr=user.id %}"> Perfil </a>
+                    <li  class="dropdown-menu">
+												<div class="dropdown">
+											    <button class="btn" type="button" data-toggle="dropdown">Perfil
+											    <span class="caret"></span></button>
+											    <ul class="dropdown-menu">
+											      <li><a href="{% url 'debates' %}">Mis Debates</a></li>
+											      <li><a href="{% url 'listas' %}">Mis Listas</a></li>
+											      <li><a href="{% url 'perfil' id_usr=user.id %}">Mis Datos</a></li>
+											    </ul>
+											  </div>
                     </li>
 										<li>
 											<a href="javascript:openNav()" rel="popover" title="Notificaciones">
-												<span id="alertaSpan"class="glyphicon glyphicon-bell alerta_notificacion"></span>
+												<span id="alertaSpan" class="glyphicon glyphicon-bell alerta_notificacion"></span>
+												<span id="numSpan" class="badge">{{noleidas}}</span>
 											</a>
 										</li>
                 </ul>
@@ -190,8 +201,13 @@
 						  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
 							<ul id="myList">
 								{% for notificacion in notificaciones  %}
-								<li id="notificacion{{notificacion.id}}" class="notificacion{{notificacion.estado}}">
-									<a href="{% url 'ver_notificacion' notificacion.id_debate_id notificacion.id %}">{{notificacion}}</a>
+
+								<li id="notificacion{{notificacion.object.id}}" class="notificacion{{notificacion.object.estado}}">
+									<i class="{{notificacion.object.tipo}}"></i>
+									<a href="{% url 'ver_notificacion' notificacion.object.id_debate_id notificacion.object.id %}">
+										{{notificacion.object}}<br>
+										<label>{{notificacion.tiempo}}</label>
+									</a>
 								</li>
 								{% endfor %}
 							</ul>

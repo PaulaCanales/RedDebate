@@ -4,11 +4,15 @@ from django import forms
 from resumen.models import Debate
 from django.contrib.auth import authenticate, login
 
+tipoFiltro=[('1','Todos'),
+         ('2','Listas'),
+         ('3', 'Recomendados')]
 
 tipoRebate = [('0', 'Ambas posturas'),
                 ('1','Postura contraria')]
 tipoParticipacion = [('0', 'Publico'),
-                ('1','Privado')]
+                ('1','Privado a Usuarios Específicos'),
+                ('2', 'Privado a Listas')]
 creador=[('username','Nombre Real'),
          ('alias','Alias')]
 
@@ -36,6 +40,7 @@ class creaDebateForm(forms.ModelForm):
     def __init__(self,*args,**kwargs):
         self.creador = kwargs.pop('creador')
         self.usuarios = kwargs.pop('usuarios')
+        self.listas = kwargs.pop('listado')
         super(creaDebateForm,self).__init__(*args,**kwargs)
         if self.creador:
             self.fields['alias_c'].widget=forms.Select(
@@ -44,6 +49,8 @@ class creaDebateForm(forms.ModelForm):
                     )
         if self.usuarios:
             self.fields['participantes'].choices = [(x.id, x) for x in self.usuarios]
+        if self.listas:
+            self.fields['listado'].choices = [(x['id'], x['nombre']) for x in self.listas]
 
     titulo = forms.CharField(widget=forms.TextInput(
         attrs={
@@ -112,11 +119,17 @@ class creaDebateForm(forms.ModelForm):
             attrs={'id': 'debParticipantesForm'}
         ),
         label="Usuarios")
+    listado = forms.MultipleChoiceField(
+        widget=forms.CheckboxSelectMultiple(
+            attrs={'id': 'debListadoForm'}
+        ),
+        label="Listas")
 
     img = forms.FileField(label='Añadir imagen', required=False,
         widget=forms.FileInput(
             attrs={'id': 'debImgForm'}
             ))
+    # filtro = forms.ChoiceField(choices=tipoFiltro, widget=forms.RadioSelect())
     class Meta:
         model = Debate
         fields = ('id_debate', 'titulo', 'descripcion', 'date_fin', 'alias_c', 'largo', 'num_argumento', 'num_rebate', 'num_cambio_postura', 'tipo_rebate', 'tipo_participacion','img')

@@ -106,7 +106,7 @@ def notificacion_argumento(sender, instance, **kwargs):
         except:
             print("primera")
             msj = str(num_argumentos)+" usuario ha argumentado en "+titulo
-            notificacion = Notificacion.objects.create(id_debate = debate, id_usuario_id=id_creador, mensaje=msj, tipo="agumento")
+            notificacion = Notificacion.objects.create(id_debate = debate, id_usuario_id=id_creador, mensaje=msj, tipo="argumento")
         Group("notificacion").send({'text': json.dumps(
                                             {'id_creador': str(id_creador),
                                             'mensaje': notificacion.mensaje,

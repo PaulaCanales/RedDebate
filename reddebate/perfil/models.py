@@ -18,6 +18,7 @@ class Perfil(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
     alias = models.CharField(max_length=30, null=False, unique=True, default=unique_rand, error_messages={'unique':"Ya existe un perfil con este Alias"})
     reputacion = models.IntegerField(default=0, blank=True)
+    img = models.FileField(blank=True, null=True, default="RDdefault.png")
 
 class Notificacion(models.Model):
     id = models.AutoField(primary_key=True)
@@ -29,3 +30,15 @@ class Notificacion(models.Model):
     estado = models.IntegerField(default=0)
     def __unicode__(self): # __unicode__ on Python 2
 		return self.mensaje
+
+class Listado(models.Model):
+    id = models.AutoField(primary_key=True)
+    nombre = models.CharField(max_length=50, null=False)
+    creador = models.ForeignKey(User)
+
+class UsuarioListado(models.Model):
+    id = models.AutoField(primary_key=True)
+    lista = models.ForeignKey(Listado)
+    usuario = models.ForeignKey(User)
+    def __unicode__(self): # __unicode__ on Python 2
+        return self.usuario.username

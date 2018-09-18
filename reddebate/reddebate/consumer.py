@@ -8,7 +8,7 @@ import logging
 from resumen.models import Debate
 from debate.models import Argumento, Postura, Participantes
 from django.contrib.auth.models import User
-from perfil.models import Perfil
+from perfil.models import Perfil, Listado, UsuarioListado
 from channels.auth import http_session_user, channel_session_user, channel_session_user_from_http
 
 log = logging.getLogger(__name__)
@@ -59,6 +59,24 @@ def ws_receive(message):
 
                 Group(grupo).send({'text': json.dumps(n.as_dict(lista))})
 
+            elif data['tipo_participacion']=='2':
+                m.tipo_participacion = 1
+                m.save()
+                usuariosLista = UsuarioListado.objects.filter(lista_id__in=participantes).values('usuario_id')
+                lista=[]
+                for usuarioLista in usuariosLista:
+                    usuario = User.objects.get(id=usuarioLista['usuario_id'])
+                    lista.append(usuario.id)
+                    try:
+                        n = Participantes.objects.get(id_usuario_id=usuario.id, id_debate_id=m.id_debate)
+                    except:
+                        n = Participantes(id_usuario_id=usuario.id, id_debate_id=m.id_debate)
+                        n.save()
+                print(lista)
+                lista = list(set(lista))
+                print(lista)
+                n = Participantes(id_usuario_id=message.user.id, id_debate_id=m.id_debate)
+                n.save()
             else:
                 Group(grupo).send({'text': json.dumps(m.as_dict())})
 
