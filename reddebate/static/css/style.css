@@ -232,7 +232,7 @@ section.success {
   margin: -20px -20px 20px -20px;
   border-radius: 5px 5px 0 0;
   text-transform: uppercase;
-  font-family: montserrat;
+  font-family: "Montserrat", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 .modal-content h5{
   background: #e5e5e5;
@@ -242,12 +242,12 @@ section.success {
   margin: -20px -20px 20px -20px;
   border-radius: 5px 5px 0 0;
   text-transform: uppercase;
-  font-family: montserrat;
+  font-family: "Montserrat", "Helvetica Neue", Helvetica, Arial, sans-serif;
   text-align: left;
 }
 .modal-content h4{
   font-size: 20px;
-  font-family: montserrat;
+  font-family: "Montserrat", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 .modal-body{
     max-height: 500px;
@@ -671,29 +671,24 @@ footer {
   padding-top: 10px;
 }
 .navbar-inverse .navbar-brand {
-
   font-size: 25px;
   color: #ffffff;
 }
 .navbar-inverse .navbar-brand:hover,
 .navbar-inverse .navbar-brand:focus {
-
   color: var(--verde-principal);
   background-color: transparent;
 }
 .navbar-inverse .navbar-text {
-
   color: #ffffff;
 }
 .navbar-inverse .navbar-nav > li > a {
-
   color: #ffffff;
   margin-top: 15px;
   margin-left: 5px;
 }
 .navbar-inverse .navbar-nav > li > a:hover,
 .navbar-inverse .navbar-nav > li > a:focus {
-
   color: var(--verde-principal);
   background-color: transparent;
 }
@@ -701,7 +696,6 @@ footer {
 .navbar-inverse .navbar-nav > .active > a,
 .navbar-inverse .navbar-nav > .active > a:hover,
 .navbar-inverse .navbar-nav > .active > a:focus {
-
   color: var(--verde-principal);
   background-color: #080808;
 }
@@ -710,12 +704,41 @@ footer {
     color: #ffffff;
   }
 }
+.navbar-inverse .btn-link,
 .navbar-inverse .navbar-link {
   color: #ffffff;
 }
-.navbar-inverse .btn-link {
-  color: #ffffff;
+
+.navbar-inverse .navbar-nav .dropdown-menu{
+  background: var(--azul-principal);
+  font-size: 16px;
+  border: 0;
+  box-shadow: none;
+  z-index: 1;
+  margin-left: 5px;
+  font-size: 16px;
 }
+
+.navbar-inverse .navbar-nav .dropdown a{
+  color: white;
+  margin-top: 5px;
+}
+
+.navbar-inverse .navbar-nav .dropdown a:hover{
+  color: var(--verde-principal);
+  background: var(--azul-principal);
+}
+
+.navbar-inverse .navbar-nav .dropdown button,
+.navbar-inverse .navbar-nav .dropdown button:focus{
+  color: white;
+  background: var(--azul-principal);
+  border: 0px;
+  margin-top: 15px;
+  font-size: 16px;
+
+}
+
 *,
 *::before,
 *::after {
@@ -1038,7 +1061,7 @@ hr {
   display: none;
 }
 #nuevodebateform label{
-  font-family: montserrat;
+  font-family: "Montserrat", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 #nuevodebateform fieldset {
 	background: white;
@@ -1065,7 +1088,7 @@ hr {
 	margin-bottom: 10px;
 	width: 100%;
 	box-sizing: border-box;
-	font-family: montserrat;
+	font-family: "Montserrat", "Helvetica Neue", Helvetica, Arial, sans-serif;
 	color: #2C3E50;
 	font-size: 13px;
 } */
@@ -1089,7 +1112,7 @@ hr {
 }
 /*headings*/
 .fs-title {
-  font-family: montserrat;
+  font-family: "Montserrat", "Helvetica Neue", Helvetica, Arial, sans-serif;
 	font-size: 20px;
 	text-transform: uppercase;
 	color: #2C3E50;
@@ -1110,7 +1133,7 @@ hr {
 #progressbar li {
 	list-style-type: none;
 	color: white;
-  font-family: montserrat;
+  font-family: "Montserrat", "Helvetica Neue", Helvetica, Arial, sans-serif;
 	text-transform: uppercase;
 	font-size: 9px;
 	width: 33.33%;
@@ -1186,7 +1209,7 @@ hr {
     visibility: visible;
 }
 .tooltip-inner{
-  font-family: montserrat;
+  font-family: "Montserrat", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 10px;
   background: var(--azul-principal);
 }
@@ -1284,7 +1307,7 @@ hr {
 .container-debate > h3{
   margin: inherit;
   color: var(--azul-principal);
-  font-family: montserrat;
+  font-family: "Montserrat", "Helvetica Neue", Helvetica, Arial, sans-serif;
   text-transform: uppercase;
   margin-bottom: 10px;
   margin-left: -30;
@@ -1307,12 +1330,12 @@ hr {
 }
 .container-debate h2{
   margin-top: 0;
-  font-family: montserrat;
+  font-family: "Montserrat", "Helvetica Neue", Helvetica, Arial, sans-serif;
   text-transform: uppercase;
 }
 .debateDescripcion{
   font-size: 14px;
-  font-family: montserrat;
+  font-family: "Montserrat", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 .cards__item a{
   width: 100%;
@@ -1394,7 +1417,7 @@ hr {
 	font-weight: 800;
 	color: #fff;
 	padding: 0.5em 0;
-  font-family: montserrat;
+  font-family: "Montserrat", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
 .round {
@@ -1408,7 +1431,7 @@ hr {
 	cursor: pointer;
 	border-radius: 5px;
 	background: rgba(45, 62, 80,0.15);
-  font-family: montserrat;
+  font-family: "Montserrat", "Helvetica Neue", Helvetica, Arial, sans-serif;
   text-transform: uppercase;
 }
 
@@ -1466,7 +1489,7 @@ hr {
   border: 0;
   cursor: pointer;
   font-size: 15px;
-  font-family: montserrat;
+  font-family: "Montserrat", "Helvetica Neue", Helvetica, Arial, sans-serif;
   padding: 2px 20px;
 }
 .control {
@@ -1478,7 +1501,7 @@ hr {
   margin-bottom: 15px;
   cursor: pointer;
   font-size: 15px;
-  font-family: montserrat;
+  font-family: "Montserrat", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 .control input {
   position: absolute;
@@ -1985,7 +2008,7 @@ hr {
   display: block;
   text-align: center;
   margin-top: 15px;
-  font-family: montserrat;
+  font-family: "Montserrat", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 .radioFiltro ul {
   list-style: none;

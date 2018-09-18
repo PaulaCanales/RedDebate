@@ -177,11 +177,16 @@ $(document).ready(function(){
 										<li>
                         <a href="{% url 'cerrados' %}">Debates Cerrados</a>
                     </li>
-										<li>
-                        <a href="{% url 'debates' %}">Mis Debates</a>
-                    </li>
-                    <li>
-                        <a href="{% url 'perfil' id_usr=user.id %}"> Perfil </a>
+                    <li  class="dropdown-menu">
+												<div class="dropdown">
+											    <button class="btn" type="button" data-toggle="dropdown">Perfil
+											    <span class="caret"></span></button>
+											    <ul class="dropdown-menu">
+											      <li><a href="{% url 'debates' %}">Mis Debates</a></li>
+											      <li><a href="{% url 'listas' %}">Mis Listas</a></li>
+											      <li><a href="{% url 'perfil' id_usr=user.id %}">Mis Datos</a></li>
+											    </ul>
+											  </div>
                     </li>
 										<li>
 											<a href="javascript:openNav()" rel="popover" title="Notificaciones">

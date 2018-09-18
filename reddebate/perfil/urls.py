@@ -11,6 +11,7 @@ urlpatterns = [
     url(r'^usr/(?P<id_arg>[0-9]+)/$', views.perfil, name='perfil'),
     url(r'^usr/(?P<id_arg>[0-9]+)/(?P<id_reb>[0-9]+)/$', views.perfil, name='perfil'),
     url(r'^debates$', views.debates_usuario, name='debates'),
+    url(r'^listas$', views.listas_usuario, name='listas'),
     url(r'^lista/(?P<id_lista>[0-9]+)/$', views.lista, name='lista'),
     url(r'^', include('resumen.urls', namespace='resumen'))
 ]

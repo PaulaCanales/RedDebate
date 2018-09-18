@@ -26,17 +26,7 @@ def perfil(request, id_usr=None, id_arg=None, id_reb=None):
     if id_usr!=None:
         if int(request.user.id)==int(id_usr):
             perfil= Perfil.objects.get(user=request.user)
-            listado = Listado.objects.filter(creador=request.user).values()
-            listado_usuarios = []
-            object_list = []
-            for item in listado:
-                usr_lista = UsuarioListado.objects.filter(lista_id=item['id']).values()
-                for user in usr_lista:
-                    username = User.objects.get(id=user['usuario_id'])
-                    listado_usuarios.append({'nombre':username, 'lista_id':user['lista_id']})
-
             alias_form = modificaAlias(instance=perfil)
-            lista_form = creaListado()
             if request.method == 'POST':
                 if 'nuevo_alias' in request.POST:
                     alias_form = modificaAlias(request.POST, instance=perfil)
@@ -44,28 +34,13 @@ def perfil(request, id_usr=None, id_arg=None, id_reb=None):
                         perfil = alias_form.save(commit=False)
                         perfil.save()
                         return redirect('perfil',id_usr=request.user.id)
-                if 'nombre' in request.POST:
-                    lista_form = creaListado(request.POST)
-                    if lista_form.is_valid():
-                        lista = lista_form.save(commit=False)
-                        lista.creador = request.user
-                        lista.save()
-                        return redirect('lista', lista.id)
-                if 'id_lista' in request.POST:
-                    id_lista = request.POST['id_lista']
-                    usuarioLista = Listado.objects.get(id=id_lista)
-                    usuarioLista.delete()
-                    return redirect('perfil', id_usr=request.user.id)
-
             usuario = request.user
             alias_usuario = Perfil.objects.get(user=usuario)
 
             stats = estadisticas_usuario(usuario.id)
             return render(request, 'perfil_usuario.html', {'usuario': usuario,
                 'alias': alias_usuario, 'alias_form': alias_form,
-                'stats': stats, 'listado': listado, 'lista_form': lista_form,
-                'listado_usuarios': listado_usuarios,
-                })
+                'stats': stats})
         else:
             usa_alias = 'username'
             usuario = User.objects.get(id=id_usr)
@@ -177,6 +152,33 @@ def debates_usuario(request):
     debates_usuario = Debate.objects.filter(id_usuario_id= usuario.id).order_by('-id_debate')
     lista_debates = datos_debates(debates_usuario,usuario)
     return render(request, 'debates_usuario.html', {'usuario': usuario, 'object_list': lista_debates})
+
+def listas_usuario(request):
+    listado = Listado.objects.filter(creador=request.user).values()
+    listado_usuarios = []
+    object_list = []
+    for item in listado:
+        usr_lista = UsuarioListado.objects.filter(lista_id=item['id']).values()
+        for user in usr_lista:
+            username = User.objects.get(id=user['usuario_id'])
+            listado_usuarios.append({'nombre':username, 'lista_id':user['lista_id']})
+    lista_form = creaListado()
+    if request.method == 'POST':
+        if 'nombre' in request.POST:
+            lista_form = creaListado(request.POST)
+            if lista_form.is_valid():
+                lista = lista_form.save(commit=False)
+                lista.creador = request.user
+                lista.save()
+                return redirect('lista', lista.id)
+        if 'id_lista' in request.POST:
+            id_lista = request.POST['id_lista']
+            usuarioLista = Listado.objects.get(id=id_lista)
+            usuarioLista.delete()
+            return redirect('listas_usuario')
+
+    return render(request, 'listas_usuario.html', {'usuario':request.user, 'listado': listado, 'lista_form': lista_form,
+                'listado_usuarios': listado_usuarios})
 
 def lista(request, id_lista):
     lista = Listado.objects.get(id=id_lista)
