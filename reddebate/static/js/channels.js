@@ -6,7 +6,10 @@ $(document).ready(function(){
     var data = JSON.parse(notificacion.data);
     var id_usr_actual = $("#id_usuario_actual").text();
     if (id_usr_actual == data.id_creador){
-      $("#alertaSpan").css('background-color', '#d9534f');
+      $("#alertaSpan").css('color', '#d9534f');
+      $("#numSpan").text("");
+      $("#numSpan").append($('<span class="glyphicon glyphicon-asterisk" aria-hidden="true"></span>'));
+      $("#numSpan").css('background-color', '#d9534f');
       var menu = $("#mySidenav");
       var url = "/debate/"+data.id_debate+"/"+data.id_notificacion;
       var item = document.getElementById("notificacion"+data.id_notificacion);

@@ -24,4 +24,5 @@ def listado_notificacion(request):
             elif d.days < 4: msj = "Hace "+str(d.days)+" días"
             else: msj = n.fecha.strftime('%d/%m/%Y')
             notificacion_usr.append({'object':n, 'tiempo': msj})
-    return {'notificaciones': notificacion_usr}
+    noleidas = Notificacion.objects.filter(estado=0, id_usuario_id=request.user.id).count()
+    return {'notificaciones': notificacion_usr, 'noleidas':noleidas}
