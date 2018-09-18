@@ -247,7 +247,9 @@ def despliega(request, id_debate): #debate_id
 	if debate.tipo_participacion == 1:
 		participantes = Participantes.objects.filter(id_debate_id=id_debate)
 		for participante in participantes:
-			lista_participantes.append(User.objects.get(id=participante.id_usuario_id))
+			usuario = User.objects.get(id=participante.id_usuario_id)
+			perfil = Perfil.objects.get(user_id=usuario.id)
+			lista_participantes.append({'usuario':usuario, 'perfil':perfil})
 		try:
 			p = Participantes.objects.get(id_debate_id=id_debate,id_usuario_id=usuario_actual)
 		except:

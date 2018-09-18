@@ -119,7 +119,9 @@ def generaDatos(request, usuario, form, estado):
     top_reputacion = Perfil.objects.all().order_by('-reputacion')[:5]
     top_usuario = []
     for usuario in top_reputacion:
-        top_usuario.append(User.objects.get(id=usuario.user_id))
+        usr = User.objects.get(id=usuario.user_id)
+        perfil = Perfil.objects.get(user_id=usuario.user_id)
+        top_usuario.append({'usuario':usr, 'perfil':perfil})
     debates_recientes = Debate.objects.filter(tipo_participacion=0).order_by('-id_debate')[:5]
     debates_recientes = datos_debates(debates_recientes,usuario)
 

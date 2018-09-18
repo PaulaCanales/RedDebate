@@ -14,17 +14,21 @@
   <main>
     <div class="row">
       <div class="left col-md-12">
+        {% ifequal usa_alias 'username' %}
         <div class="photo-left">
-          <img class="photo" src="{% static 'img/RDLogo05.png' %}"/>
+          <img class="photo" src="{{alias.img.url}}"/>
           <div class="active"></div>
         </div>
-        {% ifequal usa_alias 'username' %}
         <h4 class="name">{{usuario.username}}</h4>
         <button type="button" class="btn btn-demo" data-toggle="modal" data-target="#verListas_modal">
     			<i class="fa fa-user-plus" aria-hidden="true"></i>
     		</button>
         <p class="info">{{ usuario.email }}</p>
         {% else %}
+        <div class="photo-left">
+          <img class="photo" src="{% static 'img/RDLogo05.png' %}"/>
+          <div class="active"></div>
+        </div>
         <h4 class="name">{{ alias.alias }}</h4>
         <p class="info">modo anónimo</p>
 

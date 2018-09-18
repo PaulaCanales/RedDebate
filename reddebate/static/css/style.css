@@ -1468,9 +1468,11 @@ hr {
 	color: rgba(255,255,255,0.7);
   text-align: left;
 }
-
 .dummy-media-object:hover h3 {
 	color: var(--azul-principal);
+}
+.dummy-media-object p{
+  display: inline-block;
 }
 .control-group {
   vertical-align: top;

@@ -10,12 +10,12 @@
   </header>
   <main>
     <a href="javascript:abrir_modal('usuariosLista_modal')"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>Agregar</a>
-    {% for usuario in usuarios %}
-    <a class="dummy-media-object usuarioLista" href="{% url 'perfil' id_usr=usuario.usuario_id %}">
-      <img class="round" src="{% static 'img/RDLogo05.png' %}"/>
-      <h3>{{usuario}}</h3>
+    {% for item in usuarios %}
+    <a class="dummy-media-object usuarioLista" href="{% url 'perfil' id_usr=item.usuario.usuario_id %}">
+      <img class="round" src="{{ item.perfil.img.url }}"/>
+      <h3>{{item.usuario}}</h3>
       <form method="post" action= "{% url 'lista' lista.id  %}" enctype="multipart/form-data" onsubmit="return confirm('¿Seguro que desea eliminar el usuario?');">{% csrf_token %}
-        <input type="hidden" value="{{ usuario.usuario_id }}" name="id_usr_lista">
+        <input type="hidden" value="{{ item.usuario.usuario_id }}" name="id_usr_lista">
         <input type="hidden" value="{{ lista.id }}" name="id_lista">
         <button type="submit"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
       </form>

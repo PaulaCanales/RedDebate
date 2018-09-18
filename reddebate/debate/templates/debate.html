@@ -17,8 +17,9 @@
 		<h3>Participantes <span class="glyphicon glyphicon-user"></span></h3>
 		<input type="text" value="" name="searchColumn" id="searchUser3" placeholder="Busca a un usuario..."/>
 		{% for participante in participantes%}
-		<a type = "text" class="dummy-media-object" href="{% url 'perfil' id_usr=participante.id %}">
-			<p> {{participante}} </p>
+		<a type = "text" class="dummy-media-object" href="{% url 'perfil' id_usr=participante.usuario.id %}">
+			<img class="round" src="{{ participante.perfil.img.url }}"/>
+			<p> {{participante.usuario}} </p>
 		</a>
 		{% endfor %}
 	</div>

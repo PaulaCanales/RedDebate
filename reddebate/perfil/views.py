@@ -191,6 +191,11 @@ def listas_usuario(request):
 def lista(request, id_lista):
     lista = Listado.objects.get(id=id_lista)
     usuarios = UsuarioListado.objects.filter(lista_id=id_lista)
+    # perfiles = Perfil.objects.filter(user_id=usuarios.values('usuario_id'))
+    usuario_perfil = []
+    for usuario in usuarios:
+        perfil = Perfil.objects.get(user_id=usuario.usuario_id)
+        usuario_perfil.append({'usuario':usuario, 'perfil':perfil})
     excluir = [request.user.id]
     for item in usuarios:
         excluir.append(item.usuario_id)
@@ -210,7 +215,7 @@ def lista(request, id_lista):
             usuarioLista = UsuarioListado.objects.get(lista_id=id_lista, usuario_id=id_usr)
             usuarioLista.delete()
             return redirect('lista', id_lista)
-    return render(request, 'lista.html', {'lista': lista, 'usuarios': usuarios, 'form': usrlista_form})
+    return render(request, 'lista.html', {'lista': lista, 'usuarios': usuario_perfil, 'form': usrlista_form})
 
 ##@brief Funcion que elimina un debate
 ##@param request solicitud web

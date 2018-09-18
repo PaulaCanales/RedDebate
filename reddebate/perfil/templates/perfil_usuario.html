@@ -11,7 +11,7 @@
     <div class="row">
       <div class="left col-md-4">
         <div class="photo-left">
-          <img class="photo" src="{% static 'img/RDLogo05.png' %}"/>
+          <img class="photo" src="{{ alias.img.url }}"/>
           <div class="active"></div>
         </div>
         <h4 class="name">{{usuario.username}}</h4>
@@ -60,6 +60,9 @@
           <div class="main">
           <main>
             <h4 class="fullname">{{usuario.get_full_name}}</h4>
+            <h5><a id = 'boton_img' onclick='javascript:form_perfil("boton_img", "formulario_img" );'>
+              Cambia tu foto <i class="fa fa-camera" aria-hidden="true"></i>
+            </a></h5>
             <p class="desc-datos">Username</p>
             <p class="datos">{{usuario.username}}</p>
             <p class="desc-datos">Miembro desde</p>
@@ -89,13 +92,16 @@
                 <label type="button" onclick='cancelar_form("boton_alias", "formulario_alias" );'> Cancelar </label>
               </form>
              </div>
-             <form method="POST" class="post-form" enctype="multipart/form-data">{% csrf_token %}
-               <div class="fieldWrapper">
-                   {{ imagen_form.non_field_errors }}
-                   {{ imagen_form.as_p }}
-               </div>
-               <button name="nueva_imagen" type="submit" class="btn">Cambiar</button>
-             </form>
+             <div id='formulario_img' style="display: none;" >
+               <form method="POST" class="post-form" enctype="multipart/form-data">{% csrf_token %}
+                 <div class="fieldWrapper">
+                     {{ imagen_form.non_field_errors }}
+                     {{ imagen_form.as_p }}
+                 </div>
+                 <button name="nueva_imagen" type="submit" class="btn btn-index">Cambiar</button>
+                 <label type="button" onclick='cancelar_form("boton_img", "formulario_img" );'> Cancelar </label>
+               </form>
+             </div>
           </main>
         </div>
         </div>
