@@ -18,6 +18,12 @@ class modificaAlias(forms.ModelForm):
         model = Perfil
         fields = ('user', 'alias')
 
+class modificaImagen(forms.Form):
+    img = forms.FileField(label='Añadir imagen', required=False,
+        widget=forms.FileInput(
+            attrs={'id': 'debImgForm'}
+            ))
+
 class creaListado(forms.ModelForm):
     nombre = forms.CharField(widget=forms.TextInput(
         attrs={

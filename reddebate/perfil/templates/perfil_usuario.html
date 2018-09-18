@@ -89,6 +89,13 @@
                 <label type="button" onclick='cancelar_form("boton_alias", "formulario_alias" );'> Cancelar </label>
               </form>
              </div>
+             <form method="POST" class="post-form" enctype="multipart/form-data">{% csrf_token %}
+               <div class="fieldWrapper">
+                   {{ imagen_form.non_field_errors }}
+                   {{ imagen_form.as_p }}
+               </div>
+               <button name="nueva_imagen" type="submit" class="btn">Cambiar</button>
+             </form>
           </main>
         </div>
         </div>

@@ -13,7 +13,7 @@ from django.http import HttpResponse
 from resumen.models import Debate
 from perfil.models import Perfil, Listado, UsuarioListado
 from debate.models import Postura, Argumento, Respuesta
-from perfil.forms import modificaAlias, creaListado, seleccionaUsuarios, seleccionaListados
+from perfil.forms import modificaAlias, creaListado, seleccionaUsuarios, seleccionaListados, modificaImagen
 from resumen.views import datos_debates, cerrar_debate
 from debate.views import actualiza_reputacion
 
@@ -27,6 +27,7 @@ def perfil(request, id_usr=None, id_arg=None, id_reb=None):
         if int(request.user.id)==int(id_usr):
             perfil= Perfil.objects.get(user=request.user)
             alias_form = modificaAlias(instance=perfil)
+
             if request.method == 'POST':
                 if 'nuevo_alias' in request.POST:
                     alias_form = modificaAlias(request.POST, instance=perfil)
@@ -34,13 +35,20 @@ def perfil(request, id_usr=None, id_arg=None, id_reb=None):
                         perfil = alias_form.save(commit=False)
                         perfil.save()
                         return redirect('perfil',id_usr=request.user.id)
+                elif 'nueva_imagen' in request.POST:
+                    form = modificaImagen(request.POST, request.FILES)
+                    if form.is_valid():
+                        post = Perfil.objects.get(user=request.user)
+                        post.img = form.cleaned_data['img']
+                        post.save()
+                        return redirect('perfil',id_usr=request.user.id)
             usuario = request.user
             alias_usuario = Perfil.objects.get(user=usuario)
-
+            imagen_form = modificaImagen()
             stats = estadisticas_usuario(usuario.id)
             return render(request, 'perfil_usuario.html', {'usuario': usuario,
                 'alias': alias_usuario, 'alias_form': alias_form,
-                'stats': stats})
+                'stats': stats, 'imagen_form':imagen_form})
         else:
             usa_alias = 'username'
             usuario = User.objects.get(id=id_usr)
