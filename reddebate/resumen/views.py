@@ -19,6 +19,7 @@ from perfil.models import Perfil, Notificacion, Listado, UsuarioListado
 from resumen.forms import creaDebateForm, LoginForm
 from taggit.models import Tag
 from django.db.models import Q, Sum
+from debate.views import actualiza_reputacion
 
 def home(request):
     form = LoginForm(request.POST or None)
@@ -76,6 +77,10 @@ def index(request):
     if request.method == 'POST':
         if 'id_deb' in request.POST:
             cerrar_debate(request)
+            return redirect('index')
+
+        if 'id_deb_eliminar' in request.POST:
+            eliminar_debate(request)
             return redirect('index')
 
     if request.method == 'GET':
@@ -230,6 +235,18 @@ def cerrar_debate(request):
     deb.estado = 'cerrado'
     deb.save()
     return redirect('perfil',id_usr=request.user.id)
+
+##@brief Funcion que elimina un debate
+##@param request solicitud web
+##@return redirect redirecciona a la vista "perfil"
+##@warning Login is required
+@login_required
+def eliminar_debate(request):
+    id_deb=request.POST['id_deb_eliminar']
+    deb = Debate.objects.get(pk=id_deb)
+    deb.delete()
+    actualiza_reputacion(request.user.id, -5)
+    return redirect('debates')
 
 def busqueda(request):
     query = request.GET.get('q')

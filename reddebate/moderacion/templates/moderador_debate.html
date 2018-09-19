@@ -16,16 +16,28 @@
 
 	<div class="container-debate">
 		<header>
-			<h2>{{ debate.titulo }}</h2>
-			<p>
-				<input id="idDebate" type="hidden" value={{debate.id_debate}}>
-				{% ifequal debate.alias_c 'alias' %}
-					<h5>Creado por {{alias}} en modo anónimo</h5>
-				{%else%}
-					<h5>Debate creado por {{usuario_creador}}</h5>
-				{%endifequal%}
-				<span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>{{visitas}}
-			</p>
+      <div class="row">
+  			<div class="col-md-11">
+  				<h2>{{ debate.titulo }}</h2>
+  				<p>
+  					<input id="idDebate" type="hidden" value={{debate.id_debate}}>
+  					{% ifequal debate.alias_c 'alias' %}
+  						<h5>Creado por {{alias}} en modo anónimo</h5>
+  					{%else%}
+  						<h5>Debate creado por {{usuario_creador}}</h5>
+  					{%endifequal%}
+  					<span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>{{visitas}}
+  				</p>
+  			</div>
+  			<div class="col-md-1">
+  				<form id="id" method="post" action= "{% url 'resumen:index' %}" enctype="multipart/form-data" onsubmit="return confirm('¿Seguro que desea eliminar el debate?');">{% csrf_token %}
+  					 <input type="hidden" value="{{ debate.id_debate  }}" name="id_deb_eliminar">
+  					 <button type="submit" class="btn btn-titulo" data-toggle="tooltip" title="Eliminar debate" >
+  						 <i class="fa fa-trash"></i>
+  					 </button>
+  			 </form>
+  			</div>
+  		</div>
 		</header>
 		<p class="debateDescripcion">{{ debate.descripcion }}</p>
 		<div id="fb-root"></div>
