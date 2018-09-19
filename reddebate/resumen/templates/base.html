@@ -191,7 +191,9 @@ $(document).ready(function(){
 										<li>
 											<a href="javascript:openNav()" rel="popover" title="Notificaciones">
 												<span id="alertaSpan" class="glyphicon glyphicon-bell alerta_notificacion"></span>
+												{% if noleidas > 0 %}
 												<span id="numSpan" class="badge">{{noleidas}}</span>
+												{% endif %}
 											</a>
 										</li>
                 </ul>
