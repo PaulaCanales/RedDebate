@@ -95,7 +95,7 @@ def perfil(request, id_usr=None, id_arg=None, id_reb=None):
         total_usuarios = User.objects.all()
         return render(request, 'perfiles.html', {'usuario': usuario,
             'alias': alias_usuario, 'usa_alias': usa_alias, 'total_usuarios': total_usuarios,
-            'stats': stat})
+            'stats': stats})
 
 
 def estadisticas_usuario(id_usuario):

@@ -4,6 +4,9 @@
 <html>
 
 	{% block content %}
+	{% if user.is_staff %}
+	{% include 'moderador_filtro.html' %}
+	{% else %}
   <div class="container-debate">
         <header>
           <h2>{{label}}</h2>
@@ -20,6 +23,7 @@
         {%endifequal%}
 
   </div>
+	{% endif %}
   {% endblock content %}
 
 </html>

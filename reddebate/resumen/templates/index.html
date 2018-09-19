@@ -2,9 +2,10 @@
 {% extends 'base.html' %}
 {% load static %}
 <html>
-
-
 	{% block content %}
+	{% if user.is_staff %}
+	{% include 'moderador_index.html' %}
+	{% else %}
 	<div id="search" class="morphsearch">
   <button type="button" class="close">×</button>
 	<form action="{% url 'index' %}" method="get" accept-charset="utf-8" class="morphsearch-form">
@@ -117,5 +118,6 @@
 		</div>
 	</div>
 	<p class="bottom-three">.</p>
+	{% endif %}
 	{% endblock content %}
 </html>

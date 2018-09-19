@@ -86,11 +86,13 @@ def index(request):
             for d in deb:
                 if(d.tipo_participacion == 0): deb_publicos+=1
                 if(d.tipo_participacion == 1): deb_privados+=1
-            debates = datos_debates(deb, usuario)
+            debates = datos_debates(deb, usuario, False)
+            moderador_debates = datos_debates(deb, usuario, True)
             label = "Resultados de la búsqueda: "+str(request.GET.get('q'))
             context = {'object_list': debates, 'usuario': request.user, 'alias': Perfil.objects.get(user_id= usuario.id).alias,
                         'form':form,'label':label,
-                        'deb_pub': deb_publicos, 'deb_pri': deb_privados}
+                        'deb_pub': deb_publicos, 'deb_pri': deb_privados,
+                        'moderador_debates':moderador_debates}
             return render(request, "filtro.html" , context)
     context = generaDatos(request, usuario, form, 'abierto')
     return render(request, 'index.html', context)
@@ -105,9 +107,11 @@ def generaDatos(request, usuario, form, estado):
             debate.estado = 'cerrado'
             debate.save()
     category_list = Debate.objects.filter(estado=estado).order_by('-id_debate')
-    object_list = datos_debates(category_list,usuario)
+    object_list = datos_debates(category_list,usuario,False)
+    moderador_debates = datos_debates(category_list,usuario,True)
 
     top_debates = sorted(object_list, key=lambda k: k['num_posturas'], reverse=True)[:5]
+    moderador_top_debates = sorted(moderador_debates, key=lambda k: k['num_posturas'], reverse=True)[:5]
     print("el usuario activo es: ", usuario.id)
 
     perfil_usuario = Perfil.objects.get(user_id= usuario.id)
@@ -122,17 +126,19 @@ def generaDatos(request, usuario, form, estado):
         usr = User.objects.get(id=usuario.user_id)
         perfil = Perfil.objects.get(user_id=usuario.user_id)
         top_usuario.append({'usuario':usr, 'perfil':perfil})
-    debates_recientes = Debate.objects.filter(tipo_participacion=0).order_by('-id_debate')[:5]
-    debates_recientes = datos_debates(debates_recientes,usuario)
+    debatesrecientes = Debate.objects.filter(tipo_participacion=0).order_by('-id_debate')[:5]
+    debates_recientes = datos_debates(debatesrecientes,usuario, False)
+    debatesrecientes = Debate.objects.all().order_by('-id_debate')[:5]
+    moderador_debates_recientes = datos_debates(debatesrecientes,usuario, True)
 
     listado = Listado.objects.filter(creador=request.user).values()
-    context = {'category_list':category_list, 'object_list': object_list, 'usuario': request.user, 'alias': alias_usuario,
+    context = {'moderador_debates':moderador_debates, 'object_list': object_list, 'usuario': request.user, 'alias': alias_usuario,
                 'form':form, 'top_tags':top_tags, 'top_deb':top_debates,
-                'top_user':top_usuario, 'recientes': debates_recientes,
-                'listado':listado}
+                'top_user':top_usuario, 'recientes': debates_recientes, 'moderador_recientes': moderador_debates_recientes,
+                'moderador_top_deb': moderador_top_debates, 'listado':listado}
     return context
 
-def datos_debates(debates, usuario):
+def datos_debates(debates, usuario, moderador):
     lista_debates = []
     for debate in debates:
         num_posturas_af = Postura.objects.filter(id_debate_id=debate.id_debate, postura=1).count()
@@ -149,7 +155,7 @@ def datos_debates(debates, usuario):
             puede_editar = "no"
             porcentaje_f = (float(num_posturas_af) / float(num_posturas))*100
             porcentaje_c = (float(num_posturas_ec) / float(num_posturas))*100
-        if debate.tipo_participacion == 1:
+        if debate.tipo_participacion == 1 and not moderador:
             try:
                 participa = Participantes.objects.get(id_debate_id=debate.id_debate, id_usuario_id=usuario.id)
                 lista_debates.append({"datos":debate, "porcentaje_f":porcentaje_f, "porcentaje_c":porcentaje_c,
