@@ -181,11 +181,12 @@ def tagged(request, slug):
     listas = Listado.objects.filter(creador_id=usuario.id).values()
     form = creaDebateForm(creador=creador, usuarios=total_usuarios, listado=listas)
     debate_list = Debate.objects.filter(tags__slug=slug)
-    object_list = datos_debates(debate_list, usuario)
+    object_list = datos_debates(debate_list, usuario, False)
+    moderador_debates = datos_debates(debate_list, usuario, True)
     top_tags = Debate.tags.most_common()[:5]
     label = "Tags relacionados: "+slug
     context = {'object_list':object_list, 'usuario': usuario, 'alias': perfil_usuario.alias,
-                 'form':form, 'top_tags':top_tags, 'label':label}
+                 'form':form, 'top_tags':top_tags, 'label':label, 'moderador_debates':moderador_debates}
     # context = {'object_list':object_list}
     return render(request, 'filtro.html', context)
 
