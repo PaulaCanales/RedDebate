@@ -52,7 +52,7 @@ def indexCerrados(request):
             for d in deb:
                 if(d.tipo_participacion == 0): deb_publicos+=1
                 if(d.tipo_participacion == 1): deb_privados+=1
-            debates = datos_debates(deb, usuario)
+            debates = datos_debates(deb, usuario, False)
             label = "Resultados de la búsqueda: "+str(request.GET.get('q'))
             context = {'object_list': debates, 'usuario': request.user, 'alias': Perfil.objects.get(user_id= usuario.id).alias,
                         'form':form, 'label':label,

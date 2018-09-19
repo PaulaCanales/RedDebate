@@ -224,6 +224,11 @@ $(document).ready(function(){
     	</nav>
 			<label id="id_usuario_actual" class="hide" value="{{user.id}}">{{user.id}}</label>
     </div>
+		{% if user.is_staff %}
+		<div class="moderador">
+			Usuario Moderador
+		</div>
+		{% endif %}
 	{% block content %}
 	{% endblock content %}
 <label id="id_usuario_actual" class="hide" value="{{user.id}}">{{user.id}}</label>
