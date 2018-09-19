@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+{% load static %}
+<div id="participantes_modal" class="modal">
+	<div class="modal-content">
+		<span class="close" onclick="cerrar_modal('participantes_modal')">&times;</span>
+		<h3>Participantes <span class="glyphicon glyphicon-user"></span></h3>
+		<input type="text" value="" name="searchColumn" id="searchUser3" placeholder="Busca a un usuario..."/>
+		{% for participante in participantes%}
+		<a type = "text" class="dummy-media-object" href="{% url 'perfil' id_usr=participante.usuario.id %}">
+			<img class="round" src="{{ participante.perfil.img.url }}"/>
+			<p> {{participante.usuario}} </p>
+		</a>
+		{% endfor %}
+	</div>
+</div>
+
+	<div class="container-debate">
+		<header>
+			<h2>{{ debate.titulo }}</h2>
+			<p>
+				<input id="idDebate" type="hidden" value={{debate.id_debate}}>
+				{% ifequal debate.alias_c 'alias' %}
+					<h5>Creado por {{alias}} en modo anónimo</h5>
+				{%else%}
+					<h5>Debate creado por {{usuario_creador}}</h5>
+				{%endifequal%}
+				<span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>{{visitas}}
+			</p>
+		</header>
+		<p class="debateDescripcion">{{ debate.descripcion }}</p>
+		<div id="fb-root"></div>
+		<div style="text-align: right">
+		<div class="fb-share-button"
+    	data-href="http://reddebate.cl/debate/10/"
+    	data-layout="button_count">
+  	</div></div><br>
+		<div name="detalle-debate">
+			<div class="row" id="my-row">
+				<div class="col-md-3 panel">
+							<button id = "bot_af" type="submit" class="btn btn-posturactual1" disabled ></button>
+				</div>
+				<div class="col-md-6">
+					<div class="blank">
+							<table>
+							<tr>
+								<td width=120 ><p1>Fecha inicio</p1></td><td>{{ debate.date }}</td>
+							</tr>
+							<tr>
+								<td width=120 ><p1>Estado</p1></td><td>{{ debate.estado }}</td>
+							</tr>
+							<tr>
+								<td width=120 ><p1>Tu Postura</p1></td><td><div id="tu_postura"> {{postura_usr_deb}} </div></td>
+							</tr>
+							{% ifequal debate.tipo_participacion 0 %}
+							<tr>
+								<td width=120 ><p1>Tipo debate</p1></td><td><div id="tu_postura">  Publico </div></td>
+							</tr>
+							{% else %}
+							<tr>
+								<td width=120 ><p1>Tipo debate</p1></td><td><div id="tu_postura"> <a href="javascript:abrir_modal('participantes_modal')"> Privado </a></div></td>
+							</tr>
+							{% endifequal %}
+						</table>
+					</div>
+				</div>
+				<div class="col-md-3 panel">
+							<button id = "bot_ec" type="submit" class="btn btn-posturactual0" disabled ></button>
+				</div>
+			</div>
+		</div>
+		{% ifequal debate.estado 'cerrado'%}
+			{% include 'estadisticas.html' %}
+		{% else %}
+			<div id="progresoDebate">
+					{% ifequal porc_f 0 %}
+		        <div id="progreso"class="progress-bar" style="background:#d9534f; width: {{porc_c}}%">
+		          <span class="glyphicon glyphicon-thumbs-down"></span> <label id="label_porc_c">{{porc_c}}%</label>
+		        </div>
+		      {% else %}
+		        {% ifequal porc_c 0 %}
+		          <div id="progreso"class="progress-bar" style="background:#18BC9C; width: {{porc_f}}%">
+		            <span class="glyphicon glyphicon-thumbs-up"></span> <label id="label_porc_f">{{porc_f}}%</label>
+		          </div>
+		          {% else %}
+		          <div id="progresoFavor"class="progress-bar" style="width: {{porc_f}}%">
+		            <span class="glyphicon glyphicon-thumbs-up"></span> <label id="label_porc_f">{{porc_f}}%</label>
+		          </div>
+		          <div id="progresoContra"class="progress-bar" style="width: {{porc_c}}%">
+		            <span class="glyphicon glyphicon-thumbs-down"></span> <label id="label_porc_c">{{porc_c}}%</label>
+		          </div>
+		      {% endifequal %}
+				</div>
+					<!-- argumentos -->
+				<div id="argumentos">
+				<div name="argumentos-debate">
+					<div class="row">
+				    <div class="col-md-6">
+							{% include 'moderador_participaciones.html' with frase="A Favor" comentario=argF postura=1 num_post=num_post_f%}
+							<ul id="alertaArgumento1" class="list-group"></ul>
+						</div>
+						<div class="col-md-6">
+							{% include 'moderador_participaciones.html' with frase="En Contra" comentario=argC postura=0 num_post=num_post_c%}
+							<ul id="alertaArgumento0" class="list-group"></ul>
+						</div>
+					</div>
+				</div>
+			{% endifequal %}
+		{% endifequal %}
+		<p class="bottom-three">.</p>
+		</div>
+</div>
