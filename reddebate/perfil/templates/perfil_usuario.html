@@ -4,6 +4,9 @@
 <html>
 {% block content %}
 <link rel="stylesheet" type='text/css' href="{% static '/css/perfil.css' %}" >
+{% if user.is_staff %}
+{% include 'moderador_perfil.html' %}
+{% else %}
 <div class="container-profile">
   <header>
   </header>
@@ -109,7 +112,7 @@
     </div>
   </main>
 </div>
-
+{% endif %}
 {% endblock content %}
 
 </html>

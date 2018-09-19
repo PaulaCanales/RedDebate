@@ -177,6 +177,11 @@ $(document).ready(function(){
 										<li>
                         <a href="{% url 'cerrados' %}">Debates Cerrados</a>
                     </li>
+										{% if user.is_staff %}
+										<li>
+                        <a href="{% url 'perfil' id_usr=user.id %}">Perfil</a>
+                    </li>
+										{% else %}
                     <li  class="dropdown-menu">
 												<div class="dropdown">
 											    <button class="btn" type="button" data-toggle="dropdown">Perfil
@@ -188,6 +193,7 @@ $(document).ready(function(){
 											    </ul>
 											  </div>
                     </li>
+										{% endif %}
 										<li>
 											<a href="javascript:openNav()" rel="popover" title="Notificaciones">
 												<span id="alertaSpan" class="glyphicon glyphicon-bell alerta_notificacion"></span>
