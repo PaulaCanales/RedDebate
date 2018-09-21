@@ -8,6 +8,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.shortcuts import redirect
 import requests
+from collections import Counter
 
 from django.http import HttpResponse
 from resumen.models import Debate
@@ -57,9 +58,12 @@ def perfil(request, id_usr=None, id_arg=None, id_reb=None):
             total_usuarios = User.objects.all()
             listas_de_usuario = UsuarioListado.objects.filter(usuario_id = usuario.id)
             listas = Listado.objects.filter(creador_id=request.user.id)
-            listas = listas.exclude(id__in=listas_de_usuario.values('lista_id')).values()
+            listas2 = listas.exclude(id__in=listas_de_usuario.values('lista_id')).values()
+            listas3 = listas.filter(id__in=listas_de_usuario.values('lista_id')).values()
+            print('listas2')
+            print(listas3)
             nombre_listas_de_usuario = Listado.objects.filter(id__in=listas_de_usuario.values('lista_id')).values()
-            form = seleccionaListados(listas=listas, usuario=usuario.id)
+            form = seleccionaListados(listas=listas2, usuario=usuario.id)
             if request.method == 'POST':
                 if 'nuevoUsrLista' in request.POST:
                     usr = request.POST['usuario']
@@ -78,7 +82,7 @@ def perfil(request, id_usr=None, id_arg=None, id_reb=None):
 
             return render(request, 'perfiles.html', {'usuario': usuario,
                 'alias': alias_usuario, 'usa_alias': usa_alias, 'total_usuarios': total_usuarios,
-                'stats': stats, 'form':form, 'listas_de_usuario':nombre_listas_de_usuario})
+                'stats': stats, 'form':form, 'listas_de_usuario':listas3})
 
     else:
         if id_reb!=None:
@@ -100,6 +104,20 @@ def perfil(request, id_usr=None, id_arg=None, id_reb=None):
 
 def estadisticas_usuario(id_usuario):
     debates = Debate.objects.all().order_by('-id_debate')
+    debates_usr = Debate.objects.filter(id_usuario_id= id_usuario)
+    participaciones = Postura.objects.filter(id_usuario_id=id_usuario).values('id_debate_id')
+    participaciones_deb = Debate.objects.filter(id_debate__in=participaciones)
+    tags_usr = []
+    for deb in debates_usr:
+        tags = deb.tags.all().values()
+        for tag in tags:
+            tags_usr.append(tag['name'])
+    for deb in participaciones_deb:
+        tags = deb.tags.all().values()
+        for tag in tags:
+            tags_usr.append(tag['name'])
+    tags_dict = dict(Counter(tags_usr))
+    print(tags_dict)
     num_debates_usr = Debate.objects.filter(id_usuario_id= id_usuario).count()
     num_posturas_usr = Postura.objects.filter(id_usuario_id = id_usuario).count()
     num_argumentos_usr = Argumento.objects.filter(id_usuario_id = id_usuario).count()
@@ -139,7 +157,8 @@ def estadisticas_usuario(id_usuario):
     stats = {'debates': num_debates_usr, 'posturas':num_posturas_usr,
              'argumentos': num_argumentos_usr, 'rebates':num_rebates_usr,
              'triunfos': triunfos, 'derrotas':derrotas,
-             'mejor_arg':mejor_arg, 'peor_arg':peor_arg}
+             'mejor_arg':mejor_arg, 'peor_arg':peor_arg,
+             'tags':tags_dict}
     return stats
 
 def debates_usuario(request):
