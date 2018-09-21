@@ -9,6 +9,7 @@ from django.http import HttpResponse
 from django.shortcuts import redirect
 import requests
 from collections import Counter
+import math
 
 from django.http import HttpResponse
 from resumen.models import Debate
@@ -109,17 +110,7 @@ def estadisticas_usuario(id_usuario):
     debates_usr = Debate.objects.filter(id_usuario_id= id_usuario)
     participaciones = Postura.objects.filter(id_usuario_id=id_usuario).values('id_debate_id')
     participaciones_deb = Debate.objects.filter(id_debate__in=participaciones)
-    tags_usr = []
-    for deb in debates_usr:
-        tags = deb.tags.all().values()
-        for tag in tags:
-            tags_usr.append(tag['name'])
-    for deb in participaciones_deb:
-        tags = deb.tags.all().values()
-        for tag in tags:
-            tags_usr.append(tag['name'])
-    tags_dict = dict(Counter(tags_usr))
-    print(tags_dict)
+    tags = find_tags(debates_usr, participaciones_deb)
     num_debates_usr = Debate.objects.filter(id_usuario_id= id_usuario).count()
     num_posturas_usr = Postura.objects.filter(id_usuario_id = id_usuario).count()
     num_argumentos_usr = Argumento.objects.filter(id_usuario_id = id_usuario).count()
@@ -160,7 +151,7 @@ def estadisticas_usuario(id_usuario):
              'argumentos': num_argumentos_usr, 'rebates':num_rebates_usr,
              'triunfos': triunfos, 'derrotas':derrotas,
              'mejor_arg':mejor_arg, 'peor_arg':peor_arg,
-             'tags':tags_dict}
+             'tags':tags}
     return stats
 
 def debates_usuario(request):
@@ -179,8 +170,26 @@ def debates_usuario(request):
             republicar_debate(request)
     usuario = request.user
     debates_usuario = Debate.objects.filter(id_usuario_id= usuario.id).order_by('-id_debate')
-    lista_debates = datos_debates(debates_usuario,usuario)
+    lista_debates = datos_debates(debates_usuario,usuario,False)
     return render(request, 'debates_usuario.html', {'usuario': usuario, 'object_list': lista_debates})
+
+def find_tags(debate, participaciones):
+    tags_usr = []
+    for deb in debate:
+        tags = deb.tags.all().values()
+        for tag in tags:
+            tags_usr.append(tag['name'])
+    for deb in participaciones:
+        tags = deb.tags.all().values()
+        for tag in tags:
+            tags_usr.append(tag['name'])
+    tags_dict = dict(Counter(tags_usr))
+    keys = [item.strip() for item in tags_dict.keys()]
+    size = tags_dict.values()
+    norm_size = [float(i)/max(size) * 10 for i in size]
+    norm_size = [int(math.ceil(i)) for i in norm_size]
+    dictionary = dict(zip(keys,norm_size))
+    return dictionary
 
 def listas_usuario(request):
     listado = Listado.objects.filter(creador=request.user).values()
