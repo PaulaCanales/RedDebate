@@ -58,12 +58,9 @@ def perfil(request, id_usr=None, id_arg=None, id_reb=None):
             total_usuarios = User.objects.all()
             listas_de_usuario = UsuarioListado.objects.filter(usuario_id = usuario.id)
             listas = Listado.objects.filter(creador_id=request.user.id)
-            listas2 = listas.exclude(id__in=listas_de_usuario.values('lista_id')).values()
-            listas3 = listas.filter(id__in=listas_de_usuario.values('lista_id')).values()
-            print('listas2')
-            print(listas3)
-            nombre_listas_de_usuario = Listado.objects.filter(id__in=listas_de_usuario.values('lista_id')).values()
-            form = seleccionaListados(listas=listas2, usuario=usuario.id)
+            listas_disponibles = listas.exclude(id__in=listas_de_usuario.values('lista_id')).values()
+            listas_no_disponibles = listas.filter(id__in=listas_de_usuario.values('lista_id')).values()
+            form = seleccionaListados(listas=listas_disponibles, usuario=usuario.id)
             if request.method == 'POST':
                 if 'nuevoUsrLista' in request.POST:
                     usr = request.POST['usuario']
@@ -82,7 +79,7 @@ def perfil(request, id_usr=None, id_arg=None, id_reb=None):
 
             return render(request, 'perfiles.html', {'usuario': usuario,
                 'alias': alias_usuario, 'usa_alias': usa_alias, 'total_usuarios': total_usuarios,
-                'stats': stats, 'form':form, 'listas_de_usuario':listas3})
+                'stats': stats, 'form':form, 'listas_de_usuario':listas_no_disponibles})
 
     else:
         if id_reb!=None:
@@ -97,9 +94,14 @@ def perfil(request, id_usr=None, id_arg=None, id_reb=None):
             alias_usuario = Perfil.objects.get(user_id=usuario)
         stats = estadisticas_usuario(usuario.id)
         total_usuarios = User.objects.all()
+        listas_de_usuario = UsuarioListado.objects.filter(usuario_id = usuario.id)
+        listas = Listado.objects.filter(creador_id=request.user.id)
+        listas_disponibles = listas.exclude(id__in=listas_de_usuario.values('lista_id')).values()
+        listas_no_disponibles = listas.filter(id__in=listas_de_usuario.values('lista_id')).values()
+        form = seleccionaListados(listas=listas_disponibles, usuario=usuario.id)
         return render(request, 'perfiles.html', {'usuario': usuario,
             'alias': alias_usuario, 'usa_alias': usa_alias, 'total_usuarios': total_usuarios,
-            'stats': stats})
+            'stats': stats, 'form':form, 'listas_de_usuario':listas_no_disponibles})
 
 
 def estadisticas_usuario(id_usuario):
