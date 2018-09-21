@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+{% if usuario.is_staff %}
+<div class="container-profile" style="width: 40%">
+  <header>
+  </header>
+  <main>
+    <div class="row">
+      <div class="left col-md-12">
+        <div class="photo-left">
+          <img class="photo" src="{{ alias.img.url }}"/>
+          <div class="active"></div>
+        </div>
+        <h4 class="name">{{usuario.username}}</h4>
+        <p class="info">{{ usuario.email }}</p>
+        <div class="stats row">
+          MODERADOR
+        </div>
+        <div class="stats row">
+          <div class="stat col-xs-6">
+            <h4 class="name">0</h4>
+            <p class="info">Reputación</p>
+          </div>
+          <div class="stat col-xs-6">
+            <h4 class="name">0</h4>
+            <p class="info">Moderaciones</p>
+          </div>
+        </div>
+        <!-- <div class="stats row">
+          <div class="stat col-xs-4">
+            <p class="number-stat">{{stats.posturas}}</p>
+            <p class="desc-stat">Posturas</p>
+          </div>
+          <div class="stat col-xs-4">
+            <p class="number-stat">{{stats.triunfos}}</p>
+            <p class="desc-stat">Triunfos</p>
+          </div>
+          <div class="stat col-xs-4">
+            <p class="number-stat">{{stats.derrotas}}</p>
+            <p class="desc-stat">Derrotas</p>
+          </div>
+        </div> -->
+      </div>
+      </div>
+    </div>
+  </main>
+</div>
+{% endif %}

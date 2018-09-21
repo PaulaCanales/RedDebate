@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'resumen',
     'debate', #aplicación de "Ver debate"
     'perfil',
+    'moderacion',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.sites',

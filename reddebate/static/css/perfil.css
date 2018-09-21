@@ -236,3 +236,15 @@ main {
   border-radius: 10px;
   padding: 10px;
 }
+
+.tag-cloud { padding: 2px; line-height: 3em; text-align: center; }
+.tag-cloud a.size-1 { font-size: 1.1em; font-weight: 500; color: var(--azul-principal) }
+.tag-cloud a.size-2 { font-size: 1.2em; font-weight: 500; color: #2A4C58}
+.tag-cloud a.size-3 { font-size: 1.3em; font-weight: 400; color: #285A60}
+.tag-cloud a.size-4 { font-size: 1.4em; font-weight: 400; color: #266869}
+.tag-cloud a.size-5 { font-size: 1.5em; font-weight: 600; color: #237671}
+.tag-cloud a.size-6 { font-size: 1.6em; font-weight: 600; color: #218479}
+.tag-cloud a.size-7 { font-size: 1.7em; font-weight: 700; color: #1F9282}
+.tag-cloud a.size-8 { font-size: 1.8em; font-weight: 700; color: #1CA08A}
+.tag-cloud a.size-9 { font-size: 1.9em; font-weight: 800; color: #1AAE92}
+.tag-cloud a.size-10 { font-size: 2em; font-weight: 900; color: var(--verde-principal)}

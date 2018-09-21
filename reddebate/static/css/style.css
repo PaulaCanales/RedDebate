@@ -2023,3 +2023,10 @@ hr {
   display: inline;
   margin: 5px;
 }
+.moderador{
+  background: var(--verde-principal);
+  font-size: 15px;
+  padding: 10px;
+  text-align: right;
+  font-family: montserrat;
+}

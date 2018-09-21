@@ -8,6 +8,8 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.shortcuts import redirect
 import requests
+from collections import Counter
+import math
 
 from django.http import HttpResponse
 from resumen.models import Debate
@@ -57,9 +59,9 @@ def perfil(request, id_usr=None, id_arg=None, id_reb=None):
             total_usuarios = User.objects.all()
             listas_de_usuario = UsuarioListado.objects.filter(usuario_id = usuario.id)
             listas = Listado.objects.filter(creador_id=request.user.id)
-            listas = listas.exclude(id__in=listas_de_usuario.values('lista_id')).values()
-            nombre_listas_de_usuario = Listado.objects.filter(id__in=listas_de_usuario.values('lista_id')).values()
-            form = seleccionaListados(listas=listas, usuario=usuario.id)
+            listas_disponibles = listas.exclude(id__in=listas_de_usuario.values('lista_id')).values()
+            listas_no_disponibles = listas.filter(id__in=listas_de_usuario.values('lista_id')).values()
+            form = seleccionaListados(listas=listas_disponibles, usuario=usuario.id)
             if request.method == 'POST':
                 if 'nuevoUsrLista' in request.POST:
                     usr = request.POST['usuario']
@@ -78,7 +80,7 @@ def perfil(request, id_usr=None, id_arg=None, id_reb=None):
 
             return render(request, 'perfiles.html', {'usuario': usuario,
                 'alias': alias_usuario, 'usa_alias': usa_alias, 'total_usuarios': total_usuarios,
-                'stats': stats, 'form':form, 'listas_de_usuario':nombre_listas_de_usuario})
+                'stats': stats, 'form':form, 'listas_de_usuario':listas_no_disponibles})
 
     else:
         if id_reb!=None:
@@ -93,13 +95,22 @@ def perfil(request, id_usr=None, id_arg=None, id_reb=None):
             alias_usuario = Perfil.objects.get(user_id=usuario)
         stats = estadisticas_usuario(usuario.id)
         total_usuarios = User.objects.all()
+        listas_de_usuario = UsuarioListado.objects.filter(usuario_id = usuario.id)
+        listas = Listado.objects.filter(creador_id=request.user.id)
+        listas_disponibles = listas.exclude(id__in=listas_de_usuario.values('lista_id')).values()
+        listas_no_disponibles = listas.filter(id__in=listas_de_usuario.values('lista_id')).values()
+        form = seleccionaListados(listas=listas_disponibles, usuario=usuario.id)
         return render(request, 'perfiles.html', {'usuario': usuario,
             'alias': alias_usuario, 'usa_alias': usa_alias, 'total_usuarios': total_usuarios,
-            'stats': stat})
+            'stats': stats, 'form':form, 'listas_de_usuario':listas_no_disponibles})
 
 
 def estadisticas_usuario(id_usuario):
     debates = Debate.objects.all().order_by('-id_debate')
+    debates_usr = Debate.objects.filter(id_usuario_id= id_usuario)
+    participaciones = Postura.objects.filter(id_usuario_id=id_usuario).values('id_debate_id')
+    participaciones_deb = Debate.objects.filter(id_debate__in=participaciones)
+    tags = find_tags(debates_usr, participaciones_deb)
     num_debates_usr = Debate.objects.filter(id_usuario_id= id_usuario).count()
     num_posturas_usr = Postura.objects.filter(id_usuario_id = id_usuario).count()
     num_argumentos_usr = Argumento.objects.filter(id_usuario_id = id_usuario).count()
@@ -139,7 +150,8 @@ def estadisticas_usuario(id_usuario):
     stats = {'debates': num_debates_usr, 'posturas':num_posturas_usr,
              'argumentos': num_argumentos_usr, 'rebates':num_rebates_usr,
              'triunfos': triunfos, 'derrotas':derrotas,
-             'mejor_arg':mejor_arg, 'peor_arg':peor_arg}
+             'mejor_arg':mejor_arg, 'peor_arg':peor_arg,
+             'tags':tags}
     return stats
 
 def debates_usuario(request):
@@ -158,8 +170,26 @@ def debates_usuario(request):
             republicar_debate(request)
     usuario = request.user
     debates_usuario = Debate.objects.filter(id_usuario_id= usuario.id).order_by('-id_debate')
-    lista_debates = datos_debates(debates_usuario,usuario)
+    lista_debates = datos_debates(debates_usuario,usuario,False)
     return render(request, 'debates_usuario.html', {'usuario': usuario, 'object_list': lista_debates})
+
+def find_tags(debate, participaciones):
+    tags_usr = []
+    for deb in debate:
+        tags = deb.tags.all().values()
+        for tag in tags:
+            tags_usr.append(tag['name'])
+    for deb in participaciones:
+        tags = deb.tags.all().values()
+        for tag in tags:
+            tags_usr.append(tag['name'])
+    tags_dict = dict(Counter(tags_usr))
+    keys = [item.strip() for item in tags_dict.keys()]
+    size = tags_dict.values()
+    norm_size = [float(i)/max(size) * 10 for i in size]
+    norm_size = [int(math.ceil(i)) for i in norm_size]
+    dictionary = dict(zip(keys,norm_size))
+    return dictionary
 
 def listas_usuario(request):
     listado = Listado.objects.filter(creador=request.user).values()
@@ -217,17 +247,6 @@ def lista(request, id_lista):
             return redirect('lista', id_lista)
     return render(request, 'lista.html', {'lista': lista, 'usuarios': usuario_perfil, 'form': usrlista_form})
 
-##@brief Funcion que elimina un debate
-##@param request solicitud web
-##@return redirect redirecciona a la vista "perfil"
-##@warning Login is required
-@login_required
-def eliminar_debate(request):
-    id_deb=request.POST['id_deb_eliminar']
-    deb = Debate.objects.get(pk=id_deb)
-    deb.delete()
-    actualiza_reputacion(request.user.id, -5)
-    return redirect('debates')
 ##@brief Funcion que actualiza el debate "cerrado" a "abierto"
 ##@param request solicitud web
 ##@return redirect redirecciona a la vista "perfil"

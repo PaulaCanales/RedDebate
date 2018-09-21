@@ -8,6 +8,9 @@
 
 {% block content %}
 <link rel="stylesheet" type='text/css' href="{% static '/css/perfil.css' %}" >
+{% if usuario.is_staff %}
+{% include 'moderador_perfil.html' %}
+{% else %}
 <div class="container-profile" style="width: 40%">
   <header>
   </header>
@@ -41,6 +44,13 @@
           <div class="stat col-xs-6">
             <h4 class="name">{{stats.debates}}</h4>
             <p class="info">Publicaciones</p>
+          </div>
+        </div>
+        <div class="stats">
+          <div class="tag-cloud">
+            {% for key,value in stats.tags.items %}
+              <a href="{% url 'tagged' key %}" class="size-{{ value }}">{{ key }}</a>
+            {% endfor %}
           </div>
         </div>
         <div class="stats row">
@@ -116,6 +126,7 @@
       </div>
   </main>
 </div>
+{% endif %}
 {% endblock content %}
 
 </html>
