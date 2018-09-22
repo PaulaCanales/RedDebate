@@ -14,7 +14,7 @@ class Migration(migrations.Migration):
     operations = [
         migrations.AddField(
             model_name='argumento',
-            name='usa_alias',
+            name='name_type',
             field=models.BooleanField(default=False),
         ),
     ]

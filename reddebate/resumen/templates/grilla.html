@@ -45,7 +45,7 @@
             {% else %}
             <li>
               <form id="id" method="post" action= "{% url 'perfil' id_usr=usuario.id %}" enctype="multipart/form-data" onsubmit="return confirm('¿Seguro que desea republicar el debate?');">{% csrf_token %}
-                <input type="hidden" value="{{ deb.datos.id_debate }}" name="id_deb_republicar">
+                <input type="hidden" value="{{ deb.datos.id_debate }}" name="id_deb_republish">
                 <button type="submit" class="btn btn-dropdown-card">Republicar</button>
               </form>
             </li>

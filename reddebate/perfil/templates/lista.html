@@ -5,18 +5,18 @@
 {% block content %}
 <div class="container-debate">
   <header>
-    <h2>{{lista.nombre}}</h2>
+    <h2>{{list.nombre}}</h2>
     <p>Lista de usuarios</p>
   </header>
   <main>
     <a href="javascript:abrir_modal('usuariosLista_modal')"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>Agregar</a>
-    {% for item in usuarios %}
+    {% for item in list_profile %}
     <a class="dummy-media-object usuarioLista" href="{% url 'perfil' id_usr=item.usuario.usuario_id %}">
       <img class="round" src="{{ item.perfil.img.url }}"/>
       <h3>{{item.usuario}}</h3>
-      <form method="post" action= "{% url 'lista' lista.id  %}" enctype="multipart/form-data" onsubmit="return confirm('¿Seguro que desea eliminar el usuario?');">{% csrf_token %}
+      <form method="post" action= "{% url 'memberList' list.id  %}" enctype="multipart/form-data" onsubmit="return confirm('¿Seguro que desea eliminar el usuario?');">{% csrf_token %}
         <input type="hidden" value="{{ item.usuario.usuario_id }}" name="id_usr_lista">
-        <input type="hidden" value="{{ lista.id }}" name="id_lista">
+        <input type="hidden" value="{{ list.id }}" name="id_list">
         <button type="submit"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
       </form>
     </a>
@@ -37,7 +37,7 @@
             <div class="inputGroup">{{field}}</div>
             {%endfor%}
             </div>
-            <button name="nuevoUsrLista" type="submit" class="btn btn-index">Agregar</button>
+            <button name="new_user_list" type="submit" class="btn btn-index">Agregar</button>
             <label type="button" onclick="cerrar_modal('usuariosLista_modal')"> Cancelar </label>
           </div>
         </form>

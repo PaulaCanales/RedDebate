@@ -14,6 +14,6 @@ class Migration(migrations.Migration):
     operations = [
         migrations.RemoveField(
             model_name='argumento',
-            name='usa_alias',
+            name='name_type',
         ),
     ]

@@ -27,7 +27,7 @@
         <h2>¿Desea volver a publicar el debate?</h2>
         <p id="titulodebrepublicar"> </p>
         <form id="id" method="post" action= "{% url 'debates' %}"  enctype="multipart/form-data">{% csrf_token %}
-            <input type="hidden" id="iddebarepublicar" value="" name="id_deb_republicar">
+            <input type="hidden" id="iddebarepublicar" value="" name="id_deb_republish">
             <p>¿Nueva fecha de cierre?</p>
             <input type="radio" name="tab" value="NULL" onclick="quitarFecha();" checked/> Sin fecha límite<br>
             <input type="radio" name="tab" value="fechafin" onclick="mostrarFecha();" /> Con fecha<br>

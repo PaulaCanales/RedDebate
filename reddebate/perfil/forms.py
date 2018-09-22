@@ -4,7 +4,7 @@ from django import forms
 from django.core.exceptions import ValidationError
 from perfil.models import Perfil, Listado, UsuarioListado
 
-class modificaAlias(forms.ModelForm):
+class updateAlias(forms.ModelForm):
     error_css_class = 'has-error'
     user = forms.CharField(widget=forms.TextInput(
         attrs={
@@ -18,13 +18,13 @@ class modificaAlias(forms.ModelForm):
         model = Perfil
         fields = ('user', 'alias')
 
-class modificaImagen(forms.Form):
+class updateImage(forms.Form):
     img = forms.FileField(label='Añadir imagen', required=False,
         widget=forms.FileInput(
             attrs={'id': 'debImgForm'}
             ))
 
-class creaListado(forms.ModelForm):
+class newList(forms.ModelForm):
     nombre = forms.CharField(widget=forms.TextInput(
         attrs={
             'class': 'form-control',
@@ -35,11 +35,11 @@ class creaListado(forms.ModelForm):
         model = Listado
         fields = ('id','nombre')
 
-class seleccionaUsuarios(forms.ModelForm):
+class selectUsers(forms.ModelForm):
     def __init__(self,*args,**kwargs):
         self.usuarios = kwargs.pop('usuarios')
         self.lista = kwargs.pop('lista')
-        super(seleccionaUsuarios,self).__init__(*args,**kwargs)
+        super(selectUsers,self).__init__(*args,**kwargs)
         if self.usuarios:
             self.fields['usuario'].choices = [(x.id, x) for x in self.usuarios]
         if self.lista:
@@ -58,11 +58,11 @@ class seleccionaUsuarios(forms.ModelForm):
         model = UsuarioListado
         fields = ('id', 'usuario', 'lista_id')
 
-class seleccionaListados(forms.ModelForm):
+class selectList(forms.ModelForm):
     def __init__(self,*args,**kwargs):
         self.listas = kwargs.pop('listas')
         self.usuario = kwargs.pop('usuario')
-        super(seleccionaListados,self).__init__(*args,**kwargs)
+        super(selectList,self).__init__(*args,**kwargs)
         if self.listas:
             self.fields['lista_id'].choices = [(x['id'], x['nombre']) for x in self.listas]
         if self.usuario:
@@ -77,7 +77,7 @@ class seleccionaListados(forms.ModelForm):
             attrs={'id': 'ListadoForm'}
         ),
         label="Listas")
-    nueva = forms.CharField(required=False, widget=forms.TextInput(
+    new_list = forms.CharField(required=False, widget=forms.TextInput(
     attrs={
         'class': 'form-control',
         'placeholder': 'Escribe un nombre...',

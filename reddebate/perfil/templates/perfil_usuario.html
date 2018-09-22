@@ -17,59 +17,59 @@
           <img class="photo" src="{{ alias.img.url }}"/>
           <div class="active"></div>
         </div>
-        <h4 class="name">{{usuario.username}}</h4>
-        <p class="info">{{ usuario.email }}</p>
+        <h4 class="name">{{actual_user.username}}</h4>
+        <p class="info">{{ actual_user.email }}</p>
         <div class="stats row">
           <div class="stat col-xs-6">
             <h4 class="name">{{alias.reputacion}}</h4>
             <p class="info">Reputación</p>
           </div>
           <div class="stat col-xs-6">
-            <h4 class="name">{{stats.debates}}</h4>
+            <h4 class="name">{{stats.deb_num}}</h4>
             <p class="info">Publicaciones</p>
           </div>
         </div>
         <div class="stats row">
           <div class="stat col-xs-4">
-            <p class="number-stat">{{stats.posturas}}</p>
+            <p class="number-stat">{{stats.position_num}}</p>
             <p class="desc-stat">Posturas</p>
           </div>
           <div class="stat col-xs-4">
-            <p class="number-stat">{{stats.triunfos}}</p>
+            <p class="number-stat">{{stats.wins}}</p>
             <p class="desc-stat">Triunfos</p>
           </div>
           <div class="stat col-xs-4">
-            <p class="number-stat">{{stats.derrotas}}</p>
+            <p class="number-stat">{{stats.lose}}</p>
             <p class="desc-stat">Derrotas</p>
           </div>
         </div>
         <div class="stats row">
           <div class="stat col-xs-4">
-            <p class="number-stat">{{stats.argumentos}}</p>
+            <p class="number-stat">{{stats.args_num}}</p>
             <p class="desc-stat">Argumentos </p>
           </div>
           <div class="stat col-xs-4">
-            <p class="number-stat">{{stats.mejor_arg}}</p>
+            <p class="number-stat">{{stats.best_arg}}</p>
             <p class="desc-stat">Mejor</p>
           </div>
           <div class="stat col-xs-4">
-            <p class="number-stat">{{stats.peor_arg}}</p>
+            <p class="number-stat">{{stats.worse_arg}}</p>
             <p class="desc-stat">Peor</p>
           </div>
         </div>
-        <!-- <p class="desc">{{ usuario.date_joined }}</p> -->
+        <!-- <p class="desc">{{ actual_user.date_joined }}</p> -->
       </div>
         <div class="right col-md-8">
           <div class="main row">
             <div class="col-md-6">
-              <h4 class="fullname">{{usuario.get_full_name}}</h4>
+              <h4 class="fullname">{{actual_user.get_full_name}}</h4>
               <h5><a id = 'boton_img' onclick='javascript:form_perfil("boton_img", "formulario_img" );'>
                 Cambia tu foto <i class="fa fa-camera" aria-hidden="true"></i>
               </a></h5>
               <p class="desc-datos">Username</p>
-              <p class="datos">{{usuario.username}}</p>
+              <p class="datos">{{actual_user.username}}</p>
               <p class="desc-datos">Miembro desde</p>
-              <p class="datos">{{usuario.date_joined}}</p>
+              <p class="datos">{{actual_user.date_joined}}</p>
               <p class="desc-datos">Alias</p>
               <p class="datos">{{alias.alias}} <a id = 'boton_alias' onclick='javascript:form_perfil("boton_alias", "formulario_alias" );'> <span class="glyphicon glyphicon-edit" aria-hidden="true" ></span> </a></p>
               <p class="desc-datos">Personas alcanzadas</p>
@@ -91,7 +91,7 @@
                       {{ alias_form.user }}
       						    {{ alias_form.alias }}
       						</div>
-                  <button name="nuevo_alias" type="submit" class="btn btn-index">Cambiar</button>
+                  <button name="new_alias" type="submit" class="btn btn-index">Cambiar</button>
                   <label type="button" onclick='cancelar_form("boton_alias", "formulario_alias" );'> Cancelar </label>
                 </form>
                </div>
@@ -101,7 +101,7 @@
                        {{ imagen_form.non_field_errors }}
                        {{ imagen_form.as_p }}
                    </div>
-                   <button name="nueva_imagen" type="submit" class="btn btn-index">Cambiar</button>
+                   <button name="new_image" type="submit" class="btn btn-index">Cambiar</button>
                    <label type="button" onclick='cancelar_form("boton_img", "formulario_img" );'> Cancelar </label>
                  </form>
                </div>
