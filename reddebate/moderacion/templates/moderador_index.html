@@ -9,27 +9,27 @@
     <div class="morphsearch-content">
             <div class="dummy-column">
               <h2>Usuarios</h2>
-              {% for item in top_user %}
+              {% for item in top_users %}
                <a class="dummy-media-object" href="{% url 'perfil' id_usr=item.usuario.id %}">
-                 <img class="round" src="{{ item.perfil.img.url }}"/>
-                 <h3>{{ item.usuario.username }}</h3>
+                 <img class="round" src="{{ item.profile.img.url }}"/>
+                 <h3>{{ item.user.username }}</h3>
                </a>
              {% endfor %}
             </div>
             <div class="dummy-column">
               <h2>Popular</h2>
-              {% for deb in moderador_top_deb %}
+              {% for deb in moderator_top_deb %}
                <a class="dummy-media-object" href="{% url 'despliega' deb.datos.id_debate %}">
-                 <label><span class="glyphicon glyphicon-user" aria-hidden="true"></span> {{deb.num_posturas}}</label>
+                 <label><span class="glyphicon glyphicon-user" aria-hidden="true"></span> {{deb.position_num}}</label>
                  <h3>{{ deb.datos.titulo }}</h3>
                </a>
              {% endfor %}
             </div>
             <div class="dummy-column">
               <h2>Reciente</h2>
-              {% for deb in moderador_recientes %}
+              {% for deb in moderator_recent_deb %}
                <a class="dummy-media-object" href="{% url 'despliega' deb.datos.id_debate %}">
-                 <label><span class="glyphicon glyphicon-user" aria-hidden="true"></span> {{deb.num_posturas}}</label>
+                 <label><span class="glyphicon glyphicon-user" aria-hidden="true"></span> {{deb.position_num}}</label>
                  <h3>{{ deb.datos.titulo }}</h3>
                </a>
              {% endfor %}
@@ -89,19 +89,19 @@
           <a href="javascript:location.reload()" class="alert-link">Hay nuevos debates privados...</a>
         </div>
         <ul id="todos" class="cards">
-          {% for deb in moderador_debates %}
+          {% for deb in moderator_view_deb %}
             {% include 'grilla.html' with index=True%}
           {% endfor %}
         </ul>
         <ul id="publicos" class="cards">
-          {% for deb in moderador_debates %}
+          {% for deb in moderator_view_deb %}
             {% ifequal deb.datos.tipo_participacion 0 %}
               {% include 'grilla.html' with index=True%}
             {% endifequal %}
           {% endfor %}
         </ul>
         <ul id="privados" class="cards">
-          {% for deb in moderador_debates %}
+          {% for deb in moderator_view_deb %}
             {% ifequal deb.datos.tipo_participacion 1 %}
               {% include 'grilla.html' with index=True%}
             {% endifequal %}

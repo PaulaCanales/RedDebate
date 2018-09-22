@@ -20,8 +20,8 @@
           <button class="btn btn-card">Ver</button>
         </form> -->
         <div class="datosIndex">
-          <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span> {{deb.visitas}}
-          <i class="fa fa-group"></i> {{deb.num_posturas}}
+          <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span> {{deb.visits}}
+          <i class="fa fa-group"></i> {{deb.position_num}}
         </div>
         {% else %}
         <div class="dropdown">
@@ -53,7 +53,7 @@
             <li role="separator" class="divider"></li>
             <li>
               <form id="id" method="post" action= "{% url 'perfil' id_usr=usuario.id %}" enctype="multipart/form-data" onsubmit="return confirm('¿Seguro que desea eliminar el debate?');">{% csrf_token %}
-              <input type="hidden" value="{{ deb.datos.id_debate }}" name="id_deb_eliminar">
+              <input type="hidden" value="{{ deb.datos.id_debate }}" name="id_delete_deb">
               <button type="submit" class="btn btn-dropdown-card">Eliminar</button>
               </form>
             </li>

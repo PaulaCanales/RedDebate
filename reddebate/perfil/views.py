@@ -16,8 +16,8 @@ from resumen.models import Debate
 from perfil.models import Perfil, Listado, UsuarioListado
 from debate.models import Postura, Argumento, Respuesta
 from perfil.forms import modificaAlias, creaListado, seleccionaUsuarios, seleccionaListados, modificaImagen
-from resumen.views import datos_debates, cerrar_debate
-from debate.views import actualiza_reputacion
+from resumen.views import debateData, closeDebate
+from debate.views import updateReputation
 
 ##@brief Funcion que despliega los datos del usuario, debates abiertos, cerrados y opciones para cada uno.
 ##@param request solicitud web
@@ -45,16 +45,16 @@ def perfil(request, id_usr=None, id_arg=None, id_reb=None):
                         post.save()
                         return redirect('perfil',id_usr=request.user.id)
             usuario = request.user
-            alias_usuario = Perfil.objects.get(user=usuario)
+            user_alias = Perfil.objects.get(user=usuario)
             imagen_form = modificaImagen()
             stats = estadisticas_usuario(usuario.id)
-            return render(request, 'perfil_usuario.html', {'usuario': usuario,
-                'alias': alias_usuario, 'alias_form': alias_form,
+            return render(request, 'user_profile.html', {'usuario': usuario,
+                'alias': user_alias, 'alias_form': alias_form,
                 'stats': stats, 'imagen_form':imagen_form})
         else:
             usa_alias = 'username'
             usuario = User.objects.get(id=id_usr)
-            alias_usuario = Perfil.objects.get(user_id=usuario)
+            user_alias = Perfil.objects.get(user_id=usuario)
             stats = estadisticas_usuario(usuario.id)
             total_usuarios = User.objects.all()
             listas_de_usuario = UsuarioListado.objects.filter(usuario_id = usuario.id)
@@ -79,7 +79,7 @@ def perfil(request, id_usr=None, id_arg=None, id_reb=None):
                     return redirect('perfil', id_usr=usr)
 
             return render(request, 'perfiles.html', {'usuario': usuario,
-                'alias': alias_usuario, 'usa_alias': usa_alias, 'total_usuarios': total_usuarios,
+                'alias': user_alias, 'usa_alias': usa_alias, 'total_usuarios': total_usuarios,
                 'stats': stats, 'form':form, 'listas_de_usuario':listas_no_disponibles})
 
     else:
@@ -87,12 +87,12 @@ def perfil(request, id_usr=None, id_arg=None, id_reb=None):
             respuesta = Respuesta.objects.get(id_respuesta=id_reb)
             usa_alias = respuesta.alias_c
             usuario = User.objects.get(id=respuesta.id_usuario_id)
-            alias_usuario = Perfil.objects.get(user_id=usuario)
+            user_alias = Perfil.objects.get(user_id=usuario)
         else:
             argumento = Argumento.objects.get(id_argumento=id_arg)
             usa_alias = argumento.alias_c
             usuario = User.objects.get(id=argumento.id_usuario_id)
-            alias_usuario = Perfil.objects.get(user_id=usuario)
+            user_alias = Perfil.objects.get(user_id=usuario)
         stats = estadisticas_usuario(usuario.id)
         total_usuarios = User.objects.all()
         listas_de_usuario = UsuarioListado.objects.filter(usuario_id = usuario.id)
@@ -101,7 +101,7 @@ def perfil(request, id_usr=None, id_arg=None, id_reb=None):
         listas_no_disponibles = listas.filter(id__in=listas_de_usuario.values('lista_id')).values()
         form = seleccionaListados(listas=listas_disponibles, usuario=usuario.id)
         return render(request, 'perfiles.html', {'usuario': usuario,
-            'alias': alias_usuario, 'usa_alias': usa_alias, 'total_usuarios': total_usuarios,
+            'alias': user_alias, 'usa_alias': usa_alias, 'total_usuarios': total_usuarios,
             'stats': stats, 'form':form, 'listas_de_usuario':listas_no_disponibles})
 
 
@@ -125,8 +125,8 @@ def estadisticas_usuario(id_usuario):
         except:
             postura_usr = "vacia"
         if (debate.estado == "cerrado"):
-            num_posturas_af = Postura.objects.filter(id_debate_id=debate.id_debate, postura=1).count()
-            num_posturas_ec = Postura.objects.filter(id_debate_id=debate.id_debate, postura=0).count()
+            infavor_position_num = Postura.objects.filter(id_debate_id=debate.id_debate, postura=1).count()
+            against_position_num = Postura.objects.filter(id_debate_id=debate.id_debate, postura=0).count()
             argumentos = Argumento.objects.filter(id_debate_id=debate.id_debate).order_by('-puntaje')
             if len(argumentos)!=0:
                 mejor_argumento = argumentos[0]
@@ -136,7 +136,7 @@ def estadisticas_usuario(id_usuario):
                 if peor_argumento.id_usuario.id == id_usuario:
                     peor_arg += 1
 
-            if num_posturas_af>=num_posturas_ec:
+            if infavor_position_num>=against_position_num:
                 postura_ganadora = 1
                 postura_perdedora = 0
             else:
@@ -157,21 +157,18 @@ def estadisticas_usuario(id_usuario):
 def debates_usuario(request):
     if request.method == 'POST':
         if 'id_deb' in request.POST:
-            cerrar_debate(request)
-            return redirect('debates')
-        if 'id_debate_editar' in request.POST:
-            crear_debate(request)
+            closeDebate(request)
             return redirect('debates')
 
-        if 'id_deb_eliminar' in request.POST:
-            eliminar_debate(request)
+        if 'id_delete_deb' in request.POST:
+            deleteDebate(request)
 
         if 'id_deb_republicar' in request.POST:
             republicar_debate(request)
     usuario = request.user
     debates_usuario = Debate.objects.filter(id_usuario_id= usuario.id).order_by('-id_debate')
-    lista_debates = datos_debates(debates_usuario,usuario,False)
-    return render(request, 'debates_usuario.html', {'usuario': usuario, 'object_list': lista_debates})
+    lista_debates = debateData(debates_usuario,usuario,False)
+    return render(request, 'debates_usuario.html', {'usuario': usuario, 'total_data_deb': lista_debates})
 
 def find_tags(debate, participaciones):
     tags_usr = []
@@ -192,10 +189,10 @@ def find_tags(debate, participaciones):
     return dictionary
 
 def listas_usuario(request):
-    listado = Listado.objects.filter(creador=request.user).values()
+    actual_user_list = Listado.objects.filter(creador=request.user).values()
     listado_usuarios = []
-    object_list = []
-    for item in listado:
+    total_data_deb = []
+    for item in actual_user_list:
         usr_lista = UsuarioListado.objects.filter(lista_id=item['id']).values()
         for user in usr_lista:
             username = User.objects.get(id=user['usuario_id'])
@@ -215,7 +212,7 @@ def listas_usuario(request):
             usuarioLista.delete()
             return redirect('listas_usuario')
 
-    return render(request, 'listas_usuario.html', {'usuario':request.user, 'listado': listado, 'lista_form': lista_form,
+    return render(request, 'listas_usuario.html', {'usuario':request.user, 'actual_user_list': actual_user_list, 'lista_form': lista_form,
                 'listado_usuarios': listado_usuarios})
 
 def lista(request, id_lista):

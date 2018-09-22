@@ -32,13 +32,13 @@ class Postura(models.Model):
         postura_f=Postura.objects.filter(id_debate_id=self.id_debate, postura=1).count()
         postura_c=Postura.objects.filter(id_debate_id=self.id_debate, postura=0).count()
         if (int(postura_f+postura_c)==0):
-            porcentaje_f=0
-            porcentaje_c=0
+            infavor_percent=0
+            against_percent=0
         else:
-            porcentaje_f=round(float(postura_f) / float(postura_c+postura_f),3)*100
-            porcentaje_c=round(float(postura_c) / float(postura_c+postura_f),3)*100
+            infavor_percent=round(float(postura_f) / float(postura_c+postura_f),3)*100
+            against_percent=round(float(postura_c) / float(postura_c+postura_f),3)*100
         return {'postura_f': postura_f, 'postura_c':postura_c,
-                'porc_f':porcentaje_f, 'porc_c':porcentaje_c}
+                'porc_f':infavor_percent, 'porc_c':against_percent}
 
 @receiver(post_save, sender=Postura)
 def notificacion_postura(sender, instance, **kwargs):
@@ -95,17 +95,17 @@ def notificacion_argumento(sender, instance, **kwargs):
         debate = instance['id_debate']
         id_creador = debate.id_usuario_id
         titulo = '"'+unicode(debate.titulo)+'"'
-        num_argumentos = Argumento.objects.filter(id_debate=debate.id_debate).count()
+        argument_num = Argumento.objects.filter(id_debate=debate.id_debate).count()
         try:
             notificacion = Notificacion.objects.get(id_debate_id=debate.id_debate, id_usuario_id=id_creador, tipo="argumento")
             print("segunda o mas")
-            notificacion.mensaje = str(num_argumentos)+" usuarios han argumentado en "+titulo
+            notificacion.mensaje = str(argument_num)+" usuarios han argumentado en "+titulo
             notificacion.estado = 0
             notificacion.fecha = datetime.now()
             notificacion.save()
         except:
             print("primera")
-            msj = str(num_argumentos)+" usuario ha argumentado en "+titulo
+            msj = str(argument_num)+" usuario ha argumentado en "+titulo
             notificacion = Notificacion.objects.create(id_debate = debate, id_usuario_id=id_creador, mensaje=msj, tipo="argumento")
         Group("notificacion").send({'text': json.dumps(
                                             {'id_creador': str(id_creador),

@@ -36,12 +36,12 @@ class LoginForm(forms.Form):
         user = authenticate(username=username, password=password)
         return user
 
-class creaDebateForm(forms.ModelForm):
+class newDebateForm(forms.ModelForm):
     def __init__(self,*args,**kwargs):
         self.creador = kwargs.pop('creador')
         self.usuarios = kwargs.pop('usuarios')
         self.listas = kwargs.pop('listado')
-        super(creaDebateForm,self).__init__(*args,**kwargs)
+        super(newDebateForm,self).__init__(*args,**kwargs)
         if self.creador:
             self.fields['alias_c'].widget=forms.Select(
                     choices=self.creador,

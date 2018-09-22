@@ -15,10 +15,10 @@ from django.http import HttpResponse
 from resumen.models import Debate
 from debate.models import Postura, Argumento, Respuesta, Valoracion, Edicion, Participantes, Visita
 from perfil.models import Perfil, Notificacion, Listado, UsuarioListado
-from resumen.forms import creaDebateForm, LoginForm
+from resumen.forms import newDebateForm, LoginForm
 from taggit.models import Tag
 from django.db.models import Q, Sum
-from debate.views import actualiza_reputacion
+from debate.views import updateReputation
 
 def home(request):
     form = LoginForm(request.POST or None)
@@ -35,29 +35,29 @@ def logout(request):
     django_logout(request)
     return redirect('home')
 
-def indexCerrados(request):
-    usuario = request.user
-    iniciando_alias(request, usuario)
-    creador=[('username', User.objects.get(id=request.user.id).username),
+def closedIndex(request):
+    actual_user = request.user
+    startAlias(request, actual_user)
+    creator=[('username', User.objects.get(id=request.user.id).username),
 	         ('alias',Perfil.objects.get(user= request.user).alias)]
-    total_usuarios = User.objects.exclude(id=usuario.id)
-    listas = Listado.objects.filter(creador_id=usuario.id).values()
-    form = creaDebateForm(creador=creador, usuarios=total_usuarios, listado=listas)
+    total_users = User.objects.exclude(id=actual_user.id)
+    actual_user_list = Listado.objects.filter(creador_id=actual_user.id).values()
+    form = newDebateForm(creador=creator, usuarios=total_users, listado=actual_user_list)
     if request.method == 'GET':
         if 'q' in request.GET:
-            deb = busqueda(request)
-            deb_publicos = 0
-            deb_privados = 0
+            deb = search(request)
+            public_deb = 0
+            private_deb = 0
             for d in deb:
-                if(d.tipo_participacion == 0): deb_publicos+=1
-                if(d.tipo_participacion == 1): deb_privados+=1
-            debates = datos_debates(deb, usuario, False)
+                if(d.tipo_participacion == 0): public_deb+=1
+                if(d.tipo_participacion == 1): private_deb+=1
+            debates = debateData(deb, actual_user, False)
             label = "Resultados de la búsqueda: "+str(request.GET.get('q'))
-            context = {'object_list': debates, 'usuario': request.user, 'alias': Perfil.objects.get(user_id= usuario.id).alias,
+            context = {'total_data_deb': debates, 'actual_user': actual_user, 'alias': Perfil.objects.get(user_id= actual_user.id).alias,
                         'form':form, 'label':label,
-                        'deb_pub': deb_publicos, 'deb_pri': deb_privados}
+                        'public_deb': public_deb, 'private_deb': private_deb}
             return render(request, "filtro.html" , context)
-    context = generaDatos(request, usuario, form, 'cerrado')
+    context = makeData(request, actual_user, form, 'cerrado')
     return render(request, "index.html", context)
 
 ##@brief Funcion que despliega todos los debates
@@ -66,132 +66,133 @@ def indexCerrados(request):
 ##@warning Login is required
 @login_required
 def index(request):
-    usuario = request.user
-    iniciando_alias(request, usuario)
-    creador=[('username', User.objects.get(id=request.user.id).username),
+    actual_user = request.user
+    startAlias(request, actual_user)
+    creator=[('username', User.objects.get(id=request.user.id).username),
 	         ('alias',Perfil.objects.get(user= request.user).alias)]
-    total_usuarios = User.objects.exclude(id=usuario.id)
-    listas = Listado.objects.filter(creador_id=usuario.id).values()
-    form = creaDebateForm(creador=creador, usuarios=total_usuarios, listado=listas)
+    total_users = User.objects.exclude(id=actual_user.id)
+    actual_user_list = Listado.objects.filter(creador_id=actual_user.id).values()
+    form = newDebateForm(creador=creator, usuarios=total_users, listado=actual_user_list)
     if request.method == 'POST':
         if 'id_deb' in request.POST:
-            cerrar_debate(request)
+            closeDebate(request)
             return redirect('index')
 
-        if 'id_deb_eliminar' in request.POST:
-            eliminar_debate(request)
+        if 'id_delete_deb' in request.POST:
+            deleteDebate(request)
             return redirect('index')
 
     if request.method == 'GET':
         if 'q' in request.GET:
-            deb = busqueda(request)
-            deb_publicos = 0
-            deb_privados = 0
+            deb = search(request)
+            public_deb = 0
+            private_deb = 0
             for d in deb:
-                if(d.tipo_participacion == 0): deb_publicos+=1
-                if(d.tipo_participacion == 1): deb_privados+=1
-            debates = datos_debates(deb, usuario, False)
-            moderador_debates = datos_debates(deb, usuario, True)
+                if(d.tipo_participacion == 0): public_deb+=1
+                if(d.tipo_participacion == 1): private_deb+=1
+            debates = debateData(deb, actual_user, False)
+            moderator_view_deb = debateData(deb, actual_user, True)
             label = "Resultados de la búsqueda: "+str(request.GET.get('q'))
-            context = {'object_list': debates, 'usuario': request.user, 'alias': Perfil.objects.get(user_id= usuario.id).alias,
+            context = {'total_data_deb': debates, 'actual_user': actual_user, 'alias': Perfil.objects.get(user_id= actual_user.id).alias,
                         'form':form,'label':label,
-                        'deb_pub': deb_publicos, 'deb_pri': deb_privados,
-                        'moderador_debates':moderador_debates}
+                        'deb_pub': public_deb, 'deb_pri': private_deb,
+                        'moderator_view_deb':moderator_view_deb}
             return render(request, "filtro.html" , context)
-    context = generaDatos(request, usuario, form, 'abierto')
+    context = makeData(request, actual_user, form, 'abierto')
     return render(request, 'index.html', context)
 
-def generaDatos(request, usuario, form, estado):
-    category_list = Debate.objects.all().order_by('-id_debate')
-    object_list = []
-
-    for debate in category_list:
+def makeData(request, actual_user, form, state):
+    total_debates = Debate.objects.all().order_by('-id_debate')
+    total_data_deb = []
+    #cierra debates expirados
+    for debate in total_debates:
         ahora = datetime.date.today()
         if debate.estado != 'cerrado' and debate.date_fin!= None and debate.date_fin <= ahora :
             debate.estado = 'cerrado'
             debate.save()
-    category_list = Debate.objects.filter(estado=estado).order_by('-id_debate')
-    object_list = datos_debates(category_list,usuario,False)
-    moderador_debates = datos_debates(category_list,usuario,True)
-
-    top_debates = sorted(object_list, key=lambda k: k['num_posturas'], reverse=True)[:5]
-    moderador_top_debates = sorted(moderador_debates, key=lambda k: k['num_posturas'], reverse=True)[:5]
-    print("el usuario activo es: ", usuario.id)
-
-    perfil_usuario = Perfil.objects.get(user_id= usuario.id)
-    alias_usuario = perfil_usuario.alias
-
+    #obtener informacion de los debates dependiendo de su estado
+    total_debates = Debate.objects.filter(estado=state).order_by('-id_debate')
+    total_data_deb = debateData(total_debates,actual_user,False)
+    moderator_view_deb = debateData(total_debates,actual_user,True)
+    #debates populares por cantidad de posturas
+    top_debates = sorted(total_data_deb, key=lambda k: k['position_num'], reverse=True)[:5]
+    moderator_top_debates = sorted(moderator_view_deb, key=lambda k: k['position_num'], reverse=True)[:5]
+    #perfil del usuario actual
+    user_profile = Perfil.objects.get(user_id= actual_user.id)
+    user_alias = user_profile.alias
+    #obtener tags de los debates publicos
     tags_list = [tag.name for tag in Tag.objects.all()]
-    debates_publicos = Debate.objects.filter(tipo_participacion=0)
-    top_tags = Debate.tags.most_common(extra_filters={'debate__in': debates_publicos})[:5]
-    top_reputacion = Perfil.objects.all().order_by('-reputacion')[:5]
-    top_usuario = []
-    for usuario in top_reputacion:
-        usr = User.objects.get(id=usuario.user_id)
-        perfil = Perfil.objects.get(user_id=usuario.user_id)
-        top_usuario.append({'usuario':usr, 'perfil':perfil})
-    debatesrecientes = Debate.objects.filter(tipo_participacion=0).order_by('-id_debate')[:5]
-    debates_recientes = datos_debates(debatesrecientes,usuario, False)
-    debatesrecientes = Debate.objects.all().order_by('-id_debate')[:5]
-    moderador_debates_recientes = datos_debates(debatesrecientes,usuario, True)
+    public_debates = Debate.objects.filter(tipo_participacion=0)
+    top_tags = Debate.tags.most_common(extra_filters={'debate__in': public_debates})[:5]
+    #obtener usuarios populares por reputacion
+    top_reputation = Perfil.objects.all().order_by('-reputacion')[:5]
+    top_users = []
+    for user in top_reputation:
+        usr = User.objects.get(id=user.user_id)
+        profile = Perfil.objects.get(user_id=user.user_id)
+        top_users.append({'user':usr, 'profile':profile})
+    #obtener debates recientes
+    recent_debates = Debate.objects.filter(tipo_participacion=0).order_by('-id_debate')[:5]
+    recent_data_deb = debateData(recent_debates,actual_user, False)
+    moderator_recent_debates = Debate.objects.all().order_by('-id_debate')[:5]
+    moderator_recent_data_deb = debateData(moderator_recent_debates,actual_user, True)
+    #obtener listado del usuario actual
+    actual_user_list = Listado.objects.filter(creador_id=actual_user.id).values()
 
-    listado = Listado.objects.filter(creador=request.user).values()
-    context = {'moderador_debates':moderador_debates, 'object_list': object_list, 'usuario': request.user, 'alias': alias_usuario,
+    context = {'moderator_view_deb':moderator_view_deb, 'total_data_deb': total_data_deb, 'actual_user': actual_user, 'alias': user_alias,
                 'form':form, 'top_tags':top_tags, 'top_deb':top_debates,
-                'top_user':top_usuario, 'recientes': debates_recientes, 'moderador_recientes': moderador_debates_recientes,
-                'moderador_top_deb': moderador_top_debates, 'listado':listado}
+                'top_users':top_users, 'recent_data_deb': recent_data_deb, 'moderator_recent_deb': moderator_recent_data_deb,
+                'moderator_top_deb': moderator_top_debates, 'actual_user_list':actual_user_list}
     return context
 
-def datos_debates(debates, usuario, moderador):
-    lista_debates = []
+def debateData(debates, user, moderator):
+    debate_list = []
     for debate in debates:
-        num_posturas_af = Postura.objects.filter(id_debate_id=debate.id_debate, postura=1).count()
-        num_posturas_ec = Postura.objects.filter(id_debate_id=debate.id_debate, postura=0).count()
-        num_argumentos = Argumento.objects.filter(id_debate_id=debate.id_debate).count()
-        num_posturas = num_posturas_af + num_posturas_ec
-        visitas = Visita.objects.filter(id_debate=debate).aggregate(Sum('num')).values()[0]
-        if not visitas: visitas=0
-    	if (int(num_posturas)==0):
-            puede_editar = "si"
-            porcentaje_c=0
-            porcentaje_f=0
+        infavor_position_num = Postura.objects.filter(id_debate_id=debate.id_debate, postura=1).count()
+        against_position_num = Postura.objects.filter(id_debate_id=debate.id_debate, postura=0).count()
+        argument_num = Argumento.objects.filter(id_debate_id=debate.id_debate).count()
+        position_num = infavor_position_num + against_position_num
+        visits = Visita.objects.filter(id_debate=debate).aggregate(Sum('num')).values()[0]
+        if not visits: visits=0
+    	if (int(position_num)==0):
+            against_percent=0
+            infavor_percent=0
     	else:
-            puede_editar = "no"
-            porcentaje_f = (float(num_posturas_af) / float(num_posturas))*100
-            porcentaje_c = (float(num_posturas_ec) / float(num_posturas))*100
-        if debate.tipo_participacion == 1 and not moderador:
+            infavor_percent = (float(infavor_position_num) / float(position_num))*100
+            against_percent = (float(against_position_num) / float(position_num))*100
+        if debate.tipo_participacion == 1 and not moderator:
             try:
-                participa = Participantes.objects.get(id_debate_id=debate.id_debate, id_usuario_id=usuario.id)
-                lista_debates.append({"datos":debate, "porcentaje_f":porcentaje_f, "porcentaje_c":porcentaje_c,
-                                        "num_posturas_af":num_posturas_af, "num_posturas_ec":num_posturas_ec,
-                                        "num_posturas":num_posturas, "num_args":num_argumentos,
-                                        "visitas": visitas})
+                participate = Participantes.objects.get(id_debate_id=debate.id_debate, id_usuario_id=user.id)
+                debate_list.append({"datos":debate, "infavor_percent":infavor_percent, "against_percent":against_percent,
+                                        "infavor_position_num":infavor_position_num, "against_position_num":against_position_num,
+                                        "position_num":position_num, "arg_num":argument_num,
+                                        "visits": visits})
 
             except:
-                participa = False
+                participate = False
         else:
-            lista_debates.append({"datos":debate, "porcentaje_f":porcentaje_f, "porcentaje_c":porcentaje_c,
-                                    "num_posturas_af":num_posturas_af, "num_posturas_ec":num_posturas_ec,
-                                    "num_posturas":num_posturas, "num_args":num_argumentos,
-                                    "visitas": visitas})
-    return lista_debates
+            debate_list.append({"datos":debate, "infavor_percent":infavor_percent, "against_percent":against_percent,
+                                    "infavor_position_num":infavor_position_num, "against_position_num":against_position_num,
+                                    "position_num":position_num, "arg_num":argument_num,
+                                    "visits": visits})
+    return debate_list
 
 def tagged(request, slug):
-    usuario = request.user
-    perfil_usuario = Perfil.objects.get(user_id= usuario.id)
-    total_usuarios = User.objects.exclude(id=usuario.id)
-    creador=[('username', User.objects.get(id=request.user.id).username),
-	         ('alias',perfil_usuario.alias)]
-    listas = Listado.objects.filter(creador_id=usuario.id).values()
-    form = creaDebateForm(creador=creador, usuarios=total_usuarios, listado=listas)
+    actual_user = request.user
+    user_profile = Perfil.objects.get(user_id= actual_user.id)
+    total_users = User.objects.exclude(id=actual_user.id)
+    creator=[('username', User.objects.get(id=request.user.id).username),
+	         ('alias',user_profile.alias)]
+    actual_user_list = Listado.objects.filter(creador_id=actual_user.id).values()
+    form = newDebateForm(creador=creator, usuarios=total_users, listado=actual_user_list)
     debate_list = Debate.objects.filter(tags__slug=slug)
-    object_list = datos_debates(debate_list, usuario, False)
-    moderador_debates = datos_debates(debate_list, usuario, True)
+    total_data_deb = debateData(debate_list, actual_user, False)
+    moderator_view_deb = debateData(debate_list, actual_user, True)
     top_tags = Debate.tags.most_common()[:5]
     label = "Tags relacionados: "+slug
-    context = {'object_list':object_list, 'usuario': usuario, 'alias': perfil_usuario.alias,
-                 'form':form, 'top_tags':top_tags, 'label':label, 'moderador_debates':moderador_debates}
-    # context = {'object_list':object_list}
+    context = {'total_data_deb':total_data_deb, 'usuario': actual_user, 'alias': user_profile.alias,
+                 'form':form, 'top_tags':top_tags, 'label':label, 'moderator_view_deb':moderator_view_deb}
+
     return render(request, 'filtro.html', context)
 
 ##@brief Funcion que inicializa el alias del usuario actual, en caso de no tener alias sera "anonimo".
@@ -199,36 +200,22 @@ def tagged(request, slug):
 ##@param u usuario a crear alias.
 ##@warning Login is required
 @login_required
-def iniciando_alias(request, u):
+def startAlias(request, u):
     try:
-        usuario_2 = Perfil.objects.get(user= u)
-        alias_usuario = usuario_2.alias
+        user = Perfil.objects.get(user= u)
+        user_alias = user.alias
     except:
-        perfil_usuario= Perfil(user=u)
-        perfil_usuario.save()
-        usuario_2 = Perfil.objects.get(user= u)
-        alias_usuario = usuario_2.alias
-
-
-##@brief Funcion que guarda un nuevo debate
-##@param request solicitud web
-##@warning Login is required
-@login_required
-def crear_debate(request):
-    if request.method == "POST":
-            form = creaDebateForm(request.POST, request.FILES, creador=0)
-            if form.is_valid():
-                post = form.save(commit=False)
-                post.id_usuario = request.user
-                post.save()
-    return form
+        user_profile= Perfil(user=u)
+        user_profile.save()
+        user = Perfil.objects.get(user= u)
+        user_alias = user.alias
 
 ##@brief Funcion que cierra el debate
 ##@param request solicitud web
 ##@return redirect redirecciona a la vista "index"
 ##@warning Login is required
 @login_required
-def cerrar_debate(request):
+def closeDebate(request):
     id_deb = request.POST['id_deb']
     deb = Debate.objects.get(pk=id_deb)
     deb.estado = 'cerrado'
@@ -240,14 +227,14 @@ def cerrar_debate(request):
 ##@return redirect redirecciona a la vista "perfil"
 ##@warning Login is required
 @login_required
-def eliminar_debate(request):
-    id_deb=request.POST['id_deb_eliminar']
+def deleteDebate(request):
+    id_deb=request.POST['id_delete_deb']
     deb = Debate.objects.get(pk=id_deb)
     deb.delete()
-    actualiza_reputacion(request.user.id, -5)
+    updateReputation(request.user.id, -5)
     return redirect('debates')
 
-def busqueda(request):
+def search(request):
     query = request.GET.get('q')
     results = Debate.objects.filter(Q(titulo__icontains=query) | Q(descripcion__icontains=query))
     return results

@@ -26,12 +26,12 @@
   					{%else%}
   						<h5>Debate creado por {{usuario_creador}}</h5>
   					{%endifequal%}
-  					<span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>{{visitas}}
+  					<span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>{{visits}}
   				</p>
   			</div>
   			<div class="col-md-1">
   				<form id="id" method="post" action= "{% url 'resumen:index' %}" enctype="multipart/form-data" onsubmit="return confirm('¿Seguro que desea eliminar el debate?');">{% csrf_token %}
-  					 <input type="hidden" value="{{ debate.id_debate  }}" name="id_deb_eliminar">
+  					 <input type="hidden" value="{{ debate.id_debate  }}" name="id_delete_deb">
   					 <button type="submit" class="btn btn-titulo" data-toggle="tooltip" title="Eliminar debate" >
   						 <i class="fa fa-trash"></i>
   					 </button>

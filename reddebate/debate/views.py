@@ -210,11 +210,11 @@ def despliega(request, id_debate): #debate_id
 	numpost_f=posturas_f.count()
 	numpost_c=posturas_c.count()
 	if (int(numpost_c+numpost_f)==0):
-		porcentaje_c=0
-		porcentaje_f=0
+		against_percent=0
+		infavor_percent=0
 	else:
-		porcentaje_f = round(float(numpost_f) / float(numpost_c+numpost_f),3)*100
-		porcentaje_c = round(float(numpost_c) / float(numpost_c+numpost_f),3)*100
+		infavor_percent = round(float(numpost_f) / float(numpost_c+numpost_f),3)*100
+		against_percent = round(float(numpost_c) / float(numpost_c+numpost_f),3)*100
 
 	posturas_total = Postura.objects.all().order_by('-date_Postura')
 
@@ -242,7 +242,7 @@ def despliega(request, id_debate): #debate_id
 		razon_contra_favor.append(num)
 		cambio_contra_favor += num
 	participantes = "publico"
-	participa = True
+	participate = True
 	lista_participantes = []
 	if debate.tipo_participacion == 1:
 		participantes = Participantes.objects.filter(id_debate_id=id_debate)
@@ -253,7 +253,7 @@ def despliega(request, id_debate): #debate_id
 		try:
 			p = Participantes.objects.get(id_debate_id=id_debate,id_usuario_id=usuario_actual)
 		except:
-			participa = False
+			participate = False
 
 	datos = {'debate': debate,
 		'usuario_creador': usuario_creador,
@@ -263,13 +263,13 @@ def despliega(request, id_debate): #debate_id
 		'postura_usr_deb': postura_debate_usuario,
 		'argF': argumentos_F, 'argC': argumentos_C, 't_arg': puede_argumentar, 'p_post': puede_cambiar_postura,
 		'num_post_f': numpost_f, 'num_post_c': numpost_c,
-		'porc_f': porcentaje_f, 'porc_c': porcentaje_c,
+		'porc_f': infavor_percent, 'porc_c': against_percent,
 		'cambio_f_c':cambio_favor_contra, 'cambio_c_f':cambio_contra_favor,
 		'razon_f_c':razon_favor_contra, 'razon_c_f':razon_contra_favor,
 		'img': debate.img, 'cant_rebates':cant_rebates, 'arg_form1':arg_form1,
 		'arg_form0':arg_form0,'resp_form':resp_form,
-		'participa': participa, 'participantes': lista_participantes, 'tipo_rebate': tipo_rebate,
-		'rebate': rebate, 'visitas': vistas, 'fecha_posturas':posturas_por_dia}
+		'participate': participate, 'participantes': lista_participantes, 'tipo_rebate': tipo_rebate,
+		'rebate': rebate, 'visits': vistas, 'fecha_posturas':posturas_por_dia}
 	return render(request, 'debate.html', datos)
 
 ##@brief Funcion que guarda el comentario del usuario de un argumento.
@@ -287,10 +287,10 @@ def publica_redate(request,id_debate, id_argumento):
 			post.id_usuario_id = request.user.id
 			post.id_argumento_id = id_arg
 			post.save()
-		actualiza_reputacion(request.user.id, 3)
+		updateReputation(request.user.id, 3)
 	return resp_form
 
-def actualiza_reputacion(id_usr, puntaje):
+def updateReputation(id_usr, puntaje):
     perfil = Perfil.objects.get(user_id=id_usr)
     reputacion = perfil.reputacion + puntaje
     perfil.reputacion = reputacion
@@ -327,7 +327,7 @@ def valorar_argumento(request):
 		publicar = Valoracion(id_argumento_id=val_argumento, id_usuario_id=usuario.id, tipo_valoracion=val)
 	publicar.save()
 	id_usr_arg = Argumento.objects.get(id_argumento=val_argumento).id_usuario_id
-	actualiza_reputacion(id_usr_arg, puntaje)
+	updateReputation(id_usr_arg, puntaje)
 	val_sumar = Valoracion.objects.filter(id_argumento_id= val_argumento, tipo_valoracion="sumar").count()
 	val_quitar = Valoracion.objects.filter(id_argumento_id= val_argumento, tipo_valoracion="quitar").count()
 	respuesta = val_sumar - val_quitar
@@ -338,7 +338,7 @@ def elimina_argumento(request):
 	id_deb=request.POST['id_deb_arg_eliminar']
 	arg = Argumento.objects.get(pk=id_argumento)
 	arg.delete()
-	actualiza_reputacion(request.user.id, -3)
+	updateReputation(request.user.id, -3)
 	return (id_deb)
 
 def ver_notificacion(request, id_debate, id_notificacion):

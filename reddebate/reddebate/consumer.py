@@ -13,7 +13,7 @@ from channels.auth import http_session_user, channel_session_user, channel_sessi
 
 log = logging.getLogger(__name__)
 
-def actualiza_reputacion(id_usr, puntaje):
+def updateReputation(id_usr, puntaje):
     perfil = Perfil.objects.get(user_id=id_usr)
     reputacion = perfil.reputacion + puntaje
     perfil.reputacion = reputacion
@@ -45,7 +45,7 @@ def ws_receive(message):
             m = Debate.objects.create(**data)
             for tag in tags:
                 m.tags.add(tag)
-            actualiza_reputacion(message.user.id, 5)
+            updateReputation(message.user.id, 5)
             if data['tipo_participacion']=='1':
                 lista=[]
                 for participante in participantes:
@@ -87,7 +87,7 @@ def ws_receive(message):
             data['postura'] = postura.postura
             data['id_debate'] = debate
             m = Argumento.objects.create(**data)
-            actualiza_reputacion(message.user.id, 3)
+            updateReputation(message.user.id, 3)
             Group(grupo).send({'text': json.dumps(m.as_dict())})
 
         elif set(data.keys()) == set(('postura','id_usuario','id_debate')):
@@ -95,7 +95,7 @@ def ws_receive(message):
             data['id_usuario'] = message.user
             data['id_debate'] = debate
             m = Postura.objects.create(**data)
-            actualiza_reputacion(message.user.id, 3)
+            updateReputation(message.user.id, 3)
             Group(grupo).send({'text': json.dumps(m.as_dict())})
 
 

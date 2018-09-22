@@ -3,13 +3,13 @@
 <div class="container-debate">
       <header>
         <h2>{{label}}</h2>
-        <p>{{moderador_debates|length}} debates | {{deb_pub}} publicos | {{deb_pri}} privados </p>
+        <p>{{moderator_view_deb|length}} debates | {{deb_pub}} publicos | {{deb_pri}} privados </p>
       </header>
-      {% ifequal moderador_debates|length 0 %}
+      {% ifequal moderator_view_deb|length 0 %}
         <h3> ¡No hay resultados!</h3>
       {% else %}
         <ul class="cards">
-          {% for deb in moderador_debates %}
+          {% for deb in moderator_view_deb %}
             {% include 'grilla.html' with index=True%}
           {% endfor %}
         </ul>

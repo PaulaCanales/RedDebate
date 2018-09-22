@@ -61,7 +61,7 @@
           </tr>
       </thead>
       <tbody>
-        {% for deb in object_list %}
+        {% for deb in total_data_deb %}
           <tr>
               <td>
                 <a href="{% url 'despliega' deb.datos.id_debate %}">{{deb.datos.titulo}}</a>
@@ -80,9 +80,9 @@
               {% else %}
                 <td> Público </td>
               {% endifequal %}
-              <td >{{deb.num_posturas}}</td>
-              <td >{{deb.num_args}}</td>
-              <td >{{deb.visitas}}</td>
+              <td >{{deb.position_num}}</td>
+              <td >{{deb.arg_num}}</td>
+              <td >{{deb.visits}}</td>
               <td>{{deb.datos.date|date:"d/m/Y"}}</td>
               {% if deb.datos.date_fin %}
               <td>{{deb.datos.date_fin|date:"d/m/Y"}}</td>

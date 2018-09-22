@@ -44,10 +44,10 @@ $(document).ready(function(){
 
         }
         else if (data.postura_f || data.postura_c){
-          var porcentaje_f = Math.round(parseFloat(data.porc_f)*100)/100;
-          var porcentaje_c = Math.round(parseFloat(data.porc_c)*100)/100;
-          $("#label_porc_f").text(porcentaje_f+"%")
-          $("#label_porc_c").text(porcentaje_c+"%")
+          var infavor_percent = Math.round(parseFloat(data.porc_f)*100)/100;
+          var against_percent = Math.round(parseFloat(data.porc_c)*100)/100;
+          $("#label_porc_f").text(infavor_percent+"%")
+          $("#label_porc_c").text(against_percent+"%")
           $("#label_num_post1").text(data.postura_f)
           $("#label_num_post0").text(data.postura_c)
 
