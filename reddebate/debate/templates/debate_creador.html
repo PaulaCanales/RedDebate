@@ -13,9 +13,9 @@ $(document).ready(function(){
 				<p>
 					<input id="idDebate" type="hidden" value={{debate.id_debate}}>
 					{% ifequal debate.alias_c 'alias' %}
-						<h5>Creado por {{alias}} en modo anónimo</h5>
+						<h5>Creado por {{owner_profile}} en modo anónimo</h5>
 					{%else%}
-						<h5>Debate creado por {{usuario_creador}}</h5>
+						<h5>Debate creado por {{owner_user}}</h5>
 					{%endifequal%}
 					<span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>{{visits}}
 				</p>
@@ -78,21 +78,21 @@ $(document).ready(function(){
 		</div>
 		{% ifequal debate.estado 'abierto'%}
 		<div id="progresoDebate">
-				{% ifequal porc_f 0 %}
-					<div id="progreso"class="progress-bar" style="background:#d9534f; width: {{porc_c}}%">
-						<span class="glyphicon glyphicon-thumbs-down"></span> <label id="label_porc_c">{{porc_c}}%</label>
+				{% ifequal infavor_percent 0 %}
+					<div id="progreso"class="progress-bar" style="background:#d9534f; width: {{against_percent}}%">
+						<span class="glyphicon glyphicon-thumbs-down"></span> <label id="label_porc_c">{{against_percent}}%</label>
 					</div>
 				{% else %}
-					{% ifequal porc_c 0 %}
-						<div id="progreso"class="progress-bar" style="background:#18BC9C; width: {{porc_f}}%">
-							<span class="glyphicon glyphicon-thumbs-up"></span> <label id="label_porc_f">{{porc_f}}%</label>
+					{% ifequal against_percent 0 %}
+						<div id="progreso"class="progress-bar" style="background:#18BC9C; width: {{infavor_percent}}%">
+							<span class="glyphicon glyphicon-thumbs-up"></span> <label id="label_porc_f">{{infavor_percent}}%</label>
 						</div>
 						{% else %}
-						<div id="progresoFavor"class="progress-bar" style="width: {{porc_f}}%">
-							<span class="glyphicon glyphicon-thumbs-up"></span> <label id="label_porc_f">{{porc_f}}%</label>
+						<div id="progresoFavor"class="progress-bar" style="width: {{infavor_percent}}%">
+							<span class="glyphicon glyphicon-thumbs-up"></span> <label id="label_porc_f">{{infavor_percent}}%</label>
 						</div>
-						<div id="progresoContra"class="progress-bar" style="width: {{porc_c}}%">
-							<span class="glyphicon glyphicon-thumbs-down"></span> <label id="label_porc_c">{{porc_c}}%</label>
+						<div id="progresoContra"class="progress-bar" style="width: {{against_percent}}%">
+							<span class="glyphicon glyphicon-thumbs-down"></span> <label id="label_porc_c">{{against_percent}}%</label>
 						</div>
 					{% endifequal %}
 				{% endifequal %}
@@ -108,11 +108,11 @@ $(document).ready(function(){
 				<div name="argumentos-debate">
 					<div class="row">
 				    <div class="col-md-6">
-							{% include 'participaciones.html' with frase="A Favor" comentario=argF postura=1 num_post=num_post_f%}
+							{% include 'participaciones.html' with frase="A Favor" comentario=infavor_args_list postura=1 num_post=infavor_position_num%}
 							<ul id="alertaArgumento1" class="list-group"></ul>
 						</div>
 						<div class="col-md-6">
-							{% include 'participaciones.html' with frase="En Contra" comentario=argC postura=0 num_post=num_post_c%}
+							{% include 'participaciones.html' with frase="En Contra" comentario=against_args_list postura=0 num_post=against_position_num%}
 							<ul id="alertaArgumento0" class="list-group"></ul>
 						</div>
 					</div>

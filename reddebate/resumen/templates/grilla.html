@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <li class="cards__item">
-  <a href="{% url 'despliega' deb.datos.id_debate %}">
+  <a href="{% url 'showDebate' deb.datos.id_debate %}">
     <div class="card">
       {% ifequal deb.datos.tipo_participacion 1 %}
       <div class="ribbon"><span>Privado</span></div>
@@ -16,7 +16,7 @@
           <script type='text/javascript'>cortarTexto('{{deb.datos.descripcion}}')</script>
         </p>
         {% if index %}
-        <!-- <form action="{% url 'despliega' deb.datos.id_debate %}">
+        <!-- <form action="{% url 'showDebate' deb.datos.id_debate %}">
           <button class="btn btn-card">Ver</button>
         </form> -->
         <div class="datosIndex">
@@ -31,7 +31,7 @@
           </button>
           <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
             <li>
-              <form action="{% url 'despliega' deb.datos.id_debate %}">
+              <form action="{% url 'showDebate' deb.datos.id_debate %}">
                 <button class="btn btn-dropdown-card">Ver</button>
               </form>
             </li>

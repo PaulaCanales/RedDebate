@@ -14,12 +14,12 @@
           <span class="glyphicon glyphicon-triangle-top" aria-hidden="true"></span>
         </td>
         <td id="bordeTabla{{postura}}" rowspan="3"><!-- comentario-->
-            <p><a href="{% url 'perfil' id_arg=arg.id_arg %}"><p1>{{arg.usr_creador}}:</p1></a> {{arg.descripcion}}</p>
+            <p><a href="{% url 'perfil' id_arg=arg.id_arg %}"><p1>{{arg.owner_arg}}:</p1></a> {{arg.text}}</p>
         </td>
         <td style="border-bottom: #fff; text-align: center;"> <!-- boton editar/rebatir-->
       		<div style="float:right">
-            <button id="bot_rebatir{{postura}}" type="submit" class="btn btn-args{{postura}}" data-whatever="{{arg.redebates}}" onclick='javascript:mostrar_modal("respuesta_modal{{postura}}{{arg.id_arg}}","{{arg.id_arg}}","{{arg.redebates}}","{{postura}}");' >
-              {{ arg.redebates|length }} <span class="glyphicon glyphicon-comment"  ></span>
+            <button id="bot_rebatir{{postura}}" type="submit" class="btn btn-args{{postura}}" data-whatever="{{arg.counterargs}}" onclick='javascript:mostrar_modal("respuesta_modal{{postura}}{{arg.id_arg}}","{{arg.id_arg}}","{{arg.counterargs}}","{{postura}}");' >
+              {{ arg.counterargs|length }} <span class="glyphicon glyphicon-comment"  ></span>
             </button>
           </div>
         </td>
@@ -29,16 +29,16 @@
               <h3><span class="close" onclick="cerrar_modal('respuesta_modal{{postura}}{{arg.id_arg}}')">&times;</span>
               <span class="glyphicon glyphicon-comment"></span> Redebates</h3>
                 <div id="descripcion_argumento">
-                  <p1>{{arg.usr_creador}}</p1> argumentó...
-                  <h4>"{{arg.descripcion}}"</h4>
+                  <p1>{{arg.owner_arg}}</p1> argumentó...
+                  <h4>"{{arg.text}}"</h4>
                 </div>
                   <div id="respuestas" class="modal-body">
-                    {% for respuesta in arg.redebates%}
+                    {% for counterarg in arg.counterargs%}
                       <div class="dialogbox">
                         <div class="body">
                           <span class="tip tip-up"></span>
                           <div class="message">
-                            <p><a href="{% url 'perfil' id_arg=arg.id_arg id_reb=respuesta.id_rebate %}"><p1>{{respuesta.usr_creador}}:</p1></a> {{respuesta.descripcion}}</p>
+                            <p><a href="{% url 'perfil' id_arg=arg.id_arg id_reb=counterarg.id %}"><p1>{{counterarg.owner}}:</p1></a> {{counterarg.text}}</p>
                           </div>
                         </div>
                       </div>
@@ -49,7 +49,7 @@
 
       </tr>
       <tr>
-        <td style="border-bottom: #fff; text-align: center;" id="val{{arg.id_arg}}"> {{arg.valoracion}}</td>
+        <td style="border-bottom: #fff; text-align: center;" id="val{{arg.id_arg}}"> {{arg.rate}}</td>
         {% ifequal arg.post_usr_arg arg.11%}
         <td style="border-bottom: #fff; text-align: center; display:none" id="cambio_postura{{arg.id_arg}}"> <span class="glyphicon glyphicon-transfer" aria-hidden="true"></span> </td>
         {% else %}
@@ -61,8 +61,8 @@
           <span class="glyphicon glyphicon-triangle-bottom" aria-hidden="true"></span>
         </td>
         <td><div style="float:right">
-            <form id="eliminar_arg" method="post" action= "{% url 'despliega' debate.id_debate %}" enctype="multipart/form-data" onsubmit="return confirm('¿Seguro que desea eliminar el argumento?');">{% csrf_token %}
-              <input type="hidden" value="{{ arg.id_arg }}" name="id_arg_eliminar">
+            <form id="eliminar_arg" method="post" action= "{% url 'showDebate' debate.id_debate %}" enctype="multipart/form-data" onsubmit="return confirm('¿Seguro que desea eliminar el argumento?');">{% csrf_token %}
+              <input type="hidden" value="{{ arg.id_arg }}" name="id_arg_delete">
               <input type="hidden" value="{{ debate.id_debate }}" name="id_deb_arg_eliminar">
               <button type="submit" class="btn btn-args{{postura}}" > <span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
             </form>

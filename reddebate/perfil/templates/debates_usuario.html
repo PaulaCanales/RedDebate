@@ -64,7 +64,7 @@
         {% for deb in total_data_deb %}
           <tr>
               <td>
-                <a href="{% url 'despliega' deb.datos.id_debate %}">{{deb.datos.titulo}}</a>
+                <a href="{% url 'showDebate' deb.datos.id_debate %}">{{deb.datos.titulo}}</a>
               </td>
               {% ifequal deb.datos.estado 'abierto'  %}
               <td>

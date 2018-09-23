@@ -4,11 +4,11 @@ from django import forms
 from debate.models import Argumento, Respuesta
 from django.core.validators import MaxLengthValidator
 
-class publicaArgumentoForm1(forms.ModelForm):
+class newArgForm1(forms.ModelForm):
     def __init__(self,*args,**kwargs):
         self.creador = kwargs.pop('creador')
         self.max_length = kwargs.pop('max_length')
-        super(publicaArgumentoForm1,self).__init__(*args,**kwargs)
+        super(newArgForm1,self).__init__(*args,**kwargs)
         if self.creador:
             self.fields['alias_c'].widget=forms.Select(
                     choices=self.creador,
@@ -28,11 +28,11 @@ class publicaArgumentoForm1(forms.ModelForm):
     class Meta:
         model = Argumento
         fields = ('id_argumento', 'descripcion', 'alias_c')
-class publicaArgumentoForm0(forms.ModelForm):
+class newArgForm0(forms.ModelForm):
     def __init__(self,*args,**kwargs):
         self.creador = kwargs.pop('creador')
         self.max_length = kwargs.pop('max_length')
-        super(publicaArgumentoForm0,self).__init__(*args,**kwargs)
+        super(newArgForm0,self).__init__(*args,**kwargs)
         if self.creador:
             self.fields['alias_c'].widget=forms.Select(
                     choices=self.creador,
@@ -54,11 +54,11 @@ class publicaArgumentoForm0(forms.ModelForm):
         model = Argumento
         fields = ('id_argumento', 'descripcion', 'alias_c')
 
-class publicaRespuestaForm(forms.ModelForm):
+class newCounterargForm(forms.ModelForm):
     def __init__(self,*args,**kwargs):
         self.creador = kwargs.pop('creador')
         self.max_length = kwargs.pop('max_length')
-        super(publicaRespuestaForm,self).__init__(*args,**kwargs)
+        super(newCounterargForm,self).__init__(*args,**kwargs)
         if self.creador:
             self.fields['alias_c'].widget=forms.Select(
                     choices=self.creador,

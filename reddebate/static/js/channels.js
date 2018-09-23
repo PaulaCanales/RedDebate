@@ -44,8 +44,8 @@ $(document).ready(function(){
 
         }
         else if (data.postura_f || data.postura_c){
-          var infavor_percent = Math.round(parseFloat(data.porc_f)*100)/100;
-          var against_percent = Math.round(parseFloat(data.porc_c)*100)/100;
+          var infavor_percent = Math.round(parseFloat(data.infavor_percent)*100)/100;
+          var against_percent = Math.round(parseFloat(data.against_percent)*100)/100;
           $("#label_porc_f").text(infavor_percent+"%")
           $("#label_porc_c").text(against_percent+"%")
           $("#label_num_post1").text(data.postura_f)

@@ -364,8 +364,8 @@ function razonCambioChart(){
     var data = new google.visualization.DataTable();
     data.addColumn('date', 'Fecha');
     data.addColumn('number', 'Posturas');
-    for (i=0 ; i<fecha_posturas.length ; i++){
-      data.addRow([new Date(fecha_posturas[i][0]),fecha_posturas[i][1]]);
+    for (i=0 ; i<positions_by_day.length ; i++){
+      data.addRow([new Date(positions_by_day[i][0]),positions_by_day[i][1]]);
     };
     var chart = new google.visualization.AnnotationChart(document.getElementById('chart_div'));
 

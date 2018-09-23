@@ -5,10 +5,10 @@
 		<span class="close" onclick="cerrar_modal('participantes_modal')">&times;</span>
 		<h3>Participantes <span class="glyphicon glyphicon-user"></span></h3>
 		<input type="text" value="" name="searchColumn" id="searchUser3" placeholder="Busca a un usuario..."/>
-		{% for participante in participantes%}
-		<a type = "text" class="dummy-media-object" href="{% url 'perfil' id_usr=participante.usuario.id %}">
-			<img class="round" src="{{ participante.perfil.img.url }}"/>
-			<p> {{participante.usuario}} </p>
+		{% for member in debate_members%}
+		<a type = "text" class="dummy-media-object" href="{% url 'perfil' id_usr=member.user.id %}">
+			<img class="round" src="{{ member.profile.img.url }}"/>
+			<p> {{member.user}} </p>
 		</a>
 		{% endfor %}
 	</div>
@@ -22,9 +22,9 @@
   				<p>
   					<input id="idDebate" type="hidden" value={{debate.id_debate}}>
   					{% ifequal debate.alias_c 'alias' %}
-  						<h5>Creado por {{alias}} en modo anónimo</h5>
+  						<h5>Creado por {{owner_profile}} en modo anónimo</h5>
   					{%else%}
-  						<h5>Debate creado por {{usuario_creador}}</h5>
+  						<h5>Debate creado por {{owner_user}}</h5>
   					{%endifequal%}
   					<span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>{{visits}}
   				</p>
@@ -61,7 +61,7 @@
 								<td width=120 ><p1>Estado</p1></td><td>{{ debate.estado }}</td>
 							</tr>
 							<tr>
-								<td width=120 ><p1>Tu Postura</p1></td><td><div id="tu_postura"> {{postura_usr_deb}} </div></td>
+								<td width=120 ><p1>Tu Postura</p1></td><td><div id="tu_postura"> {{actual_user_position}} </div></td>
 							</tr>
 							{% ifequal debate.tipo_participacion 0 %}
 							<tr>
@@ -84,21 +84,21 @@
 			{% include 'estadisticas.html' %}
 		{% else %}
 			<div id="progresoDebate">
-					{% ifequal porc_f 0 %}
-		        <div id="progreso"class="progress-bar" style="background:#d9534f; width: {{porc_c}}%">
-		          <span class="glyphicon glyphicon-thumbs-down"></span> <label id="label_porc_c">{{porc_c}}%</label>
+					{% ifequal infavor_percent 0 %}
+		        <div id="progreso"class="progress-bar" style="background:#d9534f; width: {{against_percent}}%">
+		          <span class="glyphicon glyphicon-thumbs-down"></span> <label id="label_porc_c">{{against_percent}}%</label>
 		        </div>
 		      {% else %}
-		        {% ifequal porc_c 0 %}
-		          <div id="progreso"class="progress-bar" style="background:#18BC9C; width: {{porc_f}}%">
-		            <span class="glyphicon glyphicon-thumbs-up"></span> <label id="label_porc_f">{{porc_f}}%</label>
+		        {% ifequal against_percent 0 %}
+		          <div id="progreso"class="progress-bar" style="background:#18BC9C; width: {{infavor_percent}}%">
+		            <span class="glyphicon glyphicon-thumbs-up"></span> <label id="label_porc_f">{{infavor_percent}}%</label>
 		          </div>
 		          {% else %}
-		          <div id="progresoFavor"class="progress-bar" style="width: {{porc_f}}%">
-		            <span class="glyphicon glyphicon-thumbs-up"></span> <label id="label_porc_f">{{porc_f}}%</label>
+		          <div id="progresoFavor"class="progress-bar" style="width: {{infavor_percent}}%">
+		            <span class="glyphicon glyphicon-thumbs-up"></span> <label id="label_porc_f">{{infavor_percent}}%</label>
 		          </div>
-		          <div id="progresoContra"class="progress-bar" style="width: {{porc_c}}%">
-		            <span class="glyphicon glyphicon-thumbs-down"></span> <label id="label_porc_c">{{porc_c}}%</label>
+		          <div id="progresoContra"class="progress-bar" style="width: {{against_percent}}%">
+		            <span class="glyphicon glyphicon-thumbs-down"></span> <label id="label_porc_c">{{against_percent}}%</label>
 		          </div>
 		      {% endifequal %}
 				</div>
@@ -107,11 +107,11 @@
 				<div name="argumentos-debate">
 					<div class="row">
 				    <div class="col-md-6">
-							{% include 'moderador_participaciones.html' with frase="A Favor" comentario=argF postura=1 num_post=num_post_f%}
+							{% include 'moderador_participaciones.html' with frase="A Favor" comentario=infavor_args_list postura=1 num_post=infavor_position_num%}
 							<ul id="alertaArgumento1" class="list-group"></ul>
 						</div>
 						<div class="col-md-6">
-							{% include 'moderador_participaciones.html' with frase="En Contra" comentario=argC postura=0 num_post=num_post_c%}
+							{% include 'moderador_participaciones.html' with frase="En Contra" comentario=against_args_list postura=0 num_post=against_position_num%}
 							<ul id="alertaArgumento0" class="list-group"></ul>
 						</div>
 					</div>

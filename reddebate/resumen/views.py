@@ -60,7 +60,7 @@ def closedIndex(request):
     context = makeData(request, actual_user, form, 'cerrado')
     return render(request, "index.html", context)
 
-##@brief Funcion que despliega todos los debates
+##@brief Funcion que showDebate todos los debates
 ##@param request solicitud web
 ##@return render redirecciona a "index.html" con la lista de todos los debates
 ##@warning Login is required

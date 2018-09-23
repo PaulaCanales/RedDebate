@@ -19,7 +19,7 @@ from perfil.forms import updateAlias, newList, selectUsers, selectList, updateIm
 from resumen.views import debateData, closeDebate
 from debate.views import updateReputation
 
-##@brief Funcion que despliega los datos del usuario, debates abiertos, cerrados y opciones para cada uno.
+##@brief Funcion que showDebate los datos del usuario, debates abiertos, cerrados y opciones para cada uno.
 ##@param request solicitud web
 ##@return redirect redirecciona a la vista "perfil"
 ##@warning Login is required

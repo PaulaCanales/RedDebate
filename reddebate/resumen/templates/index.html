@@ -25,7 +25,7 @@
 					<div class="dummy-column">
 						<h2>Popular</h2>
 						{% for deb in top_deb %}
- 						 <a class="dummy-media-object" href="{% url 'despliega' deb.datos.id_debate %}">
+ 						 <a class="dummy-media-object" href="{% url 'showDebate' deb.datos.id_debate %}">
 							 <label><span class="glyphicon glyphicon-user" aria-hidden="true"></span> {{deb.position_num}}</label>
 							 <h3>{{ deb.datos.titulo }}</h3>
 						 </a>
@@ -34,7 +34,7 @@
 					<div class="dummy-column">
 						<h2>Reciente</h2>
 						{% for deb in recent_data_deb %}
- 						 <a class="dummy-media-object" href="{% url 'despliega' deb.datos.id_debate %}">
+ 						 <a class="dummy-media-object" href="{% url 'showDebate' deb.datos.id_debate %}">
 							 <label><span class="glyphicon glyphicon-user" aria-hidden="true"></span> {{deb.position_num}}</label>
 							 <h3>{{ deb.datos.titulo }}</h3>
 						 </a>

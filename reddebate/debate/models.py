@@ -38,7 +38,7 @@ class Postura(models.Model):
             infavor_percent=round(float(postura_f) / float(postura_c+postura_f),3)*100
             against_percent=round(float(postura_c) / float(postura_c+postura_f),3)*100
         return {'postura_f': postura_f, 'postura_c':postura_c,
-                'porc_f':infavor_percent, 'porc_c':against_percent}
+                'infavor_percent':infavor_percent, 'against_percent':against_percent}
 
 @receiver(post_save, sender=Postura)
 def notificacion_postura(sender, instance, **kwargs):

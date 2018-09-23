@@ -6,7 +6,7 @@ from . import views
 urlpatterns = [
 
 	#url(r'^post_arg$', views.post_arg, name='post_arg'),
-	#url(r'^(?P<id_debate>[0-9]+)/$', views.despliega, name='despliega'),
+	#url(r'^(?P<id_debate>[0-9]+)/$', views.showDebate, name='showDebate'),
     url(r'^(?P<id_usr>[0-9]+)/$', views.perfil, name='perfil'),
     url(r'^usr/(?P<id_arg>[0-9]+)/$', views.perfil, name='perfil'),
     url(r'^usr/(?P<id_arg>[0-9]+)/(?P<id_reb>[0-9]+)/$', views.perfil, name='perfil'),

@@ -11,7 +11,7 @@
     {% for arg in comentario %}
       <tr>
         <td style="border-bottom: #fff;">
-          {% ifequal arg.t_val.0 'no' %}
+          {% ifequal arg.exist_rate.0 'no' %}
             <button id="sumar_val{{arg.id_arg}}" type="submit" class="btn btn-valorar{{postura}}" onclick='javascript:valorar("{{arg.id_arg}}","sumar","{{debate.id_debate}}");'>
             <span class="glyphicon glyphicon-triangle-top" aria-hidden="true"></span>
             </button>
@@ -22,12 +22,12 @@
           {% endifequal %}
         </td>
         <td id="bordeTabla{{postura}}" rowspan="3"><!-- comentario-->
-            <p><a href="{% url 'perfil' id_arg=arg.id_arg %}"><p1>{{arg.usr_creador}}:</p1></a> {{arg.descripcion}}</p>
+            <p><a href="{% url 'perfil' id_arg=arg.id_arg %}"><p1>{{arg.owner_arg}}:</p1></a> {{arg.text}}</p>
         </td>
         <td style="border-bottom: #fff; text-align: center;"> <!-- boton editar/rebatir-->
       		<div style="float:right">
-            <button id="bot_rebatir{{postura}}" type="submit" class="btn btn-args{{postura}}" data-whatever="{{arg.redebates}}" onclick='javascript:mostrar_modal("respuesta_modal{{postura}}{{arg.id_arg}}","{{arg.id_arg}}","{{arg.redebates}}","{{postura}}");' >
-              {{ arg.redebates|length }} <span class="glyphicon glyphicon-comment"  ></span>
+            <button id="bot_rebatir{{postura}}" type="submit" class="btn btn-args{{postura}}" data-whatever="{{arg.counterargs}}" onclick='javascript:mostrar_modal("respuesta_modal{{postura}}{{arg.id_arg}}","{{arg.id_arg}}","{{arg.counterargs}}","{{postura}}");' >
+              {{ arg.counterargs|length }} <span class="glyphicon glyphicon-comment"  ></span>
             </button>
           </div>
         </td>
@@ -37,47 +37,47 @@
               <h3><span class="close" onclick="cerrar_modal('respuesta_modal{{postura}}{{arg.id_arg}}')">&times;</span>
               <span class="glyphicon glyphicon-comment"></span> Redebates</h3>
                 <div id="descripcion_argumento">
-                  <p1>{{arg.usr_creador}}</p1> argumentó...
-                  <h4>"{{arg.descripcion}}"</h4>
+                  <p1>{{arg.owner_arg}}</p1> argumentó...
+                  <h4>"{{arg.text}}"</h4>
                 </div>
                   <div id="respuestas" class="modal-body">
-                    {% for respuesta in arg.redebates%}
+                    {% for counterarg in arg.counterargs%}
                       <div class="dialogbox">
                         <div class="body">
                           <span class="tip tip-up"></span>
                           <div class="message">
-                            <p><a href="{% url 'perfil' id_arg=arg.id_arg id_reb=respuesta.id_rebate %}"><p1>{{respuesta.usr_creador}}:</p1></a> {{respuesta.descripcion}}</p>
+                            <p><a href="{% url 'perfil' id_arg=arg.id_arg id_reb=counterarg.id %}"><p1>{{counterarg.owner}}:</p1></a> {{counterarg.text}}</p>
                           </div>
                         </div>
                       </div>
                     {% endfor %}
                   </div>
                   {% ifequal tipo_rebate 1 %}
-                    {% ifequal rebate frase %}
-                      {% if arg.rebatir %}
+                    {% ifequal counterarg_target frase %}
+                      {% if arg.can_counterarg %}
                       <div id="form_rebatir" class="modal-footer">
                         <form method="POST" class="post-form" enctype="multipart/form-data">{% csrf_token %}
-                          {{resp_form.as_p}}
+                          {{counterarg_form.as_p}}
                           <input type="hidden" value="{{arg.id_arg}}" name="id_argumento{{postura}}">
-                          <button name="responder{{postura}}"type="submit" class="btn btn-deb{{postura}}">Responder</button>
+                          <button name="counterargument{{postura}}"type="submit" class="btn btn-deb{{postura}}">Responder</button>
                         </form>
                       </div>
                       {% else %}
-                      <div>Ya no puedes rebatir</div>
+                      <div>Ya no puedes contraargumentar</div>
                       {% endif %}
                     {% endifequal %}
                   {% else %}
-                    {% if arg.rebatir %}
+                    {% if arg.can_counterarg %}
                     <div id="form_rebatir" class="modal-footer">
                       <form method="POST" class="post-form" enctype="multipart/form-data">{% csrf_token %}
-                        {{resp_form.descripcion}}
-                        {{resp_form.alias_c}}
+                        {{counterarg_form.descripcion}}
+                        {{counterarg_form.alias_c}}
                         <input type="hidden" value="{{arg.id_arg}}" name="id_argumento{{postura}}">
-                        <button name="responder{{postura}}"type="submit" class="btn btn-deb{{postura}}">Responder</button>
+                        <button name="counterargument{{postura}}"type="submit" class="btn btn-deb{{postura}}">Responder</button>
                       </form>
                     </div>
                     {% else %}
-                    <div>Ya no puedes rebatir</div>
+                    <div>Ya no puedes contraargumentar</div>
                     {% endif %}
                   {% endifequal %}
             </div>
@@ -85,7 +85,7 @@
 
       </tr>
       <tr>
-        <td style="border-bottom: #fff; text-align: center;" id="val{{arg.id_arg}}"> {{arg.valoracion}}</td>
+        <td style="border-bottom: #fff; text-align: center;" id="val{{arg.id_arg}}"> {{arg.rate}}</td>
         {% ifequal arg.post_usr_arg arg.11%}
         <td style="border-bottom: #fff; text-align: center; display:none" id="cambio_postura{{arg.id_arg}}"> <span class="glyphicon glyphicon-transfer" aria-hidden="true"></span> </td>
         {% else %}
@@ -94,7 +94,7 @@
       </tr>
       <tr id="bordeTabla{{postura}}">
         <td>
-          {% ifequal arg.t_val.1 'no' %}
+          {% ifequal arg.exist_rate.1 'no' %}
           <button id="quitar_val{{arg.id_arg}}" type="submit" class="btn btn-valorar{{postura}}" onclick='javascript:valorar("{{arg.id_arg}}","quitar","{{debate.id_debate}}");'>
           <span class="glyphicon glyphicon-triangle-bottom" aria-hidden="true"></span>
           </button>
@@ -105,9 +105,9 @@
           {% endifequal %}
         </td>
         <td><div style="float:right">
-          {% ifequal arg.id_creador usuario %}
-            <form id="eliminar_arg" method="post" action= "{% url 'despliega' debate.id_debate %}" enctype="multipart/form-data" onsubmit="return confirm('¿Seguro que desea eliminar el argumento?');">{% csrf_token %}
-              <input type="hidden" value="{{ arg.id_arg }}" name="id_arg_eliminar">
+          {% ifequal arg.owner_arg_id usuario %}
+            <form id="eliminar_arg" method="post" action= "{% url 'showDebate' debate.id_debate %}" enctype="multipart/form-data" onsubmit="return confirm('¿Seguro que desea eliminar el argumento?');">{% csrf_token %}
+              <input type="hidden" value="{{ arg.id_arg }}" name="id_arg_delete">
               <input type="hidden" value="{{ debate.id_debate }}" name="id_deb_arg_eliminar">
               <button type="submit" class="btn btn-args{{postura}}" > <span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
             </form>

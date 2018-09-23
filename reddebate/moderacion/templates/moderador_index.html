@@ -10,7 +10,7 @@
             <div class="dummy-column">
               <h2>Usuarios</h2>
               {% for item in top_users %}
-               <a class="dummy-media-object" href="{% url 'perfil' id_usr=item.usuario.id %}">
+               <a class="dummy-media-object" href="{% url 'perfil' id_usr=item.user.id %}">
                  <img class="round" src="{{ item.profile.img.url }}"/>
                  <h3>{{ item.user.username }}</h3>
                </a>
@@ -19,7 +19,7 @@
             <div class="dummy-column">
               <h2>Popular</h2>
               {% for deb in moderator_top_deb %}
-               <a class="dummy-media-object" href="{% url 'despliega' deb.datos.id_debate %}">
+               <a class="dummy-media-object" href="{% url 'showDebate' deb.datos.id_debate %}">
                  <label><span class="glyphicon glyphicon-user" aria-hidden="true"></span> {{deb.position_num}}</label>
                  <h3>{{ deb.datos.titulo }}</h3>
                </a>
@@ -28,7 +28,7 @@
             <div class="dummy-column">
               <h2>Reciente</h2>
               {% for deb in moderator_recent_deb %}
-               <a class="dummy-media-object" href="{% url 'despliega' deb.datos.id_debate %}">
+               <a class="dummy-media-object" href="{% url 'showDebate' deb.datos.id_debate %}">
                  <label><span class="glyphicon glyphicon-user" aria-hidden="true"></span> {{deb.position_num}}</label>
                  <h3>{{ deb.datos.titulo }}</h3>
                </a>

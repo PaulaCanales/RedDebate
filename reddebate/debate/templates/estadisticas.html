@@ -19,26 +19,26 @@ $(document).ready(function(){
 	google.charts.setOnLoadCallback(posturasTiempo);
 	});
 	var varGlobal = {
-		postura_f : {{num_post_f}},
-		postura_c : {{num_post_c}},
-		argumentos_f : {{argF|length}},
-		argumentos_c : {{argC|length}},
+		postura_f : {{infavor_position_num}},
+		postura_c : {{against_position_num}},
+		argumentos_f : {{infavor_args_list|length}},
+		argumentos_c : {{against_args_list|length}},
 		primer_arg_f : 0,
 		segundo_arg_f : 0,
 		primer_arg_c : 0,
 		segundo_arg_c : 0,
-		cambio_favor_contra: {{cambio_f_c}},
-		cambio_contra_favor: {{cambio_c_f}},
-		cambio_total: {{cambio_f_c}} + {{cambio_c_f}},
-		razon_favor_contra: {{razon_f_c}},
-		razon_contra_favor: {{razon_c_f}},
+		cambio_favor_contra: {{infavor_to_against}},
+		cambio_contra_favor: {{against_to_infavor}},
+		cambio_total: {{infavor_to_against}} + {{against_to_infavor}},
+		razon_favor_contra: {{reason_infavor_to_against}},
+		razon_contra_favor: {{reason_against_to_infavor}},
 	};
-  var fecha_posturas = {{fecha_posturas|safe}};
-  console.log({{argF.valoracion}});
-	{% if argF.0.2 %} varGlobal.primer_arg_f={{ argF.0.2}}; {% endif %}
-	{% if argF.1.2 %} varGlobal.segundo_arg_f={{ argF.1.2}}; {% endif %}
-	{% if argC.0.2 %} varGlobal.primer_arg_c={{ argC.0.2}}; {% endif %}
-	{% if argC.1.2 %} varGlobal.segundo_arg_c={{ argC.1.2}}; {% endif %}
+  var positions_by_day = {{positions_by_day|safe}};
+
+	{% if infavor_args_list.0.2 %} varGlobal.primer_arg_f={{ infavor_args_list.0.2}}; {% endif %}
+	{% if infavor_args_list.1.2 %} varGlobal.segundo_arg_f={{ infavor_args_list.1.2}}; {% endif %}
+	{% if against_args_list.0.2 %} varGlobal.primer_arg_c={{ against_args_list.0.2}}; {% endif %}
+	{% if against_args_list.1.2 %} varGlobal.segundo_arg_c={{ against_args_list.1.2}}; {% endif %}
 </script>
 <!-- <div class="container"> -->
   <div id="estadisticas" >
