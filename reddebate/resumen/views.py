@@ -7,7 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login
 from django.contrib.auth import logout as django_logout
 from django.views.generic import DetailView, ListView
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import redirect
 import requests
 from django.db.models import Q
@@ -15,7 +15,7 @@ from django.http import HttpResponse
 from resumen.models import Debate
 from debate.models import Position, Argumento, Counterargument, Rate, PrivateMembers, Visit
 from perfil.models import Profile, Notification, List, UsersList
-from resumen.forms import newDebateForm, LoginForm
+from resumen.forms import newDebateForm, LoginForm, orderDebate
 from taggit.models import Tag
 from django.db.models import Q, Sum
 from debate.views import updateReputation
@@ -111,7 +111,16 @@ def makeData(request, actual_user, form, state):
             debate.state = 'closed'
             debate.save()
     #obtener informacion de los debates dependiendo de su state
-    total_debates = Debate.objects.filter(state=state).order_by('-id_debate')
+    total_debates = Debate.objects.filter(state=state).order_by('date')
+    if request.method == 'POST':
+        if 'order_type' in request.POST:
+            debates_order = int(request.POST['order_type'])
+            if debates_order == 0:
+                total_debates = Debate.objects.filter(state=state).order_by('date')
+            elif debates_order == 1:
+                total_debates = Debate.objects.filter(state=state).order_by('-id_debate')
+            elif debates_order == 2:
+                total_debates = Debate.objects.filter(state=state).order_by('title')
     total_data_deb = debateData(total_debates,actual_user,False)
     moderator_view_deb = debateData(total_debates,actual_user,True)
     #debates populares por cantidad de posturas
@@ -138,11 +147,12 @@ def makeData(request, actual_user, form, state):
     moderator_recent_data_deb = debateData(moderator_recent_debates,actual_user, True)
     #obtener listado del user actual
     actual_user_list = List.objects.filter(owner_id=actual_user.id).values()
-
+    order_form = orderDebate()
     context = {'moderator_view_deb':moderator_view_deb, 'total_data_deb': total_data_deb, 'actual_user': actual_user, 'alias': user_alias,
                 'form':form, 'top_tags':top_tags, 'top_deb':top_debates,
                 'top_users':top_users, 'recent_data_deb': recent_data_deb, 'moderator_recent_deb': moderator_recent_data_deb,
-                'moderator_top_deb': moderator_top_debates, 'actual_user_list':actual_user_list}
+                'moderator_top_deb': moderator_top_debates, 'actual_user_list':actual_user_list,
+                'order_form':order_form}
     return context
 
 def debateData(debates, user, moderator):

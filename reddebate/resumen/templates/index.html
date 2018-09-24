@@ -74,21 +74,33 @@
 				</div>
 			</div>
 			<div class="col-md-10">
-				<div class="control-group">
-					<!-- <form id="tipoDeb" method="post" action= "{% url 'index' %}" enctype="multipart/form-data">{% csrf_token %} -->
-						<label class="control control--radio">Todos
-							<input id="r1" type="radio" name="radioDeb" value="2" checked/>
-							<div class="control__indicator"></div>
-						</label>
-						<label class="control control--radio">Públicos
-							<input id="r2" type="radio" name="radioDeb" value="0"/>
-							<div class="control__indicator"></div>
-						</label>
-						<label class="control control--radio">Privados
-							<input id="r3" type="radio" name="radioDeb" value="1"/>
-							<div class="control__indicator"></div>
-					</label>
-				</div>
+				<div class="row">
+					<div class="col-md-6">
+						<div class="control-group">
+							<!-- <form id="tipoDeb" method="post" action= "{% url 'index' %}" enctype="multipart/form-data">{% csrf_token %} -->
+								<label class="control control--radio">Todos
+									<input id="r1" type="radio" name="radioDeb" value="2" checked/>
+									<div class="control__indicator"></div>
+								</label>
+								<label class="control control--radio">Públicos
+									<input id="r2" type="radio" name="radioDeb" value="0"/>
+									<div class="control__indicator"></div>
+								</label>
+								<label class="control control--radio">Privados
+									<input id="r3" type="radio" name="radioDeb" value="1"/>
+									<div class="control__indicator"></div>
+							</label>
+						</div>
+					</div>
+					<div class="col-md-5">
+						<div class="control-group">
+									<form method="POST" class="post-form" enctype="multipart/form-data">{% csrf_token %}
+												{{ order_form.order_type }}
+												<button type='submit'> ok </button>
+									</form>
+							</div>
+						</div>
+					</div>
 				<div id="alertaDeb0" class="alert alert-info" role="alert">
 					<a href="javascript:location.reload()" class="alert-link">Hay nuevos debates...</a>
 				</div>

@@ -11,6 +11,9 @@ members_typeform = [('0', 'Publico'),
                 ('2', 'Privado a Listas')]
 owner=[('username','Nombre Real'),
          ('alias','Alias')]
+order_typeform= [('0', 'Fecha'),
+                ('1','Popularidad'),
+                ('2', 'Nombre')]
 
 class LoginForm(forms.Form):
     username = forms.CharField(max_length=20, required=True, label="Usuario",
@@ -123,3 +126,11 @@ class newDebateForm(forms.ModelForm):
     class Meta:
         model = Debate
         fields = ('id_debate', 'title', 'text', 'end_date', 'owner_type', 'length', 'args_max', 'counterargs_max', 'position_max', 'counterargs_type', 'members_type')
+
+class orderDebate(forms.Form):
+    order_type = forms.CharField(
+        label='Ordenar por',
+        widget=forms.Select(
+            choices=order_typeform,
+            attrs={'class': 'form-control', 'id': 'debOrderTypeForm', 'name': 'orderByForm'}
+            ))
