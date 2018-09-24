@@ -12,7 +12,7 @@ members_typeform = [('0', 'Publico'),
 owner=[('username','Nombre Real'),
          ('alias','Alias')]
 order_typeform= [('0', 'Fecha'),
-                ('1','Popularidad'),
+                ('1','Visitas'),
                 ('2', 'Nombre')]
 
 class LoginForm(forms.Form):

@@ -64,18 +64,18 @@
         {% for deb in total_data_deb %}
           <tr>
               <td>
-                <a href="{% url 'showDebate' deb.datos.id_debate %}">{{deb.datos.title}}</a>
+                <a href="{% url 'showDebate' deb.model.id_debate %}">{{deb.model.title}}</a>
               </td>
-              {% ifequal deb.datos.state 'open'  %}
+              {% ifequal deb.model.state 'open'  %}
               <td>
-                <a href="javascript:confirm_modal_show(1,'{{deb.datos.id_debate}}', '{{deb.datos.title}}')"> Abierto </a>
+                <a href="javascript:confirm_modal_show(1,'{{deb.model.id_debate}}', '{{deb.model.title}}')"> Abierto </a>
               </td>
               {% else %}
               <td>
-                <a href="javascript:confirm_modal_show(2,'{{deb.datos.id_debate}}', '{{deb.datos.title}}')"> Cerrado </a>
+                <a href="javascript:confirm_modal_show(2,'{{deb.model.id_debate}}', '{{deb.model.title}}')"> Cerrado </a>
               </td>
               {% endifequal %}
-              {% ifequal deb.datos.members_type 1%}
+              {% ifequal deb.model.members_type 1%}
                 <td> Privado </td>
               {% else %}
                 <td> Público </td>
@@ -83,9 +83,9 @@
               <td >{{deb.position_num}}</td>
               <td >{{deb.arg_num}}</td>
               <td >{{deb.visits}}</td>
-              <td>{{deb.datos.date|date:"d/m/Y"}}</td>
-              {% if deb.datos.end_date %}
-              <td>{{deb.datos.end_date|date:"d/m/Y"}}</td>
+              <td>{{deb.model.date|date:"d/m/Y"}}</td>
+              {% if deb.model.end_date %}
+              <td>{{deb.model.end_date|date:"d/m/Y"}}</td>
               {% else %}
               <td> No definido </td>
               {% endif %}

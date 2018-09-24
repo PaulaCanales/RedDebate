@@ -104,6 +104,7 @@ def index(request):
 def makeData(request, actual_user, form, state):
     total_debates = Debate.objects.all().order_by('-id_debate')
     total_data_deb = []
+    debates_order = 0
     #cierra debates expirados
     for debate in total_debates:
         ahora = datetime.date.today()
@@ -111,18 +112,22 @@ def makeData(request, actual_user, form, state):
             debate.state = 'closed'
             debate.save()
     #obtener informacion de los debates dependiendo de su state
-    total_debates = Debate.objects.filter(state=state).order_by('date')
-    if request.method == 'POST':
-        if 'order_type' in request.POST:
-            debates_order = int(request.POST['order_type'])
-            if debates_order == 0:
-                total_debates = Debate.objects.filter(state=state).order_by('date')
-            elif debates_order == 1:
-                total_debates = Debate.objects.filter(state=state).order_by('-id_debate')
-            elif debates_order == 2:
-                total_debates = Debate.objects.filter(state=state).order_by('title')
+    total_debates = Debate.objects.filter(state=state).order_by('-id_debate')
     total_data_deb = debateData(total_debates,actual_user,False)
     moderator_view_deb = debateData(total_debates,actual_user,True)
+    if request.method == 'GET':
+        if 'order_type' in request.GET:
+            debates_order = int(request.GET['order_type'])
+            if debates_order == 0:
+                total_data_deb = sorted(total_data_deb, key=lambda k: k['model'].id_debate, reverse=True)
+                moderator_view_deb = sorted(moderator_view_deb, key=lambda k: k['model'].id_debate, reverse=True)
+            elif debates_order == 1:
+                total_data_deb = sorted(total_data_deb, key=lambda k: k['visits'], reverse=True)
+                moderator_view_deb = sorted(moderator_view_deb, key=lambda k: k['visits'], reverse=True)
+            elif debates_order == 2:
+                total_data_deb = sorted(total_data_deb, key=lambda k: k['model'].title, reverse=False)
+                moderator_view_deb = sorted(moderator_view_deb, key=lambda k: k['model'].title, reverse=False)
+
     #debates populares por cantidad de posturas
     top_debates = sorted(total_data_deb, key=lambda k: k['position_num'], reverse=True)[:5]
     moderator_top_debates = sorted(moderator_view_deb, key=lambda k: k['position_num'], reverse=True)[:5]
@@ -152,7 +157,7 @@ def makeData(request, actual_user, form, state):
                 'form':form, 'top_tags':top_tags, 'top_deb':top_debates,
                 'top_users':top_users, 'recent_data_deb': recent_data_deb, 'moderator_recent_deb': moderator_recent_data_deb,
                 'moderator_top_deb': moderator_top_debates, 'actual_user_list':actual_user_list,
-                'order_form':order_form}
+                'order_form':order_form, 'debates_order':debates_order}
     return context
 
 def debateData(debates, user, moderator):
@@ -173,7 +178,7 @@ def debateData(debates, user, moderator):
         if debate.members_type == 1 and not moderator:
             try:
                 participate = PrivateMembers.objects.get(id_debate_id=debate.id_debate, id_user_id=user.id)
-                debate_list.append({"datos":debate, "infavor_percent":infavor_percent, "against_percent":against_percent,
+                debate_list.append({"model":debate, "infavor_percent":infavor_percent, "against_percent":against_percent,
                                         "infavor_position_num":infavor_position_num, "against_position_num":against_position_num,
                                         "position_num":position_num, "arg_num":argument_num,
                                         "visits": visits})
@@ -181,7 +186,7 @@ def debateData(debates, user, moderator):
             except:
                 participate = False
         else:
-            debate_list.append({"datos":debate, "infavor_percent":infavor_percent, "against_percent":against_percent,
+            debate_list.append({"model":debate, "infavor_percent":infavor_percent, "against_percent":against_percent,
                                     "infavor_position_num":infavor_position_num, "against_position_num":against_position_num,
                                     "position_num":position_num, "arg_num":argument_num,
                                     "visits": visits})

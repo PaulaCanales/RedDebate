@@ -19,18 +19,18 @@
             <div class="dummy-column">
               <h2>Popular</h2>
               {% for deb in moderator_top_deb %}
-               <a class="dummy-media-object" href="{% url 'showDebate' deb.datos.id_debate %}">
+               <a class="dummy-media-object" href="{% url 'showDebate' deb.model.id_debate %}">
                  <label><span class="glyphicon glyphicon-user" aria-hidden="true"></span> {{deb.position_num}}</label>
-                 <h3>{{ deb.datos.title }}</h3>
+                 <h3>{{ deb.model.title }}</h3>
                </a>
              {% endfor %}
             </div>
             <div class="dummy-column">
               <h2>Reciente</h2>
               {% for deb in moderator_recent_deb %}
-               <a class="dummy-media-object" href="{% url 'showDebate' deb.datos.id_debate %}">
+               <a class="dummy-media-object" href="{% url 'showDebate' deb.model.id_debate %}">
                  <label><span class="glyphicon glyphicon-user" aria-hidden="true"></span> {{deb.position_num}}</label>
-                 <h3>{{ deb.datos.title }}</h3>
+                 <h3>{{ deb.model.title }}</h3>
                </a>
              {% endfor %}
             </div>
@@ -67,21 +67,34 @@
         </div>
       </div>
       <div class="col-md-10">
-        <div class="control-group">
-          <!-- <form id="tipoDeb" method="post" action= "{% url 'index' %}" enctype="multipart/form-data">{% csrf_token %} -->
-            <label class="control control--radio">Todos
-              <input id="r1" type="radio" name="radioDeb" value="2" checked/>
-              <div class="control__indicator"></div>
-            </label>
-            <label class="control control--radio">Públicos
-              <input id="r2" type="radio" name="radioDeb" value="0"/>
-              <div class="control__indicator"></div>
-            </label>
-            <label class="control control--radio">Privados
-              <input id="r3" type="radio" name="radioDeb" value="1"/>
-              <div class="control__indicator"></div>
-          </label>
-        </div>
+        <div class="row">
+					<div class="col-md-6">
+						<div class="control-group">
+							<!-- <form id="tipoDeb" method="post" action= "{% url 'index' %}" enctype="multipart/form-data">{% csrf_token %} -->
+								<label class="control control--radio">Todos
+									<input id="r1" type="radio" name="radioDeb" value="2" checked/>
+									<div class="control__indicator"></div>
+								</label>
+								<label class="control control--radio">Públicos
+									<input id="r2" type="radio" name="radioDeb" value="0"/>
+									<div class="control__indicator"></div>
+								</label>
+								<label class="control control--radio">Privados
+									<input id="r3" type="radio" name="radioDeb" value="1"/>
+									<div class="control__indicator"></div>
+							</label>
+						</div>
+					</div>
+					<div class="col-md-5">
+						<div class="control-group">
+									<form method="GET" class="post-form" enctype="multipart/form-data">{% csrf_token %}
+												{{ order_form.order_type }}
+												<button type='submit'> ok </button>
+									</form>
+							</div>
+						</div>
+						<div id="deb_order_select" class="hidden">{{debates_order}}</div>
+					</div>
         <div id="alertaDeb0" class="alert alert-info" role="alert">
           <a href="javascript:location.reload()" class="alert-link">Hay nuevos debates...</a>
         </div>
@@ -95,14 +108,14 @@
         </ul>
         <ul id="publicos" class="cards">
           {% for deb in moderator_view_deb %}
-            {% ifequal deb.datos.members_type 0 %}
+            {% ifequal deb.model.members_type 0 %}
               {% include 'grilla.html' with index=True%}
             {% endifequal %}
           {% endfor %}
         </ul>
         <ul id="privados" class="cards">
           {% for deb in moderator_view_deb %}
-            {% ifequal deb.datos.members_type 1 %}
+            {% ifequal deb.model.members_type 1 %}
               {% include 'grilla.html' with index=True%}
             {% endifequal %}
           {% endfor %}
