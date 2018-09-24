@@ -108,11 +108,11 @@ $(document).ready(function(){
 				<div name="argumentos-debate">
 					<div class="row">
 				    <div class="col-md-6">
-							{% include 'participaciones.html' with frase="A Favor" comentario=infavor_args_list postura=1 num_post=infavor_position_num%}
+							{% include 'participaciones.html' with name_position="A Favor" arguments=infavor_args_list postura=1 num_post=infavor_position_num%}
 							<ul id="alertaArgumento1" class="list-group"></ul>
 						</div>
 						<div class="col-md-6">
-							{% include 'participaciones.html' with frase="En Contra" comentario=against_args_list postura=0 num_post=against_position_num%}
+							{% include 'participaciones.html' with name_position="En Contra" arguments=against_args_list postura=0 num_post=against_position_num%}
 							<ul id="alertaArgumento0" class="list-group"></ul>
 						</div>
 					</div>

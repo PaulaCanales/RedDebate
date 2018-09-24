@@ -22,7 +22,7 @@
                         <a href="{% url 'memberList' list.id %}"> <span class="glyphicon glyphicon-edit" aria-hidden="true"></span></a>
                       </div>
                       <div class="col-md-1">
-                        <form method="post" action= "{% url 'userList' %}" enctype="multipart/form-data" onsubmit="return confirm('¿Seguro que desea eliminar la list?');">{% csrf_token %}
+                        <form method="post" action= "{% url 'userList' %}" enctype="multipart/form-data" onsubmit="return confirm('¿Seguro que desea eliminar la lista?');">{% csrf_token %}
                           <input type="hidden" value="{{ list.id }}" name="id_list">
                           <button type="submit"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
                         </form>

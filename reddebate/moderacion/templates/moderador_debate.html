@@ -3,8 +3,8 @@
 <div id="participantes_modal" class="modal">
 	<div class="modal-content">
 		<span class="close" onclick="cerrar_modal('participantes_modal')">&times;</span>
-		<h3>PrivateMembers <span class="glyphicon glyphicon-user"></span></h3>
-		<input type="text" value="" name="searchColumn" id="searchUser3" placeholder="Busca a un user..."/>
+		<h3>Integrantes <span class="glyphicon glyphicon-user"></span></h3>
+		<input type="text" value="" name="searchColumn" id="searchUser3" placeholder="Busca a un usuario..."/>
 		{% for member in debate_members%}
 		<a type = "text" class="dummy-media-object" href="{% url 'perfil' id_usr=member.user.id %}">
 			<img class="round" src="{{ member.profile.img.url }}"/>
@@ -107,11 +107,11 @@
 				<div name="argumentos-debate">
 					<div class="row">
 				    <div class="col-md-6">
-							{% include 'moderador_participaciones.html' with frase="A Favor" comentario=infavor_args_list postura=1 num_post=infavor_position_num%}
+							{% include 'moderador_participaciones.html' with name_position="A Favor" arguments=infavor_args_list position=1 num_post=infavor_position_num%}
 							<ul id="alertaArgumento1" class="list-group"></ul>
 						</div>
 						<div class="col-md-6">
-							{% include 'moderador_participaciones.html' with frase="En Contra" comentario=against_args_list postura=0 num_post=against_position_num%}
+							{% include 'moderador_participaciones.html' with name_position="En Contra" arguments=against_args_list position=0 num_post=against_position_num%}
 							<ul id="alertaArgumento0" class="list-group"></ul>
 						</div>
 					</div>

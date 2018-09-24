@@ -213,7 +213,7 @@ def argumentData(arguments, actual_user, counterarg_num, id_debate):
 							'can_counterarg': can_counterarg})
 	return args_list
 
-##@brief Funcion que guarda el comentario del user de un argument.
+##@brief Funcion que guarda el arguments del user de un argument.
 ##@param request solicitud web, entrega los datos del user actual
 ##@return id_debat para redireccional a la vista "showDebate" con este id de debate
 ##@warning Login is required

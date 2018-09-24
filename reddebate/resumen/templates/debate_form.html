@@ -39,7 +39,7 @@
             </div>
             {{ form.members_type }}
             <a id="modificarusr" href="javascript:abrir_modal('usuariosPrivado_modal')" style="display:none"> Modificar usuarios</a>
-            <a id="moficarlista" href="javascript:abrir_modal('usuariosPrivadoLista_modal')" style="display:none"> Modificar list</a>
+            <a id="moficarlista" href="javascript:abrir_modal('usuariosPrivadoLista_modal')" style="display:none"> Modificar lista</a>
           </div>
           <div class="fieldWrapper">
             {{ form.owner_type.errors }}
@@ -65,7 +65,7 @@
            <div class="col-md-1"></div>
            <div class="col-md-5">
              {{ form.position_max.errors }}
-             <label>Cambios de postura por cada user</label>
+             <label>Cambios de postura por cada usuario</label>
              <div class="tooltipform"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
                <span class="tooltipformtext">Indica la cantidad de veces que los usuarios pueden cambiar de postura en tu debate</span>
              </div>
@@ -84,7 +84,7 @@
            <div class="col-md-1"></div>
              <div class="col-md-5">
                {{ form.args_max.errors }}
-               <label> Cantidad de argumentos por cada user </label>
+               <label> Cantidad de argumentos por cada usuario </label>
                <div class="tooltipform"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
                  <span class="tooltipformtext">Indica la cantidad máxima de argumentos que los usuarios pueden publicar en tu debate</span>
                </div>
@@ -98,7 +98,7 @@
              </div>
              <div class="col-md-5">
                {{ form.length.errors }}
-               <label>Cantidad de caracteres por cada argument</label>
+               <label>Cantidad de caracteres por cada argumento</label>
                <div class="tooltipform"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
                  <span class="tooltipformtext">Indica la cantidad máxima de caracteres que tendrá cada argument que sea publicado en tu debate</span>
                </div>
@@ -116,9 +116,9 @@
              <div class="col-md-1"></div>
              <div class="col-md-5">
                  {{ form.counterargs_max.errors }}
-                 <label>Cantidad de rebates por cada user</label>
+                 <label>Cantidad de contraargumentos por cada usuario</label>
                  <div class="tooltipform"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
-                   <span class="tooltipformtext">Indica la cantidad máxima de rebates que los usuarios pueden counterargument1 a los argumentos de tu debate</span>
+                   <span class="tooltipformtext">Indica la cantidad máxima de contraargumentos que los usuarios pueden counterargument1 a los argumentos de tu debate</span>
                  </div>
                  <div class="input-group spinner">
                    {{ form.counterargs_max }}
@@ -130,7 +130,7 @@
                </div>
                <div class="col-md-5">
                  {{ form.counterarg_type.errors }}
-                 <label>Tipo de rebate</label>
+                 <label>Tipo de contraargumento</label>
                  <div class="tooltipform"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
                    <span class="tooltipformtext">Indica si deseas que los usuarios puedan counterargument1 a argumentos de la postura contraria o a ambas posturas</span>
                  </div>
@@ -150,7 +150,7 @@
           </h5>
           <div class="fieldWrapper">
             {{form.members.errors }}
-            <input type="text" value="" name="searchColumn" id="searchUser1" placeholder="Busca a un user..."/>
+            <input type="text" value="" name="searchColumn" id="searchUser1" placeholder="Busca a un usuario..."/>
             <div id="containercheckbox" class="userscheckbox">
             {% for field in form.members %}
             <div class="inputGroup">{{field}}</div>
@@ -168,7 +168,7 @@
           </h5>
           <div class="fieldWrapper">
             {{form.members.errors }}
-            <input type="text" value="" name="searchColumn" id="searchLista1" placeholder="Busca a un user..."/>
+            <input type="text" value="" name="searchColumn" id="searchLista1" placeholder="Busca a un usuario..."/>
             <div class="radioFiltro">{{ form.filtro }}</div>
             <div id="containercheckbox" class="userscheckbox">
               {% for field in form.listado %}

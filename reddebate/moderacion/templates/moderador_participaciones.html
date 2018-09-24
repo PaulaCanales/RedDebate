@@ -1,33 +1,33 @@
 <!DOCTYPE html>
 
-<div class="datagrid{{postura}}">
-  <table id="Tabla_Argumentos{{postura}}">
+<div class="datagrid{{position}}">
+  <table id="Tabla_Argumentos{{position}}">
     <tr><thead>
       	<th> # </th>
-      	<th> {{frase}} </th>
+      	<th> {{name_position}} </th>
       	<!--<th> </th> -->
-      	<th> <div style="float:right"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> <label id="label_num_post{{postura}}"> {{num_post}} </label> </div> </th>
+      	<th> <div style="float:right"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> <label id="label_num_post{{position}}"> {{num_post}} </label> </div> </th>
     </thead></tr>
-    {% for arg in comentario %}
+    {% for arg in arguments %}
       <tr>
         <td style="border-bottom: #fff;">
           <span class="glyphicon glyphicon-triangle-top" aria-hidden="true"></span>
         </td>
-        <td id="bordeTabla{{postura}}" rowspan="3"><!-- comentario-->
+        <td id="bordeTabla{{position}}" rowspan="3">
             <p><a href="{% url 'perfil' id_arg=arg.id_arg %}"><p1>{{arg.owner_arg}}:</p1></a> {{arg.text}}</p>
         </td>
         <td style="border-bottom: #fff; text-align: center;"> <!-- boton editar/rebatir-->
       		<div style="float:right">
-            <button id="bot_rebatir{{postura}}" type="submit" class="btn btn-args{{postura}}" data-whatever="{{arg.counterargs}}" onclick='javascript:mostrar_modal("respuesta_modal{{postura}}{{arg.id_arg}}","{{arg.id_arg}}","{{arg.counterargs}}","{{postura}}");' >
+            <button id="bot_rebatir{{position}}" type="submit" class="btn btn-args{{position}}" data-whatever="{{arg.counterargs}}" onclick='javascript:mostrar_modal("respuesta_modal{{position}}{{arg.id_arg}}","{{arg.id_arg}}","{{arg.counterargs}}","{{position}}");' >
               {{ arg.counterargs|length }} <span class="glyphicon glyphicon-comment"  ></span>
             </button>
           </div>
         </td>
 
-          <div id="respuesta_modal{{postura}}{{arg.id_arg}}" class="modal">
+          <div id="respuesta_modal{{position}}{{arg.id_arg}}" class="modal">
             <div class="modal-content">
-              <h3><span class="close" onclick="cerrar_modal('respuesta_modal{{postura}}{{arg.id_arg}}')">&times;</span>
-              <span class="glyphicon glyphicon-comment"></span> Redebates</h3>
+              <h3><span class="close" onclick="cerrar_modal('respuesta_modal{{position}}{{arg.id_arg}}')">&times;</span>
+              <span class="glyphicon glyphicon-comment"></span> Contraargumentos</h3>
                 <div id="descripcion_argumento">
                   <p1>{{arg.owner_arg}}</p1> argumentó...
                   <h4>"{{arg.text}}"</h4>
@@ -56,15 +56,15 @@
         <td style="border-bottom: #fff; text-align: center; display:block" id="change{{arg.id_arg}}"> <span class="glyphicon glyphicon-transfer" aria-hidden="true"></span> </td>
         {% endifequal %}
       </tr>
-      <tr id="bordeTabla{{postura}}">
+      <tr id="bordeTabla{{position}}">
         <td>
           <span class="glyphicon glyphicon-triangle-bottom" aria-hidden="true"></span>
         </td>
         <td><div style="float:right">
-            <form id="eliminar_arg" method="post" action= "{% url 'showDebate' debate.id_debate %}" enctype="multipart/form-data" onsubmit="return confirm('¿Seguro que desea eliminar el argument?');">{% csrf_token %}
+            <form id="eliminar_arg" method="post" action= "{% url 'showDebate' debate.id_debate %}" enctype="multipart/form-data" onsubmit="return confirm('¿Seguro que desea eliminar el argumento?');">{% csrf_token %}
               <input type="hidden" value="{{ arg.id_arg }}" name="id_arg_delete">
               <input type="hidden" value="{{ debate.id_debate }}" name="id_deb_arg_eliminar">
-              <button type="submit" class="btn btn-args{{postura}}" > <span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
+              <button type="submit" class="btn btn-args{{position}}" > <span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
             </form>
         </div></td>
       </tr>
