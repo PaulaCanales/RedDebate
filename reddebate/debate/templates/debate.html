@@ -6,8 +6,8 @@
 <head>
 	<meta property="og:url" content="http://reddebate.cl/debate/10/"/>
 	<meta property="og:type" content="website" />
-	<meta property="og:title" content="{{debate.titulo}}"/>
-	<meta property="og:description" content="{{debate.descripcion}}"/>
+	<meta property="og:title" content="{{debate.title}}"/>
+	<meta property="og:description" content="{{debate.text}}"/>
 	<meta property="og:image" content="{% static 'img/RDLogo02.png'%}"/>
 </head>
 {% block content %}
@@ -17,8 +17,8 @@
 <div id="participantes_modal" class="modal">
 	<div class="modal-content">
 		<span class="close" onclick="cerrar_modal('participantes_modal')">&times;</span>
-		<h3>Participantes <span class="glyphicon glyphicon-user"></span></h3>
-		<input type="text" value="" name="searchColumn" id="searchUser3" placeholder="Busca a un usuario..."/>
+		<h3>PrivateMembers <span class="glyphicon glyphicon-user"></span></h3>
+		<input type="text" value="" name="searchColumn" id="searchUser3" placeholder="Busca a un user..."/>
 		{% for member in debate_members%}
 		<a type = "text" class="dummy-media-object" href="{% url 'perfil' id_usr=member.user.id %}">
 			<img class="round" src="{{ member.profile.img.url }}"/>
@@ -27,16 +27,16 @@
 		{% endfor %}
 	</div>
 </div>
-{% ifequal owner_user.id usuario %}
+{% ifequal owner_user.id user %}
 	{% include 'debate_creador.html'%}
 {% else %}
 {% if participate %}
 	<div class="container-debate">
 		<header>
-			<h2>{{ debate.titulo }}</h2>
+			<h2>{{ debate.title }}</h2>
 			<p>
 				<input id="idDebate" type="hidden" value={{debate.id_debate}}>
-				{% ifequal debate.alias_c 'alias' %}
+				{% ifequal debate.owner_type 'alias' %}
 					<h5>Creado por {{owner_profile}} en modo anónimo</h5>
 				{%else%}
 					<h5>Debate creado por {{owner_user}}</h5>
@@ -44,7 +44,7 @@
 				<span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>{{visits}}
 			</p>
 		</header>
-		<p class="debateDescripcion">{{ debate.descripcion }}</p>
+		<p class="debateDescripcion">{{ debate.text }}</p>
 		<div id="fb-root"></div>
 		<div style="text-align: right">
 		<div class="fb-share-button"
@@ -96,12 +96,12 @@
 								<td width=120 ><p1>Fecha inicio</p1></td><td>{{ debate.date }}</td>
 							</tr>
 							<tr>
-								<td width=120 ><p1>Estado</p1></td><td>{{ debate.estado }}</td>
+								<td width=120 ><p1>Estado</p1></td><td>{{ debate.state }}</td>
 							</tr>
 							<tr>
-								<td width=120 ><p1>Tu Postura</p1></td><td><div id="tu_postura"> {{actual_user_position}} </div></td>
+								<td width=120 ><p1>Tu Position</p1></td><td><div id="tu_postura"> {{actual_user_position}} </div></td>
 							</tr>
-							{% ifequal debate.tipo_participacion 0 %}
+							{% ifequal debate.members_type 0 %}
 							<tr>
 								<td width=120 ><p1>Tipo debate</p1></td><td><div id="tu_postura">  Publico </div></td>
 							</tr>
@@ -126,7 +126,7 @@
 				</div>
 			</div>
 		</div>
-		{% ifequal debate.estado 'cerrado'%}
+		{% ifequal debate.state 'closed'%}
 			{% include 'estadisticas.html' %}
 		{% else %}
 			{% ifequal actual_user_position 'No definido' %}
@@ -165,7 +165,7 @@
 							{% ifequal actual_user_position 'A Favor' %}
 								<form id="nuevoArgForm1" method="POST" class="post-form publicarArgumento" enctype="multipart/form-data">{% csrf_token %}
 					      {{arg_form1.as_p}}
-								<button name="argumento" type="submit" class="btn btn-deb1">Publicar</button>
+								<button name="argument" type="submit" class="btn btn-deb1">Publicar</button>
 							</form>
 							{% endifequal %}
 							{% endif %}
@@ -177,7 +177,7 @@
 							{% ifequal actual_user_position 'En Contra' %}
 							<form id="nuevoArgForm0" method="POST" class="post-form publicarArgumento" enctype="multipart/form-data">{% csrf_token %}
 								{{arg_form0.as_p}}
-								<button name="argumento" type="submit" class="btn btn-deb0">Publicar</button>
+								<button name="argument" type="submit" class="btn btn-deb0">Publicar</button>
 							</form>
 					    {% endifequal %}
 							{% endif %}

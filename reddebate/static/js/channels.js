@@ -5,19 +5,19 @@ $(document).ready(function(){
   socket_notificacion.onmessage = function(notificacion){
     var data = JSON.parse(notificacion.data);
     var id_usr_actual = $("#id_usuario_actual").text();
-    if (id_usr_actual == data.id_creador){
+    if (id_usr_actual == data.id_owner){
       $("#alertaSpan").css('color', '#d9534f');
       $("#numSpan").text("");
       $("#numSpan").append($('<span class="glyphicon glyphicon-asterisk" aria-hidden="true"></span>'));
       $("#numSpan").css('background-color', '#d9534f');
       var menu = $("#mySidenav");
-      var url = "/debate/"+data.id_debate+"/"+data.id_notificacion;
-      var item = document.getElementById("notificacion"+data.id_notificacion);
+      var url = "/debate/"+data.id_debate+"/"+data.id_notification;
+      var item = document.getElementById("notificacion"+data.id_notification);
       if(item){
-        $("#notificacion"+data.id_notificacion).hide()
+        $("#notificacion"+data.id_notification).hide()
       }
       var ele = $('<li id="notificacion{{notificacion.id}}" class="notificacion0"></li>');
-      ele.append($('<a href="'+url+'"></a>').text(data.mensaje));
+      ele.append($('<a href="'+url+'"></a>').text(data.message));
       menu.prepend(ele);
     }
   };
@@ -26,51 +26,51 @@ $(document).ready(function(){
         var data = JSON.parse(message.data);
         console.log("onmassage");
         var url = "/debate/"+data.id+"/"
-        if (data.titulo){
+        if (data.title){
           $("#alertaDeb0").css("display","block");
         }
-        if (data.usuario_participa){
-          console.log(data.usuario_participa);
-          id_usr = data.usuario_participa
+        if (data.members){
+          console.log(data.members);
+          id_usr = data.members
           for (i=0 ; i<id_usr.length ; i++){
             if (id_usr[i] == id_usr_actual){
               $("#alertaDeb1").css("display","block");
             }
           }
           // var id_usr_actual = $("#id_usuario_actual").text();
-          // if (id_usr_actual == data.usuario_participa){
+          // if (id_usr_actual == data.members){
           //   $("#alertaDeb1").css("display","block");
           // }
 
         }
-        else if (data.postura_f || data.postura_c){
+        else if (data.infavor_position || data.against_position){
           var infavor_percent = Math.round(parseFloat(data.infavor_percent)*100)/100;
           var against_percent = Math.round(parseFloat(data.against_percent)*100)/100;
           $("#label_porc_f").text(infavor_percent+"%")
           $("#label_porc_c").text(against_percent+"%")
-          $("#label_num_post1").text(data.postura_f)
-          $("#label_num_post0").text(data.postura_c)
+          $("#label_num_post1").text(data.infavor_position)
+          $("#label_num_post0").text(data.against_position)
 
         }
-        else if (data.descripcion){
-          var nuevosArgs = $("#alertaArgumento"+data.postura);
-          var nuevo = $('<a onclick="javascript:location.reload()" id="nuevoArgumento'+data.postura+'" class="list-group-item"> </a>').text("Nuevo argumento de "+data.nombre)
+        else if (data.text){
+          var nuevosArgs = $("#alertaArgumento"+data.position);
+          var nuevo = $('<a onclick="javascript:location.reload()" id="nuevoArgumento'+data.position+'" class="list-group-item"> </a>').text("Nuevo argument de "+data.name)
           nuevosArgs.append(nuevo)
         }
     };
 
   $("#nuevodebateform").on("submit", function(event) {
-    var fechafin = $('#debFinForm').val()
-    if (fechafin.length === 0){
-      var fechafin = null;
+    var enddate = $('#debEndDateForm').val()
+    if (enddate.length === 0){
+      var enddate = null;
     }
     var selected = [];
-    if ($('#debTipoParticipacionForm').val()==1){
-      $("input[name*='participantes']:checked").each(function() {
+    if ($('#debMemberTypeForm').val()==1){
+      $("input[name*='members']:checked").each(function() {
           selected.push($(this).val());
       });
     }
-    else if ($('#debTipoParticipacionForm').val()==2){
+    else if ($('#debMemberTypeForm').val()==2){
       $("input[name*='listado']:checked").each(function() {
           selected.push($(this).val());
       });
@@ -78,21 +78,21 @@ $(document).ready(function(){
     }
 
     var message = {
-      titulo: $('#debTituloForm').val(),
-      descripcion: $('#debDescripcionForm').val(),
-      alias_c: $('#debAliasForm').val(),
-      largo: $('#debLargoForm').val(),
-      num_argumento: $('#debArgsForm').val(),
-      num_rebate: $('#debRebateForm').val(),
-      tipo_rebate: $('#debTipoRebateForm').val(),
-      tipo_participacion: $('#debTipoParticipacionForm').val(),
-      num_cambio_postura: $('#debCambioPostForm').val(),
-      date_fin: fechafin,
-      // img: $('#debImgForm').val(),
-      id_usuario_id: "",
-      participantes: selected,
+      title: $('#debTitleForm').val(),
+      text: $('#debTextForm').val(),
+      owner_type: $('#debAliasForm').val(),
+      length: $('#debLengthForm').val(),
+      args_max: $('#debArgsForm').val(),
+      counterargs_max: $('#debCounterArgForm').val(),
+      counterargs_type: $('#debCounterArgTypeForm').val(),
+      members_type: $('#debMemberTypeForm').val(),
+      position_max: $('#debChangePositionForm').val(),
+      end_date: enddate,
+      id_user_id: "",
+      members: selected,
       tags: $("#tagsForms").tagsinput('items'),
     }
+    console.log(message);
     socket.send(JSON.stringify(message));
     window.location.reload();
     return false;
@@ -101,11 +101,11 @@ $(document).ready(function(){
   $("#nuevoArgForm1").on("submit", function(event){
     console.log();("a favor")
     var message = {
-      descripcion: $('#descArg1').val(),
-      alias_c: $('#aliasArg1').val(),
+      text: $('#descArg1').val(),
+      owner_type: $('#aliasArg1').val(),
       id_debate: $('#idDebate').val(),
-      postura: "",
-      id_usuario_id: ""
+      position: "",
+      id_user_id: ""
     }
     socket.send(JSON.stringify(message));
     setTimeout(function(){location.reload();}, 500);
@@ -115,11 +115,11 @@ $(document).ready(function(){
     console.log("en contra");
     console.log($('#descArg0').val(),);
     var message = {
-      descripcion: $('#descArg0').val(),
-      alias_c: $('#aliasArg0').val(),
+      text: $('#descArg0').val(),
+      owner_type: $('#aliasArg0').val(),
       id_debate: $('#idDebate').val(),
-      postura: "",
-      id_usuario_id: ""
+      position: "",
+      id_user_id: ""
     }
     console.log(message);
     socket.send(JSON.stringify(message));
@@ -128,8 +128,8 @@ $(document).ready(function(){
   });
   $("#bot_af_init").click(function(event){
     var message = {
-      postura: 1,
-      id_usuario: "",
+      position: 1,
+      id_user: "",
       id_debate: $('#idDebate').val(),
     };
     socket.send(JSON.stringify(message));
@@ -138,8 +138,8 @@ $(document).ready(function(){
   });
   $("#bot_ec_init").click(function(event){
     var message = {
-      postura: 0,
-      id_usuario: "",
+      position: 0,
+      id_user: "",
       id_debate: $('#idDebate').val(),
     };
     socket.send(JSON.stringify(message));
@@ -148,7 +148,7 @@ $(document).ready(function(){
   });
   $("#bot_cambiar_post").click(function(event){
     var message = {
-      postura: $('#postura_debate').val(),
+      position: $('#postura_debate').val(),
       id_debate: $('#idDebate').val(),
       razon: $( "input[name='razon']:checked" ).val(),
     };

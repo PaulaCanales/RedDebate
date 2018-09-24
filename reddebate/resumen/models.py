@@ -14,26 +14,25 @@ import unicodedata
 class Debate(models.Model):
     #parametros de la tabla.
     id_debate = models.AutoField(primary_key=True)
-    titulo = models.CharField(max_length=100)
-    descripcion = models.CharField(max_length=1000)
+    title = models.CharField(max_length=100)
+    text = models.CharField(max_length=1000)
     date = models.DateField(default=datetime.now, blank=True)
-    date_fin = models.DateField(default=None, blank=True, null=True)
-    alias_c = models.CharField(max_length=50, default='username')
-    largo = models.IntegerField(default=300, blank=True)
-    id_usuario = models.ForeignKey(User)
-    estado = models.CharField(max_length=20, default='abierto')
-    img = models.FileField(blank=True, null=True)
-    num_argumento = models.IntegerField(default=1)
-    num_cambio_postura = models.IntegerField(default=3)
-    num_rebate = models.IntegerField(default=1)
-    tipo_rebate = models.IntegerField(default=0) # 0:ambas # 1: contraria
-    tipo_participacion = models.IntegerField(default=0) #0 debate publico
+    end_date = models.DateField(default=None, blank=True, null=True)
+    owner_type = models.CharField(max_length=50, default='username')
+    length = models.IntegerField(default=300, blank=True)
+    id_user = models.ForeignKey(User)
+    state = models.CharField(max_length=20, default='open')
+    args_max = models.IntegerField(default=1)
+    position_max = models.IntegerField(default=3)
+    counterargs_max = models.IntegerField(default=1)
+    counterargs_type = models.IntegerField(default=0) # 0:ambas # 1: contraria
+    members_type = models.IntegerField(default=0) #0 debate publico
 
     tags = TaggableManager()
 
     def __unicode__(self): # __unicode__ on Python 2
-		return self.titulo
+		return self.title
     def __getitem__(self, key):
         return getattr(self, key)
     def as_dict(self):
-        return {'titulo': self.titulo, 'tipo':self.tipo_participacion}
+        return {'text': self.text, 'type':self.members_type}

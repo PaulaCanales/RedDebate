@@ -27,7 +27,7 @@
 						{% for deb in top_deb %}
  						 <a class="dummy-media-object" href="{% url 'showDebate' deb.datos.id_debate %}">
 							 <label><span class="glyphicon glyphicon-user" aria-hidden="true"></span> {{deb.position_num}}</label>
-							 <h3>{{ deb.datos.titulo }}</h3>
+							 <h3>{{ deb.datos.title }}</h3>
 						 </a>
  					 {% endfor %}
 					</div>
@@ -36,7 +36,7 @@
 						{% for deb in recent_data_deb %}
  						 <a class="dummy-media-object" href="{% url 'showDebate' deb.datos.id_debate %}">
 							 <label><span class="glyphicon glyphicon-user" aria-hidden="true"></span> {{deb.position_num}}</label>
-							 <h3>{{ deb.datos.titulo }}</h3>
+							 <h3>{{ deb.datos.title }}</h3>
 						 </a>
  					 {% endfor %}
 					</div>
@@ -102,14 +102,14 @@
 				</ul>
 				<ul id="publicos" class="cards">
 					{% for deb in total_data_deb %}
-						{% ifequal deb.datos.tipo_participacion 0 %}
+						{% ifequal deb.datos.members_type 0 %}
 							{% include 'grilla.html' with index=True%}
 						{% endifequal %}
 					{% endfor %}
 				</ul>
 				<ul id="privados" class="cards">
 					{% for deb in total_data_deb %}
-						{% ifequal deb.datos.tipo_participacion 1 %}
+						{% ifequal deb.datos.members_type 1 %}
 							{% include 'grilla.html' with index=True%}
 						{% endifequal %}
 					{% endfor %}

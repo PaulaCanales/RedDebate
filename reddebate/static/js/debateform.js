@@ -2,27 +2,27 @@ $(document).ready(
 	function(){
 		var sigue = false;
 		$('#nextbtn').click(function(){
-			var text = $("#debTituloForm").val()
+			var text = $("#debTitleForm").val()
 			// $("#titulodebform").text(text)
 			document.getElementById("titulodebform1").innerHTML = text;
 			document.getElementById("titulodebform2").innerHTML = text;
 		});
-		$("#debTituloForm").on("keyup", function(){
-		    if($(this).val() != "" && $("#debDescripcionForm").val() != ""){
+		$("#debTitleForm").on("keyup", function(){
+		    if($(this).val() != "" && $("#debTextForm").val() != ""){
 		        sigue = true;
 		    } else {
 						sigue = false;
 		    }
 		});
 
-		$("#debDescripcionForm").on("keyup", function(){
-		    if($(this).val() != "" && $("#debTituloForm").val() != ""){
+		$("#debTextForm").on("keyup", function(){
+		    if($(this).val() != "" && $("#debTitleForm").val() != ""){
 		        sigue = true;
 
 		    } else {
 		        sigue = false;
 		    }});
-		$('#debTipoParticipacionForm').on('change', function() {
+		$('#debMemberTypeForm').on('change', function() {
 			if (this.value == 1){
 				document.getElementById('usuariosPrivado_modal').style.display="block";
 				document.getElementById('modificarusr').style.display="block";
@@ -86,13 +86,13 @@ $(document).ready(
 				});
 			}
 			else {
-				if ($("#debTituloForm").val() == ""){
+				if ($("#debTitleForm").val() == ""){
 					$("#errorTitulo").css("display","block");
 				}
 				else {
 					$("#errorTitulo").css("display","none");
 				}
-				if ($("#debDescripcionForm").val() == ""){
+				if ($("#debTextForm").val() == ""){
 					$("#errorDesc").css("display","block");
 				}
 				else {

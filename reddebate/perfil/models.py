@@ -10,35 +10,35 @@ def unique_rand():
     while True:
         code = User.objects.make_random_password(length=4)
         alias = "anonimo_"+code
-        if not Perfil.objects.filter(alias=alias).exists():
+        if not Profile.objects.filter(alias=alias).exists():
             return alias
 
 # Create your models here.
-class Perfil(models.Model):
+class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
     alias = models.CharField(max_length=30, null=False, unique=True, default=unique_rand, error_messages={'unique':"Ya existe un perfil con este Alias"})
-    reputacion = models.IntegerField(default=0, blank=True)
+    reputation = models.IntegerField(default=0, blank=True)
     img = models.FileField(blank=True, null=True, default="RDdefault.png")
 
-class Notificacion(models.Model):
+class Notification(models.Model):
     id = models.AutoField(primary_key=True)
-    id_usuario = models.ForeignKey(User)
+    id_user = models.ForeignKey(User)
     id_debate = models.ForeignKey(Debate)
-    mensaje = models.CharField(max_length=300, null=False)
-    fecha = models.DateTimeField(default=datetime.now)
-    tipo = models.CharField(max_length=50, null=False, default="postura")
-    estado = models.IntegerField(default=0)
+    message = models.CharField(max_length=300, null=False)
+    date = models.DateTimeField(default=datetime.now)
+    type = models.CharField(max_length=50, null=False, default="position")
+    state = models.IntegerField(default=0)
     def __unicode__(self): # __unicode__ on Python 2
-		return self.mensaje
+		return self.message
 
-class Listado(models.Model):
+class List(models.Model):
     id = models.AutoField(primary_key=True)
-    nombre = models.CharField(max_length=50, null=False)
-    creador = models.ForeignKey(User)
+    name = models.CharField(max_length=50, null=False)
+    owner = models.ForeignKey(User)
 
-class UsuarioListado(models.Model):
+class UsersList(models.Model):
     id = models.AutoField(primary_key=True)
-    lista = models.ForeignKey(Listado)
-    usuario = models.ForeignKey(User)
+    list = models.ForeignKey(List)
+    user = models.ForeignKey(User)
     def __unicode__(self): # __unicode__ on Python 2
-        return self.usuario.username
+        return self.user.username

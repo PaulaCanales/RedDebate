@@ -76,7 +76,7 @@ p1{
   -moz-border-radius: 8px;
   border-radius: 8px;
 }
-.container-titulo {
+.container-title {
   padding-right: 0px;
   padding-left: 15px;
   padding-bottom: 5px;
@@ -393,7 +393,7 @@ footer {
   -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(24, 189, 155, .6);
           box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(24, 189, 155, .6);
 }
-#debFinForm{
+#debEndDateForm{
   width: 50% !important;
   height: 34px;
   display: inline-block;
@@ -544,7 +544,7 @@ footer {
   border:0px;
   transition:all .3s ease-in-out;
 }
-.btn-titulo {
+.btn-title {
   width: auto;
   color:#fff;
   background:transparent;
@@ -553,7 +553,7 @@ footer {
   position: relative;
   float: right;
 }
-.btn-titulo.active,.btn-titulo:active,.btn-titulo:focus,.btn-titulo:hover {
+.btn-title.active,.btn-title:active,.btn-title:focus,.btn-title:hover {
   color:var(--azul-principal);
   transition:all .3s ease-in-out;
 }
@@ -1873,7 +1873,7 @@ hr {
   content: '\f25a';
   font-family: FontAwesome;
 }
-#myList .argumento:before{
+#myList .argument:before{
   content: '\f086';
   font-family: FontAwesome;
 }
@@ -1909,18 +1909,18 @@ hr {
 .usuarioLista h3{
   color: #18BD9D;
 }
-.panel-lista button,
+.panel-list button,
 .usuarioLista button{
   display: contents;
   color: var(--azul-principal);
 }
-.panel-lista > .panel-heading {
+.panel-list > .panel-heading {
   background: lightgray;
 }
-.panel-lista form{
+.panel-list form{
   display: inline;
 }
-.panel-lista a{
+.panel-list a{
   color: var(--azul-principal);
 }
 /*******************************

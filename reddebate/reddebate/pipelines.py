@@ -7,9 +7,9 @@ from social.apps.django_app.default.models import UserSocialAuth
 '''Login por redes sociales
 PARAMETROS: backend - Desde donde me estoy logueando
  strategy -
- details - Retorna username, nombre, apellido
+ details - Retorna username, name, apellido
  response - Información del perfil
- user - objeto del usuario logueado
+ user - objeto del user logueado
 '''
 def login(backend, strategy, details, response, user=None, *args, **kwargs):
  
@@ -23,10 +23,10 @@ def login(backend, strategy, details, response, user=None, *args, **kwargs):
     aus = UserSocialAuth.objects.get(uid=id_social)
     iduser = aus.user_id
  
-    #Verifico si ya no existe el usuario, solamente lo crea si no existe
+    #Verifico si ya no existe el user, solamente lo crea si no existe
     us = User.objects.filter(id=iduser)
     if us.count() == 0:
-        #Verifico que tipo de backend es y obtengo el nombre de usuario
+        #Verifico que type de backend es y obtengo el name de user
         if backend.name == 'facebook':
            surname = response["last_name"]
            name = response['first_name']
@@ -36,7 +36,7 @@ def login(backend, strategy, details, response, user=None, *args, **kwargs):
         else:
            return HttpResponseRedirect(reverse('url_de_logueo'))
  
-        #Seteo que el usuario es del tipo usuario
+        #Seteo que el user es del type user
         User.objects.filter(id=iduser).update(surname=surname,name=name)
   except Exception:
     return HttpResponseRedirect(reverse('url_de_logueo'))

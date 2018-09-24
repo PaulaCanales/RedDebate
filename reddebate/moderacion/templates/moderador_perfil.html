@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-{% if usuario.is_staff %}
+{% if user.is_staff %}
 <div class="container-profile" style="width: 40%">
   <header>
   </header>
@@ -10,8 +10,8 @@
           <img class="photo" src="{{ alias.img.url }}"/>
           <div class="active"></div>
         </div>
-        <h4 class="name">{{usuario.username}}</h4>
-        <p class="info">{{ usuario.email }}</p>
+        <h4 class="name">{{user.username}}</h4>
+        <p class="info">{{ user.email }}</p>
         <div class="stats row">
           MODERADOR
         </div>

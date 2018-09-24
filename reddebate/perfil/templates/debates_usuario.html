@@ -44,7 +44,7 @@
 <div class="container-debate">
   <header>
     <h2>Mis Debates</h2>
-    <p>{{usuario.get_full_name}}</p>
+    <p>{{user.get_full_name}}</p>
   </header>
   <!-- <button id="btnValoresSeleccionados" type="button" class="btn btn-primary">Valores Seleccionadas</button> -->
   <table id="myTable" class="table" cellspacing="0" width="100%">
@@ -64,18 +64,18 @@
         {% for deb in total_data_deb %}
           <tr>
               <td>
-                <a href="{% url 'showDebate' deb.datos.id_debate %}">{{deb.datos.titulo}}</a>
+                <a href="{% url 'showDebate' deb.datos.id_debate %}">{{deb.datos.title}}</a>
               </td>
-              {% ifequal deb.datos.estado 'abierto'  %}
+              {% ifequal deb.datos.state 'open'  %}
               <td>
-                <a href="javascript:confirm_modal_show(1,'{{deb.datos.id_debate}}', '{{deb.datos.titulo}}')"> Abierto </a>
+                <a href="javascript:confirm_modal_show(1,'{{deb.datos.id_debate}}', '{{deb.datos.title}}')"> Abierto </a>
               </td>
               {% else %}
               <td>
-                <a href="javascript:confirm_modal_show(2,'{{deb.datos.id_debate}}', '{{deb.datos.titulo}}')"> Cerrado </a>
+                <a href="javascript:confirm_modal_show(2,'{{deb.datos.id_debate}}', '{{deb.datos.title}}')"> Cerrado </a>
               </td>
               {% endifequal %}
-              {% ifequal deb.datos.tipo_participacion 1%}
+              {% ifequal deb.datos.members_type 1%}
                 <td> Privado </td>
               {% else %}
                 <td> Público </td>
@@ -84,8 +84,8 @@
               <td >{{deb.arg_num}}</td>
               <td >{{deb.visits}}</td>
               <td>{{deb.datos.date|date:"d/m/Y"}}</td>
-              {% if deb.datos.date_fin %}
-              <td>{{deb.datos.date_fin|date:"d/m/Y"}}</td>
+              {% if deb.datos.end_date %}
+              <td>{{deb.datos.end_date|date:"d/m/Y"}}</td>
               {% else %}
               <td> No definido </td>
               {% endif %}

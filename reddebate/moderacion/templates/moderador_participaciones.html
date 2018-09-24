@@ -51,9 +51,9 @@
       <tr>
         <td style="border-bottom: #fff; text-align: center;" id="val{{arg.id_arg}}"> {{arg.rate}}</td>
         {% ifequal arg.post_usr_arg arg.11%}
-        <td style="border-bottom: #fff; text-align: center; display:none" id="cambio_postura{{arg.id_arg}}"> <span class="glyphicon glyphicon-transfer" aria-hidden="true"></span> </td>
+        <td style="border-bottom: #fff; text-align: center; display:none" id="change{{arg.id_arg}}"> <span class="glyphicon glyphicon-transfer" aria-hidden="true"></span> </td>
         {% else %}
-        <td style="border-bottom: #fff; text-align: center; display:block" id="cambio_postura{{arg.id_arg}}"> <span class="glyphicon glyphicon-transfer" aria-hidden="true"></span> </td>
+        <td style="border-bottom: #fff; text-align: center; display:block" id="change{{arg.id_arg}}"> <span class="glyphicon glyphicon-transfer" aria-hidden="true"></span> </td>
         {% endifequal %}
       </tr>
       <tr id="bordeTabla{{postura}}">
@@ -61,7 +61,7 @@
           <span class="glyphicon glyphicon-triangle-bottom" aria-hidden="true"></span>
         </td>
         <td><div style="float:right">
-            <form id="eliminar_arg" method="post" action= "{% url 'showDebate' debate.id_debate %}" enctype="multipart/form-data" onsubmit="return confirm('¿Seguro que desea eliminar el argumento?');">{% csrf_token %}
+            <form id="eliminar_arg" method="post" action= "{% url 'showDebate' debate.id_debate %}" enctype="multipart/form-data" onsubmit="return confirm('¿Seguro que desea eliminar el argument?');">{% csrf_token %}
               <input type="hidden" value="{{ arg.id_arg }}" name="id_arg_delete">
               <input type="hidden" value="{{ debate.id_debate }}" name="id_deb_arg_eliminar">
               <button type="submit" class="btn btn-args{{postura}}" > <span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>

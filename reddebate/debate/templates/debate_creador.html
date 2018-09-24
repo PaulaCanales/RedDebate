@@ -9,10 +9,10 @@ $(document).ready(function(){
 	<header>
 		<div class="row">
 			<div class="col-md-11">
-				<h2>{{ debate.titulo }}</h2>
+				<h2>{{ debate.title }}</h2>
 				<p>
 					<input id="idDebate" type="hidden" value={{debate.id_debate}}>
-					{% ifequal debate.alias_c 'alias' %}
+					{% ifequal debate.owner_type 'alias' %}
 						<h5>Creado por {{owner_profile}} en modo anónimo</h5>
 					{%else%}
 						<h5>Debate creado por {{owner_user}}</h5>
@@ -21,10 +21,10 @@ $(document).ready(function(){
 				</p>
 			</div>
 			<div class="col-md-1">
-				{% ifequal debate.estado 'abierto' %}
+				{% ifequal debate.state 'open' %}
 				<form id="id" method="post" action= "{% url 'resumen:index' %}" enctype="multipart/form-data" onsubmit="return confirm('¿Seguro que desea cerrar el debate?');">{% csrf_token %}
 					 <input type="hidden" value="{{ debate.id_debate  }}" name="id_deb">
-					 <button type="submit" class="btn btn-titulo" data-toggle="tooltip" title="Cerrar debate" >
+					 <button type="submit" class="btn btn-title" data-toggle="tooltip" title="Cerrar debate" >
 						 <i class="fa fa-archive"></i>
 					 </button>
 			 </form>
@@ -32,7 +32,7 @@ $(document).ready(function(){
 			</div>
 		</div>
 	</header>
-	<p class="debateDescripcion">{{ debate.descripcion }}</p>
+	<p class="debateDescripcion">{{ debate.text }}</p>
 	<div id="fb-root"></div>
 	<div style="text-align: right">
 	<div class="fb-share-button"
@@ -53,13 +53,13 @@ $(document).ready(function(){
 							</tr>
 							<tr>
 								<td width=120 ><p1>Estado</p1></td>
-								<td>{{ debate.estado }}</td>
+								<td>{{ debate.state }}</td>
 							</tr>
 							<tr>
-								<td width=120 ><p1>Tu Postura</p1></td>
+								<td width=120 ><p1>Tu Position</p1></td>
 								<td> Creador </td>
 							</tr>
-							{% ifequal debate.tipo_participacion 0 %}
+							{% ifequal debate.members_type 0 %}
 							<tr>
 								<td width=120 ><p1>Tipo debate</p1></td><td><div id="tu_postura">  Publico </div></td>
 							</tr>
@@ -76,7 +76,7 @@ $(document).ready(function(){
 				</div>
 			</div>
 		</div>
-		{% ifequal debate.estado 'abierto'%}
+		{% ifequal debate.state 'open'%}
 		<div id="progresoDebate">
 				{% ifequal infavor_percent 0 %}
 					<div id="progreso"class="progress-bar" style="background:#d9534f; width: {{against_percent}}%">

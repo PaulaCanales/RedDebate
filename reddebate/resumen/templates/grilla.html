@@ -2,18 +2,18 @@
 <li class="cards__item">
   <a href="{% url 'showDebate' deb.datos.id_debate %}">
     <div class="card">
-      {% ifequal deb.datos.tipo_participacion 1 %}
+      {% ifequal deb.datos.members_type 1 %}
       <div class="ribbon"><span>Privado</span></div>
       {% else %}
       <div class="ribbon"><span></span></div>
       {% endifequal %}
       <div class="card__content">
         <div class="card__title">
-          {{deb.datos.titulo}}
+          {{deb.datos.title}}
         </div>
         <hr>
         <p class="card__text">
-          <script type='text/javascript'>cortarTexto('{{deb.datos.descripcion}}')</script>
+          <script type='text/javascript'>cortarTexto('{{deb.datos.text}}')</script>
         </p>
         {% if index %}
         <!-- <form action="{% url 'showDebate' deb.datos.id_debate %}">
@@ -35,16 +35,16 @@
                 <button class="btn btn-dropdown-card">Ver</button>
               </form>
             </li>
-            {% ifequal deb.datos.estado 'abierto' %}
+            {% ifequal deb.datos.state 'open' %}
             <li>
-              <form id="id" method="post" action= "{% url 'perfil' id_usr=usuario.id %}" enctype="multipart/form-data" onsubmit="return confirm('¿Seguro que desea cerrar el debate?');">{% csrf_token %}
+              <form id="id" method="post" action= "{% url 'perfil' id_usr=user.id %}" enctype="multipart/form-data" onsubmit="return confirm('¿Seguro que desea cerrar el debate?');">{% csrf_token %}
                   <input type="hidden" value="{{ deb.datos.id_debate }}" name="id_deb">
                   <button type="submit" class="btn btn-dropdown-card">Cerrar</button>
               </form>
             </li>
             {% else %}
             <li>
-              <form id="id" method="post" action= "{% url 'perfil' id_usr=usuario.id %}" enctype="multipart/form-data" onsubmit="return confirm('¿Seguro que desea republicar el debate?');">{% csrf_token %}
+              <form id="id" method="post" action= "{% url 'perfil' id_usr=user.id %}" enctype="multipart/form-data" onsubmit="return confirm('¿Seguro que desea republicar el debate?');">{% csrf_token %}
                 <input type="hidden" value="{{ deb.datos.id_debate }}" name="id_deb_republish">
                 <button type="submit" class="btn btn-dropdown-card">Republicar</button>
               </form>
@@ -52,7 +52,7 @@
             {% endifequal %}
             <li role="separator" class="divider"></li>
             <li>
-              <form id="id" method="post" action= "{% url 'perfil' id_usr=usuario.id %}" enctype="multipart/form-data" onsubmit="return confirm('¿Seguro que desea eliminar el debate?');">{% csrf_token %}
+              <form id="id" method="post" action= "{% url 'perfil' id_usr=user.id %}" enctype="multipart/form-data" onsubmit="return confirm('¿Seguro que desea eliminar el debate?');">{% csrf_token %}
               <input type="hidden" value="{{ deb.datos.id_debate }}" name="id_delete_deb">
               <button type="submit" class="btn btn-dropdown-card">Eliminar</button>
               </form>

@@ -12,7 +12,7 @@ urlpatterns = [
 
 
     #url(r'^perfil/$', views.perfil, name='perfil'),
-    #url(r'^(?P<id_argumento>[0-9]+)/$', views.perfiles, name='perfiles')
+    #url(r'^(?P<id_argument>[0-9]+)/$', views.perfiles, name='perfiles')
     #url(r'^debate', views.showDebate, name='showDebate'),
 
 
