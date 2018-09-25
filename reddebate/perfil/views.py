@@ -24,99 +24,82 @@ from debate.views import updateReputation
 ##@return redirect redirecciona a la vista "perfil"
 ##@warning Login is required
 @login_required
-def perfil(request, id_usr=None, id_arg=None, id_reb=None):
-    #cuando se accede al perfil directamente
-    if id_usr!=None:
-        actual_user = request.user
+def perfil(request, id_usr=None, id_arg=None, id_counterarg=None):
+    if id_counterarg!=None:
+        print("contraargumento")
+        counterargument = Counterargument.objects.get(id_counterarg=id_counterarg)
+        name_type = counterargument.owner_type
+        target_user = User.objects.get(id=counterargument.id_user_id)
+        target_profile = Profile.objects.get(user_id=target_user)
 
-        #si el user actual accede a su propio perfil
-        if int(actual_user.id)==int(id_usr):
-            #se obtiene el perfil del user actual
-            profile= Profile.objects.get(user=actual_user)
-            alias_form = updateAlias(instance=profile)
+    elif id_arg!=None:
+        print("argumento")
+        argument = Argumento.objects.get(id_argument=id_arg)
+        name_type = argument.owner_type
+        target_user = User.objects.get(id=argument.id_user_id)
+        target_profile = Profile.objects.get(user_id=target_user)
 
-            if request.method == 'POST':
-                #solicitud de cambiar alias
-                if 'new_alias' in request.POST:
-                    alias_form = updateAlias(request.POST, instance=profile)
-                    if alias_form.is_valid():
-                        profile = alias_form.save(commit=False)
-                        profile.save()
-                        return redirect('perfil',id_usr=request.user.id)
-                #solicitud de cambiar imagen de perfil
-                elif 'new_image' in request.POST:
-                    form = updateImage(request.POST, request.FILES)
-                    if form.is_valid():
-                        post = Profile.objects.get(user=request.user)
-                        post.img = form.cleaned_data['img']
-                        post.save()
-                        return redirect('perfil',id_usr=request.user.id)
+    elif id_usr!=None:
+        print("directo")
+        name_type = 'username'
+        target_user = User.objects.get(id=id_usr)
+        target_profile = Profile.objects.get(user_id=target_user)
 
-            user_alias = Profile.objects.get(user=actual_user)
-            imagen_form = updateImage()
-            stats = userStats(actual_user.id)
-            return render(request, 'perfil_usuario.html', {'actual_user': actual_user,
-                'alias': user_alias, 'alias_form': alias_form,
-                'stats': stats, 'imagen_form':imagen_form})
+    actual_user = request.user
+    #si el user actual accede a su propio perfil
+    if actual_user.id==target_user.id:
+        alias_form = updateAlias(instance=target_profile)
+        imagen_form = updateImage()
+        if request.method == 'POST':
+            #solicitud de cambiar alias
+            if 'new_alias' in request.POST:
+                alias_form = updateAlias(request.POST, instance=target_profile)
+                if alias_form.is_valid():
+                    post = alias_form.save(commit=False)
+                    post.save()
+                    return redirect('perfil',id_usr=actual_user.id)
+            #solicitud de cambiar imagen de perfil
+            elif 'new_image' in request.POST:
+                form = updateImage(request.POST, request.FILES)
+                if form.is_valid():
+                    post = Profile.objects.get(user=actual_user)
+                    post.img = form.cleaned_data['img']
+                    post.save()
+                    return redirect('perfil',id_usr=actual_user.id)
+        stats = userStats(actual_user.id)
+        return render(request, 'perfil_usuario.html', {'actual_user': actual_user,
+            'alias': target_profile, 'alias_form': alias_form,
+            'stats': stats, 'imagen_form':imagen_form})
 
-        #si el user accede al perfil de otro user
-        else:
-            name_type = 'username'
-            #obtener datos del otro user
-            target_user = User.objects.get(id=id_usr)
-            target_alias = Profile.objects.get(user_id=target_user)
-            stats = userStats(target_user.id)
-            target_user_list = UsersList.objects.filter(user_id = target_user.id)
-            actual_user_list = List.objects.filter(owner_id=request.user.id)
-            available_list = actual_user_list.exclude(id__in=target_user_list.values('list_id')).values()
-            already_in_list = actual_user_list.filter(id__in=target_user_list.values('list_id')).values()
-            form = selectList(listas=available_list, user=target_user.id)
-            if request.method == 'POST':
-                #solicitud de agregar user a una list existente
-                if 'new_user_list' in request.POST:
-                    usr = request.POST['user']
-                    select = request.POST.getlist('list_id')
-                    if (len(select)>0):
-                        for list in select:
-                            post = UsersList(user_id=usr, list_id=list)
-                            post.save()
-                    #solicitud de agregar user a una list nueva
-                    if request.POST['new_list']:
-                        name = request.POST['new_list']
-                        new_list = List(name=name, owner_id=request.user.id)
-                        new_list.save()
-                        new_usr = UsersList(user_id=usr, list_id=new_list.id)
-                        new_usr.save()
-                    return redirect('perfil', id_usr=usr)
-
-            return render(request, 'perfiles.html', {'target_user': target_user,
-                'alias': target_alias, 'name_type': name_type,
-                'stats': stats, 'form':form, 'already_in_list':already_in_list})
-
-    #cuando no se accede al perfil directamente
+    #si el user accede al perfil de otro user
     else:
-        #cuando se accede a un user desde su contraargumento
-        if id_reb!=None:
-            counterargument = Counterargument.objects.get(id_counterarg=id_reb)
-            name_type = counterargument.owner_type
-            target_user = User.objects.get(id=counterargument.id_user_id)
-            target_alias = Profile.objects.get(user_id=target_user)
-        #cuando se accede a un user desde su argument
-        else:
-            argument = Argumento.objects.get(id_argument=id_arg)
-            name_type = argument.owner_type
-            target_user = User.objects.get(id=argument.id_user_id)
-            target_alias = Profile.objects.get(user_id=target_user)
-        #obtener datos del user objetivo
         stats = userStats(target_user.id)
         target_user_list = UsersList.objects.filter(user_id = target_user.id)
-        actual_user_list = List.objects.filter(owner_id=request.user.id)
+        actual_user_list = List.objects.filter(owner_id=actual_user.id)
         available_list = actual_user_list.exclude(id__in=target_user_list.values('list_id')).values()
         already_in_list = actual_user_list.filter(id__in=target_user_list.values('list_id')).values()
         form = selectList(listas=available_list, user=target_user.id)
+        if request.method == 'POST':
+            #solicitud de agregar user a una list existente
+            if 'new_user_list' in request.POST:
+                usr = request.POST['user']
+                type = request.POST['type_user']
+                select = request.POST.getlist('list_id')
+                if (len(select)>0):
+                    for list in select:
+                        post = UsersList(user_id=usr, list_id=list, type=type)
+                        post.save()
+                #solicitud de agregar user a una list nueva
+                if request.POST['new_list']:
+                    name = request.POST['new_list']
+                    new_list = List(name=name, owner_id=request.user.id)
+                    new_list.save()
+                    new_usr = UsersList(user_id=usr, list_id=new_list.id, type=type)
+                    new_usr.save()
+                return redirect('perfil', id_usr=usr)
 
         return render(request, 'perfiles.html', {'target_user': target_user,
-            'alias': target_alias, 'name_type': name_type,
+            'alias': target_profile, 'name_type': name_type,
             'stats': stats, 'form':form, 'already_in_list':already_in_list})
 
 #estadisticas de un user

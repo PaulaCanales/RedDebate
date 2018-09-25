@@ -46,7 +46,7 @@
                         <div class="body">
                           <span class="tip tip-up"></span>
                           <div class="message">
-                            <p><a href="{% url 'perfil' id_arg=arg.id_arg id_reb=counterarg.id %}"><p1>{{counterarg.owner}}:</p1></a> {{counterarg.text}}</p>
+                            <p><a href="{% url 'perfil' id_arg=arg.id_arg id_counterarg=counterarg.id %}"><p1>{{counterarg.owner}}:</p1></a> {{counterarg.text}}</p>
                           </div>
                         </div>
                       </div>
@@ -105,7 +105,7 @@
           {% endifequal %}
         </td>
         <td><div style="float:right">
-          {% ifequal arg.owner_arg_id user %}
+          {% ifequal arg.owner_arg_id user.id %}
             <form id="eliminar_arg" method="post" action= "{% url 'showDebate' debate.id_debate %}" enctype="multipart/form-data" onsubmit="return confirm('¿Seguro que desea eliminar el argumento?');">{% csrf_token %}
               <input type="hidden" value="{{ arg.id_arg }}" name="id_arg_delete">
               <input type="hidden" value="{{ debate.id_debate }}" name="id_deb_arg_eliminar">

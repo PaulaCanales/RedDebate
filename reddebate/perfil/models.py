@@ -15,8 +15,7 @@ def unique_rand():
 
 # Create your models here.
 class Profile(models.Model):
-    id_profile = models.AutoField(primary_key=True)
-    user = models.OneToOneField(User, on_delete=models.CASCADE, unique=True)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
     alias = models.CharField(max_length=30, null=False, unique=True, default=unique_rand, error_messages={'unique':"Ya existe un perfil con este Alias"})
     reputation = models.IntegerField(default=0, blank=True)
     img = models.FileField(blank=True, null=True, default="RDdefault.png")
@@ -41,5 +40,6 @@ class UsersList(models.Model):
     id = models.AutoField(primary_key=True)
     list = models.ForeignKey(List)
     user = models.ForeignKey(User)
+    type = models.CharField(max_length=50, default='username')
     def __unicode__(self): # __unicode__ on Python 2
         return self.user.username

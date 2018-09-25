@@ -188,6 +188,7 @@ def argumentData(arguments, actual_user, counterarg_num, id_debate):
 			else:
 				can_counterarg = False
 		owner_arg = User.objects.get(id= arg.id_user_id)
+		owner_arg_id = owner_arg.id
 		if (arg.owner_type == "alias"):
 			owner_profile = Profile.objects.get(user=owner_arg)
 			owner_arg = owner_profile.alias
@@ -209,7 +210,7 @@ def argumentData(arguments, actual_user, counterarg_num, id_debate):
 		arg.save()
 		position_owner_arg = Position.objects.get(id_user_id= arg.id_user_id, id_debate_id=id_debate).position
 		args_list.append({'text': arg.text, 'owner_arg': owner_arg, 'rate': total_rate,
-							'id_arg': arg.id_argument, 'exist_rate': exist_rate, 'owner_arg_id': owner_arg.id, 'counterargs': counterargs_list,
+							'id_arg': arg.id_argument, 'exist_rate': exist_rate, 'owner_arg_id': owner_arg_id, 'counterargs': counterargs_list,
 							'can_counterarg': can_counterarg})
 	return args_list
 

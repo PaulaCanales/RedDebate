@@ -23,9 +23,6 @@
           <div class="active"></div>
         </div>
         <h4 class="name">{{target_user.username}}</h4>
-        <button type="button" class="btn btn-demo" data-toggle="modal" data-target="#verListas_modal">
-    			<i class="fa fa-user-plus" aria-hidden="true"></i>
-    		</button>
         <p class="info">{{ target_user.email }}</p>
         {% else %}
         <div class="photo-left">
@@ -36,6 +33,9 @@
         <p class="info">modo anónimo</p>
 
         {% endifequal %}
+        <button type="button" class="btn btn-demo" data-toggle="modal" data-target="#verListas_modal">
+    			<i class="fa fa-user-plus" aria-hidden="true"></i>
+    		</button>
         <div class="stats row">
           <div class="stat col-xs-6">
             <h4 class="name">{{alias.reputation}}</h4>
@@ -103,6 +103,7 @@
             <form method="POST" class="post-form" enctype="multipart/form-data">{% csrf_token %}
               <div class="fieldWrapper">
                 {{form.errors }}
+                <input type="hidden" name="type_user" value="{{name_type}}">
                 <div id="listacheckbox" class="userscheckbox">
                 {% for field in form.list_id %}
                 <div class="inputGroup">{{field}}</div>
