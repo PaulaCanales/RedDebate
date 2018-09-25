@@ -15,7 +15,8 @@ def unique_rand():
 
 # Create your models here.
 class Profile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
+    id_profile = models.AutoField(primary_key=True)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, unique=True)
     alias = models.CharField(max_length=30, null=False, unique=True, default=unique_rand, error_messages={'unique':"Ya existe un perfil con este Alias"})
     reputation = models.IntegerField(default=0, blank=True)
     img = models.FileField(blank=True, null=True, default="RDdefault.png")
