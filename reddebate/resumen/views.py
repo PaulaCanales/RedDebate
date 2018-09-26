@@ -263,4 +263,4 @@ def allUsers(total_users):
     for user in total_users:
         profile = Profile.objects.get(user=user)
         all_users.append({'object':{'id':user.id, 'type':'alias'}, 'name':profile.alias})
-    return all_users
+    return sorted(all_users)
