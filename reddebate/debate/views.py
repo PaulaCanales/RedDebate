@@ -22,12 +22,6 @@ import pytz
 ##@warning Login is required
 @login_required
 def showDebate(request, id_debate): #debate_id
-	max_length = Debate.objects.get(id_debate=id_debate).length
-	creator=[('username', User.objects.get(id=request.user.id).username),
-	         ('alias',Profile.objects.get(user= request.user).alias)]
-	arg_form0 = newArgForm0(owner=creator,max_length=max_length)
-	arg_form1 = newArgForm1(owner=creator,max_length=max_length)
-	counterarg_form = newCounterargForm(owner=creator,max_length=max_length)
 	debate = Debate.objects.get(id_debate= id_debate)
 	visits = visitCount(debate, request.user)
 	if request.method == 'POST':
@@ -143,10 +137,31 @@ def showDebate(request, id_debate): #debate_id
 			user = User.objects.get(id=member.id_user_id)
 			profile = Profile.objects.get(user_id=user.id)
 			members_list.append({'user':user, 'profile':profile, 'type':member.type})
-		try:
-			m = PrivateMembers.objects.get(id_debate_id=id_debate,id_user_id=actual_user.id)
-		except:
+
+		participate = PrivateMembers.objects.filter(id_debate_id=id_debate,id_user_id=actual_user.id).values('type')
+		print((participate))
+		print(len(participate))
+		if len(participate)==0:
 			participate = False
+			options_owner = []
+		elif len(participate)==1:
+			type = participate[0]['type']
+			if type=='username':
+				options_owner=[('username', User.objects.get(id=request.user.id).username)]
+			else:
+				options_owner=[('alias',Profile.objects.get(user= request.user).alias)]
+		else:
+			options_owner=[('username', User.objects.get(id=request.user.id).username),
+		         		   ('alias',Profile.objects.get(user= request.user).alias)]
+
+	else:
+		options_owner=[('username', User.objects.get(id=request.user.id).username),
+		         ('alias',Profile.objects.get(user= request.user).alias)]
+
+	max_length = Debate.objects.get(id_debate=id_debate).length
+	arg_form0 = newArgForm0(owner=options_owner,max_length=max_length)
+	arg_form1 = newArgForm1(owner=options_owner,max_length=max_length)
+	counterarg_form = newCounterargForm(owner=options_owner,max_length=max_length)
 
 	data = {'debate': debate,
 		'owner_user': owner_user,
