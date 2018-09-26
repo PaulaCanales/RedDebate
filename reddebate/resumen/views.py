@@ -41,8 +41,9 @@ def closedIndex(request):
     creator=[('username', User.objects.get(id=request.user.id).username),
 	         ('alias',Profile.objects.get(user= request.user).alias)]
     total_users = User.objects.exclude(id=actual_user.id)
+    all_users = allUsers(total_users)
     actual_user_list = List.objects.filter(owner_id=actual_user.id).values()
-    form = newDebateForm(owner=creator, usuarios=total_users, listado=actual_user_list)
+    form = newDebateForm(owner=creator, usuarios=all_users, listado=actual_user_list)
     if request.method == 'GET':
         if 'q' in request.GET:
             deb = search(request)

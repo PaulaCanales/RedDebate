@@ -25,7 +25,14 @@ from debate.views import updateReputation
 ##@warning Login is required
 @login_required
 def username(request, id_usr):
-    name_type = 'username'
+    user_data = userData(request,id_usr,'username')
+    return user_data
+
+def alias(request, id_usr):
+    user_data = userData(request,id_usr,'alias')
+    return user_data
+
+def userData(request,id_usr,name_type):
     target_user = User.objects.get(id=id_usr)
     target_profile = Profile.objects.get(user_id=target_user)
     actual_user = request.user
@@ -53,7 +60,6 @@ def username(request, id_usr):
         return render(request, 'perfil_usuario.html', {'actual_user': actual_user,
             'alias': target_profile, 'alias_form': alias_form,
             'stats': stats, 'imagen_form':imagen_form})
-
     #si el user accede al perfil de otro user
     else:
         stats = userStats(target_user.id)
@@ -83,40 +89,6 @@ def username(request, id_usr):
         return render(request, 'perfiles.html', {'target_user': target_user,
             'alias': target_profile, 'name_type': name_type,
             'stats': stats, 'form':form, 'already_in_list':already_in_list})
-
-def alias(request, id_usr):
-    name_type = 'alias'
-    target_user = User.objects.get(id=id_usr)
-    target_profile = Profile.objects.get(user_id=target_user)
-    actual_user = request.user
-
-    stats = userStats(target_user.id)
-    target_user_list = UsersList.objects.filter(user_id = target_user.id, type=name_type)
-    actual_user_list = List.objects.filter(owner_id=actual_user.id)
-    available_list = actual_user_list.exclude(id__in=target_user_list.values('list_id')).values()
-    already_in_list = actual_user_list.filter(id__in=target_user_list.values('list_id')).values()
-    form = selectList(listas=available_list, user=target_user.id)
-    if request.method == 'POST':
-        #solicitud de agregar user a una list existente
-        if 'new_user_list' in request.POST:
-            usr = request.POST['user']
-            type = request.POST['type_user']
-            select = request.POST.getlist('list_id')
-            if (len(select)>0):
-                for list in select:
-                    post = UsersList(user_id=usr, list_id=list, type=type)
-                    post.save()
-            #solicitud de agregar user a una list nueva
-            if request.POST['new_list']:
-                name = request.POST['new_list']
-                new_list = List(name=name, owner_id=request.user.id)
-                new_list.save()
-                new_usr = UsersList(user_id=usr, list_id=new_list.id, type=type)
-                new_usr.save()
-            return redirect('username', id_usr=usr)
-    return render(request, 'perfiles.html', {'target_user': target_user,
-        'alias': target_profile, 'name_type': name_type,
-        'stats': stats, 'form':form, 'already_in_list':already_in_list})
 
 #estadisticas de un user
 def userStats(id_user):
