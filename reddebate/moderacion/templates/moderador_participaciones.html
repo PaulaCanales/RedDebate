@@ -14,7 +14,7 @@
           <span class="glyphicon glyphicon-triangle-top" aria-hidden="true"></span>
         </td>
         <td id="bordeTabla{{position}}" rowspan="3">
-            <p><a href="{% url 'perfil' id_arg=arg.id_arg %}"><p1>{{arg.owner_arg}}:</p1></a> {{arg.text}}</p>
+            <p><a href="{% url arg.owner_type arg.owner_arg_id %}"><p1>{{arg.owner_arg}}:</p1></a> {{arg.text}}</p>
         </td>
         <td style="border-bottom: #fff; text-align: center;"> <!-- boton editar/rebatir-->
       		<div style="float:right">
@@ -38,7 +38,7 @@
                         <div class="body">
                           <span class="tip tip-up"></span>
                           <div class="message">
-                            <p><a href="{% url 'perfil' id_arg=arg.id_arg id_counterarg=counterarg.id %}"><p1>{{counterarg.owner}}:</p1></a> {{counterarg.text}}</p>
+                            <p><a href="{% url counterarg.owner_type counterarg.id_owner %}"><p1>{{counterarg.owner}}:</p1></a> {{counterarg.text}}</p>
                           </div>
                         </div>
                       </div>

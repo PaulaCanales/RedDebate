@@ -47,7 +47,7 @@ class newDebateForm(forms.ModelForm):
                     attrs={'class': 'form-control', 'id': 'debAliasForm'}
                     )
         if self.usuarios:
-            self.fields['members'].choices = [(x.id, x) for x in self.usuarios]
+            self.fields['members'].choices = [(x['object'], x['name']) for x in self.usuarios]
         if self.listas:
             self.fields['listado'].choices = [(x['id'], x['name']) for x in self.listas]
 

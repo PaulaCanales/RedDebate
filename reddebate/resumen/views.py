@@ -71,8 +71,9 @@ def index(request):
     creator=[('username', User.objects.get(id=request.user.id).username),
 	         ('alias',Profile.objects.get(user= request.user).alias)]
     total_users = User.objects.exclude(id=actual_user.id)
+    all_users = allUsers(total_users)
     actual_user_list = List.objects.filter(owner_id=actual_user.id).values()
-    form = newDebateForm(owner=creator, usuarios=total_users, listado=actual_user_list)
+    form = newDebateForm(owner=creator, usuarios=all_users, listado=actual_user_list)
     if request.method == 'POST':
         if 'id_deb' in request.POST:
             closeDebate(request)
@@ -253,3 +254,12 @@ def search(request):
     query = request.GET.get('q')
     results = Debate.objects.filter(Q(title__icontains=query) | Q(text__icontains=query))
     return results
+
+def allUsers(total_users):
+    all_users = []
+    for user in total_users:
+        all_users.append({'object':{'id':user.id, 'type':'username'}, 'name':user.username})
+    for user in total_users:
+        profile = Profile.objects.get(user=user)
+        all_users.append({'object':{'id':user.id, 'type':'alias'}, 'name':profile.alias})
+    return all_users

@@ -16,48 +16,9 @@
           <script type='text/javascript'>cortarTexto('{{deb.model.text}}')</script>
         </p>
         {% if index %}
-        <!-- <form action="{% url 'showDebate' deb.model.id_debate %}">
-          <button class="btn btn-card">Ver</button>
-        </form> -->
         <div class="datosIndex">
           <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span> {{deb.visits}}
           <i class="fa fa-group"></i> {{deb.position_num}}
-        </div>
-        {% else %}
-        <div class="dropdown">
-          <button class="btn btn-card2 dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-            Opciones
-            <span class="caret"></span>
-          </button>
-          <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-            <li>
-              <form action="{% url 'showDebate' deb.model.id_debate %}">
-                <button class="btn btn-dropdown-card">Ver</button>
-              </form>
-            </li>
-            {% ifequal deb.model.state 'open' %}
-            <li>
-              <form id="id" method="post" action= "{% url 'perfil' id_usr=user.id %}" enctype="multipart/form-data" onsubmit="return confirm('¿Seguro que desea cerrar el debate?');">{% csrf_token %}
-                  <input type="hidden" value="{{ deb.model.id_debate }}" name="id_deb">
-                  <button type="submit" class="btn btn-dropdown-card">Cerrar</button>
-              </form>
-            </li>
-            {% else %}
-            <li>
-              <form id="id" method="post" action= "{% url 'perfil' id_usr=user.id %}" enctype="multipart/form-data" onsubmit="return confirm('¿Seguro que desea republicar el debate?');">{% csrf_token %}
-                <input type="hidden" value="{{ deb.model.id_debate }}" name="id_deb_republish">
-                <button type="submit" class="btn btn-dropdown-card">Republicar</button>
-              </form>
-            </li>
-            {% endifequal %}
-            <li role="separator" class="divider"></li>
-            <li>
-              <form id="id" method="post" action= "{% url 'perfil' id_usr=user.id %}" enctype="multipart/form-data" onsubmit="return confirm('¿Seguro que desea eliminar el debate?');">{% csrf_token %}
-              <input type="hidden" value="{{ deb.model.id_debate }}" name="id_delete_deb">
-              <button type="submit" class="btn btn-dropdown-card">Eliminar</button>
-              </form>
-            </li>
-          </ul>
         </div>
         {% endif %}
       </div>

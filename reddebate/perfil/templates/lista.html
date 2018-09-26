@@ -11,15 +11,29 @@
   <main>
     <a href="javascript:abrir_modal('usuariosLista_modal')"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>Agregar</a>
     {% for item in list_profile %}
-    <a class="dummy-media-object usuarioLista" href="{% url 'perfil' id_usr=item.user.user_id %}">
+    {% ifequal item.type 'username' %}
+    <a class="dummy-media-object usuarioLista" href="{% url 'username' item.user.user_id %}">
       <img class="round" src="{{ item.perfil.img.url }}"/>
       <h3>{{item.user}}</h3>
       <form method="post" action= "{% url 'memberList' list.id  %}" enctype="multipart/form-data" onsubmit="return confirm('¿Seguro que desea eliminar el usuario?');">{% csrf_token %}
         <input type="hidden" value="{{ item.user.user_id }}" name="id_usr_lista">
         <input type="hidden" value="{{ list.id }}" name="id_list">
+        <input type="hidden" value="username" name="type_user">
         <button type="submit"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
       </form>
     </a>
+    {% else %}
+    <a class="dummy-media-object usuarioLista" href="{% url 'alias' item.user.user_id %}">
+      <img class="round" src="{% static 'img/RDLogo05.png' %}"/>
+      <h3>{{item.perfil.alias}}</h3>
+      <form method="post" action= "{% url 'memberList' list.id  %}" enctype="multipart/form-data" onsubmit="return confirm('¿Seguro que desea eliminar el usuario?');">{% csrf_token %}
+        <input type="hidden" value="{{ item.user.user_id }}" name="id_usr_lista">
+        <input type="hidden" value="{{ list.id }}" name="id_list">
+        <input type="hidden" value="alias" name="type_user">
+        <button type="submit"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
+      </form>
+    </a>
+    {% endifequal %}
     {% endfor %}
     <div id="usuariosLista_modal" class="modal">
       <div class="modal-content">

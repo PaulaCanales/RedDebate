@@ -5,6 +5,7 @@ import threading
 import random
 import json
 import logging
+import ast
 from resumen.models import Debate
 from debate.models import Argumento, Position, PrivateMembers
 from django.contrib.auth.models import User
@@ -36,10 +37,7 @@ def ws_receive(message):
         return
 
     if data:
-        print("data")
-        print(data)
         if set(data.keys()) == set(('title', 'text', 'owner_type', 'length', 'args_max', 'counterargs_max', 'counterargs_type', 'members_type', 'position_max','end_date', 'id_user_id', 'members','tags')):
-            print("HERE I AM")
             data['id_user_id'] = message.user.id
             members = data['members']
             tags = data['tags']
@@ -50,33 +48,37 @@ def ws_receive(message):
                 m.tags.add(tag)
             updateReputation(message.user.id, 5)
             if data['members_type']=='1':
-                list=[]
+                id_list=[]
                 for member in members:
-                    user = User.objects.get(id=member)
-                    list.append(user.id)
-                    n = PrivateMembers(id_user_id=user.id, id_debate_id=m.id_debate)
+                    dict_member = ast.literal_eval(member)
+                    id = int(dict_member['id'])
+                    type = dict_member['type']
+                    user = User.objects.get(id=id)
+                    id_list.append(user.id)
+                    n = PrivateMembers(id_user_id=user.id, id_debate_id=m.id_debate, type=type)
                     n.save()
 
-                n = PrivateMembers(id_user_id=message.user.id, id_debate_id=m.id_debate)
+                n = PrivateMembers(id_user_id=message.user.id, id_debate_id=m.id_debate, type=m.owner_type)
                 n.save()
-
-                Group(grupo).send({'text': json.dumps(n.as_dict(list))})
+                id_list = list(set(id_list)) #quito los id repetidos
+                Group(grupo).send({'text': json.dumps(n.as_dict(id_list))})
 
             elif data['members_type']=='2':
                 m.members_type = 1
                 m.save()
-                list_users = UsersList.objects.filter(list_id__in=members).values('user_id')
+                list_users = UsersList.objects.filter(list_id__in=members).values('user_id','type')
                 list=[]
                 for list_user in list_users:
                     user = User.objects.get(id=list_user['user_id'])
+                    type=list_user['type']
                     list.append(user.id)
                     try:
-                        n = PrivateMembers.objects.get(id_user_id=user.id, id_debate_id=m.id_debate)
+                        n = PrivateMembers.objects.get(id_user_id=user.id, id_debate_id=m.id_debate, type=type)
                     except:
-                        n = PrivateMembers(id_user_id=user.id, id_debate_id=m.id_debate)
+                        n = PrivateMembers(id_user_id=user.id, id_debate_id=m.id_debate, type=type)
                         n.save()
                 print(list)
-                n = PrivateMembers(id_user_id=message.user.id, id_debate_id=m.id_debate)
+                n = PrivateMembers(id_user_id=message.user.id, id_debate_id=m.id_debate, type=m.owner_type)
                 n.save()
             else:
                 Group(grupo).send({'text': json.dumps(m.as_dict())})

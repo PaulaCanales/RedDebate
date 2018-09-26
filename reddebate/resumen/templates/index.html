@@ -16,7 +16,7 @@
 					<div class="dummy-column">
 						<h2>Usuarios</h2>
 						{% for item in top_users %}
- 						 <a class="dummy-media-object" href="{% url 'perfil' id_usr=item.user.id %}">
+ 						 <a class="dummy-media-object" href="{% url 'username' item.user.id %}">
 							 <img class="round" src="{{ item.profile.img.url }}"/>
 							 <h3>{{ item.user.username }}</h3>
 						 </a>

@@ -41,7 +41,7 @@ class selectUsers(forms.ModelForm):
         self.list = kwargs.pop('list')
         super(selectUsers,self).__init__(*args,**kwargs)
         if self.usuarios:
-            self.fields['user'].choices = [(x.id, x) for x in self.usuarios]
+            self.fields['user'].choices = [(x['object'], x['name']) for x in self.usuarios]
         if self.list:
             self.fields['list_id'].widget=forms.TextInput(
                 attrs={

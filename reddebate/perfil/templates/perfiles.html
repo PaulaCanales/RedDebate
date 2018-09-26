@@ -91,7 +91,11 @@
   					<h4 class="modal-title"><i class="fa fa-user-plus" aria-hidden="true"></i> Agregar </h4>
   				</div>
             {% if already_in_list|length > 0 %}
-            <p>{{target_user.username}} ya pertenece a tus listas:</p>
+              {% ifequal name_type 'username' %}
+                <p>{{target_user.username}} ya pertenece a tus listas:</p>
+              {% else %}
+                <p>{{alias.alias}} ya pertenece a tus listas:</p>
+              {% endifequal %}
             <div class="listasModal">
             {% for list in already_in_list%}
                 <a href="{% url 'memberList' list.id %}"><i class="fa fa-check" aria-hidden="true"></i> {{list.name}}</a>

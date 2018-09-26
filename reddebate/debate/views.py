@@ -142,7 +142,7 @@ def showDebate(request, id_debate): #debate_id
 		for member in debate_members:
 			user = User.objects.get(id=member.id_user_id)
 			profile = Profile.objects.get(user_id=user.id)
-			members_list.append({'user':user, 'profile':profile})
+			members_list.append({'user':user, 'profile':profile, 'type':member.type})
 		try:
 			m = PrivateMembers.objects.get(id_debate_id=id_debate,id_user_id=actual_user.id)
 		except:
@@ -182,7 +182,8 @@ def argumentData(arguments, actual_user, counterarg_num, id_debate):
 			else:
 				owner = owner.username
 			counterargs_list.append({'text': text, 'owner': owner,
-									'id': id, 'id_owner': counterarg.id_user_id})
+									'id': id, 'id_owner': counterarg.id_user_id,
+									'owner_type': counterarg.owner_type})
 			if counterargs_actual_user_num < counterarg_num:
 				can_counterarg = True
 			else:
@@ -211,7 +212,7 @@ def argumentData(arguments, actual_user, counterarg_num, id_debate):
 		position_owner_arg = Position.objects.get(id_user_id= arg.id_user_id, id_debate_id=id_debate).position
 		args_list.append({'text': arg.text, 'owner_arg': owner_arg, 'rate': total_rate,
 							'id_arg': arg.id_argument, 'exist_rate': exist_rate, 'owner_arg_id': owner_arg_id, 'counterargs': counterargs_list,
-							'can_counterarg': can_counterarg})
+							'can_counterarg': can_counterarg, 'owner_type':arg.owner_type})
 	return args_list
 
 ##@brief Funcion que guarda el arguments del user de un argument.

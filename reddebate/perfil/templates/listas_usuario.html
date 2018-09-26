@@ -33,7 +33,11 @@
                   <div class="panel-body">
                     {% for usr in users_in_list %}
                     {% ifequal list.id usr.list_id %}
-                      <p><a href="{% url 'perfil' id_usr=usr.name.id %}">{{usr.name}}</a></p>
+											{% ifequal usr.type 'username' %}
+                      <p><a href="{% url 'username' usr.name.id %}">{{usr.name}}</a></p>
+											{% else %}
+											<p><a href="{% url 'alias' usr.name.id %}">{{usr.alias}}</a></p>
+											{% endifequal %}
                     {% endifequal %}
                     {% endfor %}
                   </div>

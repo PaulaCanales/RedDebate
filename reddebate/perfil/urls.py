@@ -7,9 +7,8 @@ urlpatterns = [
 
 	#url(r'^post_arg$', views.post_arg, name='post_arg'),
 	#url(r'^(?P<id_debate>[0-9]+)/$', views.showDebate, name='showDebate'),
-    url(r'^(?P<id_usr>[0-9]+)/$', views.perfil, name='perfil'),
-    url(r'^usr/(?P<id_arg>[0-9]+)/$', views.perfil, name='perfil'),
-    url(r'^usr/(?P<id_arg>[0-9]+)/(?P<id_counterarg>[0-9]+)/$', views.perfil, name='perfil'),
+    url(r'^(?P<id_usr>[0-9]+)/$', views.username, name='username'),
+    url(r'^alias/(?P<id_usr>[0-9]+)/$', views.alias, name='alias'),
     url(r'^debates$', views.userDebates, name='debates'),
     url(r'^listas$', views.userList, name='userList'),
     url(r'^list/(?P<id_list>[0-9]+)/$', views.memberList, name='memberList'),

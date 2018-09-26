@@ -181,7 +181,7 @@ $(document).ready(function(){
                     </li>
 										{% if user.is_staff %}
 										<li>
-                        <a href="{% url 'perfil' id_usr=user.id %}">Perfil</a>
+                        <a href="{% url 'username' user.id %}">Perfil</a>
                     </li>
 										{% else %}
                     <li  class="dropdown-menu">
@@ -191,7 +191,7 @@ $(document).ready(function(){
 											    <ul class="dropdown-menu">
 											      <li><a href="{% url 'debates' %}">Mis Debates</a></li>
 											      <li><a href="{% url 'userList' %}">Mis Listas</a></li>
-											      <li><a href="{% url 'perfil' id_usr=user.id %}">Mis Datos</a></li>
+											      <li><a href="{% url 'username' user.id %}">Mis Datos</a></li>
 											    </ul>
 											  </div>
                     </li>
