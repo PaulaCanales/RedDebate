@@ -34,6 +34,18 @@
 		{% endfor %}
 	</div>
 </div>
+<div id="denuncia_modal" class="modal">
+	<div class="modal-content">
+		<span class="close" onclick="cerrar_modal('denuncia_modal')">&times;</span>
+		<h3>Indica la razón de tu denuncia <span class="glyphicon glyphicon-bullhorn"></span></h3>
+		<form id="reasonReport" method="POST" enctype="multipart/form-data">{% csrf_token %}
+			{% for field in report_form.report   %}
+			<div class="inputGroup">{{field}}</div>
+			{%endfor%}
+		<button name="report" type="submit" class="btn btn-index">Denunciar</button>
+	</form>
+	</div>
+</div>
 {% ifequal owner_user.id user.id %}
 	{% include 'debate_creador.html'%}
 {% else %}
@@ -69,8 +81,8 @@
 								<div class="radio"> <label><input type="radio" value="1" name="razon" checked> Cambié de opinión </label></div>
 								<div class="radio"> <label><input type="radio" value="2" name="razon"> Me equivoqué de botón </label></div>
 								<div class="radio"> <label><input type="radio" value="3" name="razon"> Otro </label></div>
-	              <button id="bot_cambiar_post" type="submit" class="btn btn-deb1" > Aceptar </button>
-								<a class="btn btn-deb1" onclick="cerrar_modal('cambioPostura_modal')">Cancelar</a>
+	              <button id="bot_cambiar_post" type="submit" class="btn btn-index" > Aceptar </button>
+								<a class="btn btn-index" onclick="cerrar_modal('cambioPostura_modal')">Cancelar</a>
 						</div>
 				{% else %}
 					<h3> Ya no puedes cambiar de postura </h3>

@@ -4,6 +4,9 @@ from django import forms
 from debate.models import Argumento, Counterargument
 from django.core.validators import MaxLengthValidator
 
+reportReason=[('0','La opinión contiene lenguaje ofensivo de tipo acusatorio, difamatorio, violento, grosero, sexista o racista'),
+         ('1','La opinión contiene información personal que podría usarse para hacer seguimiento, identificar, contactar o suplantar la personalidad de alguien (p.ej. nombre, dirección, email o datos de tarjeta de crédito)'),
+         ('2','La opinión contiene alusiones publicitarias no relacionadas con el debate')]
 class newArgForm1(forms.ModelForm):
     def __init__(self,*args,**kwargs):
         self.owner = kwargs.pop('owner')
@@ -79,3 +82,6 @@ class newCounterargForm(forms.ModelForm):
     class Meta:
         model = Counterargument
         fields = ('id_counterarg', 'text', 'owner_type')
+
+class reportReasonForm(forms.Form):
+    report = forms.ChoiceField(choices=reportReason, widget=forms.RadioSelect())

@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect
 from resumen.models import Debate
 from debate.models import Position, Argumento, Rate, Counterargument, PrivateMembers, Visit
 from perfil.models import Profile, Notification
-from debate.forms import newArgForm1,newArgForm0, newCounterargForm
+from debate.forms import newArgForm1,newArgForm0, newCounterargForm,reportReasonForm
 
 from django.http import HttpResponse
 from django.contrib.auth.models import User
@@ -162,6 +162,7 @@ def showDebate(request, id_debate): #debate_id
 	arg_form0 = newArgForm0(owner=options_owner,max_length=max_length)
 	arg_form1 = newArgForm1(owner=options_owner,max_length=max_length)
 	counterarg_form = newCounterargForm(owner=options_owner,max_length=max_length)
+	report_form = reportReasonForm()
 
 	data = {'debate': debate,
 		'owner_user': owner_user,
@@ -177,7 +178,8 @@ def showDebate(request, id_debate): #debate_id
 		'counterarg_num':counterarg_num, 'arg_form1':arg_form1,
 		'arg_form0':arg_form0,'counterarg_form':counterarg_form,
 		'participate': participate, 'debate_members': members_list, 'counterarg_type': counterarg_type,
-		'counterarg_target': counterarg_target, 'visits': visits, 'positions_by_day':positions_by_day}
+		'counterarg_target': counterarg_target, 'visits': visits, 'positions_by_day':positions_by_day,
+		'report_form':report_form}
 	return render(request, 'debate.html', data)
 
 def argumentData(arguments, actual_user, counterarg_num, id_debate):

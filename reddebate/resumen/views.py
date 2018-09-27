@@ -198,10 +198,11 @@ def tagged(request, slug):
     actual_user = request.user
     user_profile = Profile.objects.get(user_id= actual_user.id)
     total_users = User.objects.exclude(id=actual_user.id)
+    all_users = allUsers(total_users)
     creator=[('username', User.objects.get(id=request.user.id).username),
 	         ('alias',user_profile.alias)]
     actual_user_list = List.objects.filter(owner_id=actual_user.id).values()
-    form = newDebateForm(owner=creator, usuarios=total_users, listado=actual_user_list)
+    form = newDebateForm(owner=creator, usuarios=all_users, listado=actual_user_list)
     debate_list = Debate.objects.filter(tags__slug=slug)
     total_data_deb = debateData(debate_list, actual_user, False)
     moderator_view_deb = debateData(debate_list, actual_user, True)
