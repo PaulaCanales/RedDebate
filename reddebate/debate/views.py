@@ -53,6 +53,10 @@ def showDebate(request, id_debate): #debate_id
 		if 'report_argument' in request.POST:
 			report = reportMessage(request, 'argument')
 			return redirect(showDebate,id_debate)
+		#solicitud de reportar un contraargumento
+		if 'report_counterargument' in request.POST:
+			report = reportMessage(request, 'counterarg')
+			return redirect(showDebate,id_debate)
 
 	owner_user_id = debate.id_user_id #user owner
 	owner_user = User.objects.get(id= owner_user_id)
@@ -323,6 +327,11 @@ def reportMessage(request, type):
 		id_arg = request.POST['id_report_arg']
 		arg = Argument.objects.get(pk=id_arg)
 		debate = Debate.objects.get(pk=arg.id_debate_id)
+	elif type=='counterarg':
+		id_counterarg = request.POST['id_report_counterarg']
+		counterarg = Counterargument.objects.get(pk=id_counterarg)
+		arg = Argument.objects.get(pk=counterarg.id_argument_id)
+		debate = Debate.objects.get(pk=arg.id_debate_id)
 	report_form = newReportReasonForm(request.POST)
 	if report_form.is_valid():
 		post = report_form.save(commit=False)
@@ -331,6 +340,9 @@ def reportMessage(request, type):
 		post.type = type
 		if type=="argument":
 			post.argument = arg
+		elif type=="counterarg":
+			post.argument = arg
+			post.counterarg = counterarg
 		post.save()
 	# updateReputation(request.user.id, 3)
 	return report_form

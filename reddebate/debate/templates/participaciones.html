@@ -56,7 +56,21 @@
                                   <button type="submit" class="btn btn-args{{position}}" > <span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
                                 </form>
                               {% else %}
-                              <button id="bot_reportar" type="submit" class="btn btn-args{{position}}" onclick="javascript:abrir_modal('denuncia_modal{{position}}')"><span class="glyphicon glyphicon-bullhorn"></span></button>
+                              <button id="bot_reportar" type="submit" class="btn btn-args{{position}}" onclick="javascript:abrir_modal('report_counterarg_modal{{position}}')"><span class="glyphicon glyphicon-bullhorn"></span></button>
+                              <div id="report_counterarg_modal{{position}}" class="modal">
+                              	<div class="modal-content">
+                              		<span class="close" onclick="cerrar_modal('report_counterarg_modal{{position}}')">&times;</span>
+                              		<h3>Indica la razón de tu denuncia <span class="glyphicon glyphicon-bullhorn"></span></h3>
+                              		<form id="reasonReport" method="POST" enctype="multipart/form-data">{% csrf_token %}
+                              			<input type="hidden" value="{{counterarg.id}}" name="id_report_counterarg">
+                                    {{report_form.type}}
+                              			{% for field in report_form.reason   %}
+                              			<div class="inputGroup">{{field}}</div>
+                              			{%endfor%}
+                              		<button name="report_counterargument" type="submit" class="btn btn-index">Denunciar</button>
+                              	</form>
+                              	</div>
+                              </div>
                               {% endifequal %}
                             </div>
                           </div>
