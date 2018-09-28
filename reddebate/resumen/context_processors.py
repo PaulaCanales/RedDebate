@@ -1,6 +1,6 @@
 # coding=utf-8
 from resumen.models import Debate
-from debate.models import Notification, Argumento
+from debate.models import Notification, Argument
 from datetime import *
 import pytz
 

@@ -64,7 +64,7 @@ def notificatePosition(sender, instance, **kwargs):
                                             'id_debate': debate.id_debate
                                             })})
 
-class Argumento(models.Model):
+class Argument(models.Model):
     #parametros de la tabla.
     id_argument = models.AutoField(primary_key=True)
     text = models.CharField(max_length=300)
@@ -87,23 +87,21 @@ class Argumento(models.Model):
 
         return {'text': self.text, 'name': usr, 'position': self.position}
 
-@receiver(post_save, sender=Argumento)
+@receiver(post_save, sender=Argument)
 def notificateArgument(sender, instance, **kwargs):
     if kwargs['created']:
         argument = instance['id_argument']
         debate = instance['id_debate']
         id_owner = debate.id_user_id
         title = '"'+unicode(debate.title)+'"'
-        argument_num = Argumento.objects.filter(id_debate=debate.id_debate).count()
+        argument_num = Argument.objects.filter(id_debate=debate.id_debate).count()
         try:
             notification = Notification.objects.get(id_debate_id=debate.id_debate, id_user_id=id_owner, type="argument")
-            print("segunda o mas")
             notification.message = str(argument_num)+" usuarios han argumentado en "+title
             notification.state = 0
             notification.date = datetime.now()
             notification.save()
         except:
-            print("primera")
             msj = str(argument_num)+" user ha argumentado en "+title
             notification = Notification.objects.create(id_debate = debate, id_user_id=id_owner, message=msj, type="argument")
         Group("notification").send({'text': json.dumps(
@@ -120,7 +118,7 @@ class Counterargument(models.Model):
     owner_type = models.CharField(max_length=50, default='username')
     date = models.DateField(default=datetime.now)
     id_user = models.ForeignKey(User)
-    id_argument = models.ForeignKey(Argumento)
+    id_argument = models.ForeignKey(Argument)
 
     def __getitem__(self, key):
         return getattr(self, key)
@@ -158,7 +156,7 @@ class Rate(models.Model):
     rate_type = models.CharField(max_length=50, default='none')
     date = models.DateField(default=datetime.now)
     id_user = models.ForeignKey(User)
-    id_argument = models.ForeignKey(Argumento)
+    id_argument = models.ForeignKey(Argument)
 
     def __getitem__(self, key):
         return getattr(self, key)
@@ -174,13 +172,11 @@ def notificateRate(sender, instance, **kwargs):
     text = '"'+(arg_text[:30] + '..') if len(arg_text) > 75 else arg_text+'"'
     try:
         notification = Notification.objects.get(id_debate_id=debate.id_debate, id_user_id=id_owner, type="valoracion")
-        print("segunda o mas")
         notification.message = "Han valorado tu argument: "+(text)
         notification.state = 0
         notification.date = datetime.now()
         notification.save()
     except:
-        print("primera")
         msj = "Han valorado tu argument: "+(text)
         notification = Notification.objects.create(id_debate = debate, id_user_id=id_owner, message=msj, type="valoracion")
     Group("notification").send({'text': json.dumps(
@@ -210,13 +206,11 @@ def notificatePrivateMembers(sender, instance, **kwargs):
     if debate.id_user_id != id_owner:
         try:
             notification = Notification.objects.get(id_debate_id=debate.id_debate, id_user_id=id_owner, type="debprivado")
-            print("segunda o mas")
             notification.message = "Te han agregado un debate privado: "+title
             notification.state = 0
             notification.date = datetime.now()
             notification.save()
         except:
-            print("primera")
             msj = "Te han agregado un debate privado: "+title
             notification = Notification.objects.create(id_debate = debate, id_user_id=id_owner, message=msj, type="debprivado")
         Group("notification").send({'text': json.dumps(
@@ -236,3 +230,71 @@ class Visit(models.Model):
 
     def __unicode__(self): # __unicode__ on Python 2
         return self.num
+
+class Report(models.Model):
+    id = models.AutoField(primary_key=True)
+    reason = models.IntegerField(default=0)
+    type = models.CharField(max_length=50, default='none')
+    owner = models.ForeignKey(User)
+    debate = models.ForeignKey(Debate, blank = True,null=True)
+    argument = models.ForeignKey(Argument, blank = True,null=True)
+    counterarg = models.ForeignKey(Counterargument, blank = True,null=True)
+
+    def __unicode__(self): # __unicode__ on Python 2
+        return self.id
+    def __getitem__(self, key):
+        return getattr(self, key)
+
+# @receiver(post_save, sender=Report)
+# def notificateReport(sender, instance, **kwargs):
+#     type = instance['type']
+#     debate = instance['debate']
+#     reported = instance['reported']
+#     moderator = User.objects.filter(is_staff=1)
+#     moderator = User.objects.filter(is_staff=1).values('id')[0]
+#     print(moderator['id'])
+#     # send_notification = newNotificationReport(type)
+#     # NOTIFICAR AL DENUNCIADO
+#     # NOTIFICAR AL MODERADOR
+#     if type == "argument":
+#         arg = instance['argument']
+#         arg_num = Report.objects.filter(argument=arg.id_argument).count()
+#         arg_text = unicode(arg.text)
+#         text = '"'+(arg_text[:30] + '..') if len(arg_text) > 75 else arg_text +'"'
+#         reported_msj = "Tienes un argumento en revision: "+tex
+#         try:
+#             moderador_ntf = Notification.objects.get(id_debate_id=debate.id_debate, id_user_id=moderator['id'], type="report")
+#             moderador_ntf.message = "Han reportado"+str(arg_num)+"el argumento: "+text
+#             moderador_ntf.state = 0
+#             moderador_ntf.date = datetime.now()
+#             moderador_ntf.save()
+#         except:
+#             moderator_msj = "Se ha reportado un argumento malicioso: "+text
+#             moderador_ntf = Notification.objects.create(id_debate = debate, id_user_id=moderator['id'], message=moderator_msj, type="report")
+#         Group("notification").send({'text': json.dumps(
+#                                                 {'id_owner': str(moderator['id']),
+#                                                 'message': notification.message,
+#                                                 'id_notification': notification.id,
+#                                                 'id_debate': debate.id_debate
+#                                                 })})
+    # elif type == "counterarg":
+    #     counterarg = instance['counterarg']
+    #
+    # id_owner = instance['id_user'].id
+    # title = '"'+unicode(debate.title)+'"'
+    # if debate.id_user_id != id_owner:
+    #     try:
+    #         notification = Notification.objects.get(id_debate_id=debate.id_debate, id_user_id=id_owner, type="debprivado")
+    #         notification.message = "Te han agregado un debate privado: "+title
+    #         notification.state = 0
+    #         notification.date = datetime.now()
+    #         notification.save()
+    #     except:
+    #         msj = "Te han agregado un debate privado: "+title
+    #         notification = Notification.objects.create(id_debate = debate, id_user_id=id_owner, message=msj, type="debprivado")
+    #     Group("notification").send({'text': json.dumps(
+    #                                         {'id_owner': str(id_owner),
+    #                                         'message': notification.message,
+    #                                         'id_notification': notification.id,
+    #                                         'id_debate': debate.id_debate
+    #                                         })})

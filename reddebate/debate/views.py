@@ -1,9 +1,9 @@
 from django.shortcuts import render, redirect
 
 from resumen.models import Debate
-from debate.models import Position, Argumento, Rate, Counterargument, PrivateMembers, Visit
+from debate.models import Position, Argument, Rate, Counterargument, PrivateMembers, Visit
 from perfil.models import Profile, Notification
-from debate.forms import newArgForm1,newArgForm0, newCounterargForm,reportReasonForm
+from debate.forms import newArgForm1,newArgForm0, newCounterargForm, newReportReasonForm
 
 from django.http import HttpResponse
 from django.contrib.auth.models import User
@@ -39,7 +39,11 @@ def showDebate(request, id_debate): #debate_id
 			return redirect(showDebate,id_debate)
 		#solicitud de eliminar un argument
 		if 'id_arg_delete' in request.POST:
-			id_debate = elimina_argumento(request)
+			id_debate = deleteArgument(request)
+			return redirect(showDebate,id_debate)
+		#solicitud de reportar un argumento
+		if 'report_argument' in request.POST:
+			report = reportMessage(request, 'argument')
 			return redirect(showDebate,id_debate)
 
 	owner_user_id = debate.id_user_id #user owner
@@ -57,14 +61,14 @@ def showDebate(request, id_debate): #debate_id
 	usuario_actual_alias = Profile.objects.get(user= request.user)
 	actual_user = request.user
 
-	infavor_arguments = Argumento.objects.filter(id_debate_id= id_debate, position= 1)
-	against_arguments = Argumento.objects.filter(id_debate_id= id_debate, position= 0)
+	infavor_arguments = Argument.objects.filter(id_debate_id= id_debate, position= 1)
+	against_arguments = Argument.objects.filter(id_debate_id= id_debate, position= 0)
 	infavor_args_list = argumentData(infavor_arguments, request.user.id, counterarg_num, id_debate)
 	against_args_list = argumentData(against_arguments, request.user.id, counterarg_num, id_debate)
 	against_args_list = sorted(against_args_list, key=lambda rate: rate['rate'], reverse=True)
 	infavor_args_list = sorted(infavor_args_list, key=lambda rate: rate['rate'], reverse=True)
 
-	actual_usr_args_num = Argumento.objects.filter(id_debate_id= id_debate, id_user_id=request.user ).count()
+	actual_usr_args_num = Argument.objects.filter(id_debate_id= id_debate, id_user_id=request.user ).count()
 	if actual_usr_args_num < args_num:
 		can_argue = True
 	else:
@@ -139,8 +143,7 @@ def showDebate(request, id_debate): #debate_id
 			members_list.append({'user':user, 'profile':profile, 'type':member.type})
 
 		participate = PrivateMembers.objects.filter(id_debate_id=id_debate,id_user_id=actual_user.id).values('type')
-		print((participate))
-		print(len(participate))
+
 		if len(participate)==0:
 			participate = False
 			options_owner = []
@@ -162,7 +165,7 @@ def showDebate(request, id_debate): #debate_id
 	arg_form0 = newArgForm0(owner=options_owner,max_length=max_length)
 	arg_form1 = newArgForm1(owner=options_owner,max_length=max_length)
 	counterarg_form = newCounterargForm(owner=options_owner,max_length=max_length)
-	report_form = reportReasonForm()
+	report_form = newReportReasonForm()
 
 	data = {'debate': debate,
 		'owner_user': owner_user,
@@ -283,22 +286,40 @@ def rateArgument(request):
 	except:
 		rate_post = Rate(id_argument_id=rate_argument, id_user_id=request.user.id, rate_type=rate)
 	rate_post.save()
-	id_owner_arg = Argumento.objects.get(id_argument=rate_argument).id_user_id
+	id_owner_arg = Argument.objects.get(id_argument=rate_argument).id_user_id
 	updateReputation(id_owner_arg, score)
 	positive_rate = Rate.objects.filter(id_argument_id= rate_argument, rate_type="positive").count()
 	negative_rate = Rate.objects.filter(id_argument_id= rate_argument, rate_type="negative").count()
 	total_rate = positive_rate - negative_rate
 	return(total_rate)
 
-def elimina_argumento(request):
+def deleteArgument(request):
 	id_arg = request.POST['id_arg_delete']
 	id_deb=request.POST['id_deb_arg_eliminar']
-	arg = Argumento.objects.get(pk=id_arg)
+	arg = Argument.objects.get(pk=id_arg)
 	arg.delete()
 	updateReputation(request.user.id, -3)
 	return (id_deb)
 
-def ver_notificacion(request, id_debate, id_notification):
+def reportMessage(request, type):
+	actual_user = request.user
+	id_arg = request.POST['id_report_arg']
+	reason = request.POST['reason']
+	arg = Argument.objects.get(pk=id_arg)
+	debate = Debate.objects.get(id_debate=arg.id_debate_id)
+	report_form = newReportReasonForm(request.POST)
+	if report_form.is_valid():
+		post = report_form.save(commit=False)
+		post.owner = request.user
+		post.debate = debate
+		post.argument = arg
+		post.type = type
+		post.save()
+	# updateReputation(request.user.id, 3)
+	return report_form
+
+
+def readNotification(request, id_debate, id_notification):
 	notification = Notification.objects.get(id=id_notification)
 	notification.state = 1
 	notification.save()

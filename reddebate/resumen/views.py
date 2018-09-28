@@ -13,7 +13,7 @@ import requests
 from django.db.models import Q
 from django.http import HttpResponse
 from resumen.models import Debate
-from debate.models import Position, Argumento, Counterargument, Rate, PrivateMembers, Visit
+from debate.models import Position, Argument, Counterargument, Rate, PrivateMembers, Visit
 from perfil.models import Profile, Notification, List, UsersList
 from resumen.forms import newDebateForm, LoginForm, orderDebate
 from taggit.models import Tag
@@ -167,7 +167,7 @@ def debateData(debates, user, moderator):
     for debate in debates:
         infavor_position_num = Position.objects.filter(id_debate_id=debate.id_debate, position=1).count()
         against_position_num = Position.objects.filter(id_debate_id=debate.id_debate, position=0).count()
-        argument_num = Argumento.objects.filter(id_debate_id=debate.id_debate).count()
+        argument_num = Argument.objects.filter(id_debate_id=debate.id_debate).count()
         position_num = infavor_position_num + against_position_num
         visits = Visit.objects.filter(id_debate=debate).aggregate(Sum('num')).values()[0]
         if not visits: visits=0

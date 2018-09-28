@@ -7,7 +7,7 @@ import json
 import logging
 import ast
 from resumen.models import Debate
-from debate.models import Argumento, Position, PrivateMembers
+from debate.models import Argument, Position, PrivateMembers
 from django.contrib.auth.models import User
 from perfil.models import Profile, List, UsersList
 from channels.auth import http_session_user, channel_session_user, channel_session_user_from_http
@@ -89,7 +89,7 @@ def ws_receive(message):
             data['id_user_id'] = message.user.id
             data['position'] = position.position
             data['id_debate'] = debate
-            m = Argumento.objects.create(**data)
+            m = Argument.objects.create(**data)
             updateReputation(message.user.id, 3)
             Group(grupo).send({'text': json.dumps(m.as_dict())})
 

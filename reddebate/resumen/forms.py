@@ -84,7 +84,7 @@ class newDebateForm(forms.ModelForm):
             attrs={'class':'form-control', 'id': 'debLengthForm', 'value':'140','readonly': True}
             ))
     args_max = forms.CharField(
-        label='Argumentos/user',
+        label='Arguments/user',
         widget=forms.TextInput(
             # choices=rebates,
             attrs={'class': 'form-control', 'id': 'debArgsForm', 'value':'1','readonly': True}

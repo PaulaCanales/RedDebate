@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from django import forms
-from debate.models import Argumento, Counterargument
+from debate.models import Argument, Counterargument, Report
 from django.core.validators import MaxLengthValidator
 
 reportReason=[('0','La opinión contiene lenguaje ofensivo de tipo acusatorio, difamatorio, violento, grosero, sexista o racista'),
@@ -29,7 +29,7 @@ class newArgForm1(forms.ModelForm):
     text = forms.CharField(label=False)
     owner_type = forms.CharField(label=False)
     class Meta:
-        model = Argumento
+        model = Argument
         fields = ('id_argument', 'text', 'owner_type')
 class newArgForm0(forms.ModelForm):
     def __init__(self,*args,**kwargs):
@@ -54,7 +54,7 @@ class newArgForm0(forms.ModelForm):
     text = forms.CharField(label=False)
     owner_type = forms.CharField(label=False)
     class Meta:
-        model = Argumento
+        model = Argument
         fields = ('id_argument', 'text', 'owner_type')
 
 class newCounterargForm(forms.ModelForm):
@@ -83,5 +83,8 @@ class newCounterargForm(forms.ModelForm):
         model = Counterargument
         fields = ('id_counterarg', 'text', 'owner_type')
 
-class reportReasonForm(forms.Form):
-    report = forms.ChoiceField(choices=reportReason, widget=forms.RadioSelect())
+class newReportReasonForm(forms.ModelForm):
+    reason = forms.ChoiceField(choices=reportReason, widget=forms.RadioSelect())
+    class Meta:
+        model = Report
+        fields = ('id', 'reason')

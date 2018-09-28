@@ -14,7 +14,7 @@ import math
 from django.http import HttpResponse
 from resumen.models import Debate
 from perfil.models import Profile, List, UsersList
-from debate.models import Position, Argumento, Counterargument
+from debate.models import Position, Argument, Counterargument
 from perfil.forms import updateAlias, newList, selectUsers, selectList, updateImage
 from resumen.views import debateData, closeDebate, allUsers
 from debate.views import updateReputation
@@ -99,7 +99,7 @@ def userStats(id_user):
     user_tags = findUserTags(user_debates, user_participation_deb)
     user_deb_num = Debate.objects.filter(id_user_id= id_user).count()
     user_position_num = Position.objects.filter(id_user_id = id_user).count()
-    user_args_num = Argumento.objects.filter(id_user_id = id_user).count()
+    user_args_num = Argument.objects.filter(id_user_id = id_user).count()
     user_counterargs_num = Counterargument.objects.filter(id_user_id = id_user).count()
     wins = 0
     lose = 0
@@ -113,7 +113,7 @@ def userStats(id_user):
         if (debate.state == "cerrado"):
             infavor_position_num = Position.objects.filter(id_debate_id=debate.id_debate, position=1).count()
             against_position_num = Position.objects.filter(id_debate_id=debate.id_debate, position=0).count()
-            arguments = Argumento.objects.filter(id_debate_id=debate.id_debate).order_by('-score')
+            arguments = Argument.objects.filter(id_debate_id=debate.id_debate).order_by('-score')
 
             if len(arguments)!=0:
                 best_argument = arguments[0]

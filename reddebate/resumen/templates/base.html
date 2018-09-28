@@ -213,7 +213,7 @@ $(document).ready(function(){
 
 								<li id="notificacion{{notificacion.object.id}}" class="notificacion{{notificacion.object.state}}">
 									<i class="{{notificacion.object.type}}"></i>
-									<a href="{% url 'ver_notificacion' notificacion.object.id_debate_id notificacion.object.id %}">
+									<a href="{% url 'readNotification' notificacion.object.id_debate_id notificacion.object.id %}">
 										{{notificacion.object}}<br>
 										<label>{{notificacion.tiempo}}</label>
 									</a>
