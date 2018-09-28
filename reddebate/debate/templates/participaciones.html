@@ -56,10 +56,10 @@
                                   <button type="submit" class="btn btn-args{{position}}" > <span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
                                 </form>
                               {% else %}
-                              <button id="bot_reportar" type="submit" class="btn btn-args{{position}}" onclick="javascript:abrir_modal('report_counterarg_modal{{position}}')"><span class="glyphicon glyphicon-bullhorn"></span></button>
-                              <div id="report_counterarg_modal{{position}}" class="modal">
+                              <button id="bot_reportar" type="submit" class="btn btn-args{{position}}" onclick="javascript:abrir_modal('report_counterarg_modal{{position}}{{arg.id_arg}}{{counterarg.id}}')"><span class="glyphicon glyphicon-bullhorn"></span></button>
+                              <div id="report_counterarg_modal{{position}}{{arg.id_arg}}{{counterarg.id}}" class="modal">
                               	<div class="modal-content">
-                              		<span class="close" onclick="cerrar_modal('report_counterarg_modal{{position}}')">&times;</span>
+                              		<span class="close" onclick="cerrar_modal('report_counterarg_modal{{position}}{{arg.id_arg}}{{counterarg.id}}')">&times;</span>
                               		<h3>Indica la razón de tu denuncia <span class="glyphicon glyphicon-bullhorn"></span></h3>
                               		<form id="reasonReport" method="POST" enctype="multipart/form-data">{% csrf_token %}
                               			<input type="hidden" value="{{counterarg.id}}" name="id_report_counterarg">
@@ -138,10 +138,10 @@
               <button type="submit" class="btn btn-args{{position}}" > <span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
             </form>
           {% else %}
-            <button id="bot_reportar" type="submit" class="btn btn-args{{position}}" onclick="javascript:abrir_modal('denuncia_modal{{position}}')"><span class="glyphicon glyphicon-bullhorn"></span></button>
-            <div id="denuncia_modal{{position}}" class="modal">
+            <button id="bot_reportar" type="submit" class="btn btn-args{{position}}" onclick="javascript:abrir_modal('report_arg_modal{{position}}{{arg.id_arg}}')"><span class="glyphicon glyphicon-bullhorn"></span></button>
+            <div id="report_arg_modal{{position}}{{arg.id_arg}}" class="modal">
             	<div class="modal-content">
-            		<span class="close" onclick="cerrar_modal('denuncia_modal{{position}}')">&times;</span>
+            		<span class="close" onclick="cerrar_modal('report_arg_modal{{position}}{{arg.id_arg}}')">&times;</span>
             		<h3>Indica la razón de tu denuncia <span class="glyphicon glyphicon-bullhorn"></span></h3>
             		<form id="reasonReport" method="POST" enctype="multipart/form-data">{% csrf_token %}
             			<input type="hidden" value="{{arg.id_arg}}" name="id_report_arg">

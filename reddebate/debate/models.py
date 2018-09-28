@@ -245,56 +245,63 @@ class Report(models.Model):
     def __getitem__(self, key):
         return getattr(self, key)
 
-# @receiver(post_save, sender=Report)
-# def notificateReport(sender, instance, **kwargs):
-#     type = instance['type']
-#     debate = instance['debate']
-#     reported = instance['reported']
-#     moderator = User.objects.filter(is_staff=1)
-#     moderator = User.objects.filter(is_staff=1).values('id')[0]
-#     print(moderator['id'])
-#     # send_notification = newNotificationReport(type)
-#     # NOTIFICAR AL DENUNCIADO
-#     # NOTIFICAR AL MODERADOR
-#     if type == "argument":
-#         arg = instance['argument']
-#         arg_num = Report.objects.filter(argument=arg.id_argument).count()
-#         arg_text = unicode(arg.text)
-#         text = '"'+(arg_text[:30] + '..') if len(arg_text) > 75 else arg_text +'"'
-#         reported_msj = "Tienes un argumento en revision: "+tex
-#         try:
-#             moderador_ntf = Notification.objects.get(id_debate_id=debate.id_debate, id_user_id=moderator['id'], type="report")
-#             moderador_ntf.message = "Han reportado"+str(arg_num)+"el argumento: "+text
-#             moderador_ntf.state = 0
-#             moderador_ntf.date = datetime.now()
-#             moderador_ntf.save()
-#         except:
-#             moderator_msj = "Se ha reportado un argumento malicioso: "+text
-#             moderador_ntf = Notification.objects.create(id_debate = debate, id_user_id=moderator['id'], message=moderator_msj, type="report")
-#         Group("notification").send({'text': json.dumps(
-#                                                 {'id_owner': str(moderator['id']),
-#                                                 'message': notification.message,
-#                                                 'id_notification': notification.id,
-#                                                 'id_debate': debate.id_debate
-#                                                 })})
-    # elif type == "counterarg":
-    #     counterarg = instance['counterarg']
-    #
-    # id_owner = instance['id_user'].id
-    # title = '"'+unicode(debate.title)+'"'
-    # if debate.id_user_id != id_owner:
-    #     try:
-    #         notification = Notification.objects.get(id_debate_id=debate.id_debate, id_user_id=id_owner, type="debprivado")
-    #         notification.message = "Te han agregado un debate privado: "+title
-    #         notification.state = 0
-    #         notification.date = datetime.now()
-    #         notification.save()
-    #     except:
-    #         msj = "Te han agregado un debate privado: "+title
-    #         notification = Notification.objects.create(id_debate = debate, id_user_id=id_owner, message=msj, type="debprivado")
-    #     Group("notification").send({'text': json.dumps(
-    #                                         {'id_owner': str(id_owner),
-    #                                         'message': notification.message,
-    #                                         'id_notification': notification.id,
-    #                                         'id_debate': debate.id_debate
-    #                                         })})
+@receiver(post_save, sender=Report)
+def notificateReport(sender, instance, **kwargs):
+    type = instance['type']
+    debate = instance['debate']
+    moderator = User.objects.filter(is_staff=1)
+    moderator = User.objects.filter(is_staff=1).values('id')[0]
+    if type == "debate":
+        report_deb_num = Report.objects.filter(type='debate').count()
+        deb_text = unicode(debate.title)
+        text = '"'+(deb_text[:30] + '..') if len(deb_text) > 75 else deb_text +'"'
+        moderator_msg1 = "Se ha reportado un debate malicioso: "+text
+        moderator_msg2 = "Han reportado "+str(report_deb_num)+" veces el debate: "+text
+        reported_msg1 = "Tu debate "+text+" ha sido reportado. Está en revisión."
+        reported_msg2 = "Tu debate "+text+" ha sido reportado "+str(report_deb_num)+" veces. Está en revisión."
+        #Notifica al moderador
+        newNotification(debate, moderator['id'], 'report_deb', moderator_msg1, moderator_msg2)
+        #Notifica al denunciado
+        newNotification(debate, debate.id_user_id, 'report_deb', reported_msg1, reported_msg2)
+    elif type == "argument":
+        arg = instance['argument']
+        report_arg_num = Report.objects.filter(type='argument').count()
+        arg_text = unicode(arg.text)
+        text = '"'+(arg_text[:30] + '..') if len(arg_text) > 75 else arg_text +'"'
+        moderator_msg1 = "Se ha reportado un argumento malicioso: "+text
+        moderator_msg2 = "Han reportado "+str(report_arg_num)+" veces el argumento: "+text
+        reported_msg1 = "Tu argumento "+text+" ha sido reportado. Está en revisión."
+        reported_msg2 = "Tu argumento "+text+" ha sido reportado "+str(report_arg_num)+" veces. Está en revisión."
+        #Notifica al moderador
+        newNotification(debate, moderator['id'], 'report_arg', moderator_msg1, moderator_msg2)
+        #Notifica al denunciado
+        newNotification(debate, arg.id_user_id, 'report_arg', reported_msg1, reported_msg2)
+    elif type == "counterarg":
+        counterarg = instance['counterarg']
+        report_counterarg_num = Report.objects.filter(type='counterarg').count()
+        counterarg_text = unicode(counterarg.text)
+        text = '"'+(counterarg_text[:30] + '..') if len(counterarg_text) > 75 else counterarg_text +'"'
+        moderator_msg1 = "Se ha reportado un contraargumento malicioso: "+text
+        moderator_msg2 = "Han reportado "+str(report_counterarg_num)+" veces el contraargumento: "+text
+        reported_msg1 = "Tu contraargumento "+text+" ha sido reportado. Está en revisión."
+        reported_msg2 = "Tu contraargumento "+text+" ha sido reportado "+str(report_counterarg_num)+" veces. Está en revisión."
+        #Notifica al moderador
+        newNotification(debate, moderator['id'], 'report_counterarg', moderator_msg1, moderator_msg2)
+        #Notifica al denunciado
+        newNotification(debate, counterarg.id_user_id, 'report_counterarg', reported_msg1, reported_msg2)
+
+def newNotification(debate, id_user, type, message1, message2):
+    try:
+        notification = Notification.objects.get(id_debate_id=debate.id_debate, id_user_id=id_user, type=type)
+        notification.message = message2
+        notification.state = 0
+        notification.date = datetime.now()
+        notification.save()
+    except:
+        notification = Notification.objects.create(id_debate = debate, id_user_id=id_user, message=message1, type=type)
+    Group("notification").send({'text': json.dumps(
+                                            {'id_owner': str(id_user),
+                                            'message': notification.message,
+                                            'id_notification': notification.id,
+                                            'id_debate': notification.id_debate_id
+                                            })})
