@@ -41,6 +41,10 @@ def showDebate(request, id_debate): #debate_id
 		if 'id_arg_delete' in request.POST:
 			id_debate = deleteArgument(request)
 			return redirect(showDebate,id_debate)
+		#solicitud de reportar un debate
+		if 'report_debate' in request.POST:
+			report = reportMessage(request, 'debate')
+			return redirect(showDebate,id_debate)
 		#solicitud de reportar un argumento
 		if 'report_argument' in request.POST:
 			report = reportMessage(request, 'argument')
@@ -303,17 +307,22 @@ def deleteArgument(request):
 
 def reportMessage(request, type):
 	actual_user = request.user
-	id_arg = request.POST['id_report_arg']
 	reason = request.POST['reason']
-	arg = Argument.objects.get(pk=id_arg)
-	debate = Debate.objects.get(id_debate=arg.id_debate_id)
+	if type=='debate':
+		id_debate = request.POST['id_deb']
+		debate = Debate.objects.get(id_debate=id_debate)
+	elif type=='argument':
+		id_arg = request.POST['id_report_arg']
+		arg = Argument.objects.get(pk=id_arg)
+		debate = Debate.objects.get(pk=arg.id_debate_id)
 	report_form = newReportReasonForm(request.POST)
 	if report_form.is_valid():
 		post = report_form.save(commit=False)
 		post.owner = request.user
 		post.debate = debate
-		post.argument = arg
 		post.type = type
+		if type=="argument":
+			post.argument = arg
 		post.save()
 	# updateReputation(request.user.id, 3)
 	return report_form

@@ -34,23 +34,45 @@
 		{% endfor %}
 	</div>
 </div>
-
+<div id="denuncia_deb_modal" class="modal">
+	<div class="modal-content">
+		<span class="close" onclick="cerrar_modal('denuncia_deb_modal')">&times;</span>
+		<h3>Indica la razón de tu denuncia <span class="glyphicon glyphicon-bullhorn"></span></h3>
+		<form id="reasonReport" method="POST" enctype="multipart/form-data">{% csrf_token %}
+			<input name="id_deb" type="hidden" value={{debate.id_debate}}>
+			{{report_form.type}}
+			{% for field in report_form.reason   %}
+			<div class="inputGroup">{{field}}</div>
+			{%endfor%}
+		<button name="report_debate" type="submit" class="btn btn-index">Denunciar</button>
+	</form>
+	</div>
+</div>
 {% ifequal owner_user.id user.id %}
 	{% include 'debate_creador.html'%}
 {% else %}
 {% if participate %}
 	<div class="container-debate">
 		<header>
-			<h2>{{ debate.title }}</h2>
-			<p>
-				<input id="idDebate" type="hidden" value={{debate.id_debate}}>
-				{% ifequal debate.owner_type 'alias' %}
-					<h5>Creado por {{owner_profile}} en modo anónimo</h5>
-				{%else%}
-					<h5>Debate creado por {{owner_user}}</h5>
-				{%endifequal%}
-				<span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>{{visits}}
-			</p>
+			<div class="row">
+				<div class="col-md-11">
+					<h2>{{ debate.title }}</h2>
+					<p>
+						<input id="idDebate" type="hidden" value={{debate.id_debate}}>
+						{% ifequal debate.owner_type 'alias' %}
+							<h5>Creado por {{owner_profile}} en modo anónimo</h5>
+						{%else%}
+							<h5>Debate creado por {{owner_user}}</h5>
+						{%endifequal%}
+						<span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>{{visits}}
+					</p>
+				</div>
+				<div class="col-md-1">
+				 <button class="btn btn-title" data-toggle="tooltip" title="Denunciar debate" onclick="javascript:abrir_modal('denuncia_deb_modal')">
+					 <span class="glyphicon glyphicon-bullhorn"></span>
+				 </button>
+				</div>
+			</div>
 		</header>
 		<p class="debateDescripcion">{{ debate.text }}</p>
 		<div id="fb-root"></div>
