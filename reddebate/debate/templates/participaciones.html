@@ -45,8 +45,20 @@
                       <div class="dialogbox">
                         <div class="body">
                           <span class="tip tip-up"></span>
-                          <div class="message">
-                            <p><a href="{% url counterarg.owner_type counterarg.id_owner %}"><p1>{{counterarg.owner}}:</p1></a> {{counterarg.text}}</p>
+                          <div class="row">
+                            <div class="col-md-11">
+                              <p><a href="{% url counterarg.owner_type counterarg.id_owner %}"><p1>{{counterarg.owner}}:</p1></a> {{counterarg.text}}</p>
+                            </div>
+                            <div class="col-md-1">
+                              {% ifequal counterarg.id_owner user.id %}
+                                <form id="eliminar_counterarg" method="post" action= "{% url 'showDebate' debate.id_debate %}" enctype="multipart/form-data" onsubmit="return confirm('¿Seguro que desea eliminar el contraargumento?');">{% csrf_token %}
+                                  <input type="hidden" value="{{ counterarg.id }}" name="id_counterarg_delete">
+                                  <button type="submit" class="btn btn-args{{position}}" > <span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
+                                </form>
+                              {% else %}
+                              <button id="bot_reportar" type="submit" class="btn btn-args{{position}}" onclick="javascript:abrir_modal('denuncia_modal{{position}}')"><span class="glyphicon glyphicon-bullhorn"></span></button>
+                              {% endifequal %}
+                            </div>
                           </div>
                         </div>
                       </div>

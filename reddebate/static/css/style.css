@@ -1709,7 +1709,7 @@ hr {
 }
 .dialogbox .body {
   position: relative;
-  max-width: 300px;
+  max-width: 95%;
   height: auto;
   margin: 20px 0px;
   padding: 5px;

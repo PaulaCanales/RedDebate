@@ -37,9 +37,13 @@ def showDebate(request, id_debate): #debate_id
 		if 'counterargument1' in request.POST:
 			counterarg = newCounterargument(request, id_debate, "id_argument1")
 			return redirect(showDebate,id_debate)
-		#solicitud de eliminar un argument
+		#solicitud de eliminar un argumento
 		if 'id_arg_delete' in request.POST:
-			id_debate = deleteArgument(request)
+			deleteArgument(request)
+			return redirect(showDebate,id_debate)
+		#solicitud de eliminar un contrargumento
+		if 'id_counterarg_delete' in request.POST:
+			deleteCounterarg(request)
 			return redirect(showDebate,id_debate)
 		#solicitud de reportar un debate
 		if 'report_debate' in request.POST:
@@ -299,11 +303,15 @@ def rateArgument(request):
 
 def deleteArgument(request):
 	id_arg = request.POST['id_arg_delete']
-	id_deb=request.POST['id_deb_arg_eliminar']
 	arg = Argument.objects.get(pk=id_arg)
 	arg.delete()
 	updateReputation(request.user.id, -3)
-	return (id_deb)
+
+def deleteCounterarg(request):
+	id_counterarg = request.POST['id_counterarg_delete']
+	counterarg = Counterargument.objects.get(pk=id_counterarg)
+	counterarg.delete()
+	updateReputation(request.user.id, -3)
 
 def reportMessage(request, type):
 	actual_user = request.user
