@@ -279,9 +279,11 @@ def search(request):
 def allUsers(total_users):
     all_users = []
     for user in total_users:
-        profile = Profile.objects.get(user=user)
-        all_users.append({'object':{'id':user.id, 'type':'username'}, 'name':user.username, 'reputation':profile.reputation})
+        if user.is_staff==0:
+            profile = Profile.objects.get(user=user)
+            all_users.append({'object':{'id':user.id, 'type':'username'}, 'name':user.username, 'reputation':profile.reputation})
     for user in total_users:
-        profile = Profile.objects.get(user=user)
-        all_users.append({'object':{'id':user.id, 'type':'alias'}, 'name':profile.alias, 'reputation':profile.reputation})
+        if user.is_staff==0:
+            profile = Profile.objects.get(user=user)
+            all_users.append({'object':{'id':user.id, 'type':'alias'}, 'name':profile.alias, 'reputation':profile.reputation})
     return sorted(all_users)
