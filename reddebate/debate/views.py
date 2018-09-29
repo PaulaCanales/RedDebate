@@ -2,7 +2,7 @@
 from django.shortcuts import render, redirect
 
 from resumen.models import Debate
-from debate.models import Position, Argument, Rate, Counterargument, PrivateMembers, Visit, newNotification
+from debate.models import Position, Argument, Rate, Counterargument, PrivateMembers, Visit, Report,newNotification
 from perfil.models import Profile, Notification
 from debate.forms import newArgForm1,newArgForm0, newCounterargForm, newReportReasonForm
 
@@ -180,6 +180,11 @@ def showDebate(request, id_debate): #debate_id
 	counterarg_form = newCounterargForm(owner=options_owner,max_length=max_length)
 	report_form = newReportReasonForm()
 
+	can_report_deb = True
+	r = Report.objects.filter(owner_id=actual_user,debate_id=debate.id_debate,type="debate").count()
+	print(r)
+	if r>0: can_report_deb = False
+
 	data = {'debate': debate,
 		'owner_user': owner_user,
 		'user': actual_user,
@@ -195,7 +200,7 @@ def showDebate(request, id_debate): #debate_id
 		'arg_form0':arg_form0,'counterarg_form':counterarg_form,
 		'participate': participate, 'debate_members': members_list, 'counterarg_type': counterarg_type,
 		'counterarg_target': counterarg_target, 'visits': visits, 'positions_by_day':positions_by_day,
-		'report_form':report_form}
+		'report_form':report_form, 'can_report_deb':can_report_deb}
 	return render(request, 'debate.html', data)
 
 def argumentData(arguments, actual_user, counterarg_num, id_debate):
@@ -214,9 +219,13 @@ def argumentData(arguments, actual_user, counterarg_num, id_debate):
 				owner = alias.alias
 			else:
 				owner = owner.username
+			can_report_counterarg = True
+			r = Report.objects.filter(owner_id=actual_user,counterarg_id=counterarg.id_counterarg,type="counterarg").count()
+			if r>0: can_report_counterarg = False
 			counterargs_list.append({'text': text, 'owner': owner,
 									'id': id, 'id_owner': counterarg.id_user_id,
-									'owner_type': counterarg.owner_type})
+									'owner_type': counterarg.owner_type,
+									'can_report_counterarg':can_report_counterarg})
 			if counterargs_actual_user_num < counterarg_num:
 				can_counterarg = True
 			else:
@@ -243,9 +252,15 @@ def argumentData(arguments, actual_user, counterarg_num, id_debate):
 		arg.score = total_rate
 		arg.save()
 		position_owner_arg = Position.objects.get(id_user_id= arg.id_user_id, id_debate_id=id_debate).position
+
+		can_report_arg = True
+		r = Report.objects.filter(owner_id=actual_user,argument_id=arg.id_argument,type="argument").count()
+		if r>0: can_report_arg = False
+
 		args_list.append({'text': arg.text, 'owner_arg': owner_arg, 'rate': total_rate,
 							'id_arg': arg.id_argument, 'exist_rate': exist_rate, 'owner_arg_id': owner_arg_id, 'counterargs': counterargs_list,
-							'can_counterarg': can_counterarg, 'owner_type':arg.owner_type})
+							'can_counterarg': can_counterarg, 'owner_type':arg.owner_type,
+							'can_report_arg':can_report_arg})
 	return args_list
 
 ##@brief Funcion que guarda el arguments del user de un argument.

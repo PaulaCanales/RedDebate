@@ -56,7 +56,9 @@
                                   <button type="submit" class="btn btn-args{{position}}" > <span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
                                 </form>
                               {% else %}
-                              <button id="bot_reportar" type="submit" class="btn btn-args{{position}}" onclick="javascript:abrir_modal('report_counterarg_modal{{position}}{{arg.id_arg}}{{counterarg.id}}')"><span class="glyphicon glyphicon-bullhorn"></span></button>
+                              {% if counterarg.can_report_counterarg  %}
+                                <button id="bot_reportar" type="submit" class="btn btn-args{{position}}" onclick="javascript:abrir_modal('report_counterarg_modal{{position}}{{arg.id_arg}}{{counterarg.id}}')"><span class="glyphicon glyphicon-bullhorn"></span></button>
+                              {% endif %}
                               <div id="report_counterarg_modal{{position}}{{arg.id_arg}}{{counterarg.id}}" class="modal">
                               	<div class="modal-content">
                               		<span class="close" onclick="cerrar_modal('report_counterarg_modal{{position}}{{arg.id_arg}}{{counterarg.id}}')">&times;</span>
@@ -138,7 +140,9 @@
               <button type="submit" class="btn btn-args{{position}}" > <span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
             </form>
           {% else %}
-            <button id="bot_reportar" type="submit" class="btn btn-args{{position}}" onclick="javascript:abrir_modal('report_arg_modal{{position}}{{arg.id_arg}}')"><span class="glyphicon glyphicon-bullhorn"></span></button>
+            {%if arg.can_report_arg%}
+              <button id="bot_reportar" type="submit" class="btn btn-args{{position}}" onclick="javascript:abrir_modal('report_arg_modal{{position}}{{arg.id_arg}}')"><span class="glyphicon glyphicon-bullhorn"></span></button>
+            {%endif%}
             <div id="report_arg_modal{{position}}{{arg.id_arg}}" class="modal">
             	<div class="modal-content">
             		<span class="close" onclick="cerrar_modal('report_arg_modal{{position}}{{arg.id_arg}}')">&times;</span>

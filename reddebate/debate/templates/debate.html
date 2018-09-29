@@ -68,9 +68,11 @@
 					</p>
 				</div>
 				<div class="col-md-1">
-				 <button class="btn btn-title" data-toggle="tooltip" title="Denunciar debate" onclick="javascript:abrir_modal('denuncia_deb_modal')">
-					 <span class="glyphicon glyphicon-bullhorn"></span>
-				 </button>
+				{% if can_report_deb %}
+					 <button class="btn btn-title" data-toggle="tooltip" title="Denunciar debate" onclick="javascript:abrir_modal('denuncia_deb_modal')">
+						 <span class="glyphicon glyphicon-bullhorn"></span>
+					 </button>
+				{% endif %}
 				</div>
 			</div>
 		</header>
