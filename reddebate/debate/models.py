@@ -172,7 +172,7 @@ def notificateRate(sender, instance, **kwargs):
     text = '"'+(arg_text[:30] + '..') if len(arg_text) > 75 else arg_text+'"'
     try:
         notification = Notification.objects.get(id_debate_id=debate.id_debate, id_user_id=id_owner, type="valoracion")
-        notification.message = "Han valorado tu argument: "+(text)
+        notification.message = "Han valorado tu argumento: "+(text)
         notification.state = 0
         notification.date = datetime.now()
         notification.save()

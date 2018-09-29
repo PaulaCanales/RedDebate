@@ -1,7 +1,8 @@
+# coding=utf-8
 from django.shortcuts import render, redirect
 
 from resumen.models import Debate
-from debate.models import Position, Argument, Rate, Counterargument, PrivateMembers, Visit
+from debate.models import Position, Argument, Rate, Counterargument, PrivateMembers, Visit, newNotification
 from perfil.models import Profile, Notification
 from debate.forms import newArgForm1,newArgForm0, newCounterargForm, newReportReasonForm
 
@@ -308,14 +309,33 @@ def rateArgument(request):
 def deleteArgument(request):
 	id_arg = request.POST['id_arg_delete']
 	arg = Argument.objects.get(pk=id_arg)
+	actual_user = request.user
+	if actual_user.is_staff==1:
+		arg_text = str(arg.text)
+		text = '"'+(arg_text[:30] + '..') if len(arg_text) > 75 else arg_text +'"'
+		debate = Debate.objects.get(pk=arg.id_debate_id)
+		msg = "Luego de una revisión, tu argumento "+text+" ha sido eliminado"
+		newNotification(debate,arg.id_user_id,'delete_arg',msg,msg)
+		updateReputation(arg.id_user_id, -5)
+	else:
+		updateReputation(actual_user.id, -3)
 	arg.delete()
-	updateReputation(request.user.id, -3)
 
 def deleteCounterarg(request):
 	id_counterarg = request.POST['id_counterarg_delete']
 	counterarg = Counterargument.objects.get(pk=id_counterarg)
+	actual_user = request.user
+	if actual_user.is_staff==1:
+		counterarg_text = str(counterarg.text)
+		text = '"'+(counterarg_text[:30] + '..') if len(counterarg_text) > 75 else counterarg_text +'"'
+		arg = Argument.objects.get(pk=counterarg.id_argument_id)
+		debate = Debate.objects.get(pk=arg.id_debate_id)
+		msg = "Luego de una revisión, tu contraargumento "+text+" ha sido eliminado"
+		newNotification(debate,arg.id_user_id,'delete_arg',msg,msg)
+		updateReputation(counterarg.id_user_id, -5)
+	else:
+		updateReputation(actual_user.id, -3)
 	counterarg.delete()
-	updateReputation(request.user.id, -3)
 
 def reportMessage(request, type):
 	actual_user = request.user
@@ -346,7 +366,6 @@ def reportMessage(request, type):
 		post.save()
 	# updateReputation(request.user.id, 3)
 	return report_form
-
 
 def readNotification(request, id_debate, id_notification):
 	notification = Notification.objects.get(id=id_notification)

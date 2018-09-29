@@ -13,7 +13,7 @@ import requests
 from django.db.models import Q
 from django.http import HttpResponse
 from resumen.models import Debate
-from debate.models import Position, Argument, Counterargument, Rate, PrivateMembers, Visit
+from debate.models import Position, Argument, Counterargument, Rate, PrivateMembers, Visit, newNotification
 from perfil.models import Profile, Notification, List, UsersList
 from resumen.forms import newDebateForm, LoginForm, orderDebate
 from taggit.models import Tag
@@ -247,9 +247,17 @@ def closeDebate(request):
 @login_required
 def deleteDebate(request):
     id_deb=request.POST['id_delete_deb']
-    deb = Debate.objects.get(pk=id_deb)
-    deb.delete()
-    updateReputation(request.user.id, -5)
+    debate = Debate.objects.get(pk=id_deb)
+    actual_user = request.user
+    if actual_user.is_staff==1:
+        debate_text = str(debate.title)
+        text = '"'+(debate_text[:30] + '..') if len(debate_text) > 75 else debate_text +'"'
+        msg = "Luego de una revisión, tu debate "+text+" ha sido eliminado"
+        newNotification(debate,debate.id_user_id,'delete_arg',msg,msg)
+        updateReputation(debate.id_user_id, -8)
+    else:
+		updateReputation(actual_user.id, -5)
+    debate.delete()
     return redirect('debates')
 
 def search(request):
