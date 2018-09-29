@@ -22,6 +22,9 @@ $(document).ready(
 		    } else {
 		        sigue = false;
 		    }});
+		$('#userOrderTypeForm').on('change', function() {
+			order_user_by(this.value);
+		});
 		$('#debMemberTypeForm').on('change', function() {
 			if (this.value == 1){
 				document.getElementById('usuariosPrivado_modal').style.display="block";

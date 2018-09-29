@@ -15,7 +15,7 @@ from django.http import HttpResponse
 from resumen.models import Debate
 from debate.models import Position, Argument, Counterargument, Rate, PrivateMembers, Visit, newNotification
 from perfil.models import Profile, Notification, List, UsersList
-from resumen.forms import newDebateForm, LoginForm, orderDebate
+from resumen.forms import newDebateForm, LoginForm, orderDebate, orderUser
 from taggit.models import Tag
 from django.db.models import Q, Sum
 from debate.views import updateReputation
@@ -100,6 +100,15 @@ def index(request):
                         'deb_pub': public_deb, 'deb_pri': private_deb,
                         'moderator_view_deb':moderator_view_deb}
             return render(request, "filtro.html" , context)
+        if 'order' in request.GET:
+            order_by = int(request.GET['order'])
+            if order_by == 0:
+                return JsonResponse(all_users, safe=False)
+            elif order_by==1:
+                newlist = sorted(all_users, key=lambda k: k['reputation'],reverse=True)
+                return JsonResponse(newlist, safe=False)
+
+
     context = makeData(request, actual_user, form, 'open')
     return render(request, 'index.html', context)
 
@@ -155,11 +164,13 @@ def makeData(request, actual_user, form, state):
     #obtener listado del user actual
     actual_user_list = List.objects.filter(owner_id=actual_user.id).values()
     order_form = orderDebate()
+    order_user_form = orderUser()
     context = {'moderator_view_deb':moderator_view_deb, 'total_data_deb': total_data_deb, 'actual_user': actual_user, 'alias': user_alias,
                 'form':form, 'top_tags':top_tags, 'top_deb':top_debates,
                 'top_users':top_users, 'recent_data_deb': recent_data_deb, 'moderator_recent_deb': moderator_recent_data_deb,
                 'moderator_top_deb': moderator_top_debates, 'actual_user_list':actual_user_list,
-                'order_form':order_form, 'debates_order':debates_order}
+                'order_form':order_form, 'debates_order':debates_order,
+                'order_user_form': order_user_form}
     return context
 
 def debateData(debates, user, moderator):
@@ -268,8 +279,9 @@ def search(request):
 def allUsers(total_users):
     all_users = []
     for user in total_users:
-        all_users.append({'object':{'id':user.id, 'type':'username'}, 'name':user.username})
+        profile = Profile.objects.get(user=user)
+        all_users.append({'object':{'id':user.id, 'type':'username'}, 'name':user.username, 'reputation':profile.reputation})
     for user in total_users:
         profile = Profile.objects.get(user=user)
-        all_users.append({'object':{'id':user.id, 'type':'alias'}, 'name':profile.alias})
+        all_users.append({'object':{'id':user.id, 'type':'alias'}, 'name':profile.alias, 'reputation':profile.reputation})
     return sorted(all_users)

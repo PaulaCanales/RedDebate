@@ -11,9 +11,11 @@ members_typeform = [('0', 'Publico'),
                 ('2', 'Privado a Listas')]
 owner=[('username','Nombre Real'),
          ('alias','Alias')]
-order_typeform= [('0', 'Fecha'),
+order_deb_typeform= [('0', 'Fecha'),
                 ('1','Visitas'),
                 ('2', 'Nombre')]
+order_user_typeform= [('0', 'Nombre'),
+                    ('1','Reputacion')]
 
 class LoginForm(forms.Form):
     username = forms.CharField(max_length=20, required=True, label="Usuario",
@@ -131,6 +133,14 @@ class orderDebate(forms.Form):
     order_type = forms.CharField(
         label='Ordenar por',
         widget=forms.Select(
-            choices=order_typeform,
+            choices=order_deb_typeform,
             attrs={'class': 'form-control', 'id': 'debOrderTypeForm', 'name': 'orderByForm'}
+            ))
+
+class orderUser(forms.Form):
+    order_type = forms.CharField(
+        label='Ordenar por',
+        widget=forms.Select(
+            choices=order_user_typeform,
+            attrs={'class': 'form-control', 'id': 'userOrderTypeForm', 'name': 'userOrderByForm'}
             ))

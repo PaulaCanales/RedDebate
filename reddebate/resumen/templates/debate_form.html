@@ -151,6 +151,7 @@
           <div class="fieldWrapper">
             {{form.members.errors }}
             <input type="text" value="" name="searchColumn" id="searchUser1" placeholder="Busca a un usuario..."/>
+            {{order_user_form}}
             <div id="containercheckbox" class="userscheckbox">
             {% for field in form.members %}
             <div class="inputGroup">{{field}}</div>
