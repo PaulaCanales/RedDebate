@@ -145,3 +145,32 @@ $(document).ready(
 		filtroCheckbox('#searchUser1');
 		filtroCheckbox('#searchLista1');
 	});
+	
+	function order_user_by(value){
+		$.ajax({
+				url:  $(this).attr("href"),
+				type: 'GET',
+				data:{  order : value,
+								csrfmiddlewaretoken: '{{ csrf_token }}'
+							} ,
+							success: function(data) {
+								var container = $('#containercheckbox');
+								var inputs = container.find('div');
+								var id = inputs.length+1;
+								inputs.remove()
+								for (i=0 ; i<data.length ; i++){
+									var name = " "+data[i].name
+									var value = JSON.stringify(data[i].object);
+									var div = $('<div />', {class:"inputGroup"});
+									var label = $('<label />', { 'for': 'debMembersForm_'+i, text: name});
+									var input = $('<input />', { type: 'checkbox', name:"members", value: value, id: 'debMembersForm_'+i})
+
+									input.prependTo(label.appendTo(div.appendTo(container)));
+								}
+							},
+							failure: function(data) {
+									alert('Error de conexión');
+							},
+							crossDomain: true
+					});
+	 }
