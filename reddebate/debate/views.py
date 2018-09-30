@@ -200,10 +200,10 @@ def debateStats(request, id_debate):
 		reason_against_to_infavor.append(num)
 		against_to_infavor += num
 
-	best_argument = False
-	best_argument_owner = False
-	second_argument = False
-	second_argument_owner = False
+	best_argument = 0
+	best_argument_owner = 0
+	second_argument = 0
+	second_argument_owner = 0
 	arguments = Argument.objects.filter(id_debate_id=debate.id_debate).order_by('-score')
 	if len(arguments)>1:
 		best_argument = arguments[0]
