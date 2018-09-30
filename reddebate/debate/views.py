@@ -78,13 +78,6 @@ def showDebate(request, id_debate): #debate_id
 	usuario_actual_alias = Profile.objects.get(user= request.user)
 	actual_user = request.user
 
-	infavor_arguments = Argument.objects.filter(id_debate_id= id_debate, position= 1)
-	against_arguments = Argument.objects.filter(id_debate_id= id_debate, position= 0)
-	infavor_args_list = argumentData(infavor_arguments, request.user.id, counterarg_num, id_debate)
-	against_args_list = argumentData(against_arguments, request.user.id, counterarg_num, id_debate)
-	against_args_list = sorted(against_args_list, key=lambda rate: rate['rate'], reverse=True)
-	infavor_args_list = sorted(infavor_args_list, key=lambda rate: rate['rate'], reverse=True)
-
 	actual_usr_args_num = Argument.objects.filter(id_debate_id= id_debate, id_user_id=request.user ).count()
 	if actual_usr_args_num < args_num:
 		can_argue = True
@@ -114,40 +107,9 @@ def showDebate(request, id_debate): #debate_id
 			actual_user_position = "En Contra"
 			if counterarg_type == 1:
 				counterarg_target = "A Favor"
-	infavor_position=Position.objects.filter(id_debate_id=id_debate, position=1)
-	against_position=Position.objects.filter(id_debate_id=id_debate, position=0)
-	infavor_position_num=infavor_position.count()
-	against_position_num=against_position.count()
-	if (int(against_position_num+infavor_position_num)==0):
-		against_percent=0
-		infavor_percent=0
-	else:
-		infavor_percent = round(float(infavor_position_num) / float(against_position_num+infavor_position_num),3)*100
-		against_percent = round(float(against_position_num) / float(against_position_num+infavor_position_num),3)*100
+
 
 	total_positions = Position.objects.all().order_by('-date')
-
-	position_date = Position.objects.filter(id_debate_id = id_debate).values("date")
-	position_date_group = itertools.groupby(position_date, lambda record: record.get("date").strftime("%Y-%m-%d"))
-	temp = 0
-	positions_by_day = [[debate.date.strftime("%Y-%m-%d"),0]]
-	for day,position in position_date_group:
-		temp += len(list(position))
-		positions_by_day.append([day, temp])
-	# positions_by_day = json.dumps(positions_by_day)
-
-	infavor_to_against = 0
-	against_to_infavor = 0
-	reason_infavor_to_against = []
-	reason_against_to_infavor = []
-	for i in range (1,4):
-		num = Position.objects.filter(id_debate_id=id_debate, position=0, change=i).count()
-		reason_infavor_to_against.append(num)
-		infavor_to_against += num
-	for i in range (1,4):
-		num = Position.objects.filter(id_debate_id=id_debate, position=1, change=i).count()
-		reason_against_to_infavor.append(num)
-		against_to_infavor += num
 
 	debate_members = "publico"
 	participate = True
@@ -186,26 +148,82 @@ def showDebate(request, id_debate): #debate_id
 
 	can_report_deb = True
 	r = Report.objects.filter(owner_id=actual_user,debate_id=debate.id_debate,type="debate").count()
-	print(r)
 	if r>0: can_report_deb = False
+
+	stats = debateStats(request,id_debate)
 
 	data = {'debate': debate,
 		'owner_user': owner_user,
 		'user': actual_user,
 		'owner_profile': owner_profile,
 		'actual_user_position': actual_user_position,
-		'infavor_args_list': infavor_args_list, 'against_args_list': against_args_list,
 		'can_argue': can_argue, 'p_post': can_change_position,
-		'infavor_position_num': infavor_position_num, 'against_position_num': against_position_num,
-		'infavor_percent': infavor_percent, 'against_percent': against_percent,
-		'infavor_to_against':infavor_to_against, 'against_to_infavor':against_to_infavor,
-		'reason_infavor_to_against':reason_infavor_to_against, 'reason_against_to_infavor':reason_against_to_infavor,
 		'counterarg_num':counterarg_num, 'arg_form1':arg_form1,
 		'arg_form0':arg_form0,'counterarg_form':counterarg_form,
 		'participate': participate, 'debate_members': members_list, 'counterarg_type': counterarg_type,
-		'counterarg_target': counterarg_target, 'visits': visits, 'positions_by_day':positions_by_day,
-		'report_form':report_form, 'can_report_deb':can_report_deb}
+		'counterarg_target': counterarg_target, 'visits': visits,
+		'report_form':report_form, 'can_report_deb':can_report_deb,
+		'stats': stats}
 	return render(request, 'debate.html', data)
+
+def debateStats(request, id_debate):
+	debate = Debate.objects.get(id_debate= id_debate)
+	counterarg_num = debate.counterargs_max
+
+	infavor_position=Position.objects.filter(id_debate_id=id_debate, position=1)
+	against_position=Position.objects.filter(id_debate_id=id_debate, position=0)
+	infavor_position_num=infavor_position.count()
+	against_position_num=against_position.count()
+	if (int(against_position_num+infavor_position_num)==0):
+		against_percent=0
+		infavor_percent=0
+	else:
+		infavor_percent = round(float(infavor_position_num) / float(against_position_num+infavor_position_num),3)*100
+		against_percent = round(float(against_position_num) / float(against_position_num+infavor_position_num),3)*100
+
+	infavor_arguments = Argument.objects.filter(id_debate_id= id_debate, position= 1)
+	against_arguments = Argument.objects.filter(id_debate_id= id_debate, position= 0)
+	infavor_args_list = argumentData(infavor_arguments, request.user.id, counterarg_num, id_debate)
+	against_args_list = argumentData(against_arguments, request.user.id, counterarg_num, id_debate)
+	against_args_list = sorted(against_args_list, key=lambda rate: rate['rate'], reverse=True)
+	infavor_args_list = sorted(infavor_args_list, key=lambda rate: rate['rate'], reverse=True)
+	infavor_to_against = 0
+	against_to_infavor = 0
+	reason_infavor_to_against = []
+	reason_against_to_infavor = []
+	for i in range (1,4):
+		num = Position.objects.filter(id_debate_id=id_debate, position=0, change=i).count()
+		reason_infavor_to_against.append(num)
+		infavor_to_against += num
+	for i in range (1,4):
+		num = Position.objects.filter(id_debate_id=id_debate, position=1, change=i).count()
+		reason_against_to_infavor.append(num)
+		against_to_infavor += num
+
+	best_argument = False
+	second_argument = False
+	arguments = Argument.objects.filter(id_debate_id=debate.id_debate).order_by('-score')
+	if len(arguments)>1:
+		best_argument = arguments[0]
+		second_argument = arguments[1]
+
+	position_date = Position.objects.filter(id_debate_id = id_debate).values("date")
+	position_date_group = itertools.groupby(position_date, lambda record: record.get("date").strftime("%Y-%m-%d"))
+	temp = 0
+	positions_by_day = [[debate.date.strftime("%Y-%m-%d"),0]]
+	for day,position in position_date_group:
+		temp += len(list(position))
+		positions_by_day.append([day, temp])
+
+	stats = { 'infavor_position_num':infavor_position_num, 'against_position_num':against_position_num,
+			'infavor_percent': infavor_percent, 'against_percent': against_percent,
+			'infavor_args_list': infavor_args_list, 'against_args_list':against_args_list,
+			'best_argument': best_argument, 'second_argument': second_argument,
+			'infavor_to_against': infavor_to_against, 'against_to_infavor':against_to_infavor,
+			'reason_infavor_to_against': reason_infavor_to_against, 'reason_against_to_infavor':reason_against_to_infavor,
+			'positions_by_day':positions_by_day}
+
+	return stats
 
 def argumentData(arguments, actual_user, counterarg_num, id_debate):
 	args_list = []

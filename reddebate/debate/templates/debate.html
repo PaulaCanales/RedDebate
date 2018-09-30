@@ -167,21 +167,21 @@
 				</div>
 			{% else %}
 			<div id="progresoDebate">
-					{% ifequal infavor_percent 0 %}
-		        <div id="progreso"class="progress-bar" style="background:#d9534f; width: {{against_percent}}%">
-		          <span class="glyphicon glyphicon-thumbs-down"></span> <label id="label_porc_c">{{against_percent}}%</label>
+					{% ifequal stats.infavor_percent 0 %}
+		        <div id="progreso"class="progress-bar" style="background:#d9534f; width: {{stats.against_percent}}%">
+		          <span class="glyphicon glyphicon-thumbs-down"></span> <label id="label_porc_c">{{stats.against_percent}}%</label>
 		        </div>
 		      {% else %}
-		        {% ifequal against_percent 0 %}
-		          <div id="progreso"class="progress-bar" style="background:#18BC9C; width: {{infavor_percent}}%">
-		            <span class="glyphicon glyphicon-thumbs-up"></span> <label id="label_porc_f">{{infavor_percent}}%</label>
+		        {% ifequal stats.against_percent 0 %}
+		          <div id="progreso"class="progress-bar" style="background:#18BC9C; width: {{stats.infavor_percent}}%">
+		            <span class="glyphicon glyphicon-thumbs-up"></span> <label id="label_porc_f">{{stats.infavor_percent}}%</label>
 		          </div>
 		          {% else %}
-		          <div id="progresoFavor"class="progress-bar" style="width: {{infavor_percent}}%">
-		            <span class="glyphicon glyphicon-thumbs-up"></span> <label id="label_porc_f">{{infavor_percent}}%</label>
+		          <div id="progresoFavor"class="progress-bar" style="width: {{stats.infavor_percent}}%">
+		            <span class="glyphicon glyphicon-thumbs-up"></span> <label id="label_porc_f">{{stats.infavor_percent}}%</label>
 		          </div>
-		          <div id="progresoContra"class="progress-bar" style="width: {{against_percent}}%">
-		            <span class="glyphicon glyphicon-thumbs-down"></span> <label id="label_porc_c">{{against_percent}}%</label>
+		          <div id="progresoContra"class="progress-bar" style="width: {{stats.against_percent}}%">
+		            <span class="glyphicon glyphicon-thumbs-down"></span> <label id="label_porc_c">{{stats.against_percent}}%</label>
 		          </div>
 		        {% endifequal %}
 		      {% endifequal %}
@@ -191,7 +191,7 @@
 				<div name="argumentos-debate">
 					<div class="row">
 				    <div class="col-md-6">
-							{% include 'participaciones.html' with name_position="A Favor" arguments=infavor_args_list position=1 num_post=infavor_position_num%}
+							{% include 'participaciones.html' with name_position="A Favor" arguments=stats.infavor_args_list position=1 num_post=stats.infavor_position_num%}
 							<ul id="alertaArgumento1" class="list-group"></ul>
 							{% if can_argue %}
 							{% ifequal actual_user_position 'A Favor' %}
@@ -203,7 +203,7 @@
 							{% endif %}
 						</div>
 						<div class="col-md-6">
-							{% include 'participaciones.html' with name_position="En Contra" arguments=against_args_list position=0 num_post=against_position_num%}
+							{% include 'participaciones.html' with name_position="En Contra" arguments=stats.against_args_list position=0 num_post=stats.against_position_num%}
 							<ul id="alertaArgumento0" class="list-group"></ul>
 							{% if can_argue %}
 							{% ifequal actual_user_position 'En Contra' %}
