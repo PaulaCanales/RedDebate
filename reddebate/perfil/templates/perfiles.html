@@ -8,7 +8,7 @@
 
 {% block content %}
 <link rel="stylesheet" type='text/css' href="{% static '/css/perfil.css' %}" >
-{% if target_user.is_staff %}
+{% if target_user.is_staff or target_user.is_superuser %}
 {% include 'moderador_perfil.html' %}
 {% else %}
 <div class="container-profile" style="width: 40%">
@@ -33,9 +33,19 @@
         <p class="info">modo anónimo</p>
 
         {% endifequal %}
-        <button type="button" class="btn btn-demo" data-toggle="modal" data-target="#verListas_modal">
-    			<i class="fa fa-user-plus" aria-hidden="true"></i>
-    		</button>
+        {% if user.is_superuser %}
+        <form id="delete_user" method="post" action= "{% url 'resumen:index' %}" enctype="multipart/form-data" onsubmit="return confirm('¿Seguro que desea eliminar el usuario?');">{% csrf_token %}
+           <input type="hidden" value="{{ target_user.id }}" name="id_user_delete">
+           <button type="submit" class="btn btn-demo">
+             <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+           </button>
+       </form>
+       {% endif %}
+        {% if not user.is_staff and not user.is_superuser %}
+          <button type="button" class="btn btn-demo" data-toggle="modal" data-target="#verListas_modal">
+      			<i class="fa fa-user-plus" aria-hidden="true"></i>
+      		</button>
+        {% endif %}
         <div class="stats row">
           <div class="stat col-xs-6">
             <h4 class="name">{{alias.reputation}}</h4>

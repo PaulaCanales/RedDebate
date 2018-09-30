@@ -179,7 +179,7 @@ $(document).ready(function(){
 										<li>
                         <a href="{% url 'cerrados' %}">Debates Cerrados</a>
                     </li>
-										{% if user.is_staff %}
+										{% if user.is_staff or user.is_superuser %}
 										<li>
                         <a href="{% url 'username' user.id %}">Perfil</a>
                     </li>
@@ -226,9 +226,13 @@ $(document).ready(function(){
     	</nav>
 			<label id="id_usuario_actual" class="hide" value="{{user.id}}">{{user.id}}</label>
     </div>
-		{% if user.is_staff %}
+		{% if user.is_staff or user.is_superuser %}
 		<div class="moderador">
-			Usuario Moderador
+			{% if user.is_superuser %}
+				Usuario Administrador
+			{% else %}
+				Usuario Moderador
+			{% endif %}
 		</div>
 		{% endif %}
 	{% block content %}

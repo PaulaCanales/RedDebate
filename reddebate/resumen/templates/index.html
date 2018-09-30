@@ -3,7 +3,7 @@
 {% load static %}
 <html>
 	{% block content %}
-	{% if user.is_staff %}
+	{% if user.is_staff or user.is_superuser %}
 	{% include 'moderador_index.html' %}
 	{% else %}
 	<div id="search" class="morphsearch">

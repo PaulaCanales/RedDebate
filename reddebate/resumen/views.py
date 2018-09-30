@@ -84,6 +84,12 @@ def index(request):
             deleteDebate(request)
             return redirect('index')
 
+        if 'id_user_delete' in request.POST:
+            id_user = request.POST['id_user_delete']
+            user = User.objects.get(pk=id_user)
+            user.delete()
+            return redirect('index')
+
     if request.method == 'GET':
         if 'q' in request.GET:
             deb = search(request)

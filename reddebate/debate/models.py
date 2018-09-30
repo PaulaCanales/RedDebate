@@ -249,8 +249,7 @@ class Report(models.Model):
 def notificateReport(sender, instance, **kwargs):
     type = instance['type']
     debate = instance['debate']
-    moderator = User.objects.filter(is_staff=1)
-    moderator = User.objects.filter(is_staff=1).values('id')[0]
+    moderator = User.objects.filter(is_staff=1).values('id')
     if type == "debate":
         report_deb_num = Report.objects.filter(type='debate').count()
         deb_text = unicode(debate.title)
@@ -260,7 +259,8 @@ def notificateReport(sender, instance, **kwargs):
         reported_msg1 = "Tu debate "+text+" ha sido reportado. Está en revisión."
         reported_msg2 = "Tu debate "+text+" ha sido reportado "+str(report_deb_num)+" veces. Está en revisión."
         #Notifica al moderador
-        newNotification(debate, moderator['id'], 'report_deb', moderator_msg1, moderator_msg2)
+        for i in range (len(moderator)):
+            newNotification(debate, moderator[i]['id'], 'report_deb', moderator_msg1, moderator_msg2)
         #Notifica al denunciado
         newNotification(debate, debate.id_user_id, 'report_deb', reported_msg1, reported_msg2)
     elif type == "argument":

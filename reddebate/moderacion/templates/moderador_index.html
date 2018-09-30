@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-{% if user.is_staff %}
+{% if user.is_staff or user.is_superuser %}
   <div id="search" class="morphsearch">
     <button type="button" class="close">×</button>
     <form action="{% url 'index' %}" method="get" accept-charset="utf-8" class="morphsearch-form">
@@ -49,7 +49,6 @@
          </div>
           <div class="panel-body">
             <p>{{ user.get_full_name }}</p>
-            MODERADOR
             <a href="{% url 'logout' %}"> Cerrar Sesión</a>
           </div>
        </div>

@@ -4,7 +4,7 @@
 <html>
 {% block content %}
 <link rel="stylesheet" type='text/css' href="{% static '/css/perfil.css' %}" >
-{% if user.is_staff %}
+{% if user.is_staff or user.is_superuser %}
 {% include 'moderador_perfil.html' %}
 {% else %}
 <div class="container-profile">

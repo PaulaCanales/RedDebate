@@ -11,7 +11,7 @@
 	<meta property="og:image" content="{% static 'img/RDLogo02.png'%}"/>
 </head>
 {% block content %}
-{% if user.is_staff %}
+{% if user.is_staff or user.is_superuser%}
 {% include 'moderador_debate.html' %}
 {% else %}
 <div id="participantes_modal" class="modal">

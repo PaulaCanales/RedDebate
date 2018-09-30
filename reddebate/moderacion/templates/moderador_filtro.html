@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-{% if user.is_staff %}
+{% if user.is_staff or user.is_superuser %}
 <div class="container-debate">
       <header>
         <h2>{{label}}</h2>

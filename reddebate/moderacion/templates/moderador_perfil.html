@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-{% if target_user.is_staff %}
 <div class="container-profile" style="width: 40%">
   <header>
   </header>
@@ -13,7 +12,15 @@
         <h4 class="name">{{target_user.username}}</h4>
         <p class="info">{{ target_user.email }}</p>
         <div class="stats row">
+          {% if user.is_staff or user.is_superuser %}
+          {% if user.is_superuser %}
+          ADMINISTRADOR
+          {% else %}
           MODERADOR
+          {% endif %}
+          {% endif %}
+
+
         </div>
         <div class="stats row">
           <div class="stat col-xs-6">
@@ -44,4 +51,3 @@
     </div>
   </main>
 </div>
-{% endif %}
