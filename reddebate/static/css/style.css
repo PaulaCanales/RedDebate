@@ -2035,3 +2035,14 @@ hr {
   text-align: right;
   font-family: montserrat;
 }
+.stats_arg table thead th{
+  background-color: var(--azul-principal);
+}
+.stats_arg1{
+  color: var(--verde-principal);
+  font-weight: bold;
+}
+.stats_arg0{
+  color: var(--rojo-principal);
+  font-weight: bold;
+}

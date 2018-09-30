@@ -201,11 +201,21 @@ def debateStats(request, id_debate):
 		against_to_infavor += num
 
 	best_argument = False
+	best_argument_owner = False
 	second_argument = False
+	second_argument_owner = False
 	arguments = Argument.objects.filter(id_debate_id=debate.id_debate).order_by('-score')
 	if len(arguments)>1:
 		best_argument = arguments[0]
+		best_argument_owner = User.objects.get(pk=best_argument.id_user_id).username
+		if best_argument.owner_type == 'alias':
+			profile = Profile.objects.get(pk=User.objects.get(pk=best_argument.id_user_id))
+			best_argument_owner = profile.alias
 		second_argument = arguments[1]
+		second_argument_owner = User.objects.get(pk=second_argument.id_user_id).username
+		if second_argument.owner_type == 'alias':
+			profile = Profile.objects.get(pk=User.objects.get(pk=second_argument.id_user_id))
+			second_argument_owner = profile.alias
 
 	position_date = Position.objects.filter(id_debate_id = id_debate).values("date")
 	position_date_group = itertools.groupby(position_date, lambda record: record.get("date").strftime("%Y-%m-%d"))
@@ -219,6 +229,7 @@ def debateStats(request, id_debate):
 			'infavor_percent': infavor_percent, 'against_percent': against_percent,
 			'infavor_args_list': infavor_args_list, 'against_args_list':against_args_list,
 			'best_argument': best_argument, 'second_argument': second_argument,
+			'best_argument_owner': best_argument_owner, 'second_argument_owner': second_argument_owner,
 			'infavor_to_against': infavor_to_against, 'against_to_infavor':against_to_infavor,
 			'reason_infavor_to_against': reason_infavor_to_against, 'reason_against_to_infavor':reason_against_to_infavor,
 			'positions_by_day':positions_by_day}
