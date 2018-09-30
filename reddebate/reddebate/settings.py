@@ -28,12 +28,7 @@ SECRET_KEY = 'vlf=awhlkhl@b1q7bo92mj^-@dh0fv0zx5mz%qsitx7zfc3s62'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [
-    'www.reddebate.cl',
-    'reddebate.cl',
-    '146.83.216.233',
-    'localhost'
-]
+ALLOWED_HOSTS = ['*']
 
 TEMPLATE_DIRS=(
     join(BASE_DIR, 'templates'),

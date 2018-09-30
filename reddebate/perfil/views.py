@@ -10,7 +10,7 @@ from django.shortcuts import redirect
 import requests
 from collections import Counter
 import math
-
+from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponse
 from resumen.models import Debate
 from perfil.models import Profile, List, UsersList
@@ -33,7 +33,10 @@ def alias(request, id_usr):
     return user_data
 
 def userData(request,id_usr,name_type):
-    target_user = User.objects.get(id=id_usr)
+    try:
+        target_user = User.objects.get(id=id_usr)
+    except ObjectDoesNotExist:
+        return render(request, '404.html', status=404)
     target_profile = Profile.objects.get(user_id=target_user)
     actual_user = request.user
     #si el user actual accede a su propio perfil
@@ -209,7 +212,10 @@ def userList(request):
                 'users_in_list': users_in_list})
 #se despliegan los miembros de cada list
 def memberList(request, id_list):
-    list = List.objects.get(id=id_list)
+    try:
+        list = List.objects.get(id=id_list)
+    except ObjectDoesNotExist:
+        return render(request, '404.html', status=404) 
     list_users = UsersList.objects.filter(list_id=id_list)
     list_profile = []
     for user in list_users:
@@ -260,3 +266,9 @@ def republishDebate(request):
     deb.state = 'open'
     deb.save()
     return redirect('debates')
+
+def handler404(request):
+    return render(request, '404.html', status=404)
+
+def handler500(request):
+    return render(request, '500.html', status=500)

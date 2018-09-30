@@ -10,6 +10,7 @@ from django.http import HttpResponse
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.db.models import Sum
+from django.core.exceptions import ObjectDoesNotExist
 from datetime import *
 import itertools
 import json
@@ -23,7 +24,10 @@ import pytz
 ##@warning Login is required
 @login_required
 def showDebate(request, id_debate): #debate_id
-	debate = Debate.objects.get(id_debate= id_debate)
+	try:
+		debate = Debate.objects.get(id_debate= id_debate)
+	except ObjectDoesNotExist:
+		return render(request, '404.html', status=404)
 	visits = visitCount(debate, request.user)
 	if request.method == 'POST':
 		#solicitud de rateArg un argument
