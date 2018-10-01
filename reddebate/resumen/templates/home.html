@@ -1,7 +1,28 @@
 <!DOCTYPE html>
+{% extends 'metas.html' %}
 {% load static %}
 <html>
+{% block metacontent %}
 <head>
+  <script>
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId            : '309804006235802',
+      autoLogAppEvents : true,
+      xfbml            : true,
+      version          : 'v2.10'
+    });
+    FB.AppEvents.logPageView();
+      };
+
+      (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "//connect.facebook.net/en_US/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+       }(document, 'script', 'facebook-jssdk'));
+</script>
   <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
   <link rel="stylesheet" type='text/css' href="{% static '/css/login.css' %}" >
   <link rel="shortcut icon" type="image/png" href="{% static 'img/RDLogo02.png' %}"/>
@@ -9,8 +30,12 @@
   <script src="{% static 'js/jquery.js' %}"></script>
   <script src="{% static 'js/login.js' %}"></script>
   <meta charset="UTF-8" />
+  <meta property="og:url" content="https://reddebate.cl/debate/1/"/>
+	<meta property="og:type" content="website" />
+	<meta property="og:title" content="titutlodebate"/>
+	<meta property="og:description" content="description"/>
+	<meta property="og:image" content="{% static 'img/RDLogo02.png'%}"/>
 
-  <title>Red de Debate</title>
 </head>
 <body>
   <div class="materialContainer">
@@ -27,5 +52,5 @@
    </div>
 </div>
 </body>
-
+{% endblock metacontent %}
 </html>

@@ -1,15 +1,10 @@
 <!DOCTYPE html>
 {% extends 'base.html' %}
 {% load static %}
-
 <html>
 {% block content %}
 <head>
-	<meta property="og:url" content="http://localhost:8000/debate/1/"/>
-	<meta property="og:type" content="website" />
-	<meta property="og:title" content="{{debate.title}}"/>
-	<meta property="og:description" content="{{debate.text}}"/>
-	<meta property="og:image" content="{% static 'img/RDLogo02.png'%}"/>
+	{% include 'metas.html' %}
 </head>
 {% if user.is_staff or user.is_superuser%}
 {% include 'moderador_debate.html' %}

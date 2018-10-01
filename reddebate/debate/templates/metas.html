@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+<meta property="og:url" content="http://localhost:8000/debate/1/"/>
+<meta property="og:type" content="website" />
+<meta property="og:title" content="{{debate.title}}"/>
+<meta property="og:description" content="{{debate.text}}"/>
+<meta property="og:image" content="{% static 'img/RDLogo02.png'%}"/>
+{% block metacontent %}
+{% endblock metacontent %}
+</html>
