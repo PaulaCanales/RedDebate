@@ -22,6 +22,8 @@ from debate.views import updateReputation
 
 def home(request):
     form = LoginForm(request.POST or None)
+    if request.user.is_authenticated:
+        return redirect('index')
     if request.POST and form.is_valid():
         user = form.login(request)
         if user:
