@@ -48,7 +48,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'social.apps.django_app.default',
-    'social_django',
+    #'social_django',
     'channels',
     'reddebate',
     'taggit',
@@ -58,7 +58,7 @@ INSTALLED_APPS = [
 # ACCOUNT_DEFAULT_HTTP_PROTOCOL = "https"
 # SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 # SECURE_SSL_REDIRECT = True
-# SESSION_COOKIE_SECURE = True
+# SESSION_COOKIE_SECURE = False
 # CSRF_COOKIE_SECURE = True
 
 LOGIN_REDIRECT_URL = '/'
