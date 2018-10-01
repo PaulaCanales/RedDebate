@@ -27,7 +27,7 @@
         <h2>¿Desea volver a publicar el debate?</h2>
         <p id="titulodebrepublicar"> </p>
         <form id="id" method="post" action= "{% url 'debates' %}"  enctype="multipart/form-data">{% csrf_token %}
-            <input type="hidden" id="iddebarepublicar" value="" name="id_deb_republicar">
+            <input type="hidden" id="iddebarepublicar" value="" name="id_deb_republish">
             <p>¿Nueva fecha de cierre?</p>
             <input type="radio" name="tab" value="NULL" onclick="quitarFecha();" checked/> Sin fecha límite<br>
             <input type="radio" name="tab" value="fechafin" onclick="mostrarFecha();" /> Con fecha<br>
@@ -44,7 +44,7 @@
 <div class="container-debate">
   <header>
     <h2>Mis Debates</h2>
-    <p>{{usuario.get_full_name}}</p>
+    <p>{{user.get_full_name}}</p>
   </header>
   <!-- <button id="btnValoresSeleccionados" type="button" class="btn btn-primary">Valores Seleccionadas</button> -->
   <table id="myTable" class="table" cellspacing="0" width="100%">
@@ -61,31 +61,31 @@
           </tr>
       </thead>
       <tbody>
-        {% for deb in object_list %}
+        {% for deb in total_data_deb %}
           <tr>
               <td>
-                <a href="{% url 'despliega' deb.datos.id_debate %}">{{deb.datos.titulo}}</a>
+                <a href="{% url 'showDebate' deb.model.id_debate %}">{{deb.model.title}}</a>
               </td>
-              {% ifequal deb.datos.estado 'abierto'  %}
+              {% ifequal deb.model.state 'open'  %}
               <td>
-                <a href="javascript:confirm_modal_show(1,'{{deb.datos.id_debate}}', '{{deb.datos.titulo}}')"> Abierto </a>
+                <a href="javascript:confirm_modal_show(1,'{{deb.model.id_debate}}', '{{deb.model.title}}')"> Abierto </a>
               </td>
               {% else %}
               <td>
-                <a href="javascript:confirm_modal_show(2,'{{deb.datos.id_debate}}', '{{deb.datos.titulo}}')"> Cerrado </a>
+                <a href="javascript:confirm_modal_show(2,'{{deb.model.id_debate}}', '{{deb.model.title}}')"> Cerrado </a>
               </td>
               {% endifequal %}
-              {% ifequal deb.datos.tipo_participacion 1%}
+              {% ifequal deb.model.members_type 1%}
                 <td> Privado </td>
               {% else %}
                 <td> Público </td>
               {% endifequal %}
-              <td >{{deb.num_posturas}}</td>
-              <td >{{deb.num_args}}</td>
-              <td >{{deb.visitas}}</td>
-              <td>{{deb.datos.date|date:"d/m/Y"}}</td>
-              {% if deb.datos.date_fin %}
-              <td>{{deb.datos.date_fin|date:"d/m/Y"}}</td>
+              <td >{{deb.position_num}}</td>
+              <td >{{deb.arg_num}}</td>
+              <td >{{deb.visits}}</td>
+              <td>{{deb.model.date|date:"d/m/Y"}}</td>
+              {% if deb.model.end_date %}
+              <td>{{deb.model.end_date|date:"d/m/Y"}}</td>
               {% else %}
               <td> No definido </td>
               {% endif %}

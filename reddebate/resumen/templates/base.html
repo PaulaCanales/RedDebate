@@ -38,12 +38,12 @@
 		fjs.parentNode.insertBefore(js, fjs);
 	}(document, 'script', 'facebook-jssdk'));
 
-  function valorar(argumento, opcionusr, id){
+  function rateArg(argument, rateusr, id){
 		 $.ajax({
 				 url:  $(this).attr("href"),
 				 type: 'POST',
-				 data:{  id_arg : argumento,
-								 opcion: opcionusr,
+				 data:{  id_arg : argument,
+								 option_rate: rateusr,
 								 id_deb: id,
 								 csrfmiddlewaretoken: '{{ csrf_token }}'
 							 } ,
@@ -65,13 +65,13 @@
 			}
 			$('input[name=radioDeb]').change(function(){
 		        // $('#tipoDeb').submit();
-						var opcion = $("input[name=radioDeb]:checked")
-						if (opcion.val() == 0){
+						var option_rate = $("input[name=radioDeb]:checked")
+						if (option_rate.val() == 0){
 							document.getElementById('publicos').style.display = 'flex';
 							document.getElementById('privados').style.display = 'none';
 							document.getElementById('todos').style.display = 'none';
 						}
-						else if (opcion.val() == 1) {
+						else if (option_rate.val() == 1) {
 							document.getElementById('privados').style.display = 'flex';
 							document.getElementById('publicos').style.display = 'none';
 							document.getElementById('todos').style.display = 'none';
@@ -82,6 +82,8 @@
 							document.getElementById('privados').style.display = 'none';
 						}
 		   });
+
+			$('#debOrderTypeForm').val($('#deb_order_select').text())
 
       try{
 				$('[data-toggle="popover"]').popover();
@@ -176,11 +178,11 @@ $(document).ready(function(){
                         <a href="{% url 'index' %}">Debates Abiertos</a>
                     </li>
 										<li>
-                        <a href="{% url 'cerrados' %}">Debates Cerrados</a>
+                        <a href="{% url 'closedIndex' %}">Debates Cerrados</a>
                     </li>
-										{% if user.is_staff %}
+										{% if user.is_staff or user.is_superuser %}
 										<li>
-                        <a href="{% url 'perfil' id_usr=user.id %}">Perfil</a>
+                        <a href="{% url 'username' user.id %}">Perfil</a>
                     </li>
 										{% else %}
                     <li  class="dropdown-menu">
@@ -189,8 +191,8 @@ $(document).ready(function(){
 											    <span class="caret"></span></button>
 											    <ul class="dropdown-menu">
 											      <li><a href="{% url 'debates' %}">Mis Debates</a></li>
-											      <li><a href="{% url 'listas' %}">Mis Listas</a></li>
-											      <li><a href="{% url 'perfil' id_usr=user.id %}">Mis Datos</a></li>
+											      <li><a href="{% url 'userList' %}">Mis Listas</a></li>
+											      <li><a href="{% url 'username' user.id %}">Mis Datos</a></li>
 											    </ul>
 											  </div>
                     </li>
@@ -210,9 +212,9 @@ $(document).ready(function(){
 							<ul id="myList">
 								{% for notificacion in notificaciones  %}
 
-								<li id="notificacion{{notificacion.object.id}}" class="notificacion{{notificacion.object.estado}}">
-									<i class="{{notificacion.object.tipo}}"></i>
-									<a href="{% url 'ver_notificacion' notificacion.object.id_debate_id notificacion.object.id %}">
+								<li id="notificacion{{notificacion.object.id}}" class="notificacion{{notificacion.object.state}}">
+									<i class="{{notificacion.object.type}}"></i>
+									<a href="{% url 'readNotification' notificacion.object.id_debate_id notificacion.object.id %}">
 										{{notificacion.object}}<br>
 										<label>{{notificacion.tiempo}}</label>
 									</a>
@@ -225,9 +227,13 @@ $(document).ready(function(){
     	</nav>
 			<label id="id_usuario_actual" class="hide" value="{{user.id}}">{{user.id}}</label>
     </div>
-		{% if user.is_staff %}
+		{% if user.is_staff or user.is_superuser %}
 		<div class="moderador">
-			Usuario Moderador
+			{% if user.is_superuser %}
+				Usuario Administrador
+			{% else %}
+				Usuario Moderador
+			{% endif %}
 		</div>
 		{% endif %}
 	{% block content %}

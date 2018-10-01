@@ -4,19 +4,19 @@
 <html>
 
 	{% block content %}
-	{% if user.is_staff %}
+	{% if user.is_staff or user.is_superuser %}
 	{% include 'moderador_filtro.html' %}
 	{% else %}
   <div class="container-debate">
         <header>
           <h2>{{label}}</h2>
-          <p>{{object_list|length}} debates | {{deb_pub}} publicos | {{deb_pri}} privados </p>
+          <p>{{total_data_deb|length}} debates | {{public_deb}} publicos | {{private_deb}} privados </p>
         </header>
-        {% ifequal object_list|length 0 %}
+        {% ifequal total_data_deb|length 0 %}
           <h3> ¡No hay resultados!</h3>
         {% else %}
 					<ul class="cards">
-						{% for deb in object_list %}
+						{% for deb in total_data_deb %}
           		{% include 'grilla.html' with index=True%}
 						{% endfor %}
 					</ul>

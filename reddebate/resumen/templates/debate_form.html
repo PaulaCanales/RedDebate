@@ -9,20 +9,20 @@
         <div class="col-md-6">
           {{ form.non_field_errors }}
           <div class="fieldWrapper">
-              {{ form.titulo.errors }}
+              {{ form.title.errors }}
               <label>Titulo Debate</label>
               <div class="tooltipform"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
                 <span class="tooltipformtext">Corresponde al título del debate. Se recomienda que sea una afirmación</span>
               </div>
-              {{ form.titulo }}<div id="errorTitulo" class="alert alert-danger" role="alert">¡¡Escribe un título!!</div>
+              {{ form.title }}<div id="errorTitulo" class="alert alert-danger" role="alert">¡¡Escribe un título!!</div>
           </div>
           <div class="fieldWrapper">
-              {{ form.descripcion.errors }}
+              {{ form.text.errors }}
               <label>Descripción Debate</label>
               <div class="tooltipform"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
                 <span class="tooltipformtext">Corresponde a la descripción de tu debate, donde puedes detallar la información correspondiente a tu afirmación</span>
               </div>
-              {{ form.descripcion }}<div id="errorDesc" class="alert alert-danger" role="alert">¡¡Escribe una descripción!!</div>
+              {{ form.text }}<div id="errorDesc" class="alert alert-danger" role="alert">¡¡Escribe una descripción!!</div>
           </div>
           <label> Tags del debate </label>
           <div class="tooltipform"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
@@ -32,30 +32,30 @@
         </div>
         <div class="col-md-6">
           <div class="fieldWrapper">
-            {{ form.tipo_participacion.errors }}
+            {{ form.members_type.errors }}
             <label>Privacidad de debate</label>
             <div class="tooltipform"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
               <span class="tooltipformtext">Indica si deseas que tu debate sea publico o privado. Si es privado, debes seleccionar a los usuarios que tendrán acceso</span>
             </div>
-            {{ form.tipo_participacion }}
+            {{ form.members_type }}
             <a id="modificarusr" href="javascript:abrir_modal('usuariosPrivado_modal')" style="display:none"> Modificar usuarios</a>
             <a id="moficarlista" href="javascript:abrir_modal('usuariosPrivadoLista_modal')" style="display:none"> Modificar lista</a>
           </div>
           <div class="fieldWrapper">
-            {{ form.alias_c.errors }}
+            {{ form.owner_type.errors }}
             <label>Nombre a mostrar</label>
             <div class="tooltipform"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
-              <span class="tooltipformtext">Indica si deseas publicar el debate con tu nombre o con tu alias. Este estará visible a quienes participen del debate</span>
+              <span class="tooltipformtext">Indica si deseas publicar el debate con tu name o con tu alias. Este estará visible a quienes participen del debate</span>
             </div>
-            {{ form.alias_c }}
+            {{ form.owner_type }}
           </div>
           <div class="fieldWrapper">
-            {{ form.date_fin.errors }}
+            {{ form.end_date.errors }}
             <label>Fecha fin del debate</label>
             <div class="tooltipform"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
               <span class="tooltipformtext">Indica la fecha de cierre automático de tu debate. Si la dejas vacía, no se cerrará hasta que tu mismo lo hagas</span>
             </div><br>
-            {{ form.date_fin }}
+            {{ form.end_date }}
           </div>
         </div>
       </div>
@@ -64,16 +64,16 @@
           <div class="row leftAlign">
            <div class="col-md-1"></div>
            <div class="col-md-5">
-             {{ form.num_cambio_postura.errors }}
+             {{ form.position_max.errors }}
              <label>Cambios de postura por cada usuario</label>
              <div class="tooltipform"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
                <span class="tooltipformtext">Indica la cantidad de veces que los usuarios pueden cambiar de postura en tu debate</span>
              </div>
              <div class="input-group spinner">
-               {{ form.num_cambio_postura }}
+               {{ form.position_max }}
                <div class="input-group-btn-vertical">
-                 <a href="javascript: spinnerReglas('debCambioPostForm', '1','10','1','1')"class="btn btn-default"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a>
-                 <a href="javascript: spinnerReglas('debCambioPostForm','-1','10','1','1')"class="btn btn-default"><span class="glyphicon glyphicon-minus" aria-hidden="true"></span></a>
+                 <a href="javascript: spinnerReglas('debChangePositionForm', '1','10','1','1')"class="btn btn-default"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a>
+                 <a href="javascript: spinnerReglas('debChangePositionForm','-1','10','1','1')"class="btn btn-default"><span class="glyphicon glyphicon-minus" aria-hidden="true"></span></a>
                </div>
              </div>
            </div>
@@ -83,13 +83,13 @@
          <div class="row leftAlign">
            <div class="col-md-1"></div>
              <div class="col-md-5">
-               {{ form.num_argumento.errors }}
+               {{ form.args_max.errors }}
                <label> Cantidad de argumentos por cada usuario </label>
                <div class="tooltipform"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
                  <span class="tooltipformtext">Indica la cantidad máxima de argumentos que los usuarios pueden publicar en tu debate</span>
                </div>
                <div class="input-group spinner">
-                 {{ form.num_argumento }}
+                 {{ form.args_max }}
                  <div class="input-group-btn-vertical">
                    <a href="javascript: spinnerReglas('debArgsForm','1','3','1','1')"class="btn btn-default"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a>
                    <a href="javascript: spinnerReglas('debArgsForm','-1','3','1','1')"class="btn btn-default"><span class="glyphicon glyphicon-minus" aria-hidden="true"></span></a>
@@ -97,16 +97,16 @@
                </div>
              </div>
              <div class="col-md-5">
-               {{ form.largo.errors }}
+               {{ form.length.errors }}
                <label>Cantidad de caracteres por cada argumento</label>
                <div class="tooltipform"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
-                 <span class="tooltipformtext">Indica la cantidad máxima de caracteres que tendrá cada argumento que sea publicado en tu debate</span>
+                 <span class="tooltipformtext">Indica la cantidad máxima de caracteres que tendrá cada argument que sea publicado en tu debate</span>
                </div>
                <div class="input-group spinner">
-                 {{ form.largo }}
+                 {{ form.length }}
                  <div class="input-group-btn-vertical">
-                   <a href="javascript: spinnerReglas('debLargoForm','1','340','140','100')"class="btn btn-default"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a>
-                   <a href="javascript: spinnerReglas('debLargoForm','-1','340','140','100')"class="btn btn-default"><span class="glyphicon glyphicon-minus" aria-hidden="true"></span></a>
+                   <a href="javascript: spinnerReglas('debLengthForm','1','340','140','100')"class="btn btn-default"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a>
+                   <a href="javascript: spinnerReglas('debLengthForm','-1','340','140','100')"class="btn btn-default"><span class="glyphicon glyphicon-minus" aria-hidden="true"></span></a>
                  </div>
                </div>
              </div>
@@ -115,26 +115,26 @@
            <div class="row leftAlign">
              <div class="col-md-1"></div>
              <div class="col-md-5">
-                 {{ form.num_rebate.errors }}
-                 <label>Cantidad de rebates por cada usuario</label>
+                 {{ form.counterargs_max.errors }}
+                 <label>Cantidad de contraargumentos por cada usuario</label>
                  <div class="tooltipform"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
-                   <span class="tooltipformtext">Indica la cantidad máxima de rebates que los usuarios pueden responder a los argumentos de tu debate</span>
+                   <span class="tooltipformtext">Indica la cantidad máxima de contraargumentos que los usuarios pueden counterargument1 a los argumentos de tu debate</span>
                  </div>
                  <div class="input-group spinner">
-                   {{ form.num_rebate }}
+                   {{ form.counterargs_max }}
                    <div class="input-group-btn-vertical">
-                     <a href="javascript: spinnerReglas('debRebateForm', '1','5','1','1')"class="btn btn-default"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a>
-                     <a href="javascript: spinnerReglas('debRebateForm','-1','5','1','1')"class="btn btn-default"><span class="glyphicon glyphicon-minus" aria-hidden="true"></span></a>
+                     <a href="javascript: spinnerReglas('debCounterArgForm', '1','5','1','1')"class="btn btn-default"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a>
+                     <a href="javascript: spinnerReglas('debCounterArgForm','-1','5','1','1')"class="btn btn-default"><span class="glyphicon glyphicon-minus" aria-hidden="true"></span></a>
                    </div>
                  </div>
                </div>
                <div class="col-md-5">
-                 {{ form.tipo_rebate.errors }}
-                 <label>Tipo de rebate</label>
+                 {{ form.counterarg_type.errors }}
+                 <label>Tipo de contraargumento</label>
                  <div class="tooltipform"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
-                   <span class="tooltipformtext">Indica si deseas que los usuarios puedan responder a argumentos de la postura contraria o a ambas posturas</span>
+                   <span class="tooltipformtext">Indica si deseas que los usuarios puedan counterargument1 a argumentos de la postura contraria o a ambas posturas</span>
                  </div>
-                 {{ form.tipo_rebate }}
+                 {{ form.counterargs_type }}
                </div>
                <div class="col-md-1"></div>
            </div>
@@ -149,10 +149,11 @@
             Usuarios
           </h5>
           <div class="fieldWrapper">
-            {{form.participantes.errors }}
+            {{form.members.errors }}
             <input type="text" value="" name="searchColumn" id="searchUser1" placeholder="Busca a un usuario..."/>
+            {{order_user_form}}
             <div id="containercheckbox" class="userscheckbox">
-            {% for field in form.participantes %}
+            {% for field in form.members %}
             <div class="inputGroup">{{field}}</div>
             {%endfor%}
             </div>
@@ -167,7 +168,7 @@
             Listas
           </h5>
           <div class="fieldWrapper">
-            {{form.participantes.errors }}
+            {{form.members.errors }}
             <input type="text" value="" name="searchColumn" id="searchLista1" placeholder="Busca a un usuario..."/>
             <div class="radioFiltro">{{ form.filtro }}</div>
             <div id="containercheckbox" class="userscheckbox">

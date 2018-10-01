@@ -29,9 +29,9 @@ function cancelar_form(boton, form){
   });
 }
 
-function fomulario_argumento(postura){
-  document.getElementById('bot_argumento'+postura).style.display = 'none';
-  document.getElementById('form_argumento'+postura).style.display = 'block';
+function fomulario_argumento(position){
+  document.getElementById('bot_argumento'+position).style.display = 'none';
+  document.getElementById('form_argumento'+position).style.display = 'block';
 }
 
 function despliega_formulario(id){
@@ -39,17 +39,17 @@ function despliega_formulario(id){
   $('html, body').animate({scrollTop : 0},800);
   $(nuevoDebateBtn).hide();
 };
-function confirm_modal_show(id, deb, titulo) {
+function confirm_modal_show(id, deb, title) {
   $(".modalcontainerconfirm").fadeIn("slow");
   if (id==1){
     $("#cerrarDebate").fadeIn("slow");
     $("#iddebacerrar").val(deb);
-    $("#titulodebcerrar").text(titulo);
+    $("#titulodebcerrar").text(title);
   }
   else{
     $("#republicarDebate").fadeIn("slow");
     $("#iddebarepublicar").val(deb);
-    $("#titulodebrepublicar").text(titulo);
+    $("#titulodebrepublicar").text(title);
   }
 };
 function confirm_modal_close() {
@@ -60,25 +60,28 @@ function cierra_formulario(id){
   $(id).slideUp("slow");
   $(nuevoDebateBtn).show();
 }
-function formulario_editar_debate(id,id_dbt,titulo,desc,año,mes,dia,alias,largo){
+function toggle_div(id){
+  $(id).slideToggle();
+}
+function formulario_editar_debate(id,id_dbt,title,desc,año,mes,dia,alias,length){
   $(id).slideDown("slow");
   $("html, body").animate({ scrollTop: 0 }, 600);
-  document.getElementById('tituloeditar').value = titulo;
+  document.getElementById('tituloeditar').value = title;
   document.getElementById('desceditar').value = desc;
   document.getElementById('iddbteditar').value = id_dbt;
 
-  fecha=año+"-"+mes+"-"+dia
-  if (fecha!="--"){
-    document.getElementById('fechaeditar').value = fecha; }
+  date=año+"-"+mes+"-"+dia
+  if (date!="--"){
+    document.getElementById('fechaeditar').value = date; }
   else{
     document.getElementById('fechaeditar').value = null; }
   if (alias=="username"){
     document.getElementById('radio4e').checked= true; }
   else{
     document.getElementById('radio5e').checked= true; }
-  if(largo==300){
+  if(length==300){
     document.getElementById('radio1e').checked= true; }
-  else if (largo==200){
+  else if (length==200){
     document.getElementById('radio2e').checked= true; }
   else{
     document.getElementById('radio3e').checked= true; }
@@ -113,9 +116,9 @@ function debate_estado(evt, estadoDbt) {
   evt.currentTarget.className += " active";
 }
 
-function mostrar_modal(modal, id_arg, respuestas,postura){
+function mostrar_modal(modal, id_arg, respuestas,position){
   document.getElementById(modal).style.display="block";
-  // document.getElementById("id_argumento_rebate"+postura+id_arg).value = id_arg;
+  // document.getElementById("id_argumento_rebate"+position+id_arg).value = id_arg;
 };
 
 function abrir_modal(modal){
@@ -126,11 +129,11 @@ function cerrar_modal(modal){
   document.getElementById(modal).style.display="none";
 }
 
-function definir_postura(id_debate, postura, post_f, post_c){
+function definir_postura(id_debate, position, post_f, post_c){
   if (document.getElementById('argumentos')){
     $("#argumentos").slideDown("slow");
   }
-  cambiar_postura(id_debate, postura, post_f, post_c);
+  cambiar_postura(id_debate, position, post_f, post_c);
 }
 function confirmar_cambio(post) {
    document.getElementById("cambioPostura_modal").style.display="block";
@@ -150,7 +153,7 @@ function ver(evt, estadoDbt) {
 }
 
 function borrarFecha(){
-  $('#debFinForm').val("")
+  $('#debEndDateForm').val("")
 }
 
 function spinnerReglas(id, operacion, max, min, paso){
@@ -178,7 +181,7 @@ function cortarTexto(texto){
 }
 
 function creartags(){
-  var texto = $("#debTituloForm").val();
+  var texto = $("#debTitleForm").val();
   var res = texto.split(" ");
   console.log(res);
 
@@ -186,10 +189,10 @@ function creartags(){
 
 function mostrarFecha(){
   document.getElementById("fechafin2").disabled = false;
-  var fecha = new Date()
-  dd = fecha.getDate();
-  mm = fecha.getMonth() + 1;
-  yyyy = fecha.getFullYear()
+  var date = new Date()
+  dd = date.getDate();
+  mm = date.getMonth() + 1;
+  yyyy = date.getFullYear()
   if (dd<10){dd='0'+dd};
   if (mm<10){mm='0'+mm};
   $("#fechafin2").val(yyyy+'-'+mm+'-'+dd)
@@ -250,9 +253,9 @@ function filtroPanel(id){
 
 function posturaChart() {
   var data = google.visualization.arrayToDataTable([
-          ['Postura', 'Cantidad'],
-          ['A Favor', varGlobal.postura_f],
-          ['En Contra', varGlobal.postura_c]
+          ['Position', 'Cantidad'],
+          ['A Favor', varGlobal.infavor_position],
+          ['En Contra', varGlobal.against_position]
         ]);
 
         var options = {
@@ -269,8 +272,8 @@ function posturaChart() {
 function argumentosChart() {
   var data = google.visualization.arrayToDataTable([
           ['Argumentos', 'Cantidad'],
-          ['A Favor', varGlobal.argumentos_f],
-          ['En Contra', varGlobal.argumentos_c]
+          ['A Favor', varGlobal.args_infavor],
+          ['En Contra', varGlobal.args_against]
         ]);
 
         var options = {
@@ -288,12 +291,12 @@ function argumentosChart() {
 function cambioPosturaChart() {
   var data = google.visualization.arrayToDataTable([
           ['Cambio', 'Cantidad'],
-          ['De Favor a Contra', varGlobal.cambio_favor_contra],
-          ['De Contra a Favor', varGlobal.cambio_contra_favor]
+          ['De Favor a Contra', varGlobal.infavor_to_against],
+          ['De Contra a Favor', varGlobal.against_to_infavor]
         ]);
 
         var options = {
-          title: 'Usuarios que cambiaron de postura: '+varGlobal.cambio_total,
+          title: 'Usuarios que cambiaron de position: '+varGlobal.position_change,
           width:400,
           height:300,
           colors: ['#18BD9B', '#2D3E50'],
@@ -309,39 +312,39 @@ function cambioPosturaChart() {
         google.visualization.events.addListener(chart, 'select', selectHandler);
 };
 
-function mejorArgumentoChart(){
-  var data = new google.visualization.arrayToDataTable([
-      ['Valoración', 'A Favor','En Contra'],
-      ['1º Mejor Valorado', varGlobal.primer_arg_f  ,varGlobal.primer_arg_c],
-      ['2º Mejor Valorado', varGlobal.segundo_arg_f  , varGlobal.segundo_arg_c]]);
-    var options = {
-      title: 'Argumentos a favor y en contra más valorados',
-      chartArea: {width: '50%'},
-      bars: 'horizontal', // Required for Material Bar Charts.
-      backgroundColor: { fill: "transparent" },
-      series: {
-        0: { color: '18BD9B'}, // Bind series 0 to an axis named 'distance'.
-        1: { color: '2D3E50'} // Bind series 1 to an axis named 'brightness'.
-      },
-      hAxis: {
-          title: 'Cantidad'
-        },
-        vAxis: {
-          title: 'Valoración'
-        }
-    };
-    var chart = new google.visualization.BarChart(document.getElementById('chart_mejorArgumento'));
-    chart.draw(data, options);
-   };
+// function mejorArgumentoChart(){
+//   var data = new google.visualization.arrayToDataTable([
+//       ['Valoración', 'A Favor','En Contra'],
+//       ['1º Mejor Valorado', varGlobal.primer_arg_f  ,varGlobal.primer_arg_c],
+//       ['2º Mejor Valorado', varGlobal.segundo_arg_f  , varGlobal.segundo_arg_c]]);
+//     var options = {
+//       title: 'Argumentos a favor y en contra más valorados',
+//       chartArea: {width: '50%'},
+//       bars: 'horizontal', // Required for Material Bar Charts.
+//       backgroundColor: { fill: "transparent" },
+//       series: {
+//         0: { color: '18BD9B'}, // Bind series 0 to an axis named 'distance'.
+//         1: { color: '2D3E50'} // Bind series 1 to an axis named 'brightness'.
+//       },
+//       hAxis: {
+//           title: 'Cantidad'
+//         },
+//         vAxis: {
+//           title: 'Valoración'
+//         }
+//     };
+//     var chart = new google.visualization.BarChart(document.getElementById('chart_mejorArgumento'));
+//     chart.draw(data, options);
+//    };
 function razonCambioChart(){
   var data = new google.visualization.arrayToDataTable([
       ['Razón', 'De Favor a Contra','De Contra a Favor'],
-      ['Cambió de opinión', varGlobal.razon_favor_contra[0]  ,varGlobal.razon_contra_favor[0]],
-      ['Error de clic', varGlobal.razon_favor_contra[1]  ,varGlobal.razon_contra_favor[1]],
-      ['Otro', varGlobal.razon_favor_contra[2] , varGlobal.razon_contra_favor[2]]]);
+      ['Cambió de opinión', varGlobal.reason_infavor_to_against[0]  ,varGlobal.reason_against_to_infavor[0]],
+      ['Error de clic', varGlobal.reason_infavor_to_against[1]  ,varGlobal.reason_against_to_infavor[1]],
+      ['Otro', varGlobal.reason_infavor_to_against[2] , varGlobal.reason_against_to_infavor[2]]]);
 
       var options = {
-        title: 'Motivos cambio de postura',
+        title: 'Motivos cambio de position',
         chartArea: {width: '50%'},
         isStacked: true,
         backgroundColor: { fill: "transparent" },
@@ -364,15 +367,15 @@ function razonCambioChart(){
     var data = new google.visualization.DataTable();
     data.addColumn('date', 'Fecha');
     data.addColumn('number', 'Posturas');
-    for (i=0 ; i<fecha_posturas.length ; i++){
-      data.addRow([new Date(fecha_posturas[i][0]),fecha_posturas[i][1]]);
+    for (i=0 ; i<positions_by_day.length ; i++){
+      data.addRow([new Date(positions_by_day[i][0]),positions_by_day[i][1]]);
     };
     var chart = new google.visualization.AnnotationChart(document.getElementById('chart_div'));
 
     var options = {
       displayAnnotations: true,
       colors: ['#18BD9B'],
-      width:"100%",
+      width: document.getElementById("stats_div").offsetWidth*0.95,
     };
 
     chart.draw(data, options);

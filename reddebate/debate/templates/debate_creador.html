@@ -9,22 +9,22 @@ $(document).ready(function(){
 	<header>
 		<div class="row">
 			<div class="col-md-11">
-				<h2>{{ debate.titulo }}</h2>
+				<h2>{{ debate.title }}</h2>
 				<p>
 					<input id="idDebate" type="hidden" value={{debate.id_debate}}>
-					{% ifequal debate.alias_c 'alias' %}
-						<h5>Creado por {{alias}} en modo anónimo</h5>
+					{% ifequal debate.owner_type 'alias' %}
+						<h5>Creado por {{owner_profile}} en modo anónimo</h5>
 					{%else%}
-						<h5>Debate creado por {{usuario_creador}}</h5>
+						<h5>Debate creado por {{owner_user}}</h5>
 					{%endifequal%}
-					<span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>{{visitas}}
+					<span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>{{visits}}
 				</p>
 			</div>
 			<div class="col-md-1">
-				{% ifequal debate.estado 'abierto' %}
+				{% ifequal debate.state 'open' %}
 				<form id="id" method="post" action= "{% url 'resumen:index' %}" enctype="multipart/form-data" onsubmit="return confirm('¿Seguro que desea cerrar el debate?');">{% csrf_token %}
 					 <input type="hidden" value="{{ debate.id_debate  }}" name="id_deb">
-					 <button type="submit" class="btn btn-titulo" data-toggle="tooltip" title="Cerrar debate" >
+					 <button type="submit" class="btn btn-title" data-toggle="tooltip" title="Cerrar debate" >
 						 <i class="fa fa-archive"></i>
 					 </button>
 			 </form>
@@ -32,11 +32,11 @@ $(document).ready(function(){
 			</div>
 		</div>
 	</header>
-	<p class="debateDescripcion">{{ debate.descripcion }}</p>
+	<p class="debateDescripcion">{{ debate.text }}</p>
 	<div id="fb-root"></div>
 	<div style="text-align: right">
 	<div class="fb-share-button"
-		data-href="http://reddebate.cl/reddebate/debate/{{debate.id_debate}}/"
+		data-href="https://reddebate.cl/debate/3/"
 		data-layout="button_count">
 	</div></div><br>
 	<div name="detalle-debate">
@@ -53,13 +53,13 @@ $(document).ready(function(){
 							</tr>
 							<tr>
 								<td width=120 ><p1>Estado</p1></td>
-								<td>{{ debate.estado }}</td>
+								<td>{{ debate.state }}</td>
 							</tr>
 							<tr>
-								<td width=120 ><p1>Tu Postura</p1></td>
+								<td width=120 ><p1>Tu Position</p1></td>
 								<td> Creador </td>
 							</tr>
-							{% ifequal debate.tipo_participacion 0 %}
+							{% ifequal debate.members_type 0 %}
 							<tr>
 								<td width=120 ><p1>Tipo debate</p1></td><td><div id="tu_postura">  Publico </div></td>
 							</tr>
@@ -75,57 +75,48 @@ $(document).ready(function(){
 					<button id="bot_ec" type="submit" class="btn btn-postura0" disabled></button>
 				</div>
 			</div>
+	</div>
+	{% ifequal debate.state 'closed'%}
+		{% include 'estadisticas.html' with opendeb=False %}
+	{% else %}
+		<button onclick="toggle_div('#stats_in_open_deb')" class="btn btn-index"> Mostrar/Ocultar estadisticas </button>
+		<div style="display:none" id="stats_in_open_deb">
+			{% include 'estadisticas.html' with opendeb=True %}
 		</div>
-		{% ifequal debate.estado 'abierto'%}
 		<div id="progresoDebate">
-				{% ifequal porc_f 0 %}
-					<div id="progreso"class="progress-bar" style="background:#d9534f; width: {{porc_c}}%">
-						<span class="glyphicon glyphicon-thumbs-down"></span> <label id="label_porc_c">{{porc_c}}%</label>
+				{% ifequal stats.infavor_percent 0 %}
+					<div id="progreso"class="progress-bar" style="background:#d9534f; width: {{stats.against_percent}}%">
+						<span class="glyphicon glyphicon-thumbs-down"></span> <label id="label_porc_c">{{stats.against_percent}}%</label>
 					</div>
 				{% else %}
-					{% ifequal porc_c 0 %}
-						<div id="progreso"class="progress-bar" style="background:#18BC9C; width: {{porc_f}}%">
-							<span class="glyphicon glyphicon-thumbs-up"></span> <label id="label_porc_f">{{porc_f}}%</label>
+					{% ifequal stats.against_percent 0 %}
+						<div id="progreso"class="progress-bar" style="background:#18BC9C; width: {{stats.infavor_percent}}%">
+							<span class="glyphicon glyphicon-thumbs-up"></span> <label id="label_porc_f">{{stats.infavor_percent}}%</label>
 						</div>
 						{% else %}
-						<div id="progresoFavor"class="progress-bar" style="width: {{porc_f}}%">
-							<span class="glyphicon glyphicon-thumbs-up"></span> <label id="label_porc_f">{{porc_f}}%</label>
+						<div id="progresoFavor"class="progress-bar" style="width: {{stats.infavor_percent}}%">
+							<span class="glyphicon glyphicon-thumbs-up"></span> <label id="label_porc_f">{{stats.infavor_percent}}%</label>
 						</div>
-						<div id="progresoContra"class="progress-bar" style="width: {{porc_c}}%">
-							<span class="glyphicon glyphicon-thumbs-down"></span> <label id="label_porc_c">{{porc_c}}%</label>
+						<div id="progresoContra"class="progress-bar" style="width: {{stats.against_percent}}%">
+							<span class="glyphicon glyphicon-thumbs-down"></span> <label id="label_porc_c">{{stats.against_percent}}%</label>
 						</div>
 					{% endifequal %}
 				{% endifequal %}
-			</div>
-		<div class="tab-slider--nav">
-			<ul class="tab-slider--tabs">
-				<li class="tab-slider--trigger active" rel="tab1">Discusión</li>
-				<li class="tab-slider--trigger" rel="tab2">Estadísticas</li>
-			</ul>
 		</div>
-		<div class="tab-slider--container">
-			<div id="tab1" class="tab-slider--body">
-				<div name="argumentos-debate">
-					<div class="row">
-				    <div class="col-md-6">
-							{% include 'participaciones.html' with frase="A Favor" comentario=argF postura=1 num_post=num_post_f%}
-							<ul id="alertaArgumento1" class="list-group"></ul>
-						</div>
-						<div class="col-md-6">
-							{% include 'participaciones.html' with frase="En Contra" comentario=argC postura=0 num_post=num_post_c%}
-							<ul id="alertaArgumento0" class="list-group"></ul>
-						</div>
-					</div>
+		<div name="argumentos-debate">
+			<div class="row">
+		    <div class="col-md-6">
+					{% include 'participaciones.html' with name_position="A Favor" arguments=stats.infavor_args_list position=1 num_post=stats.infavor_position_num%}
+					<ul id="alertaArgumento1" class="list-group"></ul>
 				</div>
-				<p class="bottom-three">.</p>
+				<div class="col-md-6">
+					{% include 'participaciones.html' with name_position="En Contra" arguments=stats.against_args_list position=0 num_post=stats.against_position_num%}
+					<ul id="alertaArgumento0" class="list-group"></ul>
+				</div>
 			</div>
-			<div id="tab2" class="tab-slider--body">
-				{% include 'estadisticas.html' %}
-			</div>
-		{% else %}
-			{% include 'estadisticas.html' %}
-		{%endifequal%}
-	</div>
+		</div>
+		<p class="bottom-three">.</p>
+	{%endifequal%}
 </div>
 
 </html>

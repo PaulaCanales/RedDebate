@@ -8,7 +8,7 @@
 
 {% block content %}
 <link rel="stylesheet" type='text/css' href="{% static '/css/perfil.css' %}" >
-{% if usuario.is_staff %}
+{% if target_user.is_staff or target_user.is_superuser %}
 {% include 'moderador_perfil.html' %}
 {% else %}
 <div class="container-profile" style="width: 40%">
@@ -17,16 +17,13 @@
   <main>
     <div class="row">
       <div class="left col-md-12">
-        {% ifequal usa_alias 'username' %}
+        {% ifequal name_type 'username' %}
         <div class="photo-left">
           <img class="photo" src="{{alias.img.url}}"/>
           <div class="active"></div>
         </div>
-        <h4 class="name">{{usuario.username}}</h4>
-        <button type="button" class="btn btn-demo" data-toggle="modal" data-target="#verListas_modal">
-    			<i class="fa fa-user-plus" aria-hidden="true"></i>
-    		</button>
-        <p class="info">{{ usuario.email }}</p>
+        <h4 class="name">{{target_user.username}}</h4>
+        <p class="info">{{ target_user.email }}</p>
         {% else %}
         <div class="photo-left">
           <img class="photo" src="{% static 'img/RDLogo05.png' %}"/>
@@ -36,13 +33,26 @@
         <p class="info">modo anónimo</p>
 
         {% endifequal %}
+        {% if user.is_superuser %}
+        <form id="delete_user" method="post" action= "{% url 'resumen:index' %}" enctype="multipart/form-data" onsubmit="return confirm('¿Seguro que desea eliminar el usuario?');">{% csrf_token %}
+           <input type="hidden" value="{{ target_user.id }}" name="id_user_delete">
+           <button type="submit" class="btn btn-demo">
+             <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+           </button>
+       </form>
+       {% endif %}
+        {% if not user.is_staff and not user.is_superuser %}
+          <button type="button" class="btn btn-demo" data-toggle="modal" data-target="#verListas_modal">
+      			<i class="fa fa-user-plus" aria-hidden="true"></i>
+      		</button>
+        {% endif %}
         <div class="stats row">
           <div class="stat col-xs-6">
-            <h4 class="name">{{alias.reputacion}}</h4>
+            <h4 class="name">{{alias.reputation}}</h4>
             <p class="info">Reputación</p>
           </div>
           <div class="stat col-xs-6">
-            <h4 class="name">{{stats.debates}}</h4>
+            <h4 class="name">{{stats.deb_num}}</h4>
             <p class="info">Publicaciones</p>
           </div>
         </div>
@@ -55,33 +65,33 @@
         </div>
         <div class="stats row">
           <div class="stat col-xs-4">
-            <p class="number-stat">{{stats.posturas}}</p>
+            <p class="number-stat">{{stats.position_num}}</p>
             <p class="desc-stat">Posturas</p>
           </div>
           <div class="stat col-xs-4">
-            <p class="number-stat">{{stats.triunfos}}</p>
+            <p class="number-stat">{{stats.wins}}</p>
             <p class="desc-stat">Triunfos</p>
           </div>
           <div class="stat col-xs-4">
-            <p class="number-stat">{{stats.derrotas}}</p>
+            <p class="number-stat">{{stats.lose}}</p>
             <p class="desc-stat">Derrotas</p>
           </div>
         </div>
         <div class="stats row">
           <div class="stat col-xs-4">
-            <p class="number-stat">{{stats.argumentos}}</p>
+            <p class="number-stat">{{stats.args_num}}</p>
             <p class="desc-stat">Argumentos </p>
           </div>
           <div class="stat col-xs-4">
-            <p class="number-stat">{{stats.mejor_arg}}</p>
+            <p class="number-stat">{{stats.best_arg}}</p>
             <p class="desc-stat">Mejor</p>
           </div>
           <div class="stat col-xs-4">
-            <p class="number-stat">{{stats.peor_arg}}</p>
+            <p class="number-stat">{{stats.worse_arg}}</p>
             <p class="desc-stat">Peor</p>
           </div>
         </div>
-        <!-- <p class="desc">{{ usuario.date_joined }}</p> -->
+        <!-- <p class="desc">{{ user.date_joined }}</p> -->
       </div>
       <div class="modal mleft fade" id="verListas_modal" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
@@ -90,21 +100,26 @@
   					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
   					<h4 class="modal-title"><i class="fa fa-user-plus" aria-hidden="true"></i> Agregar </h4>
   				</div>
-            {% if listas_de_usuario|length > 0 %}
-            <p>{{usuario.username}} ya pertenece a tus listas:</p>
+            {% if already_in_list|length > 0 %}
+              {% ifequal name_type 'username' %}
+                <p>{{target_user.username}} ya pertenece a tus listas:</p>
+              {% else %}
+                <p>{{alias.alias}} ya pertenece a tus listas:</p>
+              {% endifequal %}
             <div class="listasModal">
-            {% for lista in listas_de_usuario%}
-                <a href="{% url 'lista' lista.id %}"><i class="fa fa-check" aria-hidden="true"></i> {{lista.nombre}}</a>
+            {% for list in already_in_list%}
+                <a href="{% url 'memberList' list.id %}"><i class="fa fa-check" aria-hidden="true"></i> {{list.name}}</a>
             {% endfor %}
             </div>
             {% endif %}
             <p>Agregar en:</p>
-            <input type="text" value="" name="searchColumn" id="searchLista2" placeholder="Busca a un usuario..."/>
+            <input type="text" value="" name="searchColumn" id="searchLista2" placeholder="Busca a un user..."/>
             <form method="POST" class="post-form" enctype="multipart/form-data">{% csrf_token %}
               <div class="fieldWrapper">
                 {{form.errors }}
+                <input type="hidden" name="type_user" value="{{name_type}}">
                 <div id="listacheckbox" class="userscheckbox">
-                {% for field in form.lista_id %}
+                {% for field in form.list_id %}
                 <div class="inputGroup">{{field}}</div>
                 {%endfor%}
                 </div>
@@ -113,11 +128,11 @@
                 </a>
                 <div id='nueva_lista' style="display: none;" >
                   <p>Nueva Lista: </p>
-                  {{form.nueva}}<a href='javascript:cancelar_form("boton_lista", "nueva_lista");'> Cancelar </a>
-                  {{form.usuario}}
+                  {{form.new_list}}<a href='javascript:cancelar_form("boton_lista", "nueva_lista");'> Cancelar </a>
+                  {{form.user}}
                 </div>
                 <br>
-                <button name="nuevoUsrLista" type="submit" class="btn btn-index">Agregar</button>
+                <button name="new_user_list" type="submit" class="btn btn-index">Agregar</button>
               </div>
             </form>
           </div>

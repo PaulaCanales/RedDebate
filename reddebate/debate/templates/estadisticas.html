@@ -13,35 +13,24 @@ $(document).ready(function(){
 	google.charts.load('current', {'packages':['corechart', 'bar', 'annotationchart']});
 	google.charts.setOnLoadCallback(posturaChart);
 	google.charts.setOnLoadCallback(argumentosChart);
-	google.charts.setOnLoadCallback(mejorArgumentoChart);
 	google.charts.setOnLoadCallback(cambioPosturaChart);
   google.charts.setOnLoadCallback(razonCambioChart);
 	google.charts.setOnLoadCallback(posturasTiempo);
 	});
 	var varGlobal = {
-		postura_f : {{num_post_f}},
-		postura_c : {{num_post_c}},
-		argumentos_f : {{argF|length}},
-		argumentos_c : {{argC|length}},
-		primer_arg_f : 0,
-		segundo_arg_f : 0,
-		primer_arg_c : 0,
-		segundo_arg_c : 0,
-		cambio_favor_contra: {{cambio_f_c}},
-		cambio_contra_favor: {{cambio_c_f}},
-		cambio_total: {{cambio_f_c}} + {{cambio_c_f}},
-		razon_favor_contra: {{razon_f_c}},
-		razon_contra_favor: {{razon_c_f}},
+		infavor_position : {{stats.infavor_position_num}},
+		against_position : {{stats.against_position_num}},
+		args_infavor : {{stats.infavor_args_list|length}},
+		args_against : {{stats.against_args_list|length}},
+		infavor_to_against: {{stats.infavor_to_against}},
+		against_to_infavor: {{stats.against_to_infavor}},
+		position_change: {{stats.infavor_to_against}} + {{stats.against_to_infavor}},
+		reason_infavor_to_against: {{stats.reason_infavor_to_against}},
+		reason_against_to_infavor: {{stats.reason_against_to_infavor}},
 	};
-  var fecha_posturas = {{fecha_posturas|safe}};
-  console.log({{argF.valoracion}});
-	{% if argF.0.2 %} varGlobal.primer_arg_f={{ argF.0.2}}; {% endif %}
-	{% if argF.1.2 %} varGlobal.segundo_arg_f={{ argF.1.2}}; {% endif %}
-	{% if argC.0.2 %} varGlobal.primer_arg_c={{ argC.0.2}}; {% endif %}
-	{% if argC.1.2 %} varGlobal.segundo_arg_c={{ argC.1.2}}; {% endif %}
+  var positions_by_day = {{stats.positions_by_day|safe}};
 </script>
-<!-- <div class="container"> -->
-  <div id="estadisticas" >
+  <div id="stats_div" >
     <h3>Estadísticas</h3>
     <div id="chart_div" style="width: 100%; height: 200px"></div>
     <div class="row">
@@ -51,10 +40,64 @@ $(document).ready(function(){
     </div>
     <br><br><br>
     <div class="row">
-      <div class="col-md-6"> <div id="chart_mejorArgumento"></div></div>
       <div class="col-md-6"> <div id="chart_razonCambio"></div></div>
+      <div class="col-md-6">
+        {% ifequal stats.best_argument 0 %}
+          No hay suficientes participaciones
+        {% else %}
+        <div class="datagrid1 stats_arg">
+          <table id="table_best_arg{{stats.best_argument.position}}">
+            <thead>
+            <tr>
+              <th><i class="fa fa-star" aria-hidden="true"></i></th>
+              <th>Argumentos mejor valorados</th>
+              <th>Postura</th>
+            </tr>
+            </thead>
+            <tr>
+              <td>{{stats.best_argument.score}}</td>
+              <td>
+                <p><a href="{% url stats.best_argument.owner_type stats.best_argument.id_user_id %}">
+                  <p1>{{stats.best_argument_owner}}:</p1></a> {{stats.best_argument.text}}</p>
+              </td>
+              {% ifequal stats.best_argument.position 0%}
+              <td class="stats_arg0"> En Contra</td>
+              {% else %}
+              <td class="stats_arg1"> A Favor</td>
+              {% endifequal %}
+            </tr>
+            <tr>
+              <td>{{stats.second_argument.score}}</td>
+              <td>
+                <p><a href="{% url stats.second_argument.owner_type stats.second_argument.id_user_id %}">
+                  <p1>{{stats.second_argument_owner}}:</p1></a> {{stats.second_argument.text}}</p>
+              </td>
+              {% ifequal stats.second_argument.position 0%}
+              <td class="stats_arg0"> En Contra</td>
+              {% else %}
+              <td class="stats_arg1"> A Favor</td>
+              {% endifequal %}
+            </tr>
+          </table>
+        </div>
+        {% endifequal %}
+      </div>
     </div>
-    <br><br><br>
+    <br><br>
+    {% if not opendeb %}
+    <button onclick="toggle_div('#args_in_stats')" class="btn btn-index"> Mostrar/Ocultar argumentos </button>
+    <div style="display:none" id="args_in_stats">
+      <div name="argumentos-debate">
+        <div class="row">
+          <div class="col-md-6">
+            {% include 'participaciones.html' with name_position="A Favor" arguments=stats.infavor_args_list position=1 num_post=stats.infavor_position_num%}
+          </div>
+          <div class="col-md-6">
+            {% include 'participaciones.html' with name_position="En Contra" arguments=stats.against_args_list position=0 num_post=stats.against_position_num%}
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endif %}
   </div>
-<!-- </div> -->
 </html>

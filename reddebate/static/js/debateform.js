@@ -2,27 +2,30 @@ $(document).ready(
 	function(){
 		var sigue = false;
 		$('#nextbtn').click(function(){
-			var text = $("#debTituloForm").val()
+			var text = $("#debTitleForm").val()
 			// $("#titulodebform").text(text)
 			document.getElementById("titulodebform1").innerHTML = text;
 			document.getElementById("titulodebform2").innerHTML = text;
 		});
-		$("#debTituloForm").on("keyup", function(){
-		    if($(this).val() != "" && $("#debDescripcionForm").val() != ""){
+		$("#debTitleForm").on("keyup", function(){
+		    if($(this).val() != "" && $("#debTextForm").val() != ""){
 		        sigue = true;
 		    } else {
 						sigue = false;
 		    }
 		});
 
-		$("#debDescripcionForm").on("keyup", function(){
-		    if($(this).val() != "" && $("#debTituloForm").val() != ""){
+		$("#debTextForm").on("keyup", function(){
+		    if($(this).val() != "" && $("#debTitleForm").val() != ""){
 		        sigue = true;
 
 		    } else {
 		        sigue = false;
 		    }});
-		$('#debTipoParticipacionForm').on('change', function() {
+		$('#userOrderTypeForm').on('change', function() {
+			order_user_by(this.value);
+		});
+		$('#debMemberTypeForm').on('change', function() {
 			if (this.value == 1){
 				document.getElementById('usuariosPrivado_modal').style.display="block";
 				document.getElementById('modificarusr').style.display="block";
@@ -86,13 +89,13 @@ $(document).ready(
 				});
 			}
 			else {
-				if ($("#debTituloForm").val() == ""){
+				if ($("#debTitleForm").val() == ""){
 					$("#errorTitulo").css("display","block");
 				}
 				else {
 					$("#errorTitulo").css("display","none");
 				}
-				if ($("#debDescripcionForm").val() == ""){
+				if ($("#debTextForm").val() == ""){
 					$("#errorDesc").css("display","block");
 				}
 				else {
@@ -142,3 +145,32 @@ $(document).ready(
 		filtroCheckbox('#searchUser1');
 		filtroCheckbox('#searchLista1');
 	});
+	
+	function order_user_by(value){
+		$.ajax({
+				url:  $(this).attr("href"),
+				type: 'GET',
+				data:{  order : value,
+								csrfmiddlewaretoken: '{{ csrf_token }}'
+							} ,
+							success: function(data) {
+								var container = $('#containercheckbox');
+								var inputs = container.find('div');
+								var id = inputs.length+1;
+								inputs.remove()
+								for (i=0 ; i<data.length ; i++){
+									var name = " "+data[i].name
+									var value = JSON.stringify(data[i].object);
+									var div = $('<div />', {class:"inputGroup"});
+									var label = $('<label />', { 'for': 'debMembersForm_'+i, text: name});
+									var input = $('<input />', { type: 'checkbox', name:"members", value: value, id: 'debMembersForm_'+i})
+
+									input.prependTo(label.appendTo(div.appendTo(container)));
+								}
+							},
+							failure: function(data) {
+									alert('Error de conexión');
+							},
+							crossDomain: true
+					});
+	 }

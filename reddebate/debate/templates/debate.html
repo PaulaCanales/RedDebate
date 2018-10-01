@@ -3,52 +3,84 @@
 {% load static %}
 
 <html>
+{% block content %}
 <head>
-	<meta property="og:url" content="http://reddebate.cl/debate/10/"/>
+	<meta property="og:url" content="http://localhost:8000/debate/1/"/>
 	<meta property="og:type" content="website" />
-	<meta property="og:title" content="{{debate.titulo}}"/>
-	<meta property="og:description" content="{{debate.descripcion}}"/>
+	<meta property="og:title" content="{{debate.title}}"/>
+	<meta property="og:description" content="{{debate.text}}"/>
 	<meta property="og:image" content="{% static 'img/RDLogo02.png'%}"/>
 </head>
-{% block content %}
-{% if user.is_staff %}
+{% if user.is_staff or user.is_superuser%}
 {% include 'moderador_debate.html' %}
 {% else %}
 <div id="participantes_modal" class="modal">
 	<div class="modal-content">
 		<span class="close" onclick="cerrar_modal('participantes_modal')">&times;</span>
-		<h3>Participantes <span class="glyphicon glyphicon-user"></span></h3>
+		<h3>Integrantes <span class="glyphicon glyphicon-user"></span></h3>
 		<input type="text" value="" name="searchColumn" id="searchUser3" placeholder="Busca a un usuario..."/>
-		{% for participante in participantes%}
-		<a type = "text" class="dummy-media-object" href="{% url 'perfil' id_usr=participante.usuario.id %}">
-			<img class="round" src="{{ participante.perfil.img.url }}"/>
-			<p> {{participante.usuario}} </p>
+		{% for member in debate_members%}
+		{% ifequal member.type 'username' %}
+		<a type = "text" class="dummy-media-object" href="{% url 'username' user.id %}">
+			<img class="round" src="{{ member.profile.img.url }}"/>
+			<p> {{member.user}} </p>
 		</a>
+		{% else %}
+		<a type = "text" class="dummy-media-object" href="{% url 'alias' user.id %}">
+			<img class="round" src="{% static 'img/RDLogo05.png' %}"/>
+			<p> {{member.profile.alias}} </p>
+		</a>
+		{% endifequal%}
 		{% endfor %}
 	</div>
 </div>
-{% ifequal usuario_creador.id usuario %}
+<div id="denuncia_deb_modal" class="modal">
+	<div class="modal-content">
+		<span class="close" onclick="cerrar_modal('denuncia_deb_modal')">&times;</span>
+		<h3>Indica la razón de tu denuncia <span class="glyphicon glyphicon-bullhorn"></span></h3>
+		<form id="reasonReport" method="POST" enctype="multipart/form-data">{% csrf_token %}
+			<input name="id_deb" type="hidden" value={{debate.id_debate}}>
+			{{report_form.type}}
+			{% for field in report_form.reason   %}
+			<div class="inputGroup">{{field}}</div>
+			{%endfor%}
+		<button name="report_debate" type="submit" class="btn btn-index">Denunciar</button>
+	</form>
+	</div>
+</div>
+{% ifequal owner_user.id user.id %}
 	{% include 'debate_creador.html'%}
 {% else %}
-{% if participa %}
+{% if participate %}
 	<div class="container-debate">
 		<header>
-			<h2>{{ debate.titulo }}</h2>
-			<p>
-				<input id="idDebate" type="hidden" value={{debate.id_debate}}>
-				{% ifequal debate.alias_c 'alias' %}
-					<h5>Creado por {{alias}} en modo anónimo</h5>
-				{%else%}
-					<h5>Debate creado por {{usuario_creador}}</h5>
-				{%endifequal%}
-				<span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>{{visitas}}
-			</p>
+			<div class="row">
+				<div class="col-md-11">
+					<h2>{{ debate.title }}</h2>
+					<p>
+						<input id="idDebate" type="hidden" value={{debate.id_debate}}>
+						{% ifequal debate.owner_type 'alias' %}
+							<h5>Creado por {{owner_profile}} en modo anónimo</h5>
+						{%else%}
+							<h5>Debate creado por {{owner_user}}</h5>
+						{%endifequal%}
+						<span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>{{visits}}
+					</p>
+				</div>
+				<div class="col-md-1">
+				{% if can_report_deb %}
+					 <button class="btn btn-title" data-toggle="tooltip" title="Denunciar debate" onclick="javascript:abrir_modal('denuncia_deb_modal')">
+						 <span class="glyphicon glyphicon-bullhorn"></span>
+					 </button>
+				{% endif %}
+				</div>
+			</div>
 		</header>
-		<p class="debateDescripcion">{{ debate.descripcion }}</p>
+		<p class="debateDescripcion">{{ debate.text }}</p>
 		<div id="fb-root"></div>
 		<div style="text-align: right">
 		<div class="fb-share-button"
-    	data-href="http://reddebate.cl/debate/10/"
+    	data-href="https://reddebate.cl/debate/3/"
     	data-layout="button_count">
   	</div></div><br>
 		<!-- data-href="http://reddebate.cl/debate/{{debate.id_debate}}/" -->
@@ -62,8 +94,8 @@
 								<div class="radio"> <label><input type="radio" value="1" name="razon" checked> Cambié de opinión </label></div>
 								<div class="radio"> <label><input type="radio" value="2" name="razon"> Me equivoqué de botón </label></div>
 								<div class="radio"> <label><input type="radio" value="3" name="razon"> Otro </label></div>
-	              <button id="bot_cambiar_post" type="submit" class="btn btn-deb1" > Aceptar </button>
-								<a class="btn btn-deb1" onclick="cerrar_modal('cambioPostura_modal')">Cancelar</a>
+	              <button id="bot_cambiar_post" type="submit" class="btn btn-index" > Aceptar </button>
+								<a class="btn btn-index" onclick="cerrar_modal('cambioPostura_modal')">Cancelar</a>
 						</div>
 				{% else %}
 					<h3> Ya no puedes cambiar de postura </h3>
@@ -73,8 +105,8 @@
 		<div name="detalle-debate">
 			<div class="row" id="my-row">
 				<div class="col-md-3 panel">
-					{% ifequal postura_usr_deb 'No definido' %}
-						<!-- <button id = "bot_af" type="submit" class="btn btn-postura" onclick='javascript:definir_postura("{{ debate.id_debate }}", "1", "{{num_post_f}}", "{{num_post_c}}");'> -->
+					{% ifequal actual_user_position 'No definido' %}
+						<!-- <button id = "bot_af" type="submit" class="btn btn-postura" onclick='javascript:definir_postura("{{ debate.id_debate }}", "1", "{{infavor_position_num}}", "{{against_position_num}}");'> -->
 						<button id = "bot_af_init" type="submit" class="btn btn-postura1" >
 							<!-- <span class="glyphicon glyphicon-thumbs-up"></span>
 							A Favor <br><br>
@@ -82,7 +114,7 @@
 							<!-- <img src="{% static 'img/thumbs-up.png' %}" alt="A favor"> -->
 						</button>
 					{% else %}
-						{% ifequal postura_usr_deb 'A Favor' %}
+						{% ifequal actual_user_position 'A Favor' %}
 							<button id = "bot_af" type="submit" class="btn btn-posturactual1" disabled ></button>
 						{% else %}
 							<button id = "bot_af" type="submit" class="btn btn-postura1" onclick = "confirmar_cambio('1')"></button>
@@ -96,12 +128,12 @@
 								<td width=120 ><p1>Fecha inicio</p1></td><td>{{ debate.date }}</td>
 							</tr>
 							<tr>
-								<td width=120 ><p1>Estado</p1></td><td>{{ debate.estado }}</td>
+								<td width=120 ><p1>Estado</p1></td><td>{{ debate.state }}</td>
 							</tr>
 							<tr>
-								<td width=120 ><p1>Tu Postura</p1></td><td><div id="tu_postura"> {{postura_usr_deb}} </div></td>
+								<td width=120 ><p1>Tu Position</p1></td><td><div id="tu_postura"> {{actual_user_position}} </div></td>
 							</tr>
-							{% ifequal debate.tipo_participacion 0 %}
+							{% ifequal debate.members_type 0 %}
 							<tr>
 								<td width=120 ><p1>Tipo debate</p1></td><td><div id="tu_postura">  Publico </div></td>
 							</tr>
@@ -114,10 +146,10 @@
 					</div>
 				</div>
 				<div class="col-md-3 panel">
-					{% ifequal postura_usr_deb 'No definido' %}
+					{% ifequal actual_user_position 'No definido' %}
 						<button id = "bot_ec_init" type="submit" class="btn btn-postura0"></button>
 					{% else %}
-						{% ifequal postura_usr_deb 'A Favor' %}
+						{% ifequal actual_user_position 'A Favor' %}
 							<button id = "bot_ec" type="submit" class="btn btn-postura0" onclick = "confirmar_cambio('0')"></button>
 						{% else %}
 							<button id = "bot_ec" type="submit" class="btn btn-posturactual0" disabled ></button>
@@ -126,30 +158,30 @@
 				</div>
 			</div>
 		</div>
-		{% ifequal debate.estado 'cerrado'%}
-			{% include 'estadisticas.html' %}
+		{% ifequal debate.state 'closed'%}
+			{% include 'estadisticas.html'  with opendeb=False%}
 		{% else %}
-			{% ifequal postura_usr_deb 'No definido' %}
+			{% ifequal actual_user_position 'No definido' %}
 				<div id="no-argumentos" style="display: block;" >
 					<h2> Debes definir una postura para ver la discusión </h2>
 				</div>
 			{% else %}
 			<div id="progresoDebate">
-					{% ifequal porc_f 0 %}
-		        <div id="progreso"class="progress-bar" style="background:#d9534f; width: {{porc_c}}%">
-		          <span class="glyphicon glyphicon-thumbs-down"></span> <label id="label_porc_c">{{porc_c}}%</label>
+					{% ifequal stats.infavor_percent 0 %}
+		        <div id="progreso"class="progress-bar" style="background:#d9534f; width: {{stats.against_percent}}%">
+		          <span class="glyphicon glyphicon-thumbs-down"></span> <label id="label_porc_c">{{stats.against_percent}}%</label>
 		        </div>
 		      {% else %}
-		        {% ifequal porc_c 0 %}
-		          <div id="progreso"class="progress-bar" style="background:#18BC9C; width: {{porc_f}}%">
-		            <span class="glyphicon glyphicon-thumbs-up"></span> <label id="label_porc_f">{{porc_f}}%</label>
+		        {% ifequal stats.against_percent 0 %}
+		          <div id="progreso"class="progress-bar" style="background:#18BC9C; width: {{stats.infavor_percent}}%">
+		            <span class="glyphicon glyphicon-thumbs-up"></span> <label id="label_porc_f">{{stats.infavor_percent}}%</label>
 		          </div>
 		          {% else %}
-		          <div id="progresoFavor"class="progress-bar" style="width: {{porc_f}}%">
-		            <span class="glyphicon glyphicon-thumbs-up"></span> <label id="label_porc_f">{{porc_f}}%</label>
+		          <div id="progresoFavor"class="progress-bar" style="width: {{stats.infavor_percent}}%">
+		            <span class="glyphicon glyphicon-thumbs-up"></span> <label id="label_porc_f">{{stats.infavor_percent}}%</label>
 		          </div>
-		          <div id="progresoContra"class="progress-bar" style="width: {{porc_c}}%">
-		            <span class="glyphicon glyphicon-thumbs-down"></span> <label id="label_porc_c">{{porc_c}}%</label>
+		          <div id="progresoContra"class="progress-bar" style="width: {{stats.against_percent}}%">
+		            <span class="glyphicon glyphicon-thumbs-down"></span> <label id="label_porc_c">{{stats.against_percent}}%</label>
 		          </div>
 		        {% endifequal %}
 		      {% endifequal %}
@@ -159,25 +191,25 @@
 				<div name="argumentos-debate">
 					<div class="row">
 				    <div class="col-md-6">
-							{% include 'participaciones.html' with frase="A Favor" comentario=argF postura=1 num_post=num_post_f%}
+							{% include 'participaciones.html' with name_position="A Favor" arguments=stats.infavor_args_list position=1 num_post=stats.infavor_position_num%}
 							<ul id="alertaArgumento1" class="list-group"></ul>
-							{% if t_arg %}
-							{% ifequal postura_usr_deb 'A Favor' %}
+							{% if can_argue %}
+							{% ifequal actual_user_position 'A Favor' %}
 								<form id="nuevoArgForm1" method="POST" class="post-form publicarArgumento" enctype="multipart/form-data">{% csrf_token %}
 					      {{arg_form1.as_p}}
-								<button name="argumento" type="submit" class="btn btn-deb1">Publicar</button>
+								<button name="argument" type="submit" class="btn btn-deb1">Publicar</button>
 							</form>
 							{% endifequal %}
 							{% endif %}
 						</div>
 						<div class="col-md-6">
-							{% include 'participaciones.html' with frase="En Contra" comentario=argC postura=0 num_post=num_post_c%}
+							{% include 'participaciones.html' with name_position="En Contra" arguments=stats.against_args_list position=0 num_post=stats.against_position_num%}
 							<ul id="alertaArgumento0" class="list-group"></ul>
-							{% if t_arg %}
-							{% ifequal postura_usr_deb 'En Contra' %}
+							{% if can_argue %}
+							{% ifequal actual_user_position 'En Contra' %}
 							<form id="nuevoArgForm0" method="POST" class="post-form publicarArgumento" enctype="multipart/form-data">{% csrf_token %}
 								{{arg_form0.as_p}}
-								<button name="argumento" type="submit" class="btn btn-deb0">Publicar</button>
+								<button name="argument" type="submit" class="btn btn-deb0">Publicar</button>
 							</form>
 					    {% endifequal %}
 							{% endif %}
