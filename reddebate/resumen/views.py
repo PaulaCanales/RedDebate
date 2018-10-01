@@ -11,7 +11,7 @@ from django.http import HttpResponse, JsonResponse
 from django.shortcuts import redirect
 import requests
 from django.db.models import Q
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from resumen.models import Debate
 from debate.models import Position, Argument, Counterargument, Rate, PrivateMembers, Visit, newNotification
 from perfil.models import Profile, Notification, List, UsersList
@@ -23,7 +23,11 @@ from debate.views import updateReputation
 def home(request):
     form = LoginForm(request.POST or None)
     if request.user.is_authenticated:
-        return redirect('index')
+        next_url = request.GET.get('next')
+        if next_url:
+            return HttpResponseRedirect(next_url)
+        else:
+            return redirect('index')
     if request.POST and form.is_valid():
         user = form.login(request)
         if user:
