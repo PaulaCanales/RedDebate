@@ -177,7 +177,7 @@ $(document).ready(function(){
                         <a href="{% url 'index' %}">Debates Abiertos</a>
                     </li>
 										<li>
-                        <a href="{% url 'cerrados' %}">Debates Cerrados</a>
+                        <a href="{% url 'closedIndex' %}">Debates Cerrados</a>
                     </li>
 										{% if user.is_staff or user.is_superuser %}
 										<li>

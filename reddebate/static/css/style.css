@@ -564,6 +564,7 @@ footer {
   border:2px solid var(--azul-principal);
   margin-top:15px;
   margin-bottom:15px;
+  display: flex;
 }
 .btn-index.active,.btn-index:active,.btn-index:focus,.btn-index:hover {
   color:#fff;

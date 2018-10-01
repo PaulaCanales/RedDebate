@@ -30,8 +30,7 @@ $(document).ready(function(){
 	};
   var positions_by_day = {{stats.positions_by_day|safe}};
 </script>
-<!-- <div class="container"> -->
-  <div id="estadisticas" >
+  <div id="stats_div" >
     <h3>Estadísticas</h3>
     <div id="chart_div" style="width: 100%; height: 200px"></div>
     <div class="row">
@@ -46,7 +45,7 @@ $(document).ready(function(){
         {% ifequal stats.best_argument 0 %}
           No hay suficientes participaciones
         {% else %}
-        <div class="datagrid1 stats_arg class="stats_arg1"">
+        <div class="datagrid1 stats_arg">
           <table id="table_best_arg{{stats.best_argument.position}}">
             <thead>
             <tr>
@@ -85,8 +84,9 @@ $(document).ready(function(){
       </div>
     </div>
     <br><br>
-    <button onclick="despliega_div('#args_in_stats')" class="btn btn-index"> Ver argumentos </button>
-    <div class=hidden id="args_in_stats">
+    {% if not opendeb %}
+    <button onclick="toggle_div('#args_in_stats')" class="btn btn-index"> Mostrar/Ocultar argumentos </button>
+    <div style="display:none" id="args_in_stats">
       <div name="argumentos-debate">
         <div class="row">
           <div class="col-md-6">
@@ -98,6 +98,6 @@ $(document).ready(function(){
         </div>
       </div>
     </div>
+    {% endif %}
   </div>
-<!-- </div> -->
 </html>

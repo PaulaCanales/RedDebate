@@ -3,14 +3,14 @@
 {% load static %}
 
 <html>
+{% block content %}
 <head>
-	<meta property="og:url" content="http://reddebate.cl/debate/10/"/>
+	<meta property="og:url" content="http://localhost:8000/debate/1/"/>
 	<meta property="og:type" content="website" />
 	<meta property="og:title" content="{{debate.title}}"/>
 	<meta property="og:description" content="{{debate.text}}"/>
 	<meta property="og:image" content="{% static 'img/RDLogo02.png'%}"/>
 </head>
-{% block content %}
 {% if user.is_staff or user.is_superuser%}
 {% include 'moderador_debate.html' %}
 {% else %}
@@ -80,7 +80,7 @@
 		<div id="fb-root"></div>
 		<div style="text-align: right">
 		<div class="fb-share-button"
-    	data-href="http://reddebate.cl/debate/10/"
+    	data-href="https://reddebate.cl/debate/3/"
     	data-layout="button_count">
   	</div></div><br>
 		<!-- data-href="http://reddebate.cl/debate/{{debate.id_debate}}/" -->
@@ -159,7 +159,7 @@
 			</div>
 		</div>
 		{% ifequal debate.state 'closed'%}
-			{% include 'estadisticas.html' %}
+			{% include 'estadisticas.html'  with opendeb=False%}
 		{% else %}
 			{% ifequal actual_user_position 'No definido' %}
 				<div id="no-argumentos" style="display: block;" >

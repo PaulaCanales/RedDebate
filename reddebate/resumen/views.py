@@ -255,7 +255,7 @@ def closeDebate(request):
     deb = Debate.objects.get(pk=id_deb)
     deb.state = 'closed'
     deb.save()
-    return redirect('perfil',id_usr=request.user.id)
+    return redirect('closedIndex')
 
 ##@brief Funcion que elimina un debate
 ##@param request solicitud web

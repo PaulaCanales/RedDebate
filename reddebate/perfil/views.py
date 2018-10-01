@@ -19,7 +19,7 @@ from perfil.forms import updateAlias, newList, selectUsers, selectList, updateIm
 from resumen.views import debateData, closeDebate, allUsers
 from debate.views import updateReputation
 
-##@brief Funcion que showDebate los datos del user, debates abiertos, cerrados y opciones para cada uno.
+##@brief Funcion que showDebate los datos del user, debates abiertos, closedIndex y opciones para cada uno.
 ##@param request solicitud web
 ##@return redirect redirecciona a la vista "perfil"
 ##@warning Login is required
@@ -215,7 +215,7 @@ def memberList(request, id_list):
     try:
         list = List.objects.get(id=id_list)
     except ObjectDoesNotExist:
-        return render(request, '404.html', status=404) 
+        return render(request, '404.html', status=404)
     list_users = UsersList.objects.filter(list_id=id_list)
     list_profile = []
     for user in list_users:

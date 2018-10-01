@@ -60,8 +60,8 @@ function cierra_formulario(id){
   $(id).slideUp("slow");
   $(nuevoDebateBtn).show();
 }
-function despliega_div(id){
-  $(id).removeClass('hidden');
+function toggle_div(id){
+  $(id).slideToggle();
 }
 function formulario_editar_debate(id,id_dbt,title,desc,año,mes,dia,alias,length){
   $(id).slideDown("slow");
@@ -375,7 +375,7 @@ function razonCambioChart(){
     var options = {
       displayAnnotations: true,
       colors: ['#18BD9B'],
-      width:"100%",
+      width: document.getElementById("stats_div").offsetWidth*0.95,
     };
 
     chart.draw(data, options);
