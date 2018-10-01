@@ -32,6 +32,18 @@ def home(request):
     context = {'form':form}
     return render(request,"home.html", context)
 
+def superuser(request):
+    form = LoginForm(request.POST or None)
+    if request.user.is_authenticated:
+        return redirect('index')
+    if request.POST and form.is_valid():
+        user = form.login(request)
+        if user:
+            login(request, user)
+            return redirect('index')
+    context = {'form':form}
+    return render(request,"superuser.html", context)
+
 @login_required
 def logout(request):
     django_logout(request)

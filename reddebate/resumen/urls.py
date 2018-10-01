@@ -9,5 +9,5 @@ urlpatterns = [
     url(r'^closedIndex/$', views.closedIndex, name='closedIndex'),
     url(r'^tag/(?P<slug>[-\w]+)/$', views.tagged, name='tagged'),
     url(r'^logout/', views.logout, name='logout'),
-    
+
 ]

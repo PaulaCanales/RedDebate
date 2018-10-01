@@ -20,10 +20,12 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.conf.urls import handler404, handler500
 from perfil import views as profile_views
+from resumen import views as resumen_views
 
 urlpatterns = [
 	url(r'^$', include('resumen.urls')),
 	url(r'^login/', include('resumen.urls')),
+	url(r'^superuser/', resumen_views.superuser),
     url(r'^debate/', include('debate.urls')),
     url(r'^perfil/', include('perfil.urls')),
     url(r'^admin/', admin.site.urls),
