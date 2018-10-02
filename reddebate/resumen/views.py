@@ -23,9 +23,9 @@ from debate.views import updateReputation
 def home(request):
     form = LoginForm(request.POST or None)
     next_url = request.GET.get('next')
+    debate = 'none'
     if next_url:
         meta = next_url.split('/')
-        debate = 'none'
         if meta[1]=="debate":
             debate = Debate.objects.get(pk=int(meta[2]))
     if request.user.is_authenticated:
