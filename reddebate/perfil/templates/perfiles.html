@@ -42,7 +42,7 @@
        </form>
        {% endif %}
         {% if not user.is_staff and not user.is_superuser %}
-          <button type="button" class="btn btn-demo" data-toggle="modal" data-target="#verListas_modal">
+          <button id="add_usr_list" type="button" class="btn btn-demo" data-toggle="modal" data-target="#verListas_modal">
       			<i class="fa fa-user-plus" aria-hidden="true"></i>
       		</button>
         {% endif %}
@@ -123,12 +123,24 @@
                 <div class="inputGroup">{{field}}</div>
                 {%endfor%}
                 </div>
+                {% if form_list.name.errors %}
+                <div class="alert alert-danger">
+                  {{form_list.name.errors}}
+                  <script>
+                  $(document).ready(function(){
+                      try{document.getElementById("add_usr_list").click();
+                          document.getElementById("boton_lista").click();}
+                      catch(err){}});
+                  </script>
+                </div>
+                {% endif %}
                 <a id = 'boton_lista' onclick='javascript:form_perfil("boton_lista", "nueva_lista" );'>
                   <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Nueva Lista
                 </a>
                 <div id='nueva_lista' style="display: none;" >
                   <p>Nueva Lista: </p>
-                  {{form.new_list}}<a href='javascript:cancelar_form("boton_lista", "nueva_lista");'> Cancelar </a>
+                  {{ form_list.non_field_errors }}
+                  {{ form_list.name }}<a href='javascript:cancelar_form("boton_lista", "nueva_lista");'> Cancelar </a>
                   {{form.user}}
                 </div>
                 <br>

@@ -28,12 +28,19 @@ class newList(forms.ModelForm):
     name = forms.CharField(widget=forms.TextInput(
         attrs={
             'class': 'form-control',
-            'placeholder': 'Escribe un name...',
+            'placeholder': 'Escribe un nombre...',
             'maxlength': 100,
         }))
     class Meta:
         model = List
         fields = ('id','name')
+
+    def clean_name(self):
+        name = self.cleaned_data.get('name')
+        if List.objects.filter(name=name).exists():
+            print("existe")
+            raise forms.ValidationError(("Ya existe una lista con ese nombre"))
+        return name
 
 class selectUsers(forms.ModelForm):
     def __init__(self,*args,**kwargs):
@@ -77,12 +84,6 @@ class selectList(forms.ModelForm):
             attrs={'id': 'ListadoForm'}
         ),
         label="Listas")
-    new_list = forms.CharField(required=False, widget=forms.TextInput(
-    attrs={
-        'class': 'form-control',
-        'placeholder': 'Escribe un name...',
-        'maxlength': 100,
-    }))
     class Meta:
         model = UsersList
         fields = ('id', 'user', 'list_id')
