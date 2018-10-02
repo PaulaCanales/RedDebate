@@ -23,12 +23,11 @@ from debate.views import updateReputation
 def home(request):
     form = LoginForm(request.POST or None)
     next_url = request.GET.get('next')
-    print(next_url)
-    meta = next_url.split('/')
     debate = 'none'
-    if meta[1]=="debate":
-        debate = Debate.objects.get(pk=int(meta[2]))
-        print(debate)
+    if next_url:
+        meta = next_url.split('/')
+        if meta[1]=="debate":
+            debate = Debate.objects.get(pk=int(meta[2]))
     if request.user.is_authenticated:
         if next_url:
             return HttpResponseRedirect(next_url)
