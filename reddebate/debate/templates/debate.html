@@ -3,9 +3,6 @@
 {% load static %}
 <html>
 {% block content %}
-<head>
-	{% include 'metas.html' %}
-</head>
 {% if user.is_staff or user.is_superuser%}
 {% include 'moderador_debate.html' %}
 {% else %}

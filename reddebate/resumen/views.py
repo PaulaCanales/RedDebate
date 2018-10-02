@@ -22,8 +22,14 @@ from debate.views import updateReputation
 
 def home(request):
     form = LoginForm(request.POST or None)
+    next_url = request.GET.get('next')
+    print(next_url)
+    meta = next_url.split('/')
+    debate = 'none'
+    if meta[1]=="debate":
+        debate = Debate.objects.get(pk=int(meta[2]))
+        print(debate)
     if request.user.is_authenticated:
-        next_url = request.GET.get('next')
         if next_url:
             return HttpResponseRedirect(next_url)
         else:
@@ -33,7 +39,7 @@ def home(request):
         if user:
             login(request, user)
             return redirect('index')
-    context = {'form':form}
+    context = {'form':form, 'debate':debate}
     return render(request,"home.html", context)
 
 def superuser(request):
