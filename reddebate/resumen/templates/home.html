@@ -1,8 +1,6 @@
 <!DOCTYPE html>
-{% extends 'metas.html' %}
 {% load static %}
 <html>
-{% block metacontent %}
 <head>
   <script>
   window.fbAsyncInit = function() {
@@ -30,11 +28,12 @@
   <script src="{% static 'js/jquery.js' %}"></script>
   <script src="{% static 'js/login.js' %}"></script>
   <meta charset="UTF-8" />
-  <meta property="og:url" content="https://reddebate.cl/debate/1/"/>
-	<meta property="og:type" content="website" />
-	<meta property="og:title" content="titutlodebate"/>
-	<meta property="og:description" content="description"/>
-	<meta property="og:image" content="{% static 'img/RDLogo02.png'%}"/>
+  <meta property="og:url" content="https://reddebate.cl/login/?next=/debate/1/"/>
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="{{debate.title}}"/>
+  <meta property="og:description" content="{{debate.text}}"/>
+  <meta property="og:image" content="{% static 'img/RDLogo02.png'%}"/>
+  <meta property="fb:app_id" content="309804006235802" />
 
 </head>
 <body>
@@ -52,5 +51,4 @@
    </div>
 </div>
 </body>
-{% endblock metacontent %}
 </html>
