@@ -23,7 +23,7 @@
       </form>
     </a>
     {% else %}
-    <a class="dummy-media-object usuarioLista" href="{% url 'alias' item.user.user_id %}">
+    <a class="dummy-media-object usuarioLista" href="{% url 'alias' item.perfil.alias %}">
       <img class="round" src="{% static 'img/RDLogo05.png' %}"/>
       <h3>{{item.perfil.alias}}</h3>
       <form method="post" action= "{% url 'memberList' list.id  %}" enctype="multipart/form-data" onsubmit="return confirm('¿Seguro que desea eliminar el usuario?');">{% csrf_token %}

@@ -3,7 +3,7 @@
   /* max-width: 1250px; */
   margin: 50px auto 30px;
   padding: 0 !important;
-  width: 90%;
+  width: 80%;
   background-color: #fff;
   border-radius: 10px;
   box-shadow: 0 3px 6px rgba(0,0,0,0.10), 0 3px 6px rgba(0,0,0,0.10);
@@ -28,16 +28,39 @@ header {
     right: -90%;
   }
 }
-
-main {
-      padding: 20px 20px 0px 20px;
+.header-info {
+  height: 70px;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Montserrat', sans-serif;
 }
-
-.left {
+main {
+      padding: 20px;
+}
+main p{
+  padding: 0px;
+  font-size: 10pt;
+  font-family: 'Montserrat', sans-serif;
+  color: #2D3E50;
+}
+.left-container{
+  margin-right: 0px;
+}
+.right-container{
+  margin-left: 0px;
+}
+.center {
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
+}
+.personal{
+  margin: 5% 10% 0 10%;
+  padding-top: 5%;
+  border-top: 1px solid #ededed;
 }
 
 .photo {
@@ -235,6 +258,10 @@ main {
   border: 1px solid #ccc;
   border-radius: 10px;
   padding: 10px;
+}
+
+.dataTables_wrapper {
+  width: 100%;
 }
 
 .tag-cloud { padding: 2px; line-height: 3em; text-align: center; }

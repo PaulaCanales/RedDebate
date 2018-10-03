@@ -247,15 +247,17 @@ def argumentData(arguments, actual_user, counterarg_num, id_debate):
 			id = counterarg.id_counterarg
 			text = counterarg.text
 			owner = User.objects.get(id=counterarg.id_user_id)
+			url = counterarg.id_user_id
 			if counterarg.owner_type == "alias":
 				alias = Profile.objects.get(user= owner)
 				owner = alias.alias
+				url = owner
 			else:
 				owner = owner.username
 			can_report_counterarg = True
 			r = Report.objects.filter(owner_id=actual_user,counterarg_id=counterarg.id_counterarg,type="counterarg").count()
 			if r>0: can_report_counterarg = False
-			counterargs_list.append({'text': text, 'owner': owner,
+			counterargs_list.append({'text': text, 'owner': owner, 'url':url,
 									'id': id, 'id_owner': counterarg.id_user_id,
 									'owner_type': counterarg.owner_type,
 									'can_report_counterarg':can_report_counterarg})
@@ -265,9 +267,11 @@ def argumentData(arguments, actual_user, counterarg_num, id_debate):
 				can_counterarg = False
 		owner_arg = User.objects.get(id= arg.id_user_id)
 		owner_arg_id = owner_arg.id
+		url = owner_arg_id
 		if (arg.owner_type == "alias"):
 			owner_profile = Profile.objects.get(user=owner_arg)
 			owner_arg = owner_profile.alias
+			url = owner_profile.alias
 		try:
 			rate = Rate.objects.get(id_argument_id= arg.id_argument, id_user_id = actual_user, rate_type="positive")
 			positive_rate_exist = "si"
@@ -290,7 +294,7 @@ def argumentData(arguments, actual_user, counterarg_num, id_debate):
 		r = Report.objects.filter(owner_id=actual_user,argument_id=arg.id_argument,type="argument").count()
 		if r>0: can_report_arg = False
 
-		args_list.append({'text': arg.text, 'owner_arg': owner_arg, 'rate': total_rate,
+		args_list.append({'text': arg.text, 'owner_arg': owner_arg, 'rate': total_rate, 'url': url,
 							'id_arg': arg.id_argument, 'exist_rate': exist_rate, 'owner_arg_id': owner_arg_id, 'counterargs': counterargs_list,
 							'can_counterarg': can_counterarg, 'owner_type':arg.owner_type,
 							'can_report_arg':can_report_arg})

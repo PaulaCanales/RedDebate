@@ -25,15 +25,32 @@ class updateImage(forms.Form):
             ))
 
 class newList(forms.ModelForm):
+    def __init__(self,*args,**kwargs):
+        self.user = kwargs.pop('actual_user')
+        super(newList,self).__init__(*args,**kwargs)
+        if self.user:
+            self.fields['owner_id'].widget=forms.TextInput(
+                attrs={
+                    'value': self.user,
+                    'type': 'hidden',
+                })
     name = forms.CharField(widget=forms.TextInput(
         attrs={
             'class': 'form-control',
-            'placeholder': 'Escribe un name...',
+            'placeholder': 'Escribe un nombre...',
             'maxlength': 100,
         }))
+    owner_id = forms.CharField(widget=forms.TextInput())
     class Meta:
         model = List
-        fields = ('id','name')
+        fields = ('id','name', 'owner_id')
+
+    def clean_name(self):
+        name = self.cleaned_data.get('name')
+        user = self['owner_id'].value()
+        if List.objects.filter(name=name, owner_id=user).exists():
+            raise forms.ValidationError(("Ya existe una lista con ese nombre"))
+        return name
 
 class selectUsers(forms.ModelForm):
     def __init__(self,*args,**kwargs):
@@ -77,12 +94,6 @@ class selectList(forms.ModelForm):
             attrs={'id': 'ListadoForm'}
         ),
         label="Listas")
-    new_list = forms.CharField(required=False, widget=forms.TextInput(
-    attrs={
-        'class': 'form-control',
-        'placeholder': 'Escribe un name...',
-        'maxlength': 100,
-    }))
     class Meta:
         model = UsersList
         fields = ('id', 'user', 'list_id')

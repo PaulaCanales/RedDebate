@@ -11,12 +11,12 @@
 {% if target_user.is_staff or target_user.is_superuser %}
 {% include 'moderador_perfil.html' %}
 {% else %}
-<div class="container-profile" style="width: 40%">
-  <header>
-  </header>
-  <main>
-    <div class="row">
-      <div class="left col-md-12">
+<div class="row">
+  <div class="col-md-6">
+    <div class="container-profile left-container">
+      <header>
+      </header>
+      <main class="center">
         {% ifequal name_type 'username' %}
         <div class="photo-left">
           <img class="photo" src="{{alias.img.url}}"/>
@@ -41,11 +41,6 @@
            </button>
        </form>
        {% endif %}
-        {% if not user.is_staff and not user.is_superuser %}
-          <button type="button" class="btn btn-demo" data-toggle="modal" data-target="#verListas_modal">
-      			<i class="fa fa-user-plus" aria-hidden="true"></i>
-      		</button>
-        {% endif %}
         <div class="stats row">
           <div class="stat col-xs-6">
             <h4 class="name">{{alias.reputation}}</h4>
@@ -54,13 +49,6 @@
           <div class="stat col-xs-6">
             <h4 class="name">{{stats.deb_num}}</h4>
             <p class="info">Publicaciones</p>
-          </div>
-        </div>
-        <div class="stats">
-          <div class="tag-cloud">
-            {% for key,value in stats.tags.items %}
-              <a href="{% url 'tagged' key %}" class="size-{{ value }}">{{ key }}</a>
-            {% endfor %}
           </div>
         </div>
         <div class="stats row">
@@ -91,56 +79,104 @@
             <p class="desc-stat">Peor</p>
           </div>
         </div>
-        <!-- <p class="desc">{{ user.date_joined }}</p> -->
-      </div>
-      <div class="modal mleft fade" id="verListas_modal" tabindex="-1" role="dialog">
-        <div class="modal-dialog" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-  					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-  					<h4 class="modal-title"><i class="fa fa-user-plus" aria-hidden="true"></i> Agregar </h4>
-  				</div>
-            {% if already_in_list|length > 0 %}
-              {% ifequal name_type 'username' %}
-                <p>{{target_user.username}} ya pertenece a tus listas:</p>
-              {% else %}
-                <p>{{alias.alias}} ya pertenece a tus listas:</p>
-              {% endifequal %}
+      </main>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="container-profile right-container">
+      <header class="header-info">
+        <h3><i class="fa fa-tags" aria-hidden="true"></i> Tags</h3>
+      </header>
+      <main>
+        <div class="tag-cloud">
+            {% for key,value in stats.tags.items %}
+              <a href="{% url 'tagged' key %}" class="size-{{ value }}">{{ key }}</a>
+            {% endfor %}
+          </div>
+      </main>
+    </div>
+    {% if not user.is_staff and not user.is_superuser %}
+      <div class="container-profile right-container">
+        <header class="header-info">
+          <h3><i class="fa fa-user-plus" aria-hidden="true"></i> Agregar</h3>
+        </header>
+        <main>
+          {% if already_in_list|length > 0 %}
+            <p>Ya lo añadiste a: </p>
             <div class="listasModal">
             {% for list in already_in_list%}
                 <a href="{% url 'memberList' list.id %}"><i class="fa fa-check" aria-hidden="true"></i> {{list.name}}</a>
             {% endfor %}
             </div>
-            {% endif %}
-            <p>Agregar en:</p>
-            <input type="text" value="" name="searchColumn" id="searchLista2" placeholder="Busca a un user..."/>
+          {% else %}
+            <p>No pertenece a ninguna de tus listas</p>
+          {% endif %}
+          {% if form.list_id|length > 0 %}
+            <p>Puedes agregarlo a:</p>
             <form method="POST" class="post-form" enctype="multipart/form-data">{% csrf_token %}
-              <div class="fieldWrapper">
-                {{form.errors }}
-                <input type="hidden" name="type_user" value="{{name_type}}">
-                <div id="listacheckbox" class="userscheckbox">
-                {% for field in form.list_id %}
-                <div class="inputGroup">{{field}}</div>
-                {%endfor%}
-                </div>
-                <a id = 'boton_lista' onclick='javascript:form_perfil("boton_lista", "nueva_lista" );'>
-                  <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Nueva Lista
-                </a>
-                <div id='nueva_lista' style="display: none;" >
-                  <p>Nueva Lista: </p>
-                  {{form.new_list}}<a href='javascript:cancelar_form("boton_lista", "nueva_lista");'> Cancelar </a>
-                  {{form.user}}
-                </div>
-                <br>
-                <button name="new_user_list" type="submit" class="btn btn-index">Agregar</button>
+            <div class="fieldWrapper">
+              {{form.errors }}
+              <input type="hidden" name="type_user" value="{{name_type}}">
+              <div id="listacheckbox" class="userscheckbox">
+              {% for field in form.list_id %}
+              <div class="inputGroup">{{field}}</div>
+              {%endfor%}
               </div>
+              {% if form_list.name.errors %}
+                <div class="alert alert-danger">
+                  {{form_list.name.errors}}
+                  <script>
+                  $(document).ready(function(){
+                      try{document.getElementById("add_usr_list").click();}
+                      catch(err){}});
+                  </script>
+                </div>
+              {% endif %}
+              {{form.user}}
+              <button name="new_user_list" type="submit" class="btn btn-index">Agregar</button>
+            </div>
+            </form>
+          {% else %}
+            <p>No hay listas disponibles</p>
+          {% endif %}
+          <a id = 'boton_lista' onclick='javascript:form_perfil("boton_lista", "nueva_lista" );'>
+            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Nueva Lista
+          </a>
+          <div id='nueva_lista' style="display: none;" >
+            <p>Nueva Lista: </p>
+            <form method="POST" class="post-form" enctype="multipart/form-data">{% csrf_token %}
+            {{ form_list.non_field_errors }}
+            {{ form_list.owner_id }}
+            {{ form_list.name }}<a href='javascript:cancelar_form("boton_lista", "nueva_lista");'> Cancelar </a>
+            {{form.user}}
+            <input type="hidden" name="type_user" value="{{name_type}}">
+            <button name="add_user_new_list" type="submit" class="btn btn-index">Agregar</button>
             </form>
           </div>
-      	</div>
-
+        </main>
       </div>
-  </main>
+    {% else %}
+    <div class="container-profile right-container">
+      <header class="header-info">
+        <h3><i class="fa fa-users" aria-hidden="true"></i> Más Usuarios</h3>
+      </header>
+      <main>
+        <input type="text" value="" name="searchColumn" id="searchLista2" placeholder="Busca a un user..."/>
+        <div class="listasModal">
+        {% for user in all_users%}
+          {% ifequal user.object.type 'username' %}
+            <a href="{% url 'username' user.object.id %}"><i class="fa fa-user-circle" aria-hidden="true"></i> {{user.name}}</a>
+          {% else %}
+            <a href="{% url 'alias' user.name %}"><i class="fa fa-user-circle" aria-hidden="true"></i> {{user.name}}</a>
+          {% endifequal %}
+        {% endfor %}
+        </div>
+      </main>
+    </div>
+    {% endif %}
+  </div>
 </div>
+
 {% endif %}
 {% endblock content %}
 

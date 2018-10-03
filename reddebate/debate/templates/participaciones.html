@@ -22,7 +22,7 @@
           {% endifequal %}
         </td>
         <td id="bordeTabla{{position}}" rowspan="3">
-            <p><a href="{% url arg.owner_type arg.owner_arg_id %}"><p1>{{arg.owner_arg}}:</p1></a> {{arg.text}}</p>
+            <p><a href="{% url arg.owner_type arg.url %}"><p1>{{arg.owner_arg}}:</p1></a> {{arg.text}}</p>
         </td>
         <td style="border-bottom: #fff; text-align: center;">
       		<div style="float:right">
@@ -47,7 +47,7 @@
                           <span class="tip tip-up"></span>
                           <div class="row">
                             <div class="col-md-11">
-                              <p><a href="{% url counterarg.owner_type counterarg.id_owner %}"><p1>{{counterarg.owner}}:</p1></a> {{counterarg.text}}</p>
+                              <p><a href="{% url counterarg.owner_type counterarg.url %}"><p1>{{counterarg.owner}}:</p1></a> {{counterarg.text}}</p>
                             </div>
                             <div class="col-md-1">
                               {% ifequal counterarg.id_owner user.id %}

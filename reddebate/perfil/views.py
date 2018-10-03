@@ -1,3 +1,4 @@
+# coding=utf-8
 from django.shortcuts import render, render_to_response
 from django.views.generic import ListView, DetailView
 from django.contrib.auth.models import User
@@ -14,7 +15,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponse
 from resumen.models import Debate
 from perfil.models import Profile, List, UsersList
-from debate.models import Position, Argument, Counterargument
+from debate.models import Position, Argument, Counterargument, Report
 from perfil.forms import updateAlias, newList, selectUsers, selectList, updateImage
 from resumen.views import debateData, closeDebate, allUsers
 from debate.views import updateReputation
@@ -28,7 +29,8 @@ def username(request, id_usr):
     user_data = userData(request,id_usr,'username')
     return user_data
 
-def alias(request, id_usr):
+def alias(request, alias):
+    id_usr = Profile.objects.get(alias=alias).user_id
     user_data = userData(request,id_usr,'alias')
     return user_data
 
@@ -60,9 +62,28 @@ def userData(request,id_usr,name_type):
                     post.save()
                     return redirect('username',id_usr=actual_user.id)
         stats = userStats(actual_user.id)
+        reports = Report.objects.all()
+        data_report = []
+        for report in reports:
+            if int(report.reason)==0:
+                reason = "Lenguaje"
+            elif int(report.reason)==1:
+                reason = "Privacidad"
+            elif int(report.reason)==2:
+                reason = "Publicidad"
+            if report.type=='debate':
+                element=Debate.objects.get(pk=report.debate_id)
+            elif report.type=='argument':
+                element=Argument.objects.get(pk=report.argument_id)
+            elif report.type=='counterarg':
+                element=Counterargument.objects.get(pk=report.counterarg_id)
+            reported= element.id_user
+            owner = User.objects.get(pk=report.owner_id)
+            data_report.append({'reason':reason, 'type':report.type ,'element':element,
+                                'reported':reported, 'owner':owner})
         return render(request, 'perfil_usuario.html', {'actual_user': actual_user,
             'alias': target_profile, 'alias_form': alias_form,
-            'stats': stats, 'imagen_form':imagen_form})
+            'stats': stats, 'imagen_form':imagen_form, 'data_report':data_report})
     #si el user accede al perfil de otro user
     else:
         stats = userStats(target_user.id)
@@ -70,7 +91,10 @@ def userData(request,id_usr,name_type):
         actual_user_list = List.objects.filter(owner_id=actual_user.id)
         available_list = actual_user_list.exclude(id__in=target_user_list.values('list_id')).values()
         already_in_list = actual_user_list.filter(id__in=target_user_list.values('list_id')).values()
+        total_users = User.objects.all()
+        all_users = allUsers(total_users)
         form = selectList(listas=available_list, user=target_user.id)
+        form_list = newList(actual_user=request.user.id)
         if request.method == 'POST':
             #solicitud de agregar user a una list existente
             if 'new_user_list' in request.POST:
@@ -81,17 +105,25 @@ def userData(request,id_usr,name_type):
                     for list in select:
                         post = UsersList(user_id=usr, list_id=list, type=type)
                         post.save()
-                #solicitud de agregar user a una list nueva
-                if request.POST['new_list']:
-                    name = request.POST['new_list']
-                    new_list = List(name=name, owner_id=request.user.id)
-                    new_list.save()
-                    new_usr = UsersList(user_id=usr, list_id=new_list.id, type=type)
+                    return redirect('username', id_usr=usr)
+                else:
+                    return redirect('username', id_usr=usr)
+            #solicitud de agregar user a una list nueva
+            if request.POST['name']:
+                usr = request.POST['user']
+                type = request.POST['type_user']
+                form_list = newList(request.POST,actual_user=request.user.id)
+                if form_list.is_valid():
+                    list = form_list.save(commit=False)
+                    list.owner = request.user
+                    list.save()
+                    new_usr = UsersList(user_id=usr, list_id=list.id, type=type)
                     new_usr.save()
-                return redirect('username', id_usr=usr)
+                    return redirect('username', id_usr=usr)
         return render(request, 'perfiles.html', {'target_user': target_user,
             'alias': target_profile, 'name_type': name_type,
-            'stats': stats, 'form':form, 'already_in_list':already_in_list})
+            'stats': stats, 'form':form, 'form_list':form_list,
+            'already_in_list':already_in_list, 'all_users':all_users})
 
 #estadisticas de un user
 def userStats(id_user):
@@ -191,11 +223,11 @@ def userList(request):
             profile = Profile.objects.get(user_id=user['user_id'])
             users_in_list.append({'name':username, 'list_id':user['list_id'],
                                   'alias':profile.alias, 'type':user['type']})
-    form_list = newList()
+    form_list = newList(actual_user=request.user.id)
     if request.method == 'POST':
-        #solicitud de crear una nueva list
+        #solicitud de crear una nueva lista
         if 'name' in request.POST:
-            form_list = newList(request.POST)
+            form_list = newList(request.POST, actual_user=request.user.id)
             if form_list.is_valid():
                 list = form_list.save(commit=False)
                 list.owner = request.user

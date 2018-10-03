@@ -1,10 +1,12 @@
 <!DOCTYPE html>
-<div class="container-profile" style="width: 40%">
-  <header>
-  </header>
-  <main>
-    <div class="row">
-      <div class="left col-md-12">
+{% load static %}
+<link rel="stylesheet" type='text/css' href="{% static '/css/dataTables.css' %}" >
+<div class="row">
+  <div class="col-md-4">
+    <div class="container-profile left-container">
+      <header>
+      </header>
+      <main class="center">
         <div class="photo-left">
           <img class="photo" src="{{ alias.img.url }}"/>
           <div class="active"></div>
@@ -19,8 +21,6 @@
           MODERADOR
           {% endif %}
           {% endif %}
-
-
         </div>
         <div class="stats row">
           <div class="stat col-xs-6">
@@ -32,22 +32,39 @@
             <p class="info">Moderaciones</p>
           </div>
         </div>
-        <!-- <div class="stats row">
-          <div class="stat col-xs-4">
-            <p class="number-stat">{{stats.posturas}}</p>
-            <p class="desc-stat">Posturas</p>
-          </div>
-          <div class="stat col-xs-4">
-            <p class="number-stat">{{stats.wins}}</p>
-            <p class="desc-stat">Triunfos</p>
-          </div>
-          <div class="stat col-xs-4">
-            <p class="number-stat">{{stats.lose}}</p>
-            <p class="desc-stat">Derrotas</p>
-          </div>
-        </div> -->
-      </div>
-      </div>
+      </main>
     </div>
-  </main>
+  </div>
+  <div class="col-md-8">
+    <div class="container-profile right-container">
+      <header class="header-info">
+        <h3><i class="fa fa-bullhorn" aria-hidden="true"></i> Reportes</h3>
+      </header>
+      <main class="center">
+        <table id="myTable" class="table" cellspacing="0" width="100%">
+            <thead>
+                <tr>
+                    <th>Elemento</th>
+                    <th>Tipo</th>
+                    <th>Razon</th>
+                    <th>Creador</th>
+                    <th>Reportado</th>
+                </tr>
+            </thead>
+            <tbody>
+              {% for report in data_report %}
+                <tr>
+                    <td >{{report.element}}</td>
+                    <td >{{report.type}}</td>
+                    <td>{{report.reason}}</td>
+                    <td >{{report.owner}}</td>
+                    <td >{{report.reported}}</td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+          <script src="{% static 'js/dataTable.js' %}"></script>
+      </main>
+    </div>
+  </div>
 </div>
