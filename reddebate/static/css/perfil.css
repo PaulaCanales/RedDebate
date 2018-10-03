@@ -146,12 +146,14 @@ main p{
   font-weight: bold;
   font-family: 'Montserrat', sans-serif;
   color: #aaa;
+  text-align: center;
 }
 
 .desc-stat {
   margin-top: -15px;
   font-size: 9pt;
   color: #bbb;
+  text-align: center;
 }
 
 .desc {
