@@ -48,10 +48,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'social.apps.django_app.default',
-<<<<<<< HEAD
-=======
-    'social_django',
->>>>>>> dev
     'channels',
     'reddebate',
     'taggit',
