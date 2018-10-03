@@ -28,7 +28,8 @@ def username(request, id_usr):
     user_data = userData(request,id_usr,'username')
     return user_data
 
-def alias(request, id_usr):
+def alias(request, alias):
+    id_usr = Profile.objects.get(alias=alias).user_id
     user_data = userData(request,id_usr,'alias')
     return user_data
 

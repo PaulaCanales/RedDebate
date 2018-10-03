@@ -36,7 +36,7 @@
 											{% ifequal usr.type 'username' %}
                       <p><a href="{% url 'username' usr.name.id %}">{{usr.name}}</a></p>
 											{% else %}
-											<p><a href="{% url 'alias' usr.name.id %}">{{usr.alias}}</a></p>
+											<p><a href="{% url 'alias' usr.alias %}">{{usr.alias}}</a></p>
 											{% endifequal %}
                     {% endifequal %}
                     {% endfor %}
