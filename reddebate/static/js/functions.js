@@ -267,7 +267,13 @@ function posturaChart() {
         };
 
         var chart = new google.visualization.PieChart(document.getElementById('piechart_postura'));
+        google.visualization.events.addListener(chart, 'ready', function () {
+            var imgUri = chart.getImageURI();
+            // do something with the image URI, like:
+            document.getElementById('chartImg').src = imgUri;
+        });
         chart.draw(data, options);
+
 };
 function argumentosChart() {
   var data = google.visualization.arrayToDataTable([
