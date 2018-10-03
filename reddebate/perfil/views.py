@@ -15,7 +15,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponse
 from resumen.models import Debate
 from perfil.models import Profile, List, UsersList
-from debate.models import Position, Argument, Counterargument, Report
+from debate.models import Position, Argument, Counterargument, Report, Visit
 from perfil.forms import updateAlias, newList, selectUsers, selectList, updateImage
 from resumen.views import debateData, closeDebate, allUsers
 from debate.views import updateReputation
@@ -136,6 +136,7 @@ def userStats(id_user):
     user_position_num = Position.objects.filter(id_user_id = id_user).count()
     user_args_num = Argument.objects.filter(id_user_id = id_user).count()
     user_counterargs_num = Counterargument.objects.filter(id_user_id = id_user).count()
+    reached_users = Visit.objects.filter(id_debate__in=user_debates).count()
     wins = 0
     lose = 0
     best_arg = 0
@@ -173,7 +174,7 @@ def userStats(id_user):
              'args_num': user_args_num, 'counterargs_num':user_counterargs_num,
              'wins': wins, 'lose':lose,
              'best_arg':best_arg, 'worse_arg':worse_arg,
-             'tags':user_tags}
+             'tags':user_tags, 'reached_users':reached_users}
     return stats
 
 #debates de un user

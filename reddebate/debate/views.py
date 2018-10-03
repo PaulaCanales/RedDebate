@@ -366,7 +366,7 @@ def deleteArgument(request):
 		arg_text = str(arg.text)
 		text = '"'+(arg_text[:30] + '..') if len(arg_text) > 75 else arg_text +'"'
 		debate = Debate.objects.get(pk=arg.id_debate_id)
-		msg = "Luego de una revisión, tu argumento "+text+" ha sido eliminado"
+		msg = "Tu argumento "+text+" ha sido eliminado por no cumplir las reglas de la red"
 		newNotification(debate,arg.id_user_id,'delete_arg',msg,msg)
 		updateReputation(arg.id_user_id, -5)
 	else:
@@ -382,7 +382,7 @@ def deleteCounterarg(request):
 		text = '"'+(counterarg_text[:30] + '..') if len(counterarg_text) > 75 else counterarg_text +'"'
 		arg = Argument.objects.get(pk=counterarg.id_argument_id)
 		debate = Debate.objects.get(pk=arg.id_debate_id)
-		msg = "Luego de una revisión, tu contraargumento "+text+" ha sido eliminado"
+		msg = "Tu contraargumento "+text+" ha sido eliminado por no cumplir las reglas de la red"
 		newNotification(debate,arg.id_user_id,'delete_arg',msg,msg)
 		updateReputation(counterarg.id_user_id, -5)
 	else:
