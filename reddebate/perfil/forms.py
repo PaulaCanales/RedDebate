@@ -25,20 +25,30 @@ class updateImage(forms.Form):
             ))
 
 class newList(forms.ModelForm):
+    def __init__(self,*args,**kwargs):
+        self.user = kwargs.pop('actual_user')
+        super(newList,self).__init__(*args,**kwargs)
+        if self.user:
+            self.fields['owner_id'].widget=forms.TextInput(
+                attrs={
+                    'value': self.user,
+                    'type': 'hidden',
+                })
     name = forms.CharField(widget=forms.TextInput(
         attrs={
             'class': 'form-control',
             'placeholder': 'Escribe un nombre...',
             'maxlength': 100,
         }))
+    owner_id = forms.CharField(widget=forms.TextInput())
     class Meta:
         model = List
-        fields = ('id','name')
+        fields = ('id','name', 'owner_id')
 
     def clean_name(self):
         name = self.cleaned_data.get('name')
-        if List.objects.filter(name=name).exists():
-            print("existe")
+        user = self['owner_id'].value()
+        if List.objects.filter(name=name, owner_id=user).exists():
             raise forms.ValidationError(("Ya existe una lista con ese nombre"))
         return name
 

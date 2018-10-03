@@ -72,7 +72,7 @@ def userData(request,id_usr,name_type):
         available_list = actual_user_list.exclude(id__in=target_user_list.values('list_id')).values()
         already_in_list = actual_user_list.filter(id__in=target_user_list.values('list_id')).values()
         form = selectList(listas=available_list, user=target_user.id)
-        form_list = newList()
+        form_list = newList(actual_user=request.user.id)
         if request.method == 'POST':
             #solicitud de agregar user a una list existente
             if 'new_user_list' in request.POST:
@@ -84,16 +84,20 @@ def userData(request,id_usr,name_type):
                         post = UsersList(user_id=usr, list_id=list, type=type)
                         post.save()
                     return redirect('username', id_usr=usr)
-                #solicitud de agregar user a una list nueva
-                if request.POST['name']:
-                    form_list = newList(request.POST)
-                    if form_list.is_valid():
-                        list = form_list.save(commit=False)
-                        list.owner = request.user
-                        list.save()
-                        new_usr = UsersList(user_id=usr, list_id=list.id, type=type)
-                        new_usr.save()
-                        return redirect('username', id_usr=usr)
+                else:
+                    return redirect('username', id_usr=usr)
+            #solicitud de agregar user a una list nueva
+            if request.POST['name']:
+                usr = request.POST['user']
+                type = request.POST['type_user']
+                form_list = newList(request.POST,actual_user=request.user.id)
+                if form_list.is_valid():
+                    list = form_list.save(commit=False)
+                    list.owner = request.user
+                    list.save()
+                    new_usr = UsersList(user_id=usr, list_id=list.id, type=type)
+                    new_usr.save()
+                    return redirect('username', id_usr=usr)
         return render(request, 'perfiles.html', {'target_user': target_user,
             'alias': target_profile, 'name_type': name_type,
             'stats': stats, 'form':form, 'form_list':form_list,
@@ -197,11 +201,11 @@ def userList(request):
             profile = Profile.objects.get(user_id=user['user_id'])
             users_in_list.append({'name':username, 'list_id':user['list_id'],
                                   'alias':profile.alias, 'type':user['type']})
-    form_list = newList()
+    form_list = newList(actual_user=request.user.id)
     if request.method == 'POST':
         #solicitud de crear una nueva lista
         if 'name' in request.POST:
-            form_list = newList(request.POST)
+            form_list = newList(request.POST, actual_user=request.user.id)
             if form_list.is_valid():
                 list = form_list.save(commit=False)
                 list.owner = request.user

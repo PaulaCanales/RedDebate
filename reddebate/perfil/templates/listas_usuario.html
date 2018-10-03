@@ -60,7 +60,8 @@
                <form method="POST" class="post-form" enctype="multipart/form-data">{% csrf_token %}
                <div class="fieldWrapper">
                  {{ form_list.non_field_errors }}
-                 {{ form_list.name }}
+								 {{ form_list.name }}
+                 {{ form_list.owner_id }}
                </div>
                <button name="nuevaLista" type="submit" class="btn btn-index">Agregar</button>
                <label type="button" onclick='cancelar_form("boton_lista", "formulario_lista");'> Cancelar </label>
