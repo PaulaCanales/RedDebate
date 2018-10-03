@@ -241,7 +241,7 @@ class Report(models.Model):
     counterarg = models.ForeignKey(Counterargument, blank = True,null=True)
 
     def __unicode__(self): # __unicode__ on Python 2
-        return self.id
+        return self.type
     def __getitem__(self, key):
         return getattr(self, key)
 

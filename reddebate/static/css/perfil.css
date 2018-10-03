@@ -260,6 +260,10 @@ main p{
   padding: 10px;
 }
 
+.dataTables_wrapper {
+  width: 100%;
+}
+
 .tag-cloud { padding: 2px; line-height: 3em; text-align: center; }
 .tag-cloud a.size-1 { font-size: 1.1em; font-weight: 500; color: var(--azul-principal) }
 .tag-cloud a.size-2 { font-size: 1.2em; font-weight: 500; color: #2A4C58}

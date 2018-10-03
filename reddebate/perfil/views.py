@@ -1,3 +1,4 @@
+# coding=utf-8
 from django.shortcuts import render, render_to_response
 from django.views.generic import ListView, DetailView
 from django.contrib.auth.models import User
@@ -14,7 +15,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponse
 from resumen.models import Debate
 from perfil.models import Profile, List, UsersList
-from debate.models import Position, Argument, Counterargument
+from debate.models import Position, Argument, Counterargument, Report
 from perfil.forms import updateAlias, newList, selectUsers, selectList, updateImage
 from resumen.views import debateData, closeDebate, allUsers
 from debate.views import updateReputation
@@ -61,9 +62,28 @@ def userData(request,id_usr,name_type):
                     post.save()
                     return redirect('username',id_usr=actual_user.id)
         stats = userStats(actual_user.id)
+        reports = Report.objects.all()
+        data_report = []
+        for report in reports:
+            if int(report.reason)==0:
+                reason = "Lenguaje"
+            elif int(report.reason)==1:
+                reason = "Privacidad"
+            elif int(report.reason)==2:
+                reason = "Publicidad"
+            if report.type=='debate':
+                element=Debate.objects.get(pk=report.debate_id)
+            elif report.type=='argument':
+                element=Argument.objects.get(pk=report.argument_id)
+            elif report.type=='counterarg':
+                element=Counterargument.objects.get(pk=report.counterarg_id)
+            reported= element.id_user
+            owner = User.objects.get(pk=report.owner_id)
+            data_report.append({'reason':reason, 'type':report.type ,'element':element,
+                                'reported':reported, 'owner':owner})
         return render(request, 'perfil_usuario.html', {'actual_user': actual_user,
             'alias': target_profile, 'alias_form': alias_form,
-            'stats': stats, 'imagen_form':imagen_form})
+            'stats': stats, 'imagen_form':imagen_form, 'data_report':data_report})
     #si el user accede al perfil de otro user
     else:
         stats = userStats(target_user.id)
@@ -71,6 +91,8 @@ def userData(request,id_usr,name_type):
         actual_user_list = List.objects.filter(owner_id=actual_user.id)
         available_list = actual_user_list.exclude(id__in=target_user_list.values('list_id')).values()
         already_in_list = actual_user_list.filter(id__in=target_user_list.values('list_id')).values()
+        total_users = User.objects.all()
+        all_users = allUsers(total_users)
         form = selectList(listas=available_list, user=target_user.id)
         form_list = newList(actual_user=request.user.id)
         if request.method == 'POST':
@@ -101,7 +123,7 @@ def userData(request,id_usr,name_type):
         return render(request, 'perfiles.html', {'target_user': target_user,
             'alias': target_profile, 'name_type': name_type,
             'stats': stats, 'form':form, 'form_list':form_list,
-            'already_in_list':already_in_list})
+            'already_in_list':already_in_list, 'all_users':all_users})
 
 #estadisticas de un user
 def userStats(id_user):
