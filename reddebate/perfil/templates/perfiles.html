@@ -22,14 +22,6 @@
           <img class="photo" src="{{alias.img.url}}"/>
           <div class="active"></div>
         </div>
-        {% if user.is_superuser %}
-        <form id="delete_user" method="post" action= "{% url 'resumen:index' %}" enctype="multipart/form-data" onsubmit="return confirm('¿Seguro que desea eliminar el usuario?');">{% csrf_token %}
-           <input type="hidden" value="{{ target_user.id }}" name="id_user_delete">
-           <button type="submit" class="btn btn-demo">
-             <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-           </button>
-       </form>
-       {% endif %}
         <h4 class="name">{{target_user.username}}</h4>
         <p class="info">{{ target_user.email }}</p>
         {% else %}
@@ -85,6 +77,12 @@
           <div class="stat col-xs-4">
             <p class="number-stat">{{stats.worse_arg}}</p>
             <p class="desc-stat">Peor</p>
+          </div>
+        </div>
+        <div class="stats row">
+          <div class="stat col-xs-12">
+            <p class="number-stat">{{stats.reached_users}}</p>
+            <p class="desc-stat">Personas alcanzadas</p>
           </div>
         </div>
       </main>

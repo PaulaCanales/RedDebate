@@ -31,7 +31,7 @@
           <p class="desc-datos">Alias</p>
           <p class="datos">{{alias.alias}} <a id = 'boton_alias' onclick='javascript:form_perfil("boton_alias", "formulario_alias" );'> <span class="glyphicon glyphicon-edit" aria-hidden="true" ></span> </a></p>
           <p class="desc-datos">Personas alcanzadas</p>
-          <p class="datos">20</p>
+          <p class="datos">{{stats.reached_users}}</p>
           {% if alias_form.alias.errors %}
           <div class="alert alert-danger">
               {{ alias_form.alias.errors }}
