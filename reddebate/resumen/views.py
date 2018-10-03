@@ -292,7 +292,7 @@ def deleteDebate(request):
     if actual_user.is_staff==1:
         debate_text = str(debate.title)
         text = '"'+(debate_text[:30] + '..') if len(debate_text) > 75 else debate_text +'"'
-        msg = "Luego de una revisión, tu debate "+text+" ha sido eliminado"
+        msg = "Tu debate "+text+" ha sido eliminado por no cumplir las reglas de la red"
         newNotification(debate,debate.id_user_id,'delete_arg',msg,msg)
         updateReputation(debate.id_user_id, -8)
     else:

@@ -2,8 +2,6 @@
 {% load static %}
 
 <form id="nuevodebateform" method="POST" enctype="multipart/form-data">{% csrf_token %}
-
-    <!-- fieldsets -->
     <fieldset>
       <div class="row leftAlign">
         <div class="col-md-6">
@@ -150,8 +148,15 @@
           </h5>
           <div class="fieldWrapper">
             {{form.members.errors }}
-            <input type="text" value="" name="searchColumn" id="searchUser1" placeholder="Busca a un usuario..."/>
-            {{order_user_form}}
+            <div class="row">
+              <div class="col-md-6">
+                <label>Buscar: </label>
+                <input type="text" value="" name="searchColumn" class="form-control" id="searchUser1" placeholder="Busca a un usuario..."/>
+              </div>
+              <div class="col-md-6">
+                {{order_user_form}}
+              </div>
+            </div>
             <div id="containercheckbox" class="userscheckbox">
             {% for field in form.members %}
             <div class="inputGroup">{{field}}</div>
