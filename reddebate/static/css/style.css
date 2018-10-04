@@ -206,7 +206,7 @@ section.success {
 .modal {
     display: none; /* Hidden by default */
     position: fixed; /* Stay in place */
-    z-index: 1; /* Sit on top */
+    z-index: 2; /* Sit on top */
     padding-top: 100px; /* Location of the box */
     left: 0;
     top: 0;
@@ -261,6 +261,27 @@ section.success {
   padding-bottom: 10px;
   display: flex;
   justify-content: space-between;
+}
+.modal-footer label,
+.modal-footer button{
+  background-color: #cccccc;
+  width: 100%;
+  margin: -15px;
+  border: solid 0px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 45px
+}
+.modal-footer button{
+  background-color: var(--azul-principal);
+  border-radius: 0px 0px 0px 10px;
+  color: white;
+  font-weight: bold;
+}
+.modal-footer label{
+  border-radius: 0px 0px 10px 0px;
+  cursor: pointer;
 }
 .form-control#rebateDesc, .form-control#id_alias_c{
   margin-right: 5px;
@@ -1987,4 +2008,11 @@ hr {
 .stats_arg0{
   color: var(--rojo-principal);
   font-weight: bold;
+}
+.imagenDeb{
+  width: 50%;
+}
+.imagenDeb .modal-body{
+  min-height: 155px;
+  overflow-x: hidden;
 }

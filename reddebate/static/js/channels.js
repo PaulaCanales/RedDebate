@@ -24,10 +24,10 @@ $(document).ready(function(){
   socket.onmessage = function(message) {
         var id_usr_actual = $("#id_usuario_actual").text();
         var data = JSON.parse(message.data);
-        console.log("onmassage");
         var url = "/debate/"+data.id+"/"
-        if (data.title){
+        if (data.text){
           $("#alertaDeb0").css("display","block");
+          $("#id_deb_img").val(data.id);
         }
         if (data.members){
           console.log(data.members);
@@ -94,7 +94,9 @@ $(document).ready(function(){
     }
     console.log(message);
     socket.send(JSON.stringify(message));
-    window.location.reload();
+    console.log('message');
+    abrir_modal('debateImage_modal')
+    console.log('img');
     return false;
   });
 

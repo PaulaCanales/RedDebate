@@ -1,5 +1,30 @@
 <!DOCTYPE html>
 {% load static %}
+<div id="debateImage_modal" class="modal">
+  <div class="modal-content imagenDeb">
+    <h5>
+      <span class="close" onclick="cerrar_modal('debateImage_modal')">&times;</span><br>
+      <i class="fa fa-file-image-o" aria-hidden="true"></i> ¿Quieres agregar una imagen al debate?
+    </h5>
+    <div class="modal-body">
+    <form id="imagedebateform" method="POST" enctype="multipart/form-data">{% csrf_token %}
+      <div class="row">
+        <div class="col-md-6 fieldWrapper">
+          {{ img_form.errors }}
+          {{ img_form }}
+        </div>
+        <div class="col-md-6 prev">
+          <img id="imgPrev" height="150px" src="" />
+        </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button name="new_img_deb" type="submit">Agregar</button>
+        <label type="button" onClick="window.location.reload()"> Cancelar </label>
+      </div>
+    </form>
+  </div>
+</div>
 
 <form id="nuevodebateform" method="POST" enctype="multipart/form-data">{% csrf_token %}
     <fieldset>

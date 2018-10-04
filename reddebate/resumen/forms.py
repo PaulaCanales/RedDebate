@@ -127,7 +127,20 @@ class newDebateForm(forms.ModelForm):
         label="Listas")
     class Meta:
         model = Debate
-        fields = ('id_debate', 'title', 'text', 'end_date', 'owner_type', 'length', 'args_max', 'counterargs_max', 'position_max', 'counterargs_type', 'members_type')
+        fields = ('id_debate', 'title', 'text', 'end_date', 'owner_type',
+                  'length', 'args_max', 'counterargs_max', 'position_max',
+                  'counterargs_type', 'members_type')
+
+class imageDebate(forms.Form):
+    deb_img = forms.CharField(widget=forms.TextInput(
+        attrs={
+            'type': 'hidden',
+            'id': 'id_deb_img'
+        }))
+    img = forms.FileField(label='Selecciona una imagen', required=False,
+        widget=forms.FileInput(
+            attrs={'id': 'debImgForm'}
+            ))
 
 class orderDebate(forms.Form):
     order_type = forms.CharField(
