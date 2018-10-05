@@ -69,11 +69,7 @@ def showDebate(request, id_debate): #debate_id
 	args_num = debate.args_max
 	change_position_num = debate.position_max
 	counterarg_type = debate.counterargs_type
-	try:
-		owner_profile = Profile.objects.get(user= owner_user)
-		owner_profile = owner_profile.alias
-	except:
-		owner_profile = 'username'
+	owner_profile = Profile.objects.get(user= owner_user)
 
 	usuario_actual_alias = Profile.objects.get(user= request.user)
 	actual_user = request.user
