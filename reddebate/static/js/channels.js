@@ -1,11 +1,12 @@
 $(document).ready(function(){
   var socket = new WebSocket('wss://' + window.location.host + window.location.pathname);
-  var socket_notificacion = new WebSocket('wss://' + window.location.host + '/notificacion/');
+  var socket_notificacion = new WebSocket('wss://' + window.location.host + '/notification/');
 
-  socket_notificacion.onmessage = function(notificacion){
-    var data = JSON.parse(notificacion.data);
+  socket_notificacion.onmessage = function(notification){
+    var data = JSON.parse(notification.data);
     var id_usr_actual = $("#id_usuario_actual").text();
     if (id_usr_actual == data.id_owner){
+      console.log("notificacion");
       $("#alertaSpan").css('color', '#d9534f');
       $("#numSpan").text("");
       $("#numSpan").append($('<span class="glyphicon glyphicon-asterisk" aria-hidden="true"></span>'));
@@ -24,10 +25,10 @@ $(document).ready(function(){
   socket.onmessage = function(message) {
         var id_usr_actual = $("#id_usuario_actual").text();
         var data = JSON.parse(message.data);
-        console.log("onmassage");
         var url = "/debate/"+data.id+"/"
-        if (data.title){
+        if (data.text){
           $("#alertaDeb0").css("display","block");
+          $("#id_deb_img").val(data.id);
         }
         if (data.members){
           console.log(data.members);
@@ -94,7 +95,9 @@ $(document).ready(function(){
     }
     console.log(message);
     socket.send(JSON.stringify(message));
-    window.location.reload();
+    console.log('message');
+    abrir_modal('debateImage_modal')
+    console.log('img');
     return false;
   });
 

@@ -27,6 +27,7 @@ class Debate(models.Model):
     counterargs_max = models.IntegerField(default=1)
     counterargs_type = models.IntegerField(default=0) # 0:ambas # 1: contraria
     members_type = models.IntegerField(default=0) #0 debate publico
+    img = models.FileField(blank=True, null=True, default="RDdefault.png")
 
     tags = TaggableManager()
 
@@ -35,4 +36,4 @@ class Debate(models.Model):
     def __getitem__(self, key):
         return getattr(self, key)
     def as_dict(self):
-        return {'text': self.text, 'type':self.members_type}
+        return {'text': self.text, 'type':self.members_type, 'id':self.id_debate}

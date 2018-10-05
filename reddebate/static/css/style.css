@@ -206,7 +206,7 @@ section.success {
 .modal {
     display: none; /* Hidden by default */
     position: fixed; /* Stay in place */
-    z-index: 1; /* Sit on top */
+    z-index: 2; /* Sit on top */
     padding-top: 100px; /* Location of the box */
     left: 0;
     top: 0;
@@ -261,6 +261,27 @@ section.success {
   padding-bottom: 10px;
   display: flex;
   justify-content: space-between;
+}
+.modal-footer label,
+.modal-footer button{
+  background-color: #cccccc;
+  width: 100%;
+  margin: -15px;
+  border: solid 0px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 45px
+}
+.modal-footer button{
+  background-color: var(--azul-principal);
+  border-radius: 0px 0px 0px 10px;
+  color: white;
+  font-weight: bold;
+}
+.modal-footer label{
+  border-radius: 0px 0px 10px 0px;
+  cursor: pointer;
 }
 .form-control#rebateDesc, .form-control#id_alias_c{
   margin-right: 5px;
@@ -618,6 +639,7 @@ footer {
 .btn-postura1, .btn-postura0 {
   background-repeat: no-repeat;
   background-position-x: center;
+  background-color: white;
   position:absolute;
   width: 90%;
   height: 150px;
@@ -625,18 +647,22 @@ footer {
   padding-right: 20px;
 }
 .btn-postura1{
-  background-image: url('/static/img/thumbs-up.png');
+  background-image: url('/static/img/thumbs-up.jpg');
 }
 .btn-postura0{
-  background-image: url('/static/img/thumbs-down.png');
+  background-image: url('/static/img/thumbs-down.jpg');
 }
-.btn-postura1.active,.btn-postura1:active,.btn-postura1:focus,.btn-postura1:hover {
-  background-image: url('/static/img/thumbs-up-select.png');
+.btn-postura1.active,.btn-postura1:disabled,
+.btn-postura1:focus,.btn-postura1:hover {
+  background-image: url('/static/img/thumbs-up-select.jpg');
   transition:all .3s ease-in-out;
+  background-color: white;
 }
-.btn-postura0.active,.btn-postura0:active,.btn-postura0:focus,.btn-postura0:hover {
-  background-image: url('/static/img/thumbs-down-select.png');
+.btn-postura0.active,.btn-postura0:disabled,
+.btn-postura0:focus,.btn-postura0:hover {
+  background-image: url('/static/img/thumbs-down-select.jpg');
   transition:all .3s ease-in-out;
+  background-color: white;
 }
 .btn-posturactual1, .btn-posturactual0 {
   background-repeat: no-repeat;
@@ -648,10 +674,10 @@ footer {
   padding-right: 20px;
 }
 .btn-posturactual1{
-  background-image: url('/static/img/thumbs-up-select.png');
+  background-image: url('/static/img/thumbs-up-select.jpg');
 }
 .btn-posturactual0{
-  background-image: url('/static/img/thumbs-down-select.png');
+  background-image: url('/static/img/thumbs-down-select.jpg');
 }
 
 .btn-link {
@@ -1331,6 +1357,12 @@ hr {
   margin: -30px -30px 15px -30px;
   padding: 5% 5% 15px 5%;
 }
+.photo {
+  max-height: 150px;
+  border-radius: 10px;
+  border: 4px solid #fff;
+  margin-bottom: 10px;
+}
 .container-debate h2{
   margin-top: 0;
   font-family: "Montserrat", "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -1987,4 +2019,39 @@ hr {
 .stats_arg0{
   color: var(--rojo-principal);
   font-weight: bold;
+}
+.imagenDeb{
+  width: 50%;
+}
+.imagenDeb .modal-body{
+  min-height: 155px;
+  overflow-x: hidden;
+}
+.debInformation{
+  margin: 10px 35px 10px 0px;
+  text-align: center;
+  position: relative;
+  margin-bottom: 20px;
+}
+.debInformation h5{
+  font-family: "Montserrat", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  text-align: right;
+  position: absolute;
+  bottom: 0;
+  right: 15px;
+}
+.debInformation .col-sm-9{
+  min-height: 200px;
+}
+.debInformation a{
+  color: var(--verde-principal);
+}
+.debInformation hr {
+  display: block;
+  background-image: linear-gradient(90deg, transparent, var(--verde-principal), transparent);
+  border: 0;
+  height: 1px;
+}
+.fb-share-button{
+  display: block !important;
 }

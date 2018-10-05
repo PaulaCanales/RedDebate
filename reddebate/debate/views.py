@@ -69,11 +69,7 @@ def showDebate(request, id_debate): #debate_id
 	args_num = debate.args_max
 	change_position_num = debate.position_max
 	counterarg_type = debate.counterargs_type
-	try:
-		owner_profile = Profile.objects.get(user= owner_user)
-		owner_profile = owner_profile.alias
-	except:
-		owner_profile = 'username'
+	owner_profile = Profile.objects.get(user= owner_user)
 
 	usuario_actual_alias = Profile.objects.get(user= request.user)
 	actual_user = request.user
@@ -204,19 +200,26 @@ def debateStats(request, id_debate):
 	best_argument_owner = 0
 	second_argument = 0
 	second_argument_owner = 0
+	best_arg_owner_url = None
+	second_arg_owner_url = None
 	arguments = Argument.objects.filter(id_debate_id=debate.id_debate).order_by('-score')
 	if len(arguments)>1:
 		best_argument = arguments[0]
-		best_argument_owner = User.objects.get(pk=best_argument.id_user_id).username
+		best_argument_owner = User.objects.get(pk=best_argument.id_user_id)
+		best_arg_owner_url = best_argument_owner.id
+		best_argument_owner = best_argument_owner.username
+		profile = Profile.objects.get(pk=User.objects.get(pk=best_argument.id_user_id))
 		if best_argument.owner_type == 'alias':
-			profile = Profile.objects.get(pk=User.objects.get(pk=best_argument.id_user_id))
 			best_argument_owner = profile.alias
+			best_arg_owner_url = profile.alias
 		second_argument = arguments[1]
-		second_argument_owner = User.objects.get(pk=second_argument.id_user_id).username
+		second_argument_owner = User.objects.get(pk=second_argument.id_user_id)
+		second_arg_owner_url = second_argument_owner.id
+		second_argument_owner = second_argument_owner.username
+		profile = Profile.objects.get(pk=User.objects.get(pk=second_argument.id_user_id))
 		if second_argument.owner_type == 'alias':
-			profile = Profile.objects.get(pk=User.objects.get(pk=second_argument.id_user_id))
 			second_argument_owner = profile.alias
-
+			second_arg_owner_url = profile.alias
 	position_date = Position.objects.filter(id_debate_id = id_debate).values("date")
 	position_date_group = itertools.groupby(position_date, lambda record: record.get("date").strftime("%Y-%m-%d"))
 	temp = 0
@@ -229,7 +232,8 @@ def debateStats(request, id_debate):
 			'infavor_percent': infavor_percent, 'against_percent': against_percent,
 			'infavor_args_list': infavor_args_list, 'against_args_list':against_args_list,
 			'best_argument': best_argument, 'second_argument': second_argument,
-			'best_argument_owner': best_argument_owner, 'second_argument_owner': second_argument_owner,
+			'best_argument_owner': best_argument_owner, 'best_arg_owner_url':best_arg_owner_url,
+			'second_argument_owner': second_argument_owner, 'second_arg_owner_url':second_arg_owner_url,
 			'infavor_to_against': infavor_to_against, 'against_to_infavor':against_to_infavor,
 			'reason_infavor_to_against': reason_infavor_to_against, 'reason_against_to_infavor':reason_against_to_infavor,
 			'positions_by_day':positions_by_day}

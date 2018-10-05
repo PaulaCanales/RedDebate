@@ -141,36 +141,62 @@ $(document).ready(
 
 	});
 
-	$(document).ready(function(){
-		filtroCheckbox('#searchUser1');
-		filtroCheckbox('#searchLista1');
-	});
-	
-	function order_user_by(value){
-		$.ajax({
-				url:  $(this).attr("href"),
-				type: 'GET',
-				data:{  order : value,
-								csrfmiddlewaretoken: '{{ csrf_token }}'
-							} ,
-							success: function(data) {
-								var container = $('#containercheckbox');
-								var inputs = container.find('div');
-								var id = inputs.length+1;
-								inputs.remove()
-								for (i=0 ; i<data.length ; i++){
-									var name = " "+data[i].name
-									var value = JSON.stringify(data[i].object);
-									var div = $('<div />', {class:"inputGroup"});
-									var label = $('<label />', { 'for': 'debMembersForm_'+i, text: name});
-									var input = $('<input />', { type: 'checkbox', name:"members", value: value, id: 'debMembersForm_'+i})
+$(document).ready(function(){
+	filtroCheckbox('#searchUser1');
+	filtroCheckbox('#searchLista1');
+});
 
-									input.prependTo(label.appendTo(div.appendTo(container)));
-								}
-							},
-							failure: function(data) {
-									alert('Error de conexión');
-							},
-							crossDomain: true
-					});
-	 }
+function order_user_by(value){
+	$.ajax({
+			url:  $(this).attr("href"),
+			type: 'GET',
+			data:{  order : value,
+							csrfmiddlewaretoken: '{{ csrf_token }}'
+						} ,
+						success: function(data) {
+							var container = $('#containercheckbox');
+							var inputs = container.find('div');
+							var id = inputs.length+1;
+							inputs.remove()
+							for (i=0 ; i<data.length ; i++){
+								var name = " "+data[i].name
+								var value = JSON.stringify(data[i].object);
+								var div = $('<div />', {class:"inputGroup"});
+								var label = $('<label />', { 'for': 'debMembersForm_'+i, text: name});
+								var input = $('<input />', { type: 'checkbox', name:"members", value: value, id: 'debMembersForm_'+i})
+
+								input.prependTo(label.appendTo(div.appendTo(container)));
+							}
+						},
+						failure: function(data) {
+								alert('Error de conexión');
+						},
+						crossDomain: true
+				});
+ }
+
+ $(window).load(function(){
+
+  $(function() {
+   $('#debImgForm').change(function(e) {
+       addImage(e);
+      });
+
+      function addImage(e){
+       var file = e.target.files[0],
+       imageType = /image.*/;
+
+       if (!file.type.match(imageType))
+        return;
+
+       var reader = new FileReader();
+       reader.onload = fileOnload;
+       reader.readAsDataURL(file);
+      }
+
+      function fileOnload(e) {
+       var result=e.target.result;
+       $('#imgPrev').attr("src",result);
+      }
+     });
+   });

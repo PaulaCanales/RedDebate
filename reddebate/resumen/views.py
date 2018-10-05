@@ -15,7 +15,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from resumen.models import Debate
 from debate.models import Position, Argument, Counterargument, Rate, PrivateMembers, Visit, newNotification
 from perfil.models import Profile, Notification, List, UsersList
-from resumen.forms import newDebateForm, LoginForm, orderDebate, orderUser
+from resumen.forms import newDebateForm, LoginForm, orderDebate, orderUser, imageDebate
 from taggit.models import Tag
 from django.db.models import Q, Sum
 from debate.views import updateReputation
@@ -113,6 +113,14 @@ def index(request):
             user.delete()
             return redirect('index')
 
+        if 'new_img_deb' in request.POST:
+            form = imageDebate(request.POST, request.FILES)
+            if form.is_valid():
+                id = request.POST['deb_img']
+                post = Debate.objects.get(pk=id)
+                post.img = form.cleaned_data['img']
+                post.save()
+                return redirect('index')
     if request.method == 'GET':
         if 'q' in request.GET:
             deb = search(request)
@@ -194,12 +202,13 @@ def makeData(request, actual_user, form, state):
     actual_user_list = List.objects.filter(owner_id=actual_user.id).values()
     order_form = orderDebate()
     order_user_form = orderUser()
+    img_form = imageDebate()
     context = {'moderator_view_deb':moderator_view_deb, 'total_data_deb': total_data_deb, 'actual_user': actual_user, 'alias': user_alias,
                 'form':form, 'top_tags':top_tags, 'top_deb':top_debates,
                 'top_users':top_users, 'recent_data_deb': recent_data_deb, 'moderator_recent_deb': moderator_recent_data_deb,
                 'moderator_top_deb': moderator_top_debates, 'actual_user_list':actual_user_list,
                 'order_form':order_form, 'debates_order':debates_order,
-                'order_user_form': order_user_form}
+                'order_user_form': order_user_form, 'img_form':img_form}
     return context
 
 def debateData(debates, user, moderator):

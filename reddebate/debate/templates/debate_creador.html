@@ -10,15 +10,8 @@ $(document).ready(function(){
 		<div class="row">
 			<div class="col-md-11">
 				<h2>{{ debate.title }}</h2>
-				<p>
-					<input id="idDebate" type="hidden" value={{debate.id_debate}}>
-					{% ifequal debate.owner_type 'alias' %}
-						<h5>Creado por {{owner_profile}} en modo anónimo</h5>
-					{%else%}
-						<h5>Debate creado por {{owner_user}}</h5>
-					{%endifequal%}
-					<span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>{{visits}}
-				</p>
+				<input id="idDebate" type="hidden" value={{debate.id_debate}}>
+				<span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span> Visto {{visits}} veces
 			</div>
 			<div class="col-md-1">
 				{% ifequal debate.state 'open' %}
@@ -32,13 +25,27 @@ $(document).ready(function(){
 			</div>
 		</div>
 	</header>
-	<p class="debateDescripcion">{{ debate.text }}</p>
-	<div id="fb-root"></div>
-	<div style="text-align: right">
-	<div class="fb-share-button"
-		data-href="https://reddebate.cl/debate/{{ debate.id_debate }}/"
-		data-layout="button_count">
-	</div></div><br>
+	<div class="row debInformation">
+		<div class="col-sm-3">
+			<img class="photo" src="{{ debate.img.url }}"/>
+			<div class="fb-share-button"
+				data-href="https://reddebate.cl/debate/{{ debate.id_debate }}/"
+				data-layout="button_count"
+				data-size="large">
+			</div>
+		</div>
+		<div class="col-sm-9">
+			<p class="debateDescripcion">{{ debate.text }}</p>
+				{% ifequal debate.owner_type 'alias' %}
+					<h5>Publicado por <a href="{% url 'alias' owner_profile %}">{{owner_profile}}</a>
+						 | {{owner_profile.reputation}} puntos de reputación</h5>
+				{%else%}
+					<h5>Publicado por <a href="{% url 'username' owner_user.id %}">{{owner_user}}</a>
+						 | {{owner_profile.reputation}} puntos de reputación</h5>
+				{%endifequal%}
+		</div>
+		<hr>
+	</div>
 	<div name="detalle-debate">
 			<div class="row" id="my-row">
 				<div class="col-md-3 panel">
