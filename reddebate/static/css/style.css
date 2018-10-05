@@ -639,6 +639,7 @@ footer {
 .btn-postura1, .btn-postura0 {
   background-repeat: no-repeat;
   background-position-x: center;
+  background-color: white;
   position:absolute;
   width: 90%;
   height: 150px;
@@ -646,18 +647,22 @@ footer {
   padding-right: 20px;
 }
 .btn-postura1{
-  background-image: url('/static/img/thumbs-up.png');
+  background-image: url('/static/img/thumbs-up.jpg');
 }
 .btn-postura0{
-  background-image: url('/static/img/thumbs-down.png');
+  background-image: url('/static/img/thumbs-down.jpg');
 }
-.btn-postura1.active,.btn-postura1:active,.btn-postura1:focus,.btn-postura1:hover {
-  background-image: url('/static/img/thumbs-up-select.png');
+.btn-postura1.active,.btn-postura1:disabled,
+.btn-postura1:focus,.btn-postura1:hover {
+  background-image: url('/static/img/thumbs-up-select.jpg');
   transition:all .3s ease-in-out;
+  background-color: white;
 }
-.btn-postura0.active,.btn-postura0:active,.btn-postura0:focus,.btn-postura0:hover {
-  background-image: url('/static/img/thumbs-down-select.png');
+.btn-postura0.active,.btn-postura0:disabled,
+.btn-postura0:focus,.btn-postura0:hover {
+  background-image: url('/static/img/thumbs-down-select.jpg');
   transition:all .3s ease-in-out;
+  background-color: white;
 }
 .btn-posturactual1, .btn-posturactual0 {
   background-repeat: no-repeat;
@@ -669,10 +674,10 @@ footer {
   padding-right: 20px;
 }
 .btn-posturactual1{
-  background-image: url('/static/img/thumbs-up-select.png');
+  background-image: url('/static/img/thumbs-up-select.jpg');
 }
 .btn-posturactual0{
-  background-image: url('/static/img/thumbs-down-select.png');
+  background-image: url('/static/img/thumbs-down-select.jpg');
 }
 
 .btn-link {
