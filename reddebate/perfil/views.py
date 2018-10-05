@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 import datetime
 from django.contrib.auth.decorators import login_required
 import ast
+import re
 
 from django.http import HttpResponse
 from django.shortcuts import redirect
@@ -51,6 +52,9 @@ def userData(request,id_usr,name_type):
                 alias_form = updateAlias(request.POST, instance=target_profile)
                 if alias_form.is_valid():
                     post = alias_form.save(commit=False)
+                    alias =  request.POST['alias']
+                    alias = re.sub('[^A-Za-z0-9]+', '', alias)
+                    post.alias = alias
                     post.save()
                     return redirect('username',id_usr=actual_user.id)
             #solicitud de cambiar imagen de perfil
