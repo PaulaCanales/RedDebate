@@ -1,11 +1,12 @@
 $(document).ready(function(){
   var socket = new ReconnectingWebSocket('ws://' + window.location.host + window.location.pathname);
-  var socket_notificacion = new ReconnectingWebSocket('ws://' + window.location.host + '/notificacion/');
+  var socket_notificacion = new ReconnectingWebSocket('ws://' + window.location.host + '/notification/');
 
-  socket_notificacion.onmessage = function(notificacion){
-    var data = JSON.parse(notificacion.data);
+  socket_notificacion.onmessage = function(notification){
+    var data = JSON.parse(notification.data);
     var id_usr_actual = $("#id_usuario_actual").text();
     if (id_usr_actual == data.id_owner){
+      console.log("notificacion");
       $("#alertaSpan").css('color', '#d9534f');
       $("#numSpan").text("");
       $("#numSpan").append($('<span class="glyphicon glyphicon-asterisk" aria-hidden="true"></span>'));

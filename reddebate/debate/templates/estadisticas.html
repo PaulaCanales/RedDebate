@@ -58,8 +58,8 @@ $(document).ready(function(){
             <tr>
               <td>{{stats.best_argument.score}}</td>
               <td>
-                <p><a href="{% url stats.best_argument.owner_type stats.best_argument.id_user_id %}">
-                  <p1>{{stats.best_argument_owner}}:</p1></a> {{stats.best_argument.text}}</p>
+                <p><a href="{% url stats.best_argument.owner_type stats.best_arg_owner_url %}">
+                  <p1>{{stats.best_argument_owner}}:</p1></a>{{stats.best_argument.text}}</p>
               </td>
               {% ifequal stats.best_argument.position 0%}
               <td class="stats_arg0"> En Contra</td>
@@ -70,7 +70,7 @@ $(document).ready(function(){
             <tr>
               <td>{{stats.second_argument.score}}</td>
               <td>
-                <p><a href="{% url stats.second_argument.owner_type stats.second_argument.id_user_id %}">
+                <p><a href="{% url stats.second_argument.owner_type stats.second_arg_owner_url %}">
                   <p1>{{stats.second_argument_owner}}:</p1></a> {{stats.second_argument.text}}</p>
               </td>
               {% ifequal stats.second_argument.position 0%}
