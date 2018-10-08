@@ -5,6 +5,34 @@ $(document).ready(function(){
 		catch(err){}});
 </script>
 <html>
+<div id="updateImage_modal" class="modal">
+  <div class="modal-content imagenDeb">
+    <h5>
+      <span class="close" onclick="cerrar_modal('updateImage_modal')">&times;</span><br>
+      <i class="fa fa-file-image-o" aria-hidden="true"></i> Cambia la imagen del debate
+    </h5>
+    <div class="modal-body">
+    <form id="imagedebateform" method="POST" enctype="multipart/form-data">{% csrf_token %}
+      <div class="row">
+        <div class="col-md-6 fieldWrapper">
+					<input name="deb_img" type="hidden" value={{debate.id_debate}}>
+          {{ updateImg_form.errors }}
+          {{ updateImg_form }}
+					<br>
+					<p>Se recomienda una imagen con tamaño mínimo de 200 x 200 píxeles</p>
+        </div>
+        <div class="col-md-6 prev">
+          <img id="updateImgPrev" height="150px" src="" />
+        </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button name="update_img_deb" type="submit">Agregar</button>
+        <label type="button" onclick="cerrar_modal('updateImage_modal')"> Cancelar </label>
+      </div>
+    </form>
+  </div>
+</div>
 <div class="container-debate">
 	<header>
 		<div class="row">
@@ -27,7 +55,10 @@ $(document).ready(function(){
 	</header>
 	<div class="row debInformation">
 		<div class="col-sm-3">
-			<img class="photo" src="{{ debate.img.url }}"/>
+			<div class="divPhoto">
+				<img class="photo" src="{{ debate.img.url }}" alt="imagendeb"/>
+				<div class="updateImg"><a href="javascript:abrir_modal('updateImage_modal')"><i class="fa fa-pencil fa-lg"></i></a></div>
+			</div>
 			<div class="fb-share-button"
 				data-href="https://reddebate.cl/debate/{{ debate.id_debate }}/"
 				data-layout="button_count"
@@ -37,7 +68,7 @@ $(document).ready(function(){
 		<div class="col-sm-9">
 			<p class="debateDescripcion">{{ debate.text }}</p>
 				{% ifequal debate.owner_type 'alias' %}
-					<h5>Publicado por <a href="{% url 'alias' owner_profile %}">{{owner_profile}}</a>
+					<h5>Publicado por <a href="{% url 'alias' owner_profile.alias %}">{{owner_profile.alias}}</a>
 						 | {{owner_profile.reputation}} puntos de reputación</h5>
 				{%else%}
 					<h5>Publicado por <a href="{% url 'username' owner_user.id %}">{{owner_user}}</a>

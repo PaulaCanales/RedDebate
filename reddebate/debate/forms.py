@@ -31,6 +31,13 @@ class newArgForm1(forms.ModelForm):
     class Meta:
         model = Argument
         fields = ('id_argument', 'text', 'owner_type')
+
+class updateImage(forms.Form):
+    img = forms.FileField(label='Añadir imagen', required=False,
+        widget=forms.FileInput(
+            attrs={'id': 'updateDebImgForm'}
+            ))
+
 class newArgForm0(forms.ModelForm):
     def __init__(self,*args,**kwargs):
         self.owner = kwargs.pop('owner')

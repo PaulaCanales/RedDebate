@@ -4,7 +4,8 @@ from django.shortcuts import render, redirect
 from resumen.models import Debate
 from debate.models import Position, Argument, Rate, Counterargument, PrivateMembers, Visit, Report,newNotification
 from perfil.models import Profile, Notification
-from debate.forms import newArgForm1,newArgForm0, newCounterargForm, newReportReasonForm
+from debate.forms import newArgForm1,newArgForm0, newCounterargForm, newReportReasonForm, updateImage
+
 
 from django.http import HttpResponse
 from django.contrib.auth.models import User
@@ -62,6 +63,15 @@ def showDebate(request, id_debate): #debate_id
 		if 'report_counterargument' in request.POST:
 			report = reportMessage(request, 'counterarg')
 			return redirect(showDebate,id_debate)
+		#solicitud de cambiar imagen del debate
+		if 'update_img_deb' in request.POST:
+			form = updateImage(request.POST, request.FILES)
+			if form.is_valid():
+				id = request.POST['deb_img']
+				post = Debate.objects.get(pk=id)
+				post.img = form.cleaned_data['img']
+				post.save()
+				return redirect(showDebate,id_debate)
 
 	owner_user_id = debate.id_user_id #user owner
 	owner_user = User.objects.get(id= owner_user_id)
@@ -141,6 +151,7 @@ def showDebate(request, id_debate): #debate_id
 	arg_form1 = newArgForm1(owner=options_owner,max_length=max_length)
 	counterarg_form = newCounterargForm(owner=options_owner,max_length=max_length)
 	report_form = newReportReasonForm()
+	updateImg_form = updateImage()
 
 	can_report_deb = True
 	r = Report.objects.filter(owner_id=actual_user,debate_id=debate.id_debate,type="debate").count()
@@ -159,6 +170,7 @@ def showDebate(request, id_debate): #debate_id
 		'participate': participate, 'debate_members': members_list, 'counterarg_type': counterarg_type,
 		'counterarg_target': counterarg_target, 'visits': visits,
 		'report_form':report_form, 'can_report_deb':can_report_deb,
+		'updateImg_form':updateImg_form,
 		'stats': stats}
 	return render(request, 'debate.html', data)
 
@@ -227,7 +239,9 @@ def debateStats(request, id_debate):
 	for day,position in position_date_group:
 		temp += len(list(position))
 		positions_by_day.append([day, temp])
-
+	total_position_num = infavor_position_num + against_position_num
+	total_arg_num = len(infavor_args_list)+len(against_args_list)
+	total_change_num = infavor_to_against + against_to_infavor
 	stats = { 'infavor_position_num':infavor_position_num, 'against_position_num':against_position_num,
 			'infavor_percent': infavor_percent, 'against_percent': against_percent,
 			'infavor_args_list': infavor_args_list, 'against_args_list':against_args_list,
@@ -236,7 +250,8 @@ def debateStats(request, id_debate):
 			'second_argument_owner': second_argument_owner, 'second_arg_owner_url':second_arg_owner_url,
 			'infavor_to_against': infavor_to_against, 'against_to_infavor':against_to_infavor,
 			'reason_infavor_to_against': reason_infavor_to_against, 'reason_against_to_infavor':reason_against_to_infavor,
-			'positions_by_day':positions_by_day}
+			'positions_by_day':positions_by_day, 'total_change_num':total_change_num,
+			'total_position_num':total_position_num, 'total_arg_num':total_arg_num}
 
 	return stats
 

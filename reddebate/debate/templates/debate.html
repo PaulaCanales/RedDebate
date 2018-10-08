@@ -73,7 +73,7 @@
 			<div class="col-sm-9">
 				<p class="debateDescripcion">{{ debate.text }}</p>
 					{% ifequal debate.owner_type 'alias' %}
-						<h5>Publicado por <a href="{% url 'alias' owner_profile.alias %}"></a>
+						<h5>Publicado por <a href="{% url 'alias' owner_profile.alias %}">{{owner_profile.alias}}</a>
 							 | {{owner_profile.reputation}} puntos de reputación</h5>
 					{%else%}
 						<h5>Publicado por <a href="{% url 'username' owner_user.id %}">{{owner_user}}</a>

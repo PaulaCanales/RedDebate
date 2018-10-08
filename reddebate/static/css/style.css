@@ -1363,6 +1363,25 @@ hr {
   border: 4px solid #fff;
   margin-bottom: 10px;
 }
+.divPhoto {
+	position: relative;
+	display: inline-block;
+}
+.divPhoto:hover .updateImg {
+	display: block;
+}
+.updateImg {
+  padding: 7px 7px 4px 0px;
+	position: absolute;
+  right: 0;
+  top: 0;
+  display: none;
+  background-image: linear-gradient(90deg, transparent, black);
+  width: 90%;
+  text-align: right;
+  margin: 4px;
+  border-radius: 0px 10px;
+}
 .container-debate h2{
   margin-top: 0;
   font-family: "Montserrat", "Helvetica Neue", Helvetica, Arial, sans-serif;
