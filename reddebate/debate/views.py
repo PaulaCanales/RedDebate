@@ -239,7 +239,9 @@ def debateStats(request, id_debate):
 	for day,position in position_date_group:
 		temp += len(list(position))
 		positions_by_day.append([day, temp])
-
+	total_position_num = infavor_position_num + against_position_num
+	total_arg_num = len(infavor_args_list)+len(against_args_list)
+	total_change_num = infavor_to_against + against_to_infavor
 	stats = { 'infavor_position_num':infavor_position_num, 'against_position_num':against_position_num,
 			'infavor_percent': infavor_percent, 'against_percent': against_percent,
 			'infavor_args_list': infavor_args_list, 'against_args_list':against_args_list,
@@ -248,7 +250,8 @@ def debateStats(request, id_debate):
 			'second_argument_owner': second_argument_owner, 'second_arg_owner_url':second_arg_owner_url,
 			'infavor_to_against': infavor_to_against, 'against_to_infavor':against_to_infavor,
 			'reason_infavor_to_against': reason_infavor_to_against, 'reason_against_to_infavor':reason_against_to_infavor,
-			'positions_by_day':positions_by_day}
+			'positions_by_day':positions_by_day, 'total_change_num':total_change_num,
+			'total_position_num':total_position_num, 'total_arg_num':total_arg_num}
 
 	return stats
 
