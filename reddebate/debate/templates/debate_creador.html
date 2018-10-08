@@ -18,6 +18,8 @@ $(document).ready(function(){
 					<input name="deb_img" type="hidden" value={{debate.id_debate}}>
           {{ updateImg_form.errors }}
           {{ updateImg_form }}
+					<br>
+					<p>Se recomienda una imagen con tamaño mínimo de 200 x 200 píxeles</p>
         </div>
         <div class="col-md-6 prev">
           <img id="updateImgPrev" height="150px" src="" />
@@ -53,7 +55,10 @@ $(document).ready(function(){
 	</header>
 	<div class="row debInformation">
 		<div class="col-sm-3">
-			<img class="photo" onclick='abrir_modal("updateImage_modal")' src="{{ debate.img.url }}" alt="imagendeb"/>
+			<div class="divPhoto">
+				<img class="photo" src="{{ debate.img.url }}" alt="imagendeb"/>
+				<div class="updateImg"><a href="javascript:abrir_modal('updateImage_modal')"><i class="fa fa-pencil fa-lg"></i></a></div>
+			</div>
 			<div class="fb-share-button"
 				data-href="https://reddebate.cl/debate/{{ debate.id_debate }}/"
 				data-layout="button_count"

@@ -11,11 +11,14 @@ $(document).ready(function(){
     document.getElementById("bot_ec_init").disabled = true;
   }
 	google.charts.load('current', {'packages':['corechart', 'bar', 'annotationchart']});
-	google.charts.setOnLoadCallback(posturaChart);
-	google.charts.setOnLoadCallback(argumentosChart);
-	google.charts.setOnLoadCallback(cambioPosturaChart);
-  google.charts.setOnLoadCallback(razonCambioChart);
-	google.charts.setOnLoadCallback(posturasTiempo);
+  if ({{stats.total_position_num}}>0){
+    google.charts.setOnLoadCallback(posturaChart);
+    if ({{stats.total_arg_num }}>0) google.charts.setOnLoadCallback(argumentosChart);
+  	google.charts.setOnLoadCallback(cambioPosturaChart);
+    if ({{stats.total_change_num}}>0) google.charts.setOnLoadCallback(razonCambioChart);
+  	google.charts.setOnLoadCallback(posturasTiempo);
+  }
+
 	});
 	var varGlobal = {
 		infavor_position : {{stats.infavor_position_num}},
