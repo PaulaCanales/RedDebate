@@ -14,19 +14,19 @@ $(document).ready(function(){
     <div class="modal-body">
     <form id="imagedebateform" method="POST" enctype="multipart/form-data">{% csrf_token %}
       <div class="row">
-        <div class="col-md-6 fieldWrapper">
+        <div class="col-sm-6 fieldWrapper">
 					<input name="deb_img" type="hidden" value={{debate.id_debate}}>
           {{ updateImg_form.errors }}
           {{ updateImg_form }}
 					<br>
 					<p>Se recomienda una imagen con tamaño mínimo de 200 x 200 píxeles</p>
         </div>
-        <div class="col-md-6 prev">
+        <div class="col-sm-6 prev">
           <img id="updateImgPrev" height="150px" src="" />
         </div>
         </div>
       </div>
-      <div class="modal-footer">
+      <div class="modal-footer-imgDeb">
         <button name="update_img_deb" type="submit">Agregar</button>
         <label type="button" onclick="cerrar_modal('updateImage_modal')"> Cancelar </label>
       </div>
@@ -36,12 +36,12 @@ $(document).ready(function(){
 <div class="container-debate">
 	<header>
 		<div class="row">
-			<div class="col-md-11">
+			<div class="col-sm-11">
 				<h2>{{ debate.title }}</h2>
 				<input id="idDebate" type="hidden" value={{debate.id_debate}}>
 				<span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span> Visto {{visits}} veces
 			</div>
-			<div class="col-md-1">
+			<div class="col-sm-1">
 				{% ifequal debate.state 'open' %}
 				<form id="id" method="post" action= "{% url 'resumen:index' %}" enctype="multipart/form-data" onsubmit="return confirm('¿Seguro que desea cerrar el debate?');">{% csrf_token %}
 					 <input type="hidden" value="{{ debate.id_debate  }}" name="id_deb">
@@ -79,10 +79,10 @@ $(document).ready(function(){
 	</div>
 	<div name="detalle-debate">
 			<div class="row" id="my-row">
-				<div class="col-md-3 panel">
+				<div class="col-sm-3 panel">
 					<button id="bot_af" type="submit" class="btn btn-postura1" disabled ></button>
 				</div>
-				<div class="col-md-6">
+				<div class="col-sm-6">
 					<div class="blank">
 							<table>
 							<tr>
@@ -90,11 +90,16 @@ $(document).ready(function(){
 								<td>{{ debate.date }}</td>
 							</tr>
 							<tr>
+								{%ifequal debate.stat 'open'%}
 								<td width=120 ><p1>Estado</p1></td>
-								<td>{{ debate.state }}</td>
+								<td>Abierto</td>
+								{%else%}
+								<td width=120 ><p1>Estado</p1></td>
+								<td>Cerrado</td>
+								{%endifequal%}
 							</tr>
 							<tr>
-								<td width=120 ><p1>Tu Position</p1></td>
+								<td width=120 ><p1>Tu Postura</p1></td>
 								<td> Creador </td>
 							</tr>
 							{% ifequal debate.members_type 0 %}
@@ -109,7 +114,7 @@ $(document).ready(function(){
 						</table>
 					</div>
 				</div>
-				<div class="col-md-3 panel">
+				<div class="col-sm-3 panel">
 					<button id="bot_ec" type="submit" class="btn btn-postura0" disabled></button>
 				</div>
 			</div>
@@ -143,11 +148,11 @@ $(document).ready(function(){
 		</div>
 		<div name="argumentos-debate">
 			<div class="row">
-		    <div class="col-md-6">
+		    <div class="col-sm-6">
 					{% include 'participaciones.html' with name_position="A Favor" arguments=stats.infavor_args_list position=1 num_post=stats.infavor_position_num%}
 					<ul id="alertaArgumento1" class="list-group"></ul>
 				</div>
-				<div class="col-md-6">
+				<div class="col-sm-6">
 					{% include 'participaciones.html' with name_position="En Contra" arguments=stats.against_args_list position=0 num_post=stats.against_position_num%}
 					<ul id="alertaArgumento0" class="list-group"></ul>
 				</div>

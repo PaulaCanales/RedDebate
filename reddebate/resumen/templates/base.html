@@ -71,7 +71,26 @@
 							document.getElementById('privados').style.display = 'none';
 						}
 		   });
-
+			 $.getJSON("{% static 'stopwords.json' %}", function(json) {
+				var stopword = json;
+ 				$("#debTitleForm").blur(function(){
+					var text = $("#debTitleForm").val()
+					console.log(text);
+    			text = text.split(" ");
+					console.log(text);
+					for (var i = 0; i < stopword.length; i++) {
+						text = text.filter(e => e !== stopword[i]);
+					};
+					$('#tagsForms').tagsinput('add', text.join());
+				});
+ 			});
+		 $('#nuevodebateform').on('keyup keypress', function(e) {
+			  var keyCode = e.keyCode || e.which;
+			  if (keyCode === 13) {
+			    e.preventDefault();
+			    return false;
+			  }
+			});
 			$('#debOrderTypeForm').val($('#deb_order_select').text())
 
       try{
