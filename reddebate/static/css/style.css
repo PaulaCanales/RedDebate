@@ -254,7 +254,8 @@ section.success {
     overflow-y: auto;
     padding: 0px;
 }
-.modal-footer{
+.modal-footer,
+.modal-footer-imgDeb{
   background: #cccccc70;
   margin: 10px -20px -20px -20px;
   border-radius: 0 0 5px 5px;
@@ -262,8 +263,8 @@ section.success {
   display: flex;
   justify-content: space-between;
 }
-.modal-footer label,
-.modal-footer button{
+.modal-footer-imgDeb label,
+.modal-footer-imgDeb button{
   background-color: #cccccc;
   width: 100%;
   margin: -15px;
@@ -271,15 +272,16 @@ section.success {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 45px
+  height: 45px;
+  margin: -15px 0px;
 }
-.modal-footer button{
+.modal-footer-imgDeb button{
   background-color: var(--azul-principal);
   border-radius: 0px 0px 0px 10px;
   color: white;
   font-weight: bold;
 }
-.modal-footer label{
+.modal-footer-imgDeb label{
   border-radius: 0px 0px 10px 0px;
   cursor: pointer;
 }
