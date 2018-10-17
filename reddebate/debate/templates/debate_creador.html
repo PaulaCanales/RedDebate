@@ -90,8 +90,13 @@ $(document).ready(function(){
 								<td>{{ debate.date }}</td>
 							</tr>
 							<tr>
+								{%ifequal debate.stat 'open'%}
 								<td width=120 ><p1>Estado</p1></td>
-								<td>{{ debate.state }}</td>
+								<td>Abierto</td>
+								{%else%}
+								<td width=120 ><p1>Estado</p1></td>
+								<td>Cerrado</td>
+								{%endifequal%}
 							</tr>
 							<tr>
 								<td width=120 ><p1>Tu Position</p1></td>
