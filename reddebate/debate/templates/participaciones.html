@@ -46,10 +46,10 @@
                         <div class="body">
                           <span class="tip tip-up"></span>
                           <div class="row">
-                            <div class="col-md-11">
+                            <div class="col-sm-11">
                               <p><a href="{% url counterarg.owner_type counterarg.url %}"><p1>{{counterarg.owner}}:</p1></a> {{counterarg.text}}</p>
                             </div>
-                            <div class="col-md-1">
+                            <div class="col-sm-1">
                               {% ifequal counterarg.id_owner user.id %}
                                 <form id="eliminar_counterarg" method="post" action= "{% url 'showDebate' debate.id_debate %}" enctype="multipart/form-data" onsubmit="return confirm('¿Seguro que desea eliminar el contraargumento?');">{% csrf_token %}
                                   <input type="hidden" value="{{ counterarg.id }}" name="id_counterarg_delete">

@@ -24,7 +24,7 @@
 	<div class="container-debate">
 		<header>
       <div class="row">
-  			<div class="col-md-11">
+  			<div class="col-sm-11">
   				<h2>{{ debate.title }}</h2>
   				<p>
   					<input id="idDebate" type="hidden" value={{debate.id_debate}}>
@@ -36,7 +36,7 @@
   					<span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>{{visits}}
   				</p>
   			</div>
-  			<div class="col-md-1">
+  			<div class="col-sm-1">
   				<form id="id" method="post" action= "{% url 'resumen:index' %}" enctype="multipart/form-data" onsubmit="return confirm('¿Seguro que desea eliminar el debate?');">{% csrf_token %}
   					 <input type="hidden" value="{{ debate.id_debate  }}" name="id_delete_deb">
   					 <button type="submit" class="btn btn-title" data-toggle="tooltip" title="Eliminar debate" >
@@ -55,10 +55,10 @@
   	</div></div><br>
 		<div name="detalle-debate">
 			<div class="row" id="my-row">
-				<div class="col-md-3 panel">
+				<div class="col-sm-3 panel">
 							<button id = "bot_af" type="submit" class="btn btn-posturactual1" disabled ></button>
 				</div>
-				<div class="col-md-6">
+				<div class="col-sm-6">
 					<div class="blank">
 							<table>
 							<tr>
@@ -82,7 +82,7 @@
 						</table>
 					</div>
 				</div>
-				<div class="col-md-3 panel">
+				<div class="col-sm-3 panel">
 							<button id = "bot_ec" type="submit" class="btn btn-posturactual0" disabled ></button>
 				</div>
 			</div>
@@ -113,11 +113,11 @@
 				<div id="argumentos">
 				<div name="argumentos-debate">
 					<div class="row">
-				    <div class="col-md-6">
+				    <div class="col-sm-6">
 							{% include 'moderador_participaciones.html' with name_position="A Favor" arguments=stats.infavor_args_list position=1 num_post=infavor_position_num%}
 							<ul id="alertaArgumento1" class="list-group"></ul>
 						</div>
-						<div class="col-md-6">
+						<div class="col-sm-6">
 							{% include 'moderador_participaciones.html' with name_position="En Contra" arguments=stats.against_args_list position=0 num_post=stats.against_position_num%}
 							<ul id="alertaArgumento0" class="list-group"></ul>
 						</div>

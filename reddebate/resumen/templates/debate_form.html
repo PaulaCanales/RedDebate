@@ -9,11 +9,11 @@
     <div class="modal-body">
     <form id="imagedebateform" method="POST" enctype="multipart/form-data">{% csrf_token %}
       <div class="row">
-        <div class="col-md-6 fieldWrapper">
+        <div class="col-sm-6 fieldWrapper">
           {{ img_form.errors }}
           {{ img_form }}
         </div>
-        <div class="col-md-6 prev">
+        <div class="col-sm-6 prev">
           <img id="imgPrev" height="150px" src="" />
         </div>
         </div>
@@ -29,7 +29,7 @@
 <form id="nuevodebateform" method="POST" enctype="multipart/form-data">{% csrf_token %}
     <fieldset>
       <div class="row leftAlign">
-        <div class="col-md-6">
+        <div class="col-sm-6">
           {{ form.non_field_errors }}
           <div class="fieldWrapper">
               {{ form.title.errors }}
@@ -53,7 +53,7 @@
           </div><br>
           <input id="tagsForms" type="text" data-role="tagsinput"/>
         </div>
-        <div class="col-md-6">
+        <div class="col-sm-6">
           <div class="fieldWrapper">
             {{ form.members_type.errors }}
             <label>Privacidad de debate</label>
@@ -85,8 +85,8 @@
       <div id="opcionesAvanzadas_modal" class="modal">
       	<div class="modal-content">
           <div class="row leftAlign">
-           <div class="col-md-1"></div>
-           <div class="col-md-5">
+           <div class="col-sm-1"></div>
+           <div class="col-sm-5">
              {{ form.position_max.errors }}
              <label>Cambios de postura por cada usuario</label>
              <div class="tooltipform"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
@@ -100,12 +100,12 @@
                </div>
              </div>
            </div>
-           <div class="col-md-5"></div>
-           <div class="col-md-1"></div>
+           <div class="col-sm-5"></div>
+           <div class="col-sm-1"></div>
          </div>
          <div class="row leftAlign">
-           <div class="col-md-1"></div>
-             <div class="col-md-5">
+           <div class="col-sm-1"></div>
+             <div class="col-sm-5">
                {{ form.args_max.errors }}
                <label> Cantidad de argumentos por cada usuario </label>
                <div class="tooltipform"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
@@ -119,7 +119,7 @@
                  </div>
                </div>
              </div>
-             <div class="col-md-5">
+             <div class="col-sm-5">
                {{ form.length.errors }}
                <label>Cantidad de caracteres por cada argumento</label>
                <div class="tooltipform"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
@@ -133,11 +133,11 @@
                  </div>
                </div>
              </div>
-             <div class="col-md-1"></div>
+             <div class="col-sm-1"></div>
            </div>
            <div class="row leftAlign">
-             <div class="col-md-1"></div>
-             <div class="col-md-5">
+             <div class="col-sm-1"></div>
+             <div class="col-sm-5">
                  {{ form.counterargs_max.errors }}
                  <label>Cantidad de contraargumentos por cada usuario</label>
                  <div class="tooltipform"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
@@ -151,7 +151,7 @@
                    </div>
                  </div>
                </div>
-               <div class="col-md-5">
+               <div class="col-sm-5">
                  {{ form.counterarg_type.errors }}
                  <label>Tipo de contraargumento</label>
                  <div class="tooltipform"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
@@ -159,7 +159,7 @@
                  </div>
                  {{ form.counterargs_type }}
                </div>
-               <div class="col-md-1"></div>
+               <div class="col-sm-1"></div>
            </div>
            <a href="javascript:cerrar_modal('opcionesAvanzadas_modal')" class="submit action-button"> Aceptar </a>
 
@@ -174,11 +174,11 @@
           <div class="fieldWrapper">
             {{form.members.errors }}
             <div class="row">
-              <div class="col-md-6">
+              <div class="col-sm-6">
                 <label>Buscar: </label>
                 <input type="text" value="" name="searchColumn" class="form-control" id="searchUser1" placeholder="Busca a un usuario..."/>
               </div>
-              <div class="col-md-6">
+              <div class="col-sm-6">
                 {{order_user_form}}
               </div>
             </div>

@@ -47,12 +47,12 @@
 	<div class="container-debate">
 		<header>
 			<div class="row">
-				<div class="col-md-11">
+				<div class="col-sm-11">
 					<h2>{{ debate.title }}</h2>
 					<span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span> Visto {{visits}} veces
 					<input id="idDebate" type="hidden" value={{debate.id_debate}}>
 				</div>
-				<div class="col-md-1">
+				<div class="col-sm-1">
 				{% if can_report_deb %}
 					 <button class="btn btn-title" data-toggle="tooltip" title="Denunciar debate" onclick="javascript:abrir_modal('denuncia_deb_modal')">
 						 <span class="glyphicon glyphicon-bullhorn"></span>
@@ -188,7 +188,7 @@
 				<div id="argumentos" style="display: block;" >
 				<div name="argumentos-debate">
 					<div class="row">
-				    <div class="col-md-6">
+				    <div class="col-sm-6">
 							{% include 'participaciones.html' with name_position="A Favor" arguments=stats.infavor_args_list position=1 num_post=stats.infavor_position_num%}
 							<ul id="alertaArgumento1" class="list-group"></ul>
 							{% if can_argue %}
@@ -200,7 +200,7 @@
 							{% endifequal %}
 							{% endif %}
 						</div>
-						<div class="col-md-6">
+						<div class="col-sm-6">
 							{% include 'participaciones.html' with name_position="En Contra" arguments=stats.against_args_list position=0 num_post=stats.against_position_num%}
 							<ul id="alertaArgumento0" class="list-group"></ul>
 							{% if can_argue %}
