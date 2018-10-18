@@ -190,11 +190,11 @@ def findUserTags(debate, participations):
     for deb in debate:
         tags = deb.tags.all().values()
         for tag in tags:
-            tags_usr.append(tag['name'])
+            tags_usr.append(tag['slug'])
     for deb in participations:
         tags = deb.tags.all().values()
         for tag in tags:
-            tags_usr.append(tag['name'])
+            tags_usr.append(tag['slug'])
     tags_dict = dict(Counter(tags_usr))
     keys = [item.strip() for item in tags_dict.keys()]
     size = tags_dict.values()
