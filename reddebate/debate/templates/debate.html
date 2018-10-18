@@ -71,6 +71,9 @@
 				</div>
 		  </div>
 			<div class="col-sm-9">
+				{% for tag in tags%}
+				<a class="tag-deb" href="{% url 'tagged' tag.slug %}">{{ tag.name }}</a>
+				{% endfor%}
 				<p class="debateDescripcion">{{ debate.text }}</p>
 					{% ifequal debate.owner_type 'alias' %}
 						<h5>Publicado por <a href="{% url 'alias' owner_profile.alias %}">{{owner_profile.alias}}</a>
