@@ -89,7 +89,6 @@
       </header>
       <main>
         <div class="tag-cloud">
-          {{stats.tags}}
             {% for key,value in stats.tags.items %}
               <a href="{% url 'tagged' key %}" class="size-{{ value }}">{{ key }}</a>
             {% endfor %}
