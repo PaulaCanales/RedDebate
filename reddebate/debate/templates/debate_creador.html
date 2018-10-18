@@ -75,9 +75,11 @@ $(document).ready(function(){
 						 | {{owner_profile.reputation}} puntos de reputación</h5>
 				{%endifequal%}
 		</div>
-		{% for tag in tags%}
-		<a class="tag-deb" href="{% url 'tagged' tag.slug %}">{{ tag.name }}</a>
-		{% endfor%}
+		<div style="text-align:left">
+			{% for tag in tags%}
+			<a class="tag-deb" href="{% url 'tagged' tag.slug %}">{{ tag.name }}</a>
+			{% endfor%}
+		</div>
 		<hr>
 	</div>
 	<div name="detalle-debate">
