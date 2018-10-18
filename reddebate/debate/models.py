@@ -248,11 +248,9 @@ class Report(models.Model):
 @receiver(post_save, sender=Report)
 def notificateReport(sender, instance, **kwargs):
     type = instance['type']
-    print(type)
     debate = instance['debate']
     moderator = User.objects.filter(is_staff=1).values('id')
     if type == "debate":
-        print("entro a debate")
         report_deb_num = Report.objects.filter(type='debate').count()
         deb_text = unicode(debate.title)
         text = '"'+(deb_text[:30] + '..') if len(deb_text) > 75 else deb_text +'"'
@@ -266,7 +264,6 @@ def notificateReport(sender, instance, **kwargs):
         #Notifica al denunciado
         newNotification(debate, debate.id_user_id, 'report_deb', reported_msg1, reported_msg2)
     elif type == "argument":
-        print("entro a argumento")
         arg = instance['argument']
         report_arg_num = Report.objects.filter(type='argument').count()
         arg_text = unicode(arg.text)
@@ -281,7 +278,6 @@ def notificateReport(sender, instance, **kwargs):
         #Notifica al denunciado
         newNotification(debate, arg.id_user_id, 'report_arg', reported_msg1, reported_msg2)
     elif type == "counterarg":
-        print("entro a rebate")
         counterarg = instance['counterarg']
         report_counterarg_num = Report.objects.filter(type='counterarg').count()
         counterarg_text = unicode(counterarg.text)

@@ -156,7 +156,7 @@ def showDebate(request, id_debate): #debate_id
 	can_report_deb = True
 	r = Report.objects.filter(owner_id=actual_user,debate_id=debate.id_debate,type="debate").count()
 	if r>0: can_report_deb = False
-
+	tags = debate.tags.all()
 	stats = debateStats(request,id_debate)
 
 	data = {'debate': debate,
@@ -170,7 +170,7 @@ def showDebate(request, id_debate): #debate_id
 		'participate': participate, 'debate_members': members_list, 'counterarg_type': counterarg_type,
 		'counterarg_target': counterarg_target, 'visits': visits,
 		'report_form':report_form, 'can_report_deb':can_report_deb,
-		'updateImg_form':updateImg_form,
+		'updateImg_form':updateImg_form, 'tags': tags,
 		'stats': stats}
 	return render(request, 'debate.html', data)
 

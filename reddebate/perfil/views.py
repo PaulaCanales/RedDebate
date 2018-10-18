@@ -141,8 +141,6 @@ def userStats(id_user):
     user_args_num = Argument.objects.filter(id_user_id = id_user).count()
     user_counterargs_num = Counterargument.objects.filter(id_user_id = id_user).count()
     reached_users = Visit.objects.filter(id_debate__in=user_debates).count()
-    wins = 0
-    lose = 0
     best_arg = 0
     worse_arg = 0
     for debate in total_debates:
@@ -163,20 +161,8 @@ def userStats(id_user):
                 if worse_argument.id_user.id == id_user:
                     worse_arg += 1
 
-            if infavor_position_num>=against_position_num:
-                winner_position = 1
-                loser_position = 0
-            else:
-                winner_position = 0
-                loser_position = 1
-
-            if winner_position == user_position:
-                wins += 1
-            if loser_position == user_position:
-                lose += 1
     stats = {'deb_num': user_deb_num, 'position_num':user_position_num,
              'args_num': user_args_num, 'counterargs_num':user_counterargs_num,
-             'wins': wins, 'lose':lose,
              'best_arg':best_arg, 'worse_arg':worse_arg,
              'tags':user_tags, 'reached_users':reached_users}
     return stats

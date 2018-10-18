@@ -46,13 +46,35 @@
   			</div>
   		</div>
 		</header>
-		<p class="debateDescripcion">{{ debate.text }}</p>
-		<div id="fb-root"></div>
-		<div style="text-align: right">
-		<div class="fb-share-button"
-    	data-href="https://reddebate.cl/debate/{{ debate.id_debate }}/"
-    	data-layout="button_count">
-  	</div></div><br>
+		<div class="row debInformation">
+			<div class="col-sm-3">
+				<div class="divPhoto">
+					<img class="photo" src="{{ debate.img.url }}" alt="imagendeb"/>
+					<div class="updateImg"><a href="javascript:abrir_modal('updateImage_modal')"><i class="fa fa-pencil fa-lg"></i></a></div>
+				</div>
+				<div class="fb-share-button"
+					data-href="https://reddebate.cl/debate/{{ debate.id_debate }}/"
+					data-layout="button_count"
+					data-size="large">
+				</div>
+			</div>
+			<div class="col-sm-9">
+				<p class="debateDescripcion">{{ debate.text }}</p>
+					{% ifequal debate.owner_type 'alias' %}
+						<h5>Publicado por <a href="{% url 'alias' owner_profile.alias %}">{{owner_profile.alias}}</a>
+							 | {{owner_profile.reputation}} puntos de reputación</h5>
+					{%else%}
+						<h5>Publicado por <a href="{% url 'username' owner_user.id %}">{{owner_user}}</a>
+							 | {{owner_profile.reputation}} puntos de reputación</h5>
+					{%endifequal%}
+			</div>
+			<div style="text-align:left">
+				{% for tag in tags%}
+				<a class="tag-deb" href="{% url 'tagged' tag.slug %}">{{ tag.name }}</a>
+				{% endfor%}
+			</div>
+			<hr>
+		</div>
 		<div name="detalle-debate">
 			<div class="row" id="my-row">
 				<div class="col-sm-3 panel">
