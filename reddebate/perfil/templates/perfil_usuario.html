@@ -30,8 +30,6 @@
           <p class="datos">{{actual_user.date_joined}}</p>
           <p class="desc-datos">Alias</p>
           <p class="datos">{{alias.alias}} <a id = 'boton_alias' onclick='javascript:form_perfil("boton_alias", "formulario_alias" );'> <span class="glyphicon glyphicon-edit" aria-hidden="true" ></span> </a></p>
-          <p class="desc-datos">Personas alcanzadas</p>
-          <p class="datos">{{stats.reached_users}}</p>
           {% if alias_form.alias.errors %}
           <div class="alert alert-danger">
               {{ alias_form.alias.errors }}
@@ -80,7 +78,7 @@
               </div>
               <div class="stat col-xs-6">
                 <h4 class="name">{{stats.deb_num}}</h4>
-                <p class="info">Publicaciones</p>
+                <p class="info">Debates</p>
               </div>
             </div>
             <div class="stats row">
@@ -89,26 +87,26 @@
                 <p class="desc-stat">Posturas</p>
               </div>
               <div class="stat col-xs-4">
-                <p class="number-stat">{{stats.wins}}</p>
-                <p class="desc-stat">Triunfos</p>
+                <p class="number-stat">{{stats.args_num}}</p>
+                <p class="desc-stat">Argumentos</p>
               </div>
               <div class="stat col-xs-4">
-                <p class="number-stat">{{stats.lose}}</p>
-                <p class="desc-stat">Derrotas</p>
+                <p class="number-stat">{{stats.counterargs_num}}</p>
+                <p class="desc-stat">Contraargumentos</p>
               </div>
             </div>
             <div class="stats row">
               <div class="stat col-xs-4">
-                <p class="number-stat">{{stats.args_num}}</p>
-                <p class="desc-stat">Argumentos </p>
+                <p class="number-stat">{{stats.reached_users}}</p>
+                <p class="desc-stat">Personas alcanzadas </p>
               </div>
               <div class="stat col-xs-4">
                 <p class="number-stat">{{stats.best_arg}}</p>
-                <p class="desc-stat">Mejor</p>
+                <p class="desc-stat">Mejor Argumento</p>
               </div>
               <div class="stat col-xs-4">
                 <p class="number-stat">{{stats.worse_arg}}</p>
-                <p class="desc-stat">Peor</p>
+                <p class="desc-stat">Peor Argumento</p>
               </div>
             </div>
 
