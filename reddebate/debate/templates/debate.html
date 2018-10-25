@@ -174,8 +174,31 @@
 			{% include 'estadisticas.html'  with opendeb=False%}
 		{% else %}
 			{% ifequal actual_user_position 'No definido' %}
-				<div id="no-argumentos" style="display: block;" >
-					<h2> Debes definir una postura para ver la discusión </h2>
+				<div class="row">
+					<div class="col-sm-6">
+						<div class="datagrid1 ">
+						  <table id="preview_args1">
+						    <tr><thead>
+						      	<th> Mejor argumento a favor </th>
+						    </thead></tr>
+						      <tr><td>{{stats.best_infavor_arg}} </td></tr>
+						  </table>
+						</div>
+				</div>
+					<div class="col-sm-6">
+						<div class="datagrid0 ">
+						  <table id="preview_args0">
+						    <tr><thead>
+						      	<th> Mejor argumento en contra </th>
+						    </thead></tr>
+						      <tr><td>{{stats.best_against_arg}}</td></tr>
+						  </table>
+						</div>
+				</div>
+				</div>
+					<h3> Si defines una postura podrás ver la discusión completa... </h3>
+
+
 				</div>
 			{% else %}
 			<div id="progresoDebate">
