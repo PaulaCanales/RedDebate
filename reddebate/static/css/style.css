@@ -2082,7 +2082,26 @@ hr {
 .fb-share-button{
   display: block !important;
 }
-
+.tw-share-button a, .tw-share-button a:hover{
+  background-color: #00aced;
+  border-radius: 6px;
+  color: white;
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 13px;
+  font-weight: bold;
+  padding: 7px 10px;
+}
+.tw-share-button a:hover{
+  text-decoration: none;
+  background-color: #0084b4;
+}
+.tw-share-button img {
+  width: 35px;
+  padding: 5px;
+  border: 0;
+  box-shadow: 0;
+  display: inline;
+}
 .tag-deb {
   background: #eee;
   border-radius: 3px 0 0 3px;
