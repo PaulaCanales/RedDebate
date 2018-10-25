@@ -52,6 +52,7 @@ class newDebateForm(forms.ModelForm):
             self.fields['members'].choices = [(x['object'], x['name']) for x in self.usuarios]
         if self.listas:
             self.fields['listado'].choices = [(x['id'], x['name']) for x in self.listas]
+        self.fields['text'].required = False
 
     title = forms.CharField(widget=forms.TextInput(
         attrs={

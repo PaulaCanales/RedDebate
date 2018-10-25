@@ -61,9 +61,13 @@ $(document).ready(function(){
     };
 
   $("#nuevodebateform").on("submit", function(event) {
-    var enddate = $('#debEndDateForm').val()
+    var enddate = $('#debEndDateForm').val();
     if (enddate.length === 0){
       var enddate = null;
+    }
+    var textdeb = $('#debTextForm').val();
+    if (textdeb.length === 0){
+      var textdeb= " ";
     }
     var selected = [];
     if ($('#debMemberTypeForm').val()==1){
@@ -80,7 +84,7 @@ $(document).ready(function(){
 
     var message = {
       title: $('#debTitleForm').val(),
-      text: $('#debTextForm').val(),
+      text: textdeb,
       owner_type: $('#debAliasForm').val(),
       length: $('#debLengthForm').val(),
       args_max: $('#debArgsForm').val(),
