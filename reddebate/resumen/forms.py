@@ -16,6 +16,9 @@ order_deb_typeform= [('0', 'Fecha'),
                 ('2', 'Nombre')]
 order_user_typeform= [('0', 'Nombre'),
                     ('1','Reputacion')]
+participation_typeform = [('all', 'A elección del participante'),
+                ('username','Nombre Real'),
+                ('alias', 'Alias')]
 
 class LoginForm(forms.Form):
     username = forms.CharField(max_length=20, required=True, label="Usuario",
@@ -115,6 +118,12 @@ class newDebateForm(forms.ModelForm):
         widget=forms.Select(
             choices=members_typeform,
             attrs={'class': 'form-control', 'id': 'debMemberTypeForm'}
+            ))
+    participation_type = forms.CharField(
+        label='Tipo participación de usuarios en el debate',
+        widget=forms.Select(
+            choices=participation_typeform,
+            attrs={'class': 'form-control', 'id': 'debParticipationTypeForm'}
             ))
     members = forms.MultipleChoiceField(
         widget=forms.CheckboxSelectMultiple(

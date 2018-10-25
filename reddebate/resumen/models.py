@@ -27,6 +27,7 @@ class Debate(models.Model):
     counterargs_max = models.IntegerField(default=1)
     counterargs_type = models.IntegerField(default=0) # 0:ambas # 1: contraria
     members_type = models.IntegerField(default=0) #0 debate publico
+    participation_type = models.CharField(max_length=50, default='all')
     img = models.FileField(blank=True, null=True, default="RDdefault.png")
 
     tags = TaggableManager()

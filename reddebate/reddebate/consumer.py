@@ -37,7 +37,7 @@ def ws_receive(message):
         return
 
     if data:
-        if set(data.keys()) == set(('title', 'text', 'owner_type', 'length', 'args_max', 'counterargs_max', 'counterargs_type', 'members_type', 'position_max','end_date', 'id_user_id', 'members','tags')):
+        if set(data.keys()) == set(('title', 'text', 'owner_type', 'length', 'args_max', 'counterargs_max', 'counterargs_type', 'members_type', 'position_max','end_date', 'id_user_id', 'members', 'participation_type','tags')):
             data['id_user_id'] = message.user.id
             members = data['members']
             tags = data['tags']

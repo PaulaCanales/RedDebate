@@ -104,7 +104,15 @@
                </div>
              </div>
            </div>
-           <div class="col-sm-5"></div>
+           <div class="col-sm-5">
+             {{ form.participation_type.errors }}
+             <label>Tipo de participación de cada usuario</label>
+             <div class="tooltipform"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
+               <span class="tooltipformtext">Indica que nombre a mostrar pueden usar los usuarios al participar en el debate</span>
+             </div>
+             {{ form.participation_type }}
+             **Valido solo para debates publicos
+           </div>
            <div class="col-sm-1"></div>
          </div>
          <div class="row leftAlign">

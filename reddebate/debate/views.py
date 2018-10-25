@@ -143,9 +143,14 @@ def showDebate(request, id_debate): #debate_id
 		         		   ('alias',Profile.objects.get(user= request.user).alias)]
 
 	else:
-		options_owner=[('username', User.objects.get(id=request.user.id).username),
-		         ('alias',Profile.objects.get(user= request.user).alias)]
-
+		if debate.participation_type=='all':
+			options_owner=[('username', User.objects.get(id=request.user.id).username),
+			         ('alias',Profile.objects.get(user= request.user).alias)]
+		elif debate.participation_type=='username':
+			options_owner=[('username', User.objects.get(id=request.user.id).username)]
+		elif debate.participation_type=='alias':
+			options_owner=[('alias',Profile.objects.get(user= request.user).alias)]
+			
 	max_length = Debate.objects.get(id_debate=id_debate).length
 	arg_form0 = newArgForm0(owner=options_owner,max_length=max_length)
 	arg_form1 = newArgForm1(owner=options_owner,max_length=max_length)
@@ -198,7 +203,7 @@ def debateStats(request, id_debate):
 	if len(against_arguments.order_by('-score'))==0:
 		best_against_arg = 'No existen argumento en contra'
 	else:
-		best_against_arg = infavor_arguments.order_by('-score')[0]
+		best_against_arg = against_arguments.order_by('-score')[0]
 
 	infavor_args_list = argumentData(infavor_arguments, request.user.id, counterarg_num, id_debate)
 	against_args_list = argumentData(against_arguments, request.user.id, counterarg_num, id_debate)

@@ -95,6 +95,7 @@ $(document).ready(function(){
       end_date: enddate,
       id_user_id: "",
       members: selected,
+      participation_type: $("#debParticipationTypeForm").val(),
       tags: $("#tagsForms").tagsinput('items'),
     }
     console.log(message);
