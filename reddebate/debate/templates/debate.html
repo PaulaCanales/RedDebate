@@ -92,18 +92,23 @@
 				<span class="close" onclick="cerrar_modal('cambioPostura_modal')">&times;</span>
 				{% if p_post %}
 				<h3>¿Por qué quieres cambiar de postura? <span class="glyphicon glyphicon-comment"></span></h3>
+					<div class="modal-body">
 						<div id="form_razon_cambio">
 								<input id="postura_debate" type="hidden" value="" name="postura_debate">
 								<div class="radio"> <label><input type="radio" value="1" name="razon" checked> Cambié de opinión </label></div>
 								<div class="radio"> <label><input type="radio" value="2" name="razon"> Me equivoqué de botón </label></div>
 								<div class="radio"> <label><input type="radio" value="3" name="razon"> Otro </label></div>
-	              <button id="bot_cambiar_post" type="submit" class="btn btn-index" > Aceptar </button>
-								<a class="btn btn-index" onclick="cerrar_modal('cambioPostura_modal')">Cancelar</a>
 						</div>
+					</div>
 				{% else %}
 					<h3> Ya no puedes cambiar de postura </h3>
 				{% endif %}
+				<div class="modal-footer-buttons">
+	        <button id="bot_cambiar_post" type="submit" class="btn btn-index" > Aceptar </button>
+	        <label type="button" onclick="cerrar_modal('cambioPostura_modal')"> Cancelar </label>
+				</div>
 			</div>
+
 		</div>
 		<div name="detalle-debate">
 			<div class="row" id="my-row">
