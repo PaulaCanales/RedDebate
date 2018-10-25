@@ -40,6 +40,7 @@ function despliega_formulario(id){
   $(nuevoDebateBtn).hide();
 };
 function confirm_modal_show(id, deb, title) {
+  $("#fechafin2").hide();
   $(".modalcontainerconfirm").fadeIn("slow");
   if (id==1){
     $("#cerrarDebate").fadeIn("slow");
@@ -189,6 +190,7 @@ function creartags(){
 
 function mostrarFecha(){
   document.getElementById("fechafin2").disabled = false;
+  $("#fechafin2").show();
   var date = new Date()
   dd = date.getDate();
   mm = date.getMonth() + 1;
@@ -199,6 +201,7 @@ function mostrarFecha(){
 }
 function quitarFecha(){
   document.getElementById("fechafin2").disabled = true;
+  $("#fechafin2").hide();
 }
 
 function openNav() {

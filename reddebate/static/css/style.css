@@ -1806,6 +1806,12 @@ hr {
 .modalconfirm .content {
   padding: 30px;
 }
+.modalconfirm .content p{
+  color: var(--azul-principal);
+  text-transform: uppercase;
+  font-style: italic;
+  font-weight: bold;
+}
 .modalconfirm .close {
   font-family: "Source Sans Pro", sans-serif;
   cursor: pointer;
