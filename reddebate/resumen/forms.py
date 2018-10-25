@@ -84,25 +84,25 @@ class newDebateForm(forms.ModelForm):
         label='Caracteres/argument',
         widget=forms.TextInput(
             # choices=caracteres,
-            attrs={'class':'form-control', 'id': 'debLengthForm', 'value':'140','readonly': True}
+            attrs={'class':'form-control', 'id': 'debLengthForm', 'value':'240','readonly': True}
             ))
     args_max = forms.CharField(
         label='Arguments/user',
         widget=forms.TextInput(
             # choices=rebates,
-            attrs={'class': 'form-control', 'id': 'debArgsForm', 'value':'1','readonly': True}
+            attrs={'class': 'form-control', 'id': 'debArgsForm', 'value':'5','readonly': True}
             ))
     counterargs_max = forms.CharField(
         label='Rebates/user',
         widget=forms.TextInput(
             # choices=rebates,
-            attrs={'class': 'form-control', 'id': 'debCounterArgForm', 'value':'1','readonly': True}
+            attrs={'class': 'form-control', 'id': 'debCounterArgForm', 'value':'5','readonly': True}
             ))
     position_max = forms.CharField(
         label='Cambio position/usr',
         widget=forms.TextInput(
             # choices=rebates,
-            attrs={'class': 'form-control', 'id': 'debChangePositionForm', 'value':'3','readonly': True}
+            attrs={'class': 'form-control', 'id': 'debChangePositionForm', 'value':'5','readonly': True}
             ))
     counterargs_type = forms.CharField(
         label='Tipo Redebate',
