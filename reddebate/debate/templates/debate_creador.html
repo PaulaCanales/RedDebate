@@ -58,12 +58,19 @@ $(document).ready(function(){
 			<div class="divPhoto">
 				<img class="photo" src="{{ debate.img.url }}" alt="imagendeb"/>
 				<div class="updateImg"><a href="javascript:abrir_modal('updateImage_modal')"><i class="fa fa-pencil fa-lg"></i></a></div>
-			</div>
+			</div><br>
 			<div class="fb-share-button"
 				data-href="https://reddebate.cl/debate/{{ debate.id_debate }}/"
 				data-layout="button_count"
 				data-size="large">
 			</div>
+			<div class="tw-share-button">
+			<!-- Twitter -->
+				<a href="https://twitter.com/intent/tweet?status={{debate.title}}+https://reddebate.cl/debate/{{ debate.id_debate }}/" target="_blank">
+					<img src="https://simplesharebuttons.com/images/somacro/twitter.png" alt="Twitter" />
+				Twittear
+				</a>
+		</div>
 		</div>
 		<div class="col-sm-9">
 			<p class="debateDescripcion">{{ debate.text }}</p>
