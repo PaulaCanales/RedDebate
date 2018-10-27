@@ -150,7 +150,7 @@ def showDebate(request, id_debate): #debate_id
 			options_owner=[('username', User.objects.get(id=request.user.id).username)]
 		elif debate.participation_type=='alias':
 			options_owner=[('alias',Profile.objects.get(user= request.user).alias)]
-			
+
 	max_length = Debate.objects.get(id_debate=id_debate).length
 	arg_form0 = newArgForm0(owner=options_owner,max_length=max_length)
 	arg_form1 = newArgForm1(owner=options_owner,max_length=max_length)
@@ -256,6 +256,7 @@ def debateStats(request, id_debate):
 	total_position_num = infavor_position_num + against_position_num
 	total_arg_num = len(infavor_args_list)+len(against_args_list)
 	total_change_num = infavor_to_against + against_to_infavor
+	print(total_change_num)
 	stats = { 'infavor_position_num':infavor_position_num, 'against_position_num':against_position_num,
 			'infavor_percent': infavor_percent, 'against_percent': against_percent,
 			'infavor_args_list': infavor_args_list, 'against_args_list':against_args_list,

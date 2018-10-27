@@ -176,7 +176,11 @@ section.success {
 .blank table tbody tr:last-child td {
   border-bottom: none;
 }
-
+.blank img{
+  position: absolute;
+  top: 10px;
+  right: 0;
+}
 
 
 #myInput {
@@ -531,18 +535,18 @@ footer {
   background:var(--rojo-principal);
   transition:all .3s ease-in-out;
 }
-.btn-valorar0, .btn-valorar1 {
+.btn-rateArg0, .btn-rateArg1 {
   width: auto;
   background-color: transparent;
   border:0px;
   font-size: 15px;
 }
-.btn-valorar1.active,.btn-valorar1:active,.btn-valorar1:focus,.btn-valorar1:hover {
+.btn-rateArg1.active,.btn-rateArg1:active,.btn-rateArg1:focus,.btn-rateArg1:hover {
   color:#18BC9C;
   border:0px;
   transition:all .3s ease-in-out;
 }
-.btn-valorar0.active,.btn-valorar0:active,.btn-valorar0:focus,.btn-valorar0:hover {
+.btn-rateArg0.active,.btn-rateArg0:active,.btn-rateArg0:focus,.btn-rateArg0:hover {
   color:var(--rojo-principal);
   border:0px;
   transition:all .3s ease-in-out;
@@ -2059,6 +2063,7 @@ hr {
   text-align: center;
   position: relative;
   margin-bottom: 20px;
+  min-height: 128px;
 }
 .debInformation h5{
   font-family: "Montserrat", "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -2146,4 +2151,23 @@ hr {
 
 .tag-deb:hover::after {
   border-left-color: var(--azul-principal);
+}
+.informationDebOwner{
+  min-height: 300px;
+}
+.informationDebOwner p{
+  color: var(--azul-principal);
+}
+.dataDebOwner{
+  display: flex;
+  justify-content: space-between;
+}
+.membersDebOwner{
+  displ
+  max-height: 250px;
+  overflow-y: auto;
+}
+.tagsOwner{
+  position: absolute;
+  bottom: 0;
 }

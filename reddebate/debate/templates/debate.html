@@ -61,6 +61,9 @@
 				</div>
 			</div>
 		</header>
+		{% ifequal debate.state 'closed'%}
+			{% include 'estadisticas.html'  with opendeb=False%}
+		{% else %}
 		<div class="row debInformation">
 			<div class="col-sm-3">
 				<img class="photo" src="{{ debate.img.url }}"/>
@@ -121,12 +124,7 @@
 			<div class="row" id="my-row">
 				<div class="col-sm-3 panel">
 					{% ifequal actual_user_position 'No definido' %}
-						<!-- <button id = "bot_af" type="submit" class="btn btn-postura" onclick='javascript:definir_postura("{{ debate.id_debate }}", "1", "{{infavor_position_num}}", "{{against_position_num}}");'> -->
 						<button id = "bot_af_init" type="submit" class="btn btn-postura1" >
-							<!-- <span class="glyphicon glyphicon-thumbs-up"></span>
-							A Favor <br><br>
-							<label id="label_porc_f1"></label> -->
-							<!-- <img src="{% static 'img/thumbs-up.png' %}" alt="A favor"> -->
 						</button>
 					{% else %}
 						{% ifequal actual_user_position 'A Favor' %}
@@ -177,9 +175,7 @@
 				</div>
 			</div>
 		</div>
-		{% ifequal debate.state 'closed'%}
-			{% include 'estadisticas.html'  with opendeb=False%}
-		{% else %}
+
 			{% ifequal actual_user_position 'No definido' %}
 				<div class="row">
 					<div class="col-sm-6">
