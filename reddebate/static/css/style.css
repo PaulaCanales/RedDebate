@@ -1959,7 +1959,7 @@ hr {
     margin: 5px;
     font-style: normal;
 }
-#myList .postura:before{
+#myList .position:before{
   content: '\f25a';
   font-family: FontAwesome;
 }
@@ -1967,7 +1967,7 @@ hr {
   content: '\f086';
   font-family: FontAwesome;
 }
-#myList .valoracion:before{
+#myList .rate:before{
   content: '\f27a';
   font-family: FontAwesome;
 }
