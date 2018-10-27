@@ -2082,7 +2082,6 @@ hr {
 .debInformation{
   padding: 10px 35px 10px 0px;
   position: relative;
-  margin-bottom: 20px;
   min-height: 200px;
 }
 .debInformation footer{
@@ -2097,10 +2096,24 @@ hr {
 .textCenter{
   text-align: center;
 }
-.
+.debOwnerButton{
+  min-height: 200px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.debOwnerButton button{
+  background: var(--azul-principal);
+  border: none;
+  width: 100%;
+  color: white;
+  border-radius: 5px;
+  height: 28px;
+}
 .debInformation a{
   color: var(--verde-principal);
 }
+.debLine hr,
 .debInformation hr {
   display: block;
   background-image: linear-gradient(90deg, transparent, var(--verde-principal), transparent);

@@ -15,7 +15,7 @@
           {{ updateImg_form.errors }}
           {{ updateImg_form }}
 					<br>
-					<p>Se recomienda una imagen con tamaño mínimo de 200 x 200 píxeles</p>
+					<p>Se recomienda una imagen cuadrada con tamaño mínimo de 200 x 200 píxeles</p>
         </div>
         <div class="col-sm-6 prev">
           <img id="updateImgPrev" height="150px" src="" />
@@ -111,28 +111,29 @@
 		</div>
 	</header>
   <img class="hidden" id="chartImg" />
-	<div class="row debInformation">
-		<div class="col-sm-3">
-			<div class="divPhoto">
-				<img class="photo" src="{{ debate.img.url }}" alt="imagendeb"/>
-				<div class="updateImg"><a href="javascript:abrir_modal('updateImage_modal')"><i class="fa fa-pencil fa-lg"></i></a></div>
-			</div><br>
-      <a href="javascript:abrir_modal('informationDeb_modal')">Ver Información</a>
+  <div class="row debInformation">
+    <div class="col-sm-3 debCenter">
+      <div class="thumbnail">
+        <img src="{{ debate.img.url }}" />
+      </div>
+    </div>
+    <div class="col-sm-2 debOwnerButton">
+      <button onclick="abrir_modal('updateImage_modal')"><i class="fa fa-pencil fa-lg"></i> Cambiar Foto</button>
+      <button onclick="abrir_modal('informationDeb_modal')"><i class="fa fa-info-circle" aria-hidden="true"></i> Ver Información</button>
       <hr>
-			<div class="fb-share-button"
-				data-href="https://reddebate.cl/debate/{{ debate.id_debate }}/"
-				data-layout="button_count"
-				data-size="large">
-			</div>
-			<div class="tw-share-button">
-			<!-- Twitter -->
-				<a href="https://twitter.com/intent/tweet?status={{debate.title}}+https://reddebate.cl/debate/{{ debate.id_debate }}/" target="_blank">
-					<img src="https://simplesharebuttons.com/images/somacro/twitter.png" alt="Twitter" />
-				Twittear
-				</a>
-		</div>
-		</div>
-		<div class="col-sm-9">
+      <div class="fb-share-button"
+        data-href="https://reddebate.cl/debate/{{ debate.id_debate }}/"
+        data-layout="button_count"
+        data-size="large">
+      </div>
+      <div class="tw-share-button">
+        <a href="https://twitter.com/intent/tweet?status={{debate.title}}+https://reddebate.cl/debate/{{ debate.id_debate }}/" target="_blank">
+          <img src="https://simplesharebuttons.com/images/somacro/twitter.png" alt="Twitter" />
+        Twittear
+        </a>
+    </div>
+    </div>
+    <div class="col-sm-7">
       <div id="stats_div" >
         {% if stats.total_position_num > 0 %}
         <div id="chart_div" style="width: 100%; height: 200px"></div>
@@ -140,8 +141,8 @@
         <img height="200" src="{% static 'img/no_data_found.png' %}"/>
         {% endif %}
       </div>
-		</div>
-	</div>
+    </div>
+  </div>
   <div class="row">
      {% if stats.total_position_num > 0 %}
      <div class="col-sm-4">
