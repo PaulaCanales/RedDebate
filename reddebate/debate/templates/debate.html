@@ -259,7 +259,11 @@
 		<p class="bottom-three">.</p>
 		</div>
 {% else %}
-no hay permiso
+			{% ifequal debate.state 'closed'%}
+				{% include 'estadisticas_privado.html'%}
+			{% else %}
+				{% include '404.html' %}
+			{% endifequal %}
 {% endif %}
 {% endifequal %}
 </div>
