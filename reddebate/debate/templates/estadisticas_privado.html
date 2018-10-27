@@ -18,118 +18,113 @@
       </div>
     </div>
   </header>
-    <div class="row debInformation">
-      <div class="col-sm-3">
-        <img class="photo" src="{{ debate.img.url }}"/>
-        <div class="fb-share-button"
-          data-href="https://reddebate.cl/debate/{{ debate.id_debate }}/"
-          data-layout="button_count"
-          data-size="large">
-        </div>
-        <div class="tw-share-button">
-        <!-- Twitter -->
-          <a href="https://twitter.com/intent/tweet?status={{debate.title}}+https://reddebate.cl/debate/{{ debate.id_debate }}/" target="_blank">
-            <img src="https://simplesharebuttons.com/images/somacro/twitter.png" alt="Twitter" />
-          Twittear
-          </a>
-      </div>
-      </div>
-      <div class="col-sm-9" style="min-height: 200px;">
-        <div class="blank">
-            <table>
-            <tr>
-              <td width=120 ><p1>Fecha inicio</p1></td><td>{{ debate.date }}</td>
-            </tr>
-            <tr>
-              <td width=120 ><p1>Estado</p1></td><td> Cerrado </td>
-            </tr>
-          </table>
-          <p class="debateDescripcion">{{ debate.text }}</p>
-        </div>
-      </div>
-      <div style="text-align:left">
-        {% for tag in tags%}
-        <a class="tag-deb" href="{% url 'tagged' tag.slug %}">{{ tag.name }}</a>
-        {% endfor%}
+  <div class="row debInformation">
+    <div class="col-sm-3 debCenter">
+      <div class="thumbnail">
+        <img src="{{ debate.img.url }}" />
       </div>
     </div>
-      <div style="text-align: center">
-        <img class="hidden" id="chartImg" />
+    <div class="col-sm-4">
+      <div>
+          <table>
+          <tr>
+            <td width=120 ><p1>Fecha inicio</p1></td><td>{{ debate.date }}</td>
+          </tr>
+          <tr>
+            <td width=120 ><p1>Estado</p1></td><td> Cerrado </td>
+          </tr>
+        </table>
+        <br>
+        <p class="debateDescripcion">{{ debate.text }}</p>
+      </div>
+    </div>
+    <div class="col-sm-5">
+      <div id="stats_div" >
         {% if stats.total_position_num > 0 %}
-        <div class="row">
-          <div id="stats_div" class="col-sm-7">
-            <div id="chart_div" style="width: 100%; height: 300px"></div>
-          </div>
-          <div class="col-sm-5">
-            <div id="piechart_postura"></div>
-          </div>
-         </div>
-         <div class="row">
-           <div class="col-sm-6">
-           {% if stats.total_arg_num > 0 %}
-            <div id="piechart_argumento"></div>
-           {% endif %}
-           </div>
-           <div class="col-sm-6">
-             {% ifequal stats.best_argument 0 %}
-
-             {% else %}
-             <div class="datagrid1 stats_arg">
-               <table id="table_best_arg{{stats.best_argument.position}}">
-                 <thead>
-                 <tr>
-                   <th><i class="fa fa-star" aria-hidden="true"></i></th>
-                   <th>Argumentos mejor valorados</th>
-                   <th>Postura</th>
-                 </tr>
-                 </thead>
-                 <tr>
-                   <td>{{stats.best_argument.score}}</td>
-                   <td>
-                     <p>{{stats.best_argument.text}}</p>
-                   </td>
-                   {% ifequal stats.best_argument.position 0%}
-                   <td class="stats_arg0"> En Contra</td>
-                   {% else %}
-                   <td class="stats_arg1"> A Favor</td>
-                   {% endifequal %}
-                 </tr>
-                 <tr>
-                   <td>{{stats.second_argument.score}}</td>
-                   <td>
-                     <p>{{stats.second_argument.text}}</p>
-                   </td>
-                   {% ifequal stats.second_argument.position 0%}
-                   <td class="stats_arg0"> En Contra</td>
-                   {% else %}
-                   <td class="stats_arg1"> A Favor</td>
-                   {% endifequal %}
-                 </tr>
-               </table>
-             </div>
-             {% endifequal %}
-
-           </div>
-        </div>
-
-        <br><br><br>
-        <div class="row">
-          <div class="col-sm-6">
-            {% if stats.total_change_num > 0 %}
-            <div id="piechart_cambioPostura"></div>
-            {% endif %}
-          </div>
-          <div class="col-sm-6">
-            {% if stats.total_change_num > 0 %}
-            <div id="chart_razonCambio"></div>
-            {% endif %}
-          </div>
-        </div>
-        <br><br>
+        <div id="chart_div" style="width: 100%; height: 200px"></div>
         {% else %}
-        No se han registrado participaciones suficientes para visualizar estadísticas
+        <img height="200" src="{% static 'img/no_data_found.png' %}"/>
         {% endif %}
       </div>
+    </div>
+  </div>
+  <div id="stats_div" >
+    <img class="hidden" id="chartImg" />
+    <h3>Estadísticas</h3>
+    {% if stats.total_position_num > 0 %}
+    <div class="row">
+      <div class="col-sm-4">
+        <div id="piechart_postura"></div>
+       </div>
+       <div class="col-sm-4">
+       {% if stats.total_arg_num > 0 %}
+        <div id="piechart_argumento"></div>
+       {% else %}
+       <img height="200" src="{% static 'img/no_data_found.png' %}"/>
+       {% endif %}
+       </div>
+       <div class="col-sm-4">
+       {% if stats.total_change_num > 0 %}
+       <div id="piechart_cambioPostura"></div>
+       {% else %}
+       <img height="200" src="{% static 'img/no_data_found.png' %}"/>
+       {% endif %}
+       </div>
+    </div>
+    <br><br><br>
+    <div class="row">
+      <div class="col-sm-6">
+        {% if stats.total_change_num > 0 %}
+        <div id="chart_razonCambio"></div>
+        {% else %}
+        <img height="200" src="{% static 'img/no_data_found.png' %}"/>
+        {% endif %}
+      </div>
+      <div class="col-sm-6">
+        {% ifequal stats.best_argument 0 %}
+          <img height="200" src="{% static 'img/no_data_found.png' %}"/>
+        {% else %}
+        <div class="datagrid1 stats_arg">
+          <table id="table_best_arg{{stats.best_argument.position}}">
+            <thead>
+            <tr>
+              <th><i class="fa fa-star" aria-hidden="true"></i></th>
+              <th>Argumentos mejor valorados</th>
+              <th>Postura</th>
+            </tr>
+            </thead>
+            <tr>
+              <td>{{stats.best_argument.score}}</td>
+              <td>
+                <p>{{stats.best_argument.text}}</p>
+              </td>
+              {% ifequal stats.best_argument.position 0%}
+              <td class="stats_arg0"> En Contra</td>
+              {% else %}
+              <td class="stats_arg1"> A Favor</td>
+              {% endifequal %}
+            </tr>
+            <tr>
+              <td>{{stats.second_argument.score}}</td>
+              <td>
+                <p>{{stats.second_argument.text}}</p>
+              </td>
+              {% ifequal stats.second_argument.position 0%}
+              <td class="stats_arg0"> En Contra</td>
+              {% else %}
+              <td class="stats_arg1"> A Favor</td>
+              {% endifequal %}
+            </tr>
+          </table>
+        </div>
+        {% endifequal %}
+      </div>
+    </div>
+    <br><br>
+    {% else %}
+      <img height="200" src="{% static 'img/no_data_found.png' %}"/>
+    {% endif %}
+  </div>
 </div>
 </html>
 <script type="text/javascript">
