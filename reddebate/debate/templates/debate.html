@@ -65,38 +65,43 @@
 			{% include 'estadisticas.html'  with opendeb=False%}
 		{% else %}
 		<div class="row debInformation">
-			<div class="col-sm-3">
-				<img class="photo" src="{{ debate.img.url }}"/>
+			<div class="col-sm-3 debCenter">
+				<div class="thumbnail">
+				  <img src="{{ debate.img.url }}" />
+				</div>
+		  </div>
+			<div class="col-sm-9">
+				<p class="debateDescripcion">{{ debate.text }}</p>
+				{% ifequal debate.owner_type 'alias' %}
+					<footer>Publicado por <a href="{% url 'alias' owner_profile.alias %}">{{owner_profile.alias}}</a>
+						 | {{owner_profile.reputation}} puntos de reputación</footer>
+				{%else%}
+					<footer>Publicado por <a href="{% url 'username' owner_user.id %}">{{owner_user}}</a>
+						 | {{owner_profile.reputation}} puntos de reputación</footer>
+				{%endifequal%}
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm-3 textCenter">
 				<div class="fb-share-button"
 		    	data-href="https://reddebate.cl/debate/{{ debate.id_debate }}/"
 		    	data-layout="button_count"
 					data-size="large">
-				</div><br>
+				</div>
 				<div class="tw-share-button">
-				<!-- Twitter -->
 			    <a href="https://twitter.com/intent/tweet?status={{debate.title}}+https://reddebate.cl/debate/{{ debate.id_debate }}/" target="_blank">
 			      <img src="https://simplesharebuttons.com/images/somacro/twitter.png" alt="Twitter" />
 					Twittear
 					</a>
 			</div>
-		  </div>
-			<div class="col-sm-9">
-				<p class="debateDescripcion">{{ debate.text }}</p>
-					{% ifequal debate.owner_type 'alias' %}
-						<h5>Publicado por <a href="{% url 'alias' owner_profile.alias %}">{{owner_profile.alias}}</a>
-							 | {{owner_profile.reputation}} puntos de reputación</h5>
-					{%else%}
-						<h5>Publicado por <a href="{% url 'username' owner_user.id %}">{{owner_user}}</a>
-							 | {{owner_profile.reputation}} puntos de reputación</h5>
-					{%endifequal%}
 			</div>
-			<div style="text-align:left">
+			<div class="col-sm-9">
 				{% for tag in tags%}
 				<a class="tag-deb" href="{% url 'tagged' tag.slug %}">{{ tag.name }}</a>
 				{% endfor%}
 			</div>
-			<hr>
 		</div>
+		<hr class="debInformation">
 		<div id="cambioPostura_modal" class="modal">
 			<div class="modal-content">
 				<span class="close" onclick="cerrar_modal('cambioPostura_modal')">&times;</span>

@@ -143,7 +143,7 @@ section.success {
   width: 100%;
 }
  .blank {font: normal 12px/150% Arial, Helvetica, sans-serif;
-
+  margin: 0px 25%;
   overflow: hidden;
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
@@ -1388,6 +1388,26 @@ hr {
   margin: 4px;
   border-radius: 0px 10px;
 }
+.thumbnail {
+  position: relative;
+  width: 200px;
+  height: 200px;
+  overflow: hidden;
+}
+.thumbnail img {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  height: 100%;
+  width: auto;
+  -webkit-transform: translate(-50%,-50%);
+      -ms-transform: translate(-50%,-50%);
+          transform: translate(-50%,-50%);
+}
+.thumbnail img.portrait {
+  width: 100%;
+  height: auto;
+}
 .container-debate h2{
   margin-top: 0;
   font-family: "Montserrat", "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -1395,6 +1415,7 @@ hr {
 }
 .debateDescripcion{
   font-size: 14px;
+  min-height: 180px;
   font-family: "Montserrat", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 .cards__item a{
@@ -2059,22 +2080,24 @@ hr {
   overflow-x: hidden;
 }
 .debInformation{
-  margin: 10px 35px 10px 0px;
-  text-align: center;
+  padding: 10px 35px 10px 0px;
   position: relative;
   margin-bottom: 20px;
-  min-height: 128px;
+  min-height: 200px;
 }
-.debInformation h5{
-  font-family: "Montserrat", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  text-align: right;
+.debInformation footer{
   position: absolute;
   bottom: 0;
   right: 15px;
 }
-.debInformation .col-sm-9{
-  min-height: 200px;
+.debCenter{
+  display: flex;
+  justify-content: center;
 }
+.textCenter{
+  text-align: center;
+}
+.
 .debInformation a{
   color: var(--verde-principal);
 }
