@@ -2,46 +2,18 @@
 {% load static %}
 <html>
 <div class="row debInformation">
+  <div class="col-sm-3 debCenter">
+    <div class="thumbnail">
+      <img src="{{ debate.img.url }}" />
+    </div>
+  </div>
   <div class="col-sm-3">
-    <img class="photo" src="{{ debate.img.url }}"/>
-    <div class="fb-share-button"
-      data-href="https://reddebate.cl/debate/{{ debate.id_debate }}/"
-      data-layout="button_count"
-      data-size="large">
-    </div><br>
-    <div class="tw-share-button">
-    <!-- Twitter -->
-      <a href="https://twitter.com/intent/tweet?status={{debate.title}}+https://reddebate.cl/debate/{{ debate.id_debate }}/" target="_blank">
-        <img src="https://simplesharebuttons.com/images/somacro/twitter.png" alt="Twitter" />
-      Twittear
-      </a>
-  </div>
-  </div>
-  <div class="col-sm-5" style="min-height: 128px;">
-    <p class="debateDescripcion">{{ debate.text }}</p>
-      {% ifequal debate.owner_type 'alias' %}
-        <h5>Publicado por <a href="{% url 'alias' owner_profile.alias %}">{{owner_profile.alias}}</a>
-           | {{owner_profile.reputation}} puntos de reputación</h5>
-      {%else%}
-        <h5>Publicado por <a href="{% url 'username' owner_user.id %}">{{owner_user}}</a>
-           | {{owner_profile.reputation}} puntos de reputación</h5>
-      {%endifequal%}
-  </div>
-  <div class="col-sm-4">
-    <div class="blank">
         <table>
         <tr>
           <td width=120 ><p1>Fecha inicio</p1></td><td>{{ debate.date }}</td>
         </tr>
         <tr>
-          {%ifequal debate.state 'open'%}
-            <td width=120 ><p1>Estado</p1></td><td> Abierto </td>
-          {%else%}
             <td width=120 ><p1>Estado</p1></td><td> Cerrado </td>
-          {%endifequal%}
-        </tr>
-        <tr>
-          <td width=120 ><p1>Tu Postura</p1></td><td><div id="tu_postura"> {{actual_user_position}} </div></td>
         </tr>
         {% ifequal debate.members_type 0 %}
         <tr>
@@ -52,20 +24,31 @@
           <td width=120 ><p1>Tipo debate</p1></td><td><div id="tu_postura"> <a href="javascript:abrir_modal('participantes_modal')"> Privado </a></div></td>
         </tr>
         {% endifequal %}
+        <tr>
+          <td width=120 ><p1>Tu Postura</p1></td><td><div id="tu_postura"> {{actual_user_position}} </div></td>
+        </tr>
       </table>
-      {% ifequal actual_user_position 'A Favor'%}
-        <img height="128" src="{% static 'img/thumbs-up-select.jpg' %}"/>
-      {% endifequal %}
-      {% ifequal actual_user_position 'En Contra'%}
-        <img height="128" src="{% static 'img/thumbs-down-select.jpg' %}"/>
-      {% endifequal %}
-    </div>
+      <div class="debCenter">
+        {% ifequal actual_user_position 'A Favor'  %}
+          <img height="80" style="margin: 20px;" src="{% static 'img/thumbs-up-select.jpg' %}"/>
+        {% endifequal %}
+        {% ifequal actual_user_position 'En Contra'  %}
+          <img height="80" style="margin: 20px;" src="{% static 'img/thumbs-down-select.jpg' %}"/>
+        {% endifequal %}
+        {% ifequal actual_user_position 'No definido'  %}
+          <img height="80" style="margin: 20px;" src="{% static 'img/no_data_found.png' %}"/>
+        {% endifequal %}
+      </div>
   </div>
-
-  <div style="text-align:left">
-    {% for tag in tags%}
-    <a class="tag-deb" href="{% url 'tagged' tag.slug %}">{{ tag.name }}</a>
-    {% endfor%}
+  <div class="col-sm-6">
+    <p class="debateDescripcion">{{ debate.text }}</p>
+    {% ifequal debate.owner_type 'alias' %}
+      <footer>Publicado por <a href="{% url 'alias' owner_profile.alias %}">{{owner_profile.alias}}</a>
+         | {{owner_profile.reputation}} puntos de reputación</footer>
+    {%else%}
+      <footer>Publicado por <a href="{% url 'username' owner_user.id %}">{{owner_user}}</a>
+         | {{owner_profile.reputation}} puntos de reputación</footer>
+    {%endifequal%}
   </div>
 </div>
   <div id="stats_div" >
