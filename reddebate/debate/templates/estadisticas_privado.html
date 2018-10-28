@@ -48,6 +48,26 @@
       </div>
     </div>
   </div>
+  <div class="row">
+    <div class="col-sm-3 textCenter">
+      <div class="fb-share-button"
+        data-href="https://reddebate.cl/debate/{{ debate.id_debate }}/"
+        data-layout="button_count"
+        data-size="large">
+      </div>
+      <div class="tw-share-button">
+        <a href="https://twitter.com/intent/tweet?status={{debate.title}}+https://reddebate.cl/debate/{{ debate.id_debate }}/" target="_blank">
+          <img src="https://simplesharebuttons.com/images/somacro/twitter.png" alt="Twitter" />
+        Twittear
+        </a>
+    </div>
+    </div>
+    <div class="col-sm-9">
+      {% for tag in tags%}
+      <a class="tag-deb" href="{% url 'tagged' tag.slug %}">{{ tag.name }}</a>
+      {% endfor%}
+    </div>
+  </div>
   <div id="stats_div" >
     <img class="hidden" id="chartImg" />
     <h3>Estadísticas</h3>
