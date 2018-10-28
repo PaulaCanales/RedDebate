@@ -281,13 +281,16 @@ def republishDebate(request):
     id_deb=request.POST['id_deb_republish']
     opc=request.POST['tab']
     deb = Debate.objects.get(pk=id_deb)
-    if opc == "NULL":
-        deb.end_date = None
+    if opc == "deleteDebClosed":
+        deb.delete()
     else:
-        yyyy,mm,dd=str(request.POST['nuevafecha']).split("-")
-        deb.end_date = datetime.date(int(yyyy),int(mm),int(dd))
-    deb.state = 'open'
-    deb.save()
+        if opc == "NULL":
+            deb.end_date = None
+        elif opc=="fechafin":
+            yyyy,mm,dd=str(request.POST['nuevafecha']).split("-")
+            deb.end_date = datetime.date(int(yyyy),int(mm),int(dd))
+        deb.state = 'open'
+        deb.save()
     return redirect('debates')
 
 def handler404(request):

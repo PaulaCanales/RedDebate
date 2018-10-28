@@ -46,76 +46,49 @@
   			</div>
   		</div>
 		</header>
+		{% ifequal debate.state 'closed'%}
+			{% include 'estadisticas.html' %}
+		{% else %}
 		<div class="row debInformation">
-			<div class="col-sm-3">
-				<div class="divPhoto">
-					<img class="photo" src="{{ debate.img.url }}" alt="imagendeb"/>
-					<div class="updateImg"><a href="javascript:abrir_modal('updateImage_modal')"><i class="fa fa-pencil fa-lg"></i></a></div>
+			<div class="col-sm-3 debCenter">
+				<div class="thumbnail">
+				  <img src="{{ debate.img.url }}" />
 				</div>
-				<div class="fb-share-button"
-					data-href="https://reddebate.cl/debate/{{ debate.id_debate }}/"
-					data-layout="button_count"
-					data-size="large">
-				</div>
-			</div>
+		  </div>
 			<div class="col-sm-9">
 				<p class="debateDescripcion">{{ debate.text }}</p>
-					{% ifequal debate.owner_type 'alias' %}
-						<h5>Publicado por <a href="{% url 'alias' owner_profile.alias %}">{{owner_profile.alias}}</a>
-							 | {{owner_profile.reputation}} puntos de reputación</h5>
-					{%else%}
-						<h5>Publicado por <a href="{% url 'username' owner_user.id %}">{{owner_user}}</a>
-							 | {{owner_profile.reputation}} puntos de reputación</h5>
-					{%endifequal%}
+				{% ifequal debate.owner_type 'alias' %}
+					<footer>Publicado por <a href="{% url 'alias' owner_profile.alias %}">{{owner_profile.alias}}</a>
+						 | {{owner_profile.reputation}} puntos de reputación</footer>
+				{%else%}
+					<footer>Publicado por <a href="{% url 'username' owner_user.id %}">{{owner_user}}</a>
+						 | {{owner_profile.reputation}} puntos de reputación</footer>
+				{%endifequal%}
 			</div>
-			<div style="text-align:left">
+		</div>
+		<div class="row">
+			<div class="col-sm-3 textCenter">
+				<div class="fb-share-button"
+		    	data-href="https://reddebate.cl/debate/{{ debate.id_debate }}/"
+		    	data-layout="button_count"
+					data-size="large">
+				</div>
+				<div class="tw-share-button">
+			    <a href="https://twitter.com/intent/tweet?status={{debate.title}}+https://reddebate.cl/debate/{{ debate.id_debate }}/" target="_blank">
+			      <img src="https://simplesharebuttons.com/images/somacro/twitter.png" alt="Twitter" />
+					Twittear
+					</a>
+			</div>
+			</div>
+			<div class="col-sm-9">
 				{% for tag in tags%}
 				<a class="tag-deb" href="{% url 'tagged' tag.slug %}">{{ tag.name }}</a>
 				{% endfor%}
 			</div>
+		</div>
+		<div class="debLine">
 			<hr>
 		</div>
-		<div name="detalle-debate">
-			<div class="row" id="my-row">
-				<div class="col-sm-3 panel">
-							<button id = "bot_af" type="submit" class="btn btn-posturactual1" disabled ></button>
-				</div>
-				<div class="col-sm-6">
-					<div class="blank">
-							<table>
-							<tr>
-								<td width=120 ><p1>Fecha inicio</p1></td><td>{{ debate.date }}</td>
-							</tr>
-							<tr>
-								{%ifequal debate.state 'open'%}
-									<td width=120 ><p1>Estado</p1></td><td> Abierto </td>
-								{%else%}
-									<td width=120 ><p1>Estado</p1></td><td> Cerrado </td>
-								{%endifequal%}
-							</tr>
-							<tr>
-								<td width=120 ><p1>Tu Postura</p1></td><td><div id="tu_postura"> {{actual_user_position}} </div></td>
-							</tr>
-							{% ifequal debate.members_type 0 %}
-							<tr>
-								<td width=120 ><p1>Tipo debate</p1></td><td><div id="tu_postura">  Publico </div></td>
-							</tr>
-							{% else %}
-							<tr>
-								<td width=120 ><p1>Tipo debate</p1></td><td><div id="tu_postura"> <a href="javascript:abrir_modal('participantes_modal')"> Privado </a></div></td>
-							</tr>
-							{% endifequal %}
-						</table>
-					</div>
-				</div>
-				<div class="col-sm-3 panel">
-							<button id = "bot_ec" type="submit" class="btn btn-posturactual0" disabled ></button>
-				</div>
-			</div>
-		</div>
-		{% ifequal debate.state 'closed'%}
-			{% include 'estadisticas.html' %}
-		{% else %}
 			<div id="progresoDebate">
 					{% ifequal stats.infavor_percent 0 %}
 		        <div id="progreso"class="progress-bar" style="background:#d9534f; width: {{stats.against_percent}}%">

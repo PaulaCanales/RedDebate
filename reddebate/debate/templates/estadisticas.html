@@ -1,42 +1,80 @@
 <!DOCTYPE html>
-
+{% load static %}
 <html>
-<script type="text/javascript">
-$(document).ready(function(){
-  try {
-    document.getElementById("bot_af").disabled = true;
-    document.getElementById("bot_ec").disabled = true;
-  } catch (e) {
-    document.getElementById("bot_af_init").disabled = true;
-    document.getElementById("bot_ec_init").disabled = true;
-  }
-	google.charts.load('current', {'packages':['corechart', 'bar', 'annotationchart']});
-  if ({{stats.total_position_num}}>0){
-    google.charts.setOnLoadCallback(posturaChart);
-    if ({{stats.total_arg_num }}>0) google.charts.setOnLoadCallback(argumentosChart);
-  	google.charts.setOnLoadCallback(cambioPosturaChart);
-    if ({{stats.total_change_num}}>0) google.charts.setOnLoadCallback(razonCambioChart);
-  	google.charts.setOnLoadCallback(posturasTiempo);
-  }
-
-	});
-	var varGlobal = {
-		infavor_position : {{stats.infavor_position_num}},
-		against_position : {{stats.against_position_num}},
-		args_infavor : {{stats.infavor_args_list|length}},
-		args_against : {{stats.against_args_list|length}},
-		infavor_to_against: {{stats.infavor_to_against}},
-		against_to_infavor: {{stats.against_to_infavor}},
-		position_change: {{stats.infavor_to_against}} + {{stats.against_to_infavor}},
-		reason_infavor_to_against: {{stats.reason_infavor_to_against}},
-		reason_against_to_infavor: {{stats.reason_against_to_infavor}},
-	};
-  var positions_by_day = {{stats.positions_by_day|safe}};
-</script>
+<div class="row debInformation">
+  <div class="col-sm-3 debCenter">
+    <div class="thumbnail">
+      <img src="{{ debate.img.url }}" />
+    </div>
+  </div>
+  <div class="col-sm-3">
+        <table>
+        <tr>
+          <td width=120 ><p1>Fecha inicio</p1></td><td>{{ debate.date }}</td>
+        </tr>
+        <tr>
+            <td width=120 ><p1>Estado</p1></td><td> Cerrado </td>
+        </tr>
+        {% ifequal debate.members_type 0 %}
+        <tr>
+          <td width=120 ><p1>Tipo debate</p1></td><td><div id="tu_postura">  Publico </div></td>
+        </tr>
+        {% else %}
+        <tr>
+          <td width=120 ><p1>Tipo debate</p1></td><td><div id="tu_postura"> <a href="javascript:abrir_modal('participantes_modal')"> Privado </a></div></td>
+        </tr>
+        {% endifequal %}
+        <tr>
+          <td width=120 ><p1>Tu Postura</p1></td><td><div id="tu_postura"> {{actual_user_position}} </div></td>
+        </tr>
+      </table>
+      <div class="debCenter">
+        {% ifequal actual_user_position 'A Favor'  %}
+          <img height="80" style="margin: 20px;" src="{% static 'img/thumbs-up-select.jpg' %}"/>
+        {% endifequal %}
+        {% ifequal actual_user_position 'En Contra'  %}
+          <img height="80" style="margin: 20px;" src="{% static 'img/thumbs-down-select.jpg' %}"/>
+        {% endifequal %}
+        {% ifequal actual_user_position 'No definido'  %}
+          <img height="80" style="margin: 20px;" src="{% static 'img/no_data_found.png' %}"/>
+        {% endifequal %}
+      </div>
+  </div>
+  <div class="col-sm-6">
+    <p class="debateDescripcion">{{ debate.text }}</p>
+    {% ifequal debate.owner_type 'alias' %}
+      <footer>Publicado por <a href="{% url 'alias' owner_profile.alias %}">{{owner_profile.alias}}</a>
+         | {{owner_profile.reputation}} puntos de reputación</footer>
+    {%else%}
+      <footer>Publicado por <a href="{% url 'username' owner_user.id %}">{{owner_user}}</a>
+         | {{owner_profile.reputation}} puntos de reputación</footer>
+    {%endifequal%}
+  </div>
+</div>
+<div class="row">
+  <div class="col-sm-3 textCenter">
+    <div class="fb-share-button"
+      data-href="https://reddebate.cl/debate/{{ debate.id_debate }}/"
+      data-layout="button_count"
+      data-size="large">
+    </div>
+    <div class="tw-share-button">
+      <a href="https://twitter.com/intent/tweet?status={{debate.title}}+https://reddebate.cl/debate/{{ debate.id_debate }}/" target="_blank">
+        <img src="https://simplesharebuttons.com/images/somacro/twitter.png" alt="Twitter" />
+      Twittear
+      </a>
+  </div>
+  </div>
+  <div class="col-sm-9">
+    {% for tag in tags%}
+    <a class="tag-deb" href="{% url 'tagged' tag.slug %}">{{ tag.name }}</a>
+    {% endfor%}
+  </div>
+</div>
   <div id="stats_div" >
     <img class="hidden" id="chartImg" />
     <h3>Estadísticas</h3>
-    {% if stats.total_position_num > 0 %}
+    {% if stats.positions_by_day|length > 1 %}
     <div id="chart_div" style="width: 100%; height: 200px"></div>
 
     <div class="row">
@@ -66,7 +104,7 @@ $(document).ready(function(){
     <br><br><br>
     <div class="row">
       <div class="col-sm-6">
-        {% if total_change_num > 0 %}
+        {% if stats.total_change_num > 0 %}
         <div id="chart_razonCambio"></div>
         {% else %}
         No se han registrado cambios de postura
@@ -135,3 +173,36 @@ $(document).ready(function(){
     {% endif %}
   </div>
 </html>
+<script type="text/javascript">
+$(document).ready(function(){
+  // try {
+  //   document.getElementById("bot_af").disabled = true;
+  //   document.getElementById("bot_ec").disabled = true;
+  // } catch (e) {
+  //   document.getElementById("bot_af_init").disabled = true;
+  //   document.getElementById("bot_ec_init").disabled = true;
+  // }
+	google.charts.load('current', {'packages':['corechart', 'bar', 'annotationchart']});
+
+    google.charts.setOnLoadCallback(posturaChart);
+    if ({{stats.total_arg_num }}>0) google.charts.setOnLoadCallback(argumentosChart);
+  	google.charts.setOnLoadCallback(cambioPosturaChart);
+    if ({{stats.total_change_num}}>0) google.charts.setOnLoadCallback(razonCambioChart);
+  	google.charts.setOnLoadCallback(posturasTiempo);
+
+	});
+	var varGlobal = {
+		infavor_position : {{stats.infavor_position_num}},
+		against_position : {{stats.against_position_num}},
+		args_infavor : {{stats.infavor_args_list|length}},
+		args_against : {{stats.against_args_list|length}},
+		infavor_to_against: {{stats.infavor_to_against}},
+		against_to_infavor: {{stats.against_to_infavor}},
+		position_change: {{stats.infavor_to_against}} + {{stats.against_to_infavor}},
+		reason_infavor_to_against: {{stats.reason_infavor_to_against}},
+		reason_against_to_infavor: {{stats.reason_against_to_infavor}},
+	};
+  var positions_by_day = {{stats.positions_by_day|safe}};
+  var owner_id = {{owner_user.id}}
+  var actual_id = {{user.id}}
+</script>

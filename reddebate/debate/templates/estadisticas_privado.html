@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+<div class="container-debate">
+  <header>
+    <div class="row">
+      <div class="col-sm-11">
+        <h2>{{ debate.title }}</h2>
+        <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span> Visto {{visits}} veces
+        <input id="idDebate" type="hidden" value={{debate.id_debate}}>
+      </div>
+      <div class="col-sm-1">
+      {% if can_report_deb %}
+         <button class="btn btn-title" data-toggle="tooltip" title="Denunciar debate" onclick="javascript:abrir_modal('denuncia_deb_modal')">
+           <span class="glyphicon glyphicon-bullhorn"></span>
+         </button>
+      {% endif %}
+      </div>
+    </div>
+  </header>
+  <div class="row debInformation">
+    <div class="col-sm-3 debCenter">
+      <div class="thumbnail">
+        <img src="{{ debate.img.url }}" />
+      </div>
+    </div>
+    <div class="col-sm-4">
+      <div>
+          <table>
+          <tr>
+            <td width=120 ><p1>Fecha inicio</p1></td><td>{{ debate.date }}</td>
+          </tr>
+          <tr>
+            <td width=120 ><p1>Estado</p1></td><td> Cerrado </td>
+          </tr>
+        </table>
+        <br>
+        <p class="debateDescripcion">{{ debate.text }}</p>
+      </div>
+    </div>
+    <div class="col-sm-5">
+      <div id="stats_div" >
+        {% if stats.positions_by_day|length > 1 %}
+        <div id="chart_div" style="width: 100%; height: 200px"></div>
+        {% else %}
+        <img height="200" src="{% static 'img/no_data_found.png' %}"/>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-3 textCenter">
+      <div class="fb-share-button"
+        data-href="https://reddebate.cl/debate/{{ debate.id_debate }}/"
+        data-layout="button_count"
+        data-size="large">
+      </div>
+      <div class="tw-share-button">
+        <a href="https://twitter.com/intent/tweet?status={{debate.title}}+https://reddebate.cl/debate/{{ debate.id_debate }}/" target="_blank">
+          <img src="https://simplesharebuttons.com/images/somacro/twitter.png" alt="Twitter" />
+        Twittear
+        </a>
+    </div>
+    </div>
+    <div class="col-sm-9">
+      {% for tag in tags%}
+      <a class="tag-deb" href="{% url 'tagged' tag.slug %}">{{ tag.name }}</a>
+      {% endfor%}
+    </div>
+  </div>
+  <div id="stats_div" >
+    <img class="hidden" id="chartImg" />
+    <h3>Estadísticas</h3>
+    {% if stats.total_position_num > 0 %}
+    <div class="row">
+      <div class="col-sm-4">
+        <div id="piechart_postura"></div>
+       </div>
+       <div class="col-sm-4">
+       {% if stats.total_arg_num > 0 %}
+        <div id="piechart_argumento"></div>
+       {% else %}
+       <img height="200" src="{% static 'img/no_data_found.png' %}"/>
+       {% endif %}
+       </div>
+       <div class="col-sm-4">
+       {% if stats.total_change_num > 0 %}
+       <div id="piechart_cambioPostura"></div>
+       {% else %}
+       <img height="200" src="{% static 'img/no_data_found.png' %}"/>
+       {% endif %}
+       </div>
+    </div>
+    <br><br><br>
+    <div class="row">
+      <div class="col-sm-6">
+        {% if stats.total_change_num > 0 %}
+        <div id="chart_razonCambio"></div>
+        {% else %}
+        <img height="200" src="{% static 'img/no_data_found.png' %}"/>
+        {% endif %}
+      </div>
+      <div class="col-sm-6">
+        {% ifequal stats.best_argument 0 %}
+          <img height="200" src="{% static 'img/no_data_found.png' %}"/>
+        {% else %}
+        <div class="datagrid1 stats_arg">
+          <table id="table_best_arg{{stats.best_argument.position}}">
+            <thead>
+            <tr>
+              <th><i class="fa fa-star" aria-hidden="true"></i></th>
+              <th>Argumentos mejor valorados</th>
+              <th>Postura</th>
+            </tr>
+            </thead>
+            <tr>
+              <td>{{stats.best_argument.score}}</td>
+              <td>
+                <p>{{stats.best_argument.text}}</p>
+              </td>
+              {% ifequal stats.best_argument.position 0%}
+              <td class="stats_arg0"> En Contra</td>
+              {% else %}
+              <td class="stats_arg1"> A Favor</td>
+              {% endifequal %}
+            </tr>
+            <tr>
+              <td>{{stats.second_argument.score}}</td>
+              <td>
+                <p>{{stats.second_argument.text}}</p>
+              </td>
+              {% ifequal stats.second_argument.position 0%}
+              <td class="stats_arg0"> En Contra</td>
+              {% else %}
+              <td class="stats_arg1"> A Favor</td>
+              {% endifequal %}
+            </tr>
+          </table>
+        </div>
+        {% endifequal %}
+      </div>
+    </div>
+    <br><br>
+    {% else %}
+      <img height="200" src="{% static 'img/no_data_found.png' %}"/>
+    {% endif %}
+  </div>
+</div>
+</html>
+<script type="text/javascript">
+$(document).ready(function(){
+  // try {
+  //   document.getElementById("bot_af").disabled = true;
+  //   document.getElementById("bot_ec").disabled = true;
+  // } catch (e) {
+  //   document.getElementById("bot_af_init").disabled = true;
+  //   document.getElementById("bot_ec_init").disabled = true;
+  // }
+	google.charts.load('current', {'packages':['corechart', 'bar', 'annotationchart']});
+
+    google.charts.setOnLoadCallback(posturaChart);
+    if ({{stats.total_arg_num }}>0) google.charts.setOnLoadCallback(argumentosChart);
+  	google.charts.setOnLoadCallback(cambioPosturaChart);
+    if ({{stats.total_change_num}}>0) google.charts.setOnLoadCallback(razonCambioChart);
+  	google.charts.setOnLoadCallback(posturasTiempo);
+
+	});
+	var varGlobal = {
+		infavor_position : {{stats.infavor_position_num}},
+		against_position : {{stats.against_position_num}},
+		args_infavor : {{stats.infavor_args_list|length}},
+		args_against : {{stats.against_args_list|length}},
+		infavor_to_against: {{stats.infavor_to_against}},
+		against_to_infavor: {{stats.against_to_infavor}},
+		position_change: {{stats.infavor_to_against}} + {{stats.against_to_infavor}},
+		reason_infavor_to_against: {{stats.reason_infavor_to_against}},
+		reason_against_to_infavor: {{stats.reason_against_to_infavor}},
+	};
+  var positions_by_day = {{stats.positions_by_day|safe}};
+  var owner_id = {{owner_user.id}}
+  var actual_id = {{user.id}}
+</script>

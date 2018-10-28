@@ -190,7 +190,7 @@ $(document).ready(function(){
                     </li>
 										{% if user.is_staff or user.is_superuser %}
 										<li>
-                        <a href="{% url 'username' user.id %}">Perfil</a>
+                        <a href="{% url 'username' user.id %}">Reportes</a>
                     </li>
 										{% else %}
                     <li  class="dropdown-menu">
