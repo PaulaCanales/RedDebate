@@ -54,9 +54,7 @@ $(document).ready(function(){
 
         }
         else if (data.text){
-          var nuevosArgs = $("#alertaArgumento"+data.position);
-          var nuevo = $('<a onclick="javascript:location.reload()" id="nuevoArgumento'+data.position+'" class="list-group-item"> </a>').text("Nuevo argument de "+data.name)
-          nuevosArgs.append(nuevo)
+          $("#alertaArgumento"+data.position).css("display","block");
         }
     };
 

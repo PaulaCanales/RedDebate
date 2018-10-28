@@ -1255,6 +1255,7 @@ hr {
   border-top-color: var(--azul-principal);
 }
 
+#alertaArgumento0,#alertaArgumento1,
 #alertaDeb0, #alertaDeb1{
   display: none;
   margin: 5px 10px;

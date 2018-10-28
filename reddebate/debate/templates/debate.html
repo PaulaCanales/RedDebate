@@ -237,7 +237,9 @@
 					<div class="row">
 				    <div class="col-sm-6">
 							{% include 'participaciones.html' with name_position="A Favor" arguments=stats.infavor_args_list position=1 num_post=stats.infavor_position_num%}
-							<ul id="alertaArgumento1" class="list-group"></ul>
+							<div id="alertaArgumento1" class="alert alert-info" role="alert">
+								<a href="javascript:location.reload()" class="alert-link">Hay nuevos argumentos...</a>
+							</div>
 							{% if can_argue %}
 							{% ifequal actual_user_position 'A Favor' %}
 								<form id="nuevoArgForm1" method="POST" class="post-form publicarArgumento" enctype="multipart/form-data">{% csrf_token %}
@@ -249,7 +251,9 @@
 						</div>
 						<div class="col-sm-6">
 							{% include 'participaciones.html' with name_position="En Contra" arguments=stats.against_args_list position=0 num_post=stats.against_position_num%}
-							<ul id="alertaArgumento0" class="list-group"></ul>
+							<div id="alertaArgumento0" class="alert alert-info" role="alert">
+								<a href="javascript:location.reload()" class="alert-link">Hay nuevos argumentos...</a>
+							</div>
 							{% if can_argue %}
 							{% ifequal actual_user_position 'En Contra' %}
 							<form id="nuevoArgForm0" method="POST" class="post-form publicarArgumento" enctype="multipart/form-data">{% csrf_token %}
