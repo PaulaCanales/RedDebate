@@ -13,7 +13,8 @@ owner=[('username','Nombre Real'),
          ('alias','Alias')]
 order_deb_typeform= [('0', 'Fecha'),
                 ('1','Visitas'),
-                ('2', 'Nombre')]
+                ('2', 'Nombre'),
+                ('3', 'Participaciones')]
 order_user_typeform= [('0', 'Nombre'),
                     ('1','Reputacion')]
 participation_typeform = [('all', 'A elección del participante'),
