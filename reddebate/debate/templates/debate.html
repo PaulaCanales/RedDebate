@@ -61,30 +61,47 @@
 				</div>
 			</div>
 		</header>
+		{% ifequal debate.state 'closed'%}
+			{% include 'estadisticas.html'  with opendeb=False%}
+		{% else %}
 		<div class="row debInformation">
-			<div class="col-sm-3">
-				<img class="photo" src="{{ debate.img.url }}"/>
+			<div class="col-sm-3 debCenter">
+				<div class="thumbnail">
+				  <img src="{{ debate.img.url }}" />
+				</div>
+		  </div>
+			<div class="col-sm-9">
+				<p class="debateDescripcion">{{ debate.text }}</p>
+				{% ifequal debate.owner_type 'alias' %}
+					<footer>Publicado por <a href="{% url 'alias' owner_profile.alias %}">{{owner_profile.alias}}</a>
+						 | {{owner_profile.reputation}} puntos de reputación</footer>
+				{%else%}
+					<footer>Publicado por <a href="{% url 'username' owner_user.id %}">{{owner_user}}</a>
+						 | {{owner_profile.reputation}} puntos de reputación</footer>
+				{%endifequal%}
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm-3 textCenter">
 				<div class="fb-share-button"
 		    	data-href="https://reddebate.cl/debate/{{ debate.id_debate }}/"
 		    	data-layout="button_count"
 					data-size="large">
 				</div>
-		  </div>
-			<div class="col-sm-9">
-				<p class="debateDescripcion">{{ debate.text }}</p>
-					{% ifequal debate.owner_type 'alias' %}
-						<h5>Publicado por <a href="{% url 'alias' owner_profile.alias %}">{{owner_profile.alias}}</a>
-							 | {{owner_profile.reputation}} puntos de reputación</h5>
-					{%else%}
-						<h5>Publicado por <a href="{% url 'username' owner_user.id %}">{{owner_user}}</a>
-							 | {{owner_profile.reputation}} puntos de reputación</h5>
-					{%endifequal%}
+				<div class="tw-share-button">
+			    <a href="https://twitter.com/intent/tweet?status={{debate.title}}+https://reddebate.cl/debate/{{ debate.id_debate }}/" target="_blank">
+			      <img src="https://simplesharebuttons.com/images/somacro/twitter.png" alt="Twitter" />
+					Twittear
+					</a>
 			</div>
-			<div style="text-align:left">
+			</div>
+			<div class="col-sm-9">
 				{% for tag in tags%}
 				<a class="tag-deb" href="{% url 'tagged' tag.slug %}">{{ tag.name }}</a>
 				{% endfor%}
 			</div>
+		</div>
+		<div class="debLine">
 			<hr>
 		</div>
 		<div id="cambioPostura_modal" class="modal">
@@ -92,29 +109,29 @@
 				<span class="close" onclick="cerrar_modal('cambioPostura_modal')">&times;</span>
 				{% if p_post %}
 				<h3>¿Por qué quieres cambiar de postura? <span class="glyphicon glyphicon-comment"></span></h3>
+					<div class="modal-body">
 						<div id="form_razon_cambio">
 								<input id="postura_debate" type="hidden" value="" name="postura_debate">
 								<div class="radio"> <label><input type="radio" value="1" name="razon" checked> Cambié de opinión </label></div>
 								<div class="radio"> <label><input type="radio" value="2" name="razon"> Me equivoqué de botón </label></div>
 								<div class="radio"> <label><input type="radio" value="3" name="razon"> Otro </label></div>
-	              <button id="bot_cambiar_post" type="submit" class="btn btn-index" > Aceptar </button>
-								<a class="btn btn-index" onclick="cerrar_modal('cambioPostura_modal')">Cancelar</a>
 						</div>
+					</div>
 				{% else %}
 					<h3> Ya no puedes cambiar de postura </h3>
 				{% endif %}
+				<div class="modal-footer-buttons">
+	        <button id="bot_cambiar_post" type="submit" class="btn btn-index" > Aceptar </button>
+	        <label type="button" onclick="cerrar_modal('cambioPostura_modal')"> Cancelar </label>
+				</div>
 			</div>
+
 		</div>
 		<div name="detalle-debate">
 			<div class="row" id="my-row">
 				<div class="col-sm-3 panel">
 					{% ifequal actual_user_position 'No definido' %}
-						<!-- <button id = "bot_af" type="submit" class="btn btn-postura" onclick='javascript:definir_postura("{{ debate.id_debate }}", "1", "{{infavor_position_num}}", "{{against_position_num}}");'> -->
 						<button id = "bot_af_init" type="submit" class="btn btn-postura1" >
-							<!-- <span class="glyphicon glyphicon-thumbs-up"></span>
-							A Favor <br><br>
-							<label id="label_porc_f1"></label> -->
-							<!-- <img src="{% static 'img/thumbs-up.png' %}" alt="A favor"> -->
 						</button>
 					{% else %}
 						{% ifequal actual_user_position 'A Favor' %}
@@ -165,12 +182,33 @@
 				</div>
 			</div>
 		</div>
-		{% ifequal debate.state 'closed'%}
-			{% include 'estadisticas.html'  with opendeb=False%}
-		{% else %}
+
 			{% ifequal actual_user_position 'No definido' %}
-				<div id="no-argumentos" style="display: block;" >
-					<h2> Debes definir una postura para ver la discusión </h2>
+				<div class="row">
+					<div class="col-sm-6">
+						<div class="datagrid1 ">
+						  <table id="preview_args1">
+						    <tr><thead>
+						      	<th> Mejor argumento a favor </th>
+						    </thead></tr>
+						      <tr><td>{{stats.best_infavor_arg}} </td></tr>
+						  </table>
+						</div>
+				</div>
+					<div class="col-sm-6">
+						<div class="datagrid0 ">
+						  <table id="preview_args0">
+						    <tr><thead>
+						      	<th> Mejor argumento en contra </th>
+						    </thead></tr>
+						      <tr><td>{{stats.best_against_arg}}</td></tr>
+						  </table>
+						</div>
+				</div>
+				</div>
+					<h3> Si defines una postura podrás ver la discusión completa... </h3>
+
+
 				</div>
 			{% else %}
 			<div id="progresoDebate">
@@ -199,7 +237,9 @@
 					<div class="row">
 				    <div class="col-sm-6">
 							{% include 'participaciones.html' with name_position="A Favor" arguments=stats.infavor_args_list position=1 num_post=stats.infavor_position_num%}
-							<ul id="alertaArgumento1" class="list-group"></ul>
+							<div id="alertaArgumento1" class="alert alert-info" role="alert">
+								<a href="javascript:location.reload()" class="alert-link">Hay nuevos argumentos...</a>
+							</div>
 							{% if can_argue %}
 							{% ifequal actual_user_position 'A Favor' %}
 								<form id="nuevoArgForm1" method="POST" class="post-form publicarArgumento" enctype="multipart/form-data">{% csrf_token %}
@@ -211,7 +251,9 @@
 						</div>
 						<div class="col-sm-6">
 							{% include 'participaciones.html' with name_position="En Contra" arguments=stats.against_args_list position=0 num_post=stats.against_position_num%}
-							<ul id="alertaArgumento0" class="list-group"></ul>
+							<div id="alertaArgumento0" class="alert alert-info" role="alert">
+								<a href="javascript:location.reload()" class="alert-link">Hay nuevos argumentos...</a>
+							</div>
 							{% if can_argue %}
 							{% ifequal actual_user_position 'En Contra' %}
 							<form id="nuevoArgForm0" method="POST" class="post-form publicarArgumento" enctype="multipart/form-data">{% csrf_token %}
@@ -228,7 +270,11 @@
 		<p class="bottom-three">.</p>
 		</div>
 {% else %}
-no hay permiso
+			{% ifequal debate.state 'closed'%}
+				{% include 'estadisticas_privado.html'%}
+			{% else %}
+				{% include '404.html' %}
+			{% endifequal %}
 {% endif %}
 {% endifequal %}
 </div>

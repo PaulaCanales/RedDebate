@@ -40,6 +40,7 @@ function despliega_formulario(id){
   $(nuevoDebateBtn).hide();
 };
 function confirm_modal_show(id, deb, title) {
+  $("#fechafin2").hide();
   $(".modalcontainerconfirm").fadeIn("slow");
   if (id==1){
     $("#cerrarDebate").fadeIn("slow");
@@ -189,6 +190,7 @@ function creartags(){
 
 function mostrarFecha(){
   document.getElementById("fechafin2").disabled = false;
+  $("#fechafin2").show();
   var date = new Date()
   dd = date.getDate();
   mm = date.getMonth() + 1;
@@ -199,6 +201,7 @@ function mostrarFecha(){
 }
 function quitarFecha(){
   document.getElementById("fechafin2").disabled = true;
+  $("#fechafin2").hide();
 }
 
 function openNav() {
@@ -262,7 +265,7 @@ function posturaChart() {
           title: 'Resumen Posturas',
           width:400,
           height:300,
-          colors: ['#18BD9B', '#2D3E50'],
+          colors: ['#18BD9B', '#d9534f'],
           backgroundColor: { fill: "transparent" }
         };
 
@@ -286,7 +289,7 @@ function argumentosChart() {
           title: 'Resumen Argumentos',
           width:400,
           height:300,
-          colors: ['#18BD9B', '#2D3E50'],
+          colors: ['#18BD9B', '#d9534f'],
           backgroundColor: { fill: "transparent" }
         };
 
@@ -300,22 +303,29 @@ function cambioPosturaChart() {
           ['De Favor a Contra', varGlobal.infavor_to_against],
           ['De Contra a Favor', varGlobal.against_to_infavor]
         ]);
-
+        var title = 'Usuarios que cambiaron de posición: '+varGlobal.position_change;
+        if (owner_id === actual_id){
+          var title = title+'\n Haz clic para ver detalles';
+        }
         var options = {
-          title: 'Usuarios que cambiaron de position: '+varGlobal.position_change,
+          title: title,
           width:400,
           height:300,
-          colors: ['#18BD9B', '#2D3E50'],
+          colors: ['#d9534f','#18BD9B'],
           backgroundColor: { fill: "transparent" }
         };
 
-        var chart = new google.visualization.PieChart(document.getElementById('piechart_cambioPostura'));
-        chart.draw(data, options);
-
-        function selectHandler() {
-          var selectedItem = chart.getSelection()[0].row;
-         }
-        google.visualization.events.addListener(chart, 'select', selectHandler);
+        try {
+          var chart = new google.visualization.PieChart(document.getElementById('piechart_cambioPostura'));
+          if (owner_id === actual_id){
+            google.visualization.events.addListener(chart, 'select', function () {
+                abrir_modal('positionChange_modal');
+            });
+            chart.draw(data, options);
+          }
+        } catch (e) {
+          console.log("no hay cambios de postura");
+        }
 };
 
 // function mejorArgumentoChart(){
@@ -330,7 +340,7 @@ function cambioPosturaChart() {
 //       backgroundColor: { fill: "transparent" },
 //       series: {
 //         0: { color: '18BD9B'}, // Bind series 0 to an axis named 'distance'.
-//         1: { color: '2D3E50'} // Bind series 1 to an axis named 'brightness'.
+//         1: { color: 'd9534f'} // Bind series 1 to an axis named 'brightness'.
 //       },
 //       hAxis: {
 //           title: 'Cantidad'
@@ -348,19 +358,29 @@ function razonCambioChart(){
       ['Cambió de opinión', varGlobal.reason_infavor_to_against[0]  ,varGlobal.reason_against_to_infavor[0]],
       ['Error de clic', varGlobal.reason_infavor_to_against[1]  ,varGlobal.reason_against_to_infavor[1]],
       ['Otro', varGlobal.reason_infavor_to_against[2] , varGlobal.reason_against_to_infavor[2]]]);
-
+      var div_width = document.getElementById("chart_razonCambio").offsetWidth;
+      if (owner_id === actual_id){
+        area_width = 400;
+        div_width = 800;
+      }
+      else{
+        area_width = div_width*0.5;
+        div_width = div_width;
+      }
       var options = {
-        title: 'Motivos cambio de position',
-        chartArea: {width: '50%'},
+        title: 'Motivos cambio de posición',
+        chartArea: {width:area_width },
+        width: div_width,
         isStacked: true,
         backgroundColor: { fill: "transparent" },
         series: {
-          0: { color: '18BD9B'}, // Bind series 0 to an axis named 'distance'.
-          1: { color: '2D3E50'} // Bind series 1 to an axis named 'brightness'.
+          0: { color: 'd9534f'}, // Bind series 0 to an axis named 'distance'.
+          1: { color: '18BD9B'} // Bind series 1 to an axis named 'brightness'.
         },
         hAxis: {
           title: 'Cantidad',
           minValue: 0,
+          format: '0',
         },
         vAxis: {
           title: 'Motivos'
@@ -374,13 +394,15 @@ function razonCambioChart(){
     data.addColumn('date', 'Fecha');
     data.addColumn('number', 'Posturas');
     for (i=0 ; i<positions_by_day.length ; i++){
-      data.addRow([new Date(positions_by_day[i][0]),positions_by_day[i][1]]);
+      var date = positions_by_day[i][0].split("-")
+      var value = positions_by_day[i][1];
+      data.addRow([new Date(parseInt(date[0]),parseInt(date[1]),parseInt(date[2])), value]);
     };
     var chart = new google.visualization.AnnotationChart(document.getElementById('chart_div'));
 
     var options = {
       displayAnnotations: true,
-      colors: ['#18BD9B'],
+      colors: ['#2D3E50'],
       width: document.getElementById("stats_div").offsetWidth*0.95,
     };
 

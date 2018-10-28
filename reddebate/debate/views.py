@@ -143,8 +143,13 @@ def showDebate(request, id_debate): #debate_id
 		         		   ('alias',Profile.objects.get(user= request.user).alias)]
 
 	else:
-		options_owner=[('username', User.objects.get(id=request.user.id).username),
-		         ('alias',Profile.objects.get(user= request.user).alias)]
+		if debate.participation_type=='all':
+			options_owner=[('username', User.objects.get(id=request.user.id).username),
+			         ('alias',Profile.objects.get(user= request.user).alias)]
+		elif debate.participation_type=='username':
+			options_owner=[('username', User.objects.get(id=request.user.id).username)]
+		elif debate.participation_type=='alias':
+			options_owner=[('alias',Profile.objects.get(user= request.user).alias)]
 
 	max_length = Debate.objects.get(id_debate=id_debate).length
 	arg_form0 = newArgForm0(owner=options_owner,max_length=max_length)
@@ -191,6 +196,15 @@ def debateStats(request, id_debate):
 
 	infavor_arguments = Argument.objects.filter(id_debate_id= id_debate, position= 1)
 	against_arguments = Argument.objects.filter(id_debate_id= id_debate, position= 0)
+	if len(infavor_arguments.order_by('-score'))==0:
+		best_infavor_arg = 'No existen argumentos a favor'
+	else:
+		best_infavor_arg = infavor_arguments.order_by('-score')[0]
+	if len(against_arguments.order_by('-score'))==0:
+		best_against_arg = 'No existen argumento en contra'
+	else:
+		best_against_arg = against_arguments.order_by('-score')[0]
+
 	infavor_args_list = argumentData(infavor_arguments, request.user.id, counterarg_num, id_debate)
 	against_args_list = argumentData(against_arguments, request.user.id, counterarg_num, id_debate)
 	against_args_list = sorted(against_args_list, key=lambda rate: rate['rate'], reverse=True)
@@ -235,13 +249,14 @@ def debateStats(request, id_debate):
 	position_date = Position.objects.filter(id_debate_id = id_debate).values("date")
 	position_date_group = itertools.groupby(position_date, lambda record: record.get("date").strftime("%Y-%m-%d"))
 	temp = 0
-	positions_by_day = [[debate.date.strftime("%Y-%m-%d"),0]]
+	positions_by_day = []
 	for day,position in position_date_group:
 		temp += len(list(position))
 		positions_by_day.append([day, temp])
 	total_position_num = infavor_position_num + against_position_num
 	total_arg_num = len(infavor_args_list)+len(against_args_list)
 	total_change_num = infavor_to_against + against_to_infavor
+	print(positions_by_day)
 	stats = { 'infavor_position_num':infavor_position_num, 'against_position_num':against_position_num,
 			'infavor_percent': infavor_percent, 'against_percent': against_percent,
 			'infavor_args_list': infavor_args_list, 'against_args_list':against_args_list,
@@ -251,7 +266,8 @@ def debateStats(request, id_debate):
 			'infavor_to_against': infavor_to_against, 'against_to_infavor':against_to_infavor,
 			'reason_infavor_to_against': reason_infavor_to_against, 'reason_against_to_infavor':reason_against_to_infavor,
 			'positions_by_day':positions_by_day, 'total_change_num':total_change_num,
-			'total_position_num':total_position_num, 'total_arg_num':total_arg_num}
+			'total_position_num':total_position_num, 'total_arg_num':total_arg_num,
+			'best_infavor_arg':best_infavor_arg, 'best_against_arg':best_against_arg}
 
 	return stats
 

@@ -175,6 +175,9 @@ def makeData(request, actual_user, form, state):
             elif debates_order == 2:
                 total_data_deb = sorted(total_data_deb, key=lambda k: k['model'].title, reverse=False)
                 moderator_view_deb = sorted(moderator_view_deb, key=lambda k: k['model'].title, reverse=False)
+            elif debates_order == 3:
+                total_data_deb = sorted(total_data_deb, key=lambda k: k['position_num'], reverse=True)
+                moderator_view_deb = sorted(moderator_view_deb, key=lambda k: k['position_num'], reverse=True)
 
     #debates populares por cantidad de posturas
     top_debates = sorted(total_data_deb, key=lambda k: k['position_num'], reverse=True)[:5]

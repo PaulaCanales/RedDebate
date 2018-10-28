@@ -3,7 +3,7 @@
 <div id="debateImage_modal" class="modal">
   <div class="modal-content imagenDeb">
     <h5>
-      <span class="close" onclick="cerrar_modal('debateImage_modal')">&times;</span><br>
+      <br>
       <i class="fa fa-file-image-o" aria-hidden="true"></i> ¿Quieres agregar una imagen al debate?
     </h5>
     <div class="modal-body">
@@ -18,9 +18,9 @@
         </div>
         </div>
       </div>
-      <div class="modal-footer-imgDeb">
-        <button name="new_img_deb" type="submit">Agregar</button>
-        <label type="button" onClick="window.location.reload()"> Cancelar </label>
+      <div class="modal-footer-buttons">
+        <button name="new_img_deb" type="submit">Subir Imagen</button>
+        <label type="button" onClick="window.location.reload()"> No, agregaré una más tarde </label>
       </div>
     </form>
   </div>
@@ -33,7 +33,7 @@
           {{ form.non_field_errors }}
           <div class="fieldWrapper">
               {{ form.title.errors }}
-              <label>Titulo Debate</label>
+              <label>Titulo Debate *</label>
               <div class="tooltipform"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
                 <span class="tooltipformtext">Corresponde al título del debate. Se recomienda que sea una afirmación</span>
               </div>
@@ -56,7 +56,7 @@
         <div class="col-sm-6">
           <div class="fieldWrapper">
             {{ form.members_type.errors }}
-            <label>Privacidad de debate</label>
+            <label>Privacidad de debate *</label>
             <div class="tooltipform"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
               <span class="tooltipformtext">Indica si deseas que tu debate sea publico o privado. Si es privado, debes seleccionar a los usuarios que tendrán acceso</span>
             </div>
@@ -66,7 +66,7 @@
           </div>
           <div class="fieldWrapper">
             {{ form.owner_type.errors }}
-            <label>Nombre a mostrar</label>
+            <label>Nombre a mostrar *</label>
             <div class="tooltipform"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
               <span class="tooltipformtext">Indica si deseas publicar el debate con tu name o con tu alias. Este estará visible a quienes participen del debate</span>
             </div>
@@ -84,6 +84,10 @@
       </div>
       <div id="opcionesAvanzadas_modal" class="modal">
       	<div class="modal-content">
+          <h5>
+            <span class="close" onclick="cerrar_modal('opcionesAvanzadas_modal')">&times;</span><br>
+            Opciones Avanzadas
+          </h5>
           <div class="row leftAlign">
            <div class="col-sm-1"></div>
            <div class="col-sm-5">
@@ -100,7 +104,15 @@
                </div>
              </div>
            </div>
-           <div class="col-sm-5"></div>
+           <div class="col-sm-5">
+             {{ form.participation_type.errors }}
+             <label>Tipo de participación de cada usuario</label>
+             <div class="tooltipform"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
+               <span class="tooltipformtext">Indica que nombre a mostrar pueden usar los usuarios al participar en el debate</span>
+             </div>
+             {{ form.participation_type }}
+             **Valido solo para debates publicos
+           </div>
            <div class="col-sm-1"></div>
          </div>
          <div class="row leftAlign">
@@ -139,7 +151,7 @@
              <div class="col-sm-1"></div>
              <div class="col-sm-5">
                  {{ form.counterargs_max.errors }}
-                 <label>Cantidad de contraargumentos por cada usuario</label>
+                 <label>Cantidad de contraargumentos por usuario</label>
                  <div class="tooltipform"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
                    <span class="tooltipformtext">Indica la cantidad máxima de contraargumentos que los usuarios pueden counterargument1 a los argumentos de tu debate</span>
                  </div>
@@ -162,7 +174,6 @@
                <div class="col-sm-1"></div>
            </div>
            <a href="javascript:cerrar_modal('opcionesAvanzadas_modal')" class="submit action-button"> Aceptar </a>
-
         </div>
       </div>
       <div id="usuariosPrivado_modal" class="modal">
@@ -211,7 +222,10 @@
         </div>
       </div>
       <div class="leftAlign">
-        <a href="javascript:abrir_modal('opcionesAvanzadas_modal')"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a>
+        <a href="javascript:abrir_modal('opcionesAvanzadas_modal')">
+          <span class="glyphicon glyphicon-cog" aria-hidden="true"> Opciones avanzadas</span></a>
+          <br>
+          (*) Campos obligatorios
       </div>
       <input type="submit" name="submit" class="submit action-button" value="Publicar" />
       <a href="javascript:cierra_formulario('#nuevodebateform')">Cancelar</a>

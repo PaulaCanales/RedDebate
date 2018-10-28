@@ -54,16 +54,18 @@ $(document).ready(function(){
 
         }
         else if (data.text){
-          var nuevosArgs = $("#alertaArgumento"+data.position);
-          var nuevo = $('<a onclick="javascript:location.reload()" id="nuevoArgumento'+data.position+'" class="list-group-item"> </a>').text("Nuevo argument de "+data.name)
-          nuevosArgs.append(nuevo)
+          $("#alertaArgumento"+data.position).css("display","block");
         }
     };
 
   $("#nuevodebateform").on("submit", function(event) {
-    var enddate = $('#debEndDateForm').val()
+    var enddate = $('#debEndDateForm').val();
     if (enddate.length === 0){
       var enddate = null;
+    }
+    var textdeb = $('#debTextForm').val();
+    if (textdeb.length === 0){
+      var textdeb= " ";
     }
     var selected = [];
     if ($('#debMemberTypeForm').val()==1){
@@ -80,7 +82,7 @@ $(document).ready(function(){
 
     var message = {
       title: $('#debTitleForm').val(),
-      text: $('#debTextForm').val(),
+      text: textdeb,
       owner_type: $('#debAliasForm').val(),
       length: $('#debLengthForm').val(),
       args_max: $('#debArgsForm').val(),
@@ -91,6 +93,7 @@ $(document).ready(function(){
       end_date: enddate,
       id_user_id: "",
       members: selected,
+      participation_type: $("#debParticipationTypeForm").val(),
       tags: $("#tagsForms").tagsinput('items'),
     }
     console.log(message);

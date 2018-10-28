@@ -13,9 +13,13 @@ owner=[('username','Nombre Real'),
          ('alias','Alias')]
 order_deb_typeform= [('0', 'Fecha'),
                 ('1','Visitas'),
-                ('2', 'Nombre')]
+                ('2', 'Nombre'),
+                ('3', 'Participaciones')]
 order_user_typeform= [('0', 'Nombre'),
                     ('1','Reputacion')]
+participation_typeform = [('all', 'A elección del participante'),
+                ('username','Nombre Real'),
+                ('alias', 'Alias')]
 
 class LoginForm(forms.Form):
     username = forms.CharField(max_length=20, required=True, label="Usuario",
@@ -52,6 +56,7 @@ class newDebateForm(forms.ModelForm):
             self.fields['members'].choices = [(x['object'], x['name']) for x in self.usuarios]
         if self.listas:
             self.fields['listado'].choices = [(x['id'], x['name']) for x in self.listas]
+        self.fields['text'].required = False
 
     title = forms.CharField(widget=forms.TextInput(
         attrs={
@@ -83,25 +88,25 @@ class newDebateForm(forms.ModelForm):
         label='Caracteres/argument',
         widget=forms.TextInput(
             # choices=caracteres,
-            attrs={'class':'form-control', 'id': 'debLengthForm', 'value':'140','readonly': True}
+            attrs={'class':'form-control', 'id': 'debLengthForm', 'value':'240','readonly': True}
             ))
     args_max = forms.CharField(
         label='Arguments/user',
         widget=forms.TextInput(
             # choices=rebates,
-            attrs={'class': 'form-control', 'id': 'debArgsForm', 'value':'1','readonly': True}
+            attrs={'class': 'form-control', 'id': 'debArgsForm', 'value':'5','readonly': True}
             ))
     counterargs_max = forms.CharField(
         label='Rebates/user',
         widget=forms.TextInput(
             # choices=rebates,
-            attrs={'class': 'form-control', 'id': 'debCounterArgForm', 'value':'1','readonly': True}
+            attrs={'class': 'form-control', 'id': 'debCounterArgForm', 'value':'5','readonly': True}
             ))
     position_max = forms.CharField(
         label='Cambio position/usr',
         widget=forms.TextInput(
             # choices=rebates,
-            attrs={'class': 'form-control', 'id': 'debChangePositionForm', 'value':'3','readonly': True}
+            attrs={'class': 'form-control', 'id': 'debChangePositionForm', 'value':'5','readonly': True}
             ))
     counterargs_type = forms.CharField(
         label='Tipo Redebate',
@@ -114,6 +119,12 @@ class newDebateForm(forms.ModelForm):
         widget=forms.Select(
             choices=members_typeform,
             attrs={'class': 'form-control', 'id': 'debMemberTypeForm'}
+            ))
+    participation_type = forms.CharField(
+        label='Tipo participación de usuarios en el debate',
+        widget=forms.Select(
+            choices=participation_typeform,
+            attrs={'class': 'form-control', 'id': 'debParticipationTypeForm'}
             ))
     members = forms.MultipleChoiceField(
         widget=forms.CheckboxSelectMultiple(

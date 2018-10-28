@@ -1,9 +1,5 @@
 <!DOCTYPE html>
-<script>
-$(document).ready(function(){
-		try{document.getElementById("argsTab").click();}
-		catch(err){}});
-</script>
+{% load static %}
 <html>
 <div id="updateImage_modal" class="modal">
   <div class="modal-content imagenDeb">
@@ -19,18 +15,79 @@ $(document).ready(function(){
           {{ updateImg_form.errors }}
           {{ updateImg_form }}
 					<br>
-					<p>Se recomienda una imagen con tamaño mínimo de 200 x 200 píxeles</p>
+					<p>Se recomienda una imagen cuadrada con tamaño mínimo de 200 x 200 píxeles</p>
         </div>
         <div class="col-sm-6 prev">
           <img id="updateImgPrev" height="150px" src="" />
         </div>
         </div>
       </div>
-      <div class="modal-footer-imgDeb">
+      <div class="modal-footer-buttons">
         <button name="update_img_deb" type="submit">Agregar</button>
         <label type="button" onclick="cerrar_modal('updateImage_modal')"> Cancelar </label>
       </div>
     </form>
+  </div>
+</div>
+<div id="positionChange_modal" class="modal">
+  <div class="modal-content">
+    <h5>
+      <span class="close" onclick="cerrar_modal('positionChange_modal')">&times;</span>
+      <br><br>
+    </h5>
+    <div id="chart_razonCambio"></div>
+  </div>
+</div>
+<div id="informationDeb_modal" class="modal">
+  <div class="modal-content">
+     <h5>
+        <span class="close" onclick="cerrar_modal('informationDeb_modal')">&times;</span><br>
+        <i class="fa fa-info-circle" aria-hidden="true"></i> Información de tu Debate
+     </h5>
+     <div class="row">
+        <div class="col-sm-6 informationDebOwner">
+           <p1>Descripción </p1>
+           <p class="debateDescripcion">{{ debate.text }}</p>
+           <div class="tagsOwner">
+              {% for tag in tags%}
+              <a class="tag-deb" href="{% url 'tagged' tag.slug %}">{{ tag.name }}</a>
+              {% endfor%}
+           </div>
+        </div>
+        <div class="col-sm-6">
+           <div class="dataDebOwner">
+              <p><b>Fecha inicio:</b>  {{ debate.date }}</p>
+              {%ifequal debate.stat 'open'%}
+              <p><b>Estado:</b> Abierto </p>
+              {%else%}
+              <p><b>Estado:</b>  Cerrado</p>
+              {% endifequal %}
+              {% ifequal debate.members_type 0 %}
+              <p><b>Tipo debate:</b> Público</p>
+              {% else %}
+              <p><b>Tipo debate:</b> Privado</p>
+              {% endifequal %}
+           </div>
+           {% ifequal debate.members_type 1 %}
+           <div class="membersDebOwner">
+              <b>Participantes</b>
+              {% for member in debate_members%}
+              {% ifequal member.type 'username' %}
+              <a type = "text" class="dummy-media-object" href="{% url 'username' member.user.id %}">
+                 <img class="round" src="{{ member.profile.img.url }}"/>
+                 <p> {{member.user}} </p>
+              </a>
+              {% else %}
+              <a type = "text" class="dummy-media-object" href="{% url 'alias' member.profile.alias %}">
+                 <img class="round" src="{% static 'img/RDLogo05.png' %}"/>
+                 <p> {{member.profile.alias}} </p>
+              </a>
+              {% endifequal%}
+              {% endfor %}
+           </div>
+           {% endifequal%}
+        </div>
+     </div>
   </div>
 </div>
 <div class="container-debate">
@@ -53,118 +110,107 @@ $(document).ready(function(){
 			</div>
 		</div>
 	</header>
-	<div class="row debInformation">
-		<div class="col-sm-3">
-			<div class="divPhoto">
-				<img class="photo" src="{{ debate.img.url }}" alt="imagendeb"/>
-				<div class="updateImg"><a href="javascript:abrir_modal('updateImage_modal')"><i class="fa fa-pencil fa-lg"></i></a></div>
+  <img class="hidden" id="chartImg" />
+  <div class="row debInformation">
+    <div class="col-sm-3 debCenter">
+      <div class="thumbnail">
+        <img src="{{ debate.img.url }}" />
+      </div>
+    </div>
+    <div class="col-sm-2 debOwnerButton">
+      <button onclick="abrir_modal('updateImage_modal')"><i class="fa fa-pencil fa-lg"></i> Cambiar Foto</button>
+      <button onclick="abrir_modal('informationDeb_modal')"><i class="fa fa-info-circle" aria-hidden="true"></i> Ver Información</button>
+      <hr>
+      <div class="fb-share-button"
+        data-href="https://reddebate.cl/debate/{{ debate.id_debate }}/"
+        data-layout="button_count"
+        data-size="large">
+      </div>
+      <div class="tw-share-button">
+        <a href="https://twitter.com/intent/tweet?status={{debate.title}}+https://reddebate.cl/debate/{{ debate.id_debate }}/" target="_blank">
+          <img src="https://simplesharebuttons.com/images/somacro/twitter.png" alt="Twitter" />
+        Twittear
+        </a>
+    </div>
+    </div>
+    <div class="col-sm-7">
+      <div id="stats_div" >
+        {% if stats.positions_by_day|length > 1 %}
+        <div id="chart_div" style="width: 100%; height: 200px"></div>
+        {% else %}
+        <img height="200" src="{% static 'img/no_data_found.png' %}"/>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+  <div class="row">
+     {% if stats.total_position_num > 0 %}
+     <div class="col-sm-4">
+        <div id="piechart_postura"></div>
+     </div>
+     <div class="col-sm-4">
+        {% if stats.total_arg_num > 0 %}
+        <div id="piechart_argumento"></div>
+        {% else %}
+        <img height="200" src="{% static 'img/no_data_found.png' %}"/>
+        {% endif %}
+     </div>
+     <div class="col-sm-4">
+        {% if stats.total_change_num > 0 %}
+        <div id="piechart_cambioPostura"></div>
+        {% else %}
+        <img height="200" src="{% static 'img/no_data_found.png' %}"/>
+        {% endif %}
+     </div>
+     {% endif %}
+  </div>
+	<div name="argumentos-debate">
+		<div class="row">
+	    <div class="col-sm-6">
+				{% include 'participaciones.html' with name_position="A Favor" arguments=stats.infavor_args_list position=1 num_post=stats.infavor_position_num%}
+				<ul id="alertaArgumento1" class="list-group"></ul>
 			</div>
-			<div class="fb-share-button"
-				data-href="https://reddebate.cl/debate/{{ debate.id_debate }}/"
-				data-layout="button_count"
-				data-size="large">
+			<div class="col-sm-6">
+				{% include 'participaciones.html' with name_position="En Contra" arguments=stats.against_args_list position=0 num_post=stats.against_position_num%}
+				<ul id="alertaArgumento0" class="list-group"></ul>
 			</div>
 		</div>
-		<div class="col-sm-9">
-			<p class="debateDescripcion">{{ debate.text }}</p>
-				{% ifequal debate.owner_type 'alias' %}
-					<h5>Publicado por <a href="{% url 'alias' owner_profile.alias %}">{{owner_profile.alias}}</a>
-						 | {{owner_profile.reputation}} puntos de reputación</h5>
-				{%else%}
-					<h5>Publicado por <a href="{% url 'username' owner_user.id %}">{{owner_user}}</a>
-						 | {{owner_profile.reputation}} puntos de reputación</h5>
-				{%endifequal%}
-		</div>
-		<div style="text-align:left">
-			{% for tag in tags%}
-			<a class="tag-deb" href="{% url 'tagged' tag.slug %}">{{ tag.name }}</a>
-			{% endfor%}
-		</div>
-		<hr>
 	</div>
-	<div name="detalle-debate">
-			<div class="row" id="my-row">
-				<div class="col-sm-3 panel">
-					<button id="bot_af" type="submit" class="btn btn-postura1" disabled ></button>
-				</div>
-				<div class="col-sm-6">
-					<div class="blank">
-							<table>
-							<tr>
-								<td width=120 ><p1>Fecha inicio</p1></td>
-								<td>{{ debate.date }}</td>
-							</tr>
-							<tr>
-								{%ifequal debate.stat 'open'%}
-								<td width=120 ><p1>Estado</p1></td>
-								<td>Abierto</td>
-								{%else%}
-								<td width=120 ><p1>Estado</p1></td>
-								<td>Cerrado</td>
-								{%endifequal%}
-							</tr>
-							<tr>
-								<td width=120 ><p1>Tu Postura</p1></td>
-								<td> Creador </td>
-							</tr>
-							{% ifequal debate.members_type 0 %}
-							<tr>
-								<td width=120 ><p1>Tipo debate</p1></td><td><div id="tu_postura">  Publico </div></td>
-							</tr>
-							{% else %}
-							<tr>
-								<td width=120 ><p1>Tipo debate</p1></td><td><div id="tu_postura"> <a href="javascript:abrir_modal('participantes_modal')"> Privado </a></div></td>
-							</tr>
-							{% endifequal %}
-						</table>
-					</div>
-				</div>
-				<div class="col-sm-3 panel">
-					<button id="bot_ec" type="submit" class="btn btn-postura0" disabled></button>
-				</div>
-			</div>
-	</div>
-	{% ifequal debate.state 'closed'%}
-		{% include 'estadisticas.html' with opendeb=False %}
-	{% else %}
-		<button onclick="toggle_div('#stats_in_open_deb')" class="btn btn-index"> Mostrar/Ocultar estadisticas </button>
-		<div style="display:none" id="stats_in_open_deb">
-			{% include 'estadisticas.html' with opendeb=True %}
-		</div>
-		<div id="progresoDebate">
-				{% ifequal stats.infavor_percent 0 %}
-					<div id="progreso"class="progress-bar" style="background:#d9534f; width: {{stats.against_percent}}%">
-						<span class="glyphicon glyphicon-thumbs-down"></span> <label id="label_porc_c">{{stats.against_percent}}%</label>
-					</div>
-				{% else %}
-					{% ifequal stats.against_percent 0 %}
-						<div id="progreso"class="progress-bar" style="background:#18BC9C; width: {{stats.infavor_percent}}%">
-							<span class="glyphicon glyphicon-thumbs-up"></span> <label id="label_porc_f">{{stats.infavor_percent}}%</label>
-						</div>
-						{% else %}
-						<div id="progresoFavor"class="progress-bar" style="width: {{stats.infavor_percent}}%">
-							<span class="glyphicon glyphicon-thumbs-up"></span> <label id="label_porc_f">{{stats.infavor_percent}}%</label>
-						</div>
-						<div id="progresoContra"class="progress-bar" style="width: {{stats.against_percent}}%">
-							<span class="glyphicon glyphicon-thumbs-down"></span> <label id="label_porc_c">{{stats.against_percent}}%</label>
-						</div>
-					{% endifequal %}
-				{% endifequal %}
-		</div>
-		<div name="argumentos-debate">
-			<div class="row">
-		    <div class="col-sm-6">
-					{% include 'participaciones.html' with name_position="A Favor" arguments=stats.infavor_args_list position=1 num_post=stats.infavor_position_num%}
-					<ul id="alertaArgumento1" class="list-group"></ul>
-				</div>
-				<div class="col-sm-6">
-					{% include 'participaciones.html' with name_position="En Contra" arguments=stats.against_args_list position=0 num_post=stats.against_position_num%}
-					<ul id="alertaArgumento0" class="list-group"></ul>
-				</div>
-			</div>
-		</div>
-		<p class="bottom-three">.</p>
-	{%endifequal%}
+	<p class="bottom-three">.</p>
+
 </div>
 
 </html>
+<script type="text/javascript">
+$(document).ready(function(){
+  // try {
+  //   document.getElementById("bot_af").disabled = true;
+  //   document.getElementById("bot_ec").disabled = true;
+  // } catch (e) {
+  //   document.getElementById("bot_af_init").disabled = true;
+  //   document.getElementById("bot_ec_init").disabled = true;
+  // }
+	google.charts.load('current', {'packages':['corechart', 'bar', 'annotationchart']});
+
+    google.charts.setOnLoadCallback(posturaChart);
+    if ({{stats.total_arg_num }}>0) google.charts.setOnLoadCallback(argumentosChart);
+  	google.charts.setOnLoadCallback(cambioPosturaChart);
+    if ({{stats.total_change_num}}>0) google.charts.setOnLoadCallback(razonCambioChart);
+  	google.charts.setOnLoadCallback(posturasTiempo);
+
+	});
+	var varGlobal = {
+		infavor_position : {{stats.infavor_position_num}},
+		against_position : {{stats.against_position_num}},
+		args_infavor : {{stats.infavor_args_list|length}},
+		args_against : {{stats.against_args_list|length}},
+		infavor_to_against: {{stats.infavor_to_against}},
+		against_to_infavor: {{stats.against_to_infavor}},
+		position_change: {{stats.infavor_to_against}} + {{stats.against_to_infavor}},
+		reason_infavor_to_against: {{stats.reason_infavor_to_against}},
+		reason_against_to_infavor: {{stats.reason_against_to_infavor}},
+	};
+  var positions_by_day = {{stats.positions_by_day|safe}};
+  var owner_id = {{owner_user.id}}
+  var actual_id = {{user.id}}
+</script>

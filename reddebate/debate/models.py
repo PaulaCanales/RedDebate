@@ -19,7 +19,7 @@ class Position(models.Model):
     position = models.IntegerField(default=1)
     change = models.IntegerField(default=0)
     count_change = models.IntegerField(default=0)
-    date = models.DateField(default=datetime.now)
+    date = models.DateTimeField(default=datetime.now)
     id_user = models.ForeignKey(User)
     id_debate = models.ForeignKey(Debate)
 
