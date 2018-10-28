@@ -249,14 +249,14 @@ def debateStats(request, id_debate):
 	position_date = Position.objects.filter(id_debate_id = id_debate).values("date")
 	position_date_group = itertools.groupby(position_date, lambda record: record.get("date").strftime("%Y-%m-%d"))
 	temp = 0
-	positions_by_day = [[debate.date.strftime("%Y-%m-%d"),0]]
+	positions_by_day = []
 	for day,position in position_date_group:
 		temp += len(list(position))
 		positions_by_day.append([day, temp])
 	total_position_num = infavor_position_num + against_position_num
 	total_arg_num = len(infavor_args_list)+len(against_args_list)
 	total_change_num = infavor_to_against + against_to_infavor
-	print(total_change_num)
+	print(positions_by_day)
 	stats = { 'infavor_position_num':infavor_position_num, 'against_position_num':against_position_num,
 			'infavor_percent': infavor_percent, 'against_percent': against_percent,
 			'infavor_args_list': infavor_args_list, 'against_args_list':against_args_list,

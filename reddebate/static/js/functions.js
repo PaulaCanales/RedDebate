@@ -315,14 +315,17 @@ function cambioPosturaChart() {
           backgroundColor: { fill: "transparent" }
         };
 
-        var chart = new google.visualization.PieChart(document.getElementById('piechart_cambioPostura'));
-        if (owner_id === actual_id){
-          google.visualization.events.addListener(chart, 'select', function () {
-              abrir_modal('positionChange_modal');
-          });
+        try {
+          var chart = new google.visualization.PieChart(document.getElementById('piechart_cambioPostura'));
+          if (owner_id === actual_id){
+            google.visualization.events.addListener(chart, 'select', function () {
+                abrir_modal('positionChange_modal');
+            });
+            chart.draw(data, options);
+          }
+        } catch (e) {
+          console.log("no hay cambios de postura");
         }
-
-        chart.draw(data, options);
 };
 
 // function mejorArgumentoChart(){
