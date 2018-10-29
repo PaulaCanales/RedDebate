@@ -1968,7 +1968,7 @@ hr {
   content: '\f086';
   font-family: FontAwesome;
 }
-#myList .rate:before{
+#myList .valoracion:before{
   content: '\f27a';
   font-family: FontAwesome;
 }
@@ -1978,6 +1978,10 @@ hr {
 }
 #myList .debprivado:before{
   content: '\f234';
+  font-family: FontAwesome;
+}
+#myList .report_arg:before{
+  content: '\f0a1';
   font-family: FontAwesome;
 }
 
@@ -2207,4 +2211,8 @@ hr {
 .tagsOwner{
   position: absolute;
   bottom: 0;
+}
+.data-img{
+  width: 100%;
+  height: auto;
 }

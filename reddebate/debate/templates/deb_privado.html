@@ -43,7 +43,7 @@
         {% if stats.positions_by_day|length > 1 %}
         <div id="chart_div" style="width: 100%; height: 200px"></div>
         {% else %}
-        <img height="200" src="{% static 'img/no_data_found_large.png' %}"/>
+        <img class="data-img" src="{% static 'img/no_data_found_large.jpg' %}"/>
         {% endif %}
       </div>
     </div>
@@ -80,14 +80,14 @@
        {% if stats.total_arg_num > 0 %}
         <div id="piechart_argumento"></div>
        {% else %}
-       <img height="200" src="{% static 'img/no_data_found.png' %}"/>
+       <img class="data-img" src="{% static 'img/no_data_found.jpg' %}"/>
        {% endif %}
        </div>
        <div class="col-sm-4">
        {% if stats.total_change_num > 0 %}
        <div id="piechart_cambioPostura"></div>
        {% else %}
-       <img height="200" src="{% static 'img/no_data_found.png' %}"/>
+       <img class="data-img" src="{% static 'img/no_data_found.jpg' %}"/>
        {% endif %}
        </div>
     </div>
@@ -97,12 +97,12 @@
         {% if stats.total_change_num > 0 %}
         <div id="chart_razonCambio"></div>
         {% else %}
-        <img height="200" src="{% static 'img/no_data_found.png' %}"/>
+        <img class="data-img" src="{% static 'img/no_data_found.jpg' %}"/>
         {% endif %}
       </div>
       <div class="col-sm-6">
         {% ifequal stats.best_argument 0 %}
-          <img height="200" src="{% static 'img/no_data_found.png' %}"/>
+          <img class="data-img" src="{% static 'img/no_data_found.jpg' %}"/>
         {% else %}
         <div class="datagrid1 stats_arg">
           <table id="table_best_arg{{stats.best_argument.position}}">
@@ -142,7 +142,7 @@
     </div>
     <br><br>
     {% else %}
-      <img height="200" src="{% static 'img/no_data_found.png' %}"/>
+      <img class="data-img" src="{% static 'img/no_data_found.jpg' %}"/>
     {% endif %}
   </div>
 </div>
