@@ -66,17 +66,6 @@
                 </td>
              </tr>
           </table>
-          <div class="debCenter">
-             {% ifequal actual_user_position 'A Favor'  %}
-             <img height="80" style="margin: 20px;" src="{% static 'img/position-infavor.png' %}"/>
-             {% endifequal %}
-             {% ifequal actual_user_position 'En Contra'  %}
-             <img height="80" style="margin: 20px;" src="{% static 'img/position-against.png' %}"/>
-             {% endifequal %}
-             {% ifequal actual_user_position 'No definido'  %}
-             <img height="80" style="margin: 20px;" src="{% static 'img/position-neutral.png' %}"/>
-             {% endifequal %}
-          </div>
        </div>
        <div class="col-sm-6">
           <p class="debateDescripcion">{{ debate.text }}</p>
