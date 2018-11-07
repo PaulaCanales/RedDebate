@@ -141,11 +141,6 @@
        <h3>Estadísticas</h3>
        {% if stats.positions_by_day|length > 1 %}
           <div id="chart_div" style="width: 100%; height: 200px"></div>
-       {% else %}
-       <div class="no-data">
-         <i class="fa fa fa-frown-o" aria-hidden="true"></i><br>
-         Información no disponible
-       </div>
        {% endif %}
        <div class="row">
           <div class="col-sm-4">
@@ -251,7 +246,7 @@
        {% else %}
        <div class="no-data">
          <i class="fa fa fa-frown-o" aria-hidden="true"></i><br>
-         No hay registro de actividad en este debate
+         Estadísticas no disponibles por falta de participación
        </div>
        {% endif %}
     </div>
