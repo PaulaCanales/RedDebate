@@ -43,7 +43,10 @@
         {% if stats.positions_by_day|length > 1 %}
         <div id="chart_div" style="width: 100%; height: 200px"></div>
         {% else %}
-        <img class="data-img" src="{% static 'img/no_data_found_large.jpg' %}"/>
+        <div class="no-data">
+          <i class="fa fa fa-frown-o" aria-hidden="true"></i><br>
+          Información no disponible
+        </div>
         {% endif %}
       </div>
     </div>
@@ -80,14 +83,20 @@
        {% if stats.total_arg_num > 0 %}
         <div id="piechart_argumento"></div>
        {% else %}
-       <img class="data-img" src="{% static 'img/no_data_found.jpg' %}"/>
+       <div class="no-data">
+         <i class="fa fa fa-frown-o" aria-hidden="true"></i><br>
+         Información no disponible
+       </div>
        {% endif %}
        </div>
        <div class="col-sm-4">
        {% if stats.total_change_num > 0 %}
        <div id="piechart_cambioPostura"></div>
        {% else %}
-       <img class="data-img" src="{% static 'img/no_data_found.jpg' %}"/>
+       <div class="no-data">
+         <i class="fa fa fa-frown-o" aria-hidden="true"></i><br>
+         Información no disponible
+       </div>
        {% endif %}
        </div>
     </div>
@@ -97,12 +106,18 @@
         {% if stats.total_change_num > 0 %}
         <div id="chart_razonCambio"></div>
         {% else %}
-        <img class="data-img" src="{% static 'img/no_data_found.jpg' %}"/>
+        <div class="no-data">
+          <i class="fa fa fa-frown-o" aria-hidden="true"></i><br>
+          Información no disponible
+        </div>
         {% endif %}
       </div>
       <div class="col-sm-6">
         {% ifequal stats.best_argument 0 %}
-          <img class="data-img" src="{% static 'img/no_data_found.jpg' %}"/>
+        <div class="no-data">
+          <i class="fa fa fa-frown-o" aria-hidden="true"></i><br>
+          Información no disponible
+        </div>
         {% else %}
         <div class="datagrid1 stats_arg">
           <table id="table_best_arg{{stats.best_argument.position}}">
@@ -142,7 +157,10 @@
     </div>
     <br><br>
     {% else %}
-      <img class="data-img" src="{% static 'img/no_data_found.jpg' %}"/>
+    <div class="no-data">
+      <i class="fa fa fa-frown-o" aria-hidden="true"></i><br>
+      Información no disponible
+    </div>
     {% endif %}
   </div>
 </div>
