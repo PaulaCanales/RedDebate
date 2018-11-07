@@ -321,10 +321,10 @@ function cambioPosturaChart() {
             google.visualization.events.addListener(chart, 'select', function () {
                 abrir_modal('positionChange_modal');
             });
-            chart.draw(data, options);
           }
+          chart.draw(data, options);
         } catch (e) {
-          console.log("no hay cambios de postura");
+          console.log(e);
         }
 };
 

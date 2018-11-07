@@ -1,6 +1,41 @@
 <!DOCTYPE html>
 {% load static %}
 <html>
+<div id="participantes_modal" class="modal">
+   <div class="modal-content">
+      <span class="close" onclick="cerrar_modal('participantes_modal')">&times;</span>
+      <h3>Integrantes <span class="glyphicon glyphicon-user"></span></h3>
+      <input type="text" value="" name="searchColumn" id="searchUser3" placeholder="Busca a un usuario..."/>
+      {% for member in debate_members%}
+      {% ifequal member.type 'username' %}
+      <a type = "text" class="dummy-media-object" href="{% url 'username' member.user.id %}">
+         <img class="round" src="{{ member.profile.img.url }}"/>
+         <p> {{member.user}} </p>
+      </a>
+      {% else %}
+      <a type = "text" class="dummy-media-object" href="{% url 'alias' member.profile.alias %}">
+         <img class="round" src="{% static 'img/RDLogo05.png' %}"/>
+         <p> {{member.profile.alias}} </p>
+      </a>
+      {% endifequal%}
+      {% endfor %}
+   </div>
+</div>
+<div id="denuncia_deb_modal" class="modal">
+   <div class="modal-content">
+      <span class="close" onclick="cerrar_modal('denuncia_deb_modal')">&times;</span>
+      <h3>Indica la razón de tu denuncia <span class="glyphicon glyphicon-bullhorn"></span></h3>
+      <form id="reasonReport" method="POST" enctype="multipart/form-data">
+         {% csrf_token %}
+         <input name="id_deb" type="hidden" value={{debate.id_debate}}>
+         {{report_form.type}}
+         {% for field in report_form.reason   %}
+         <div class="inputGroup">{{field}}</div>
+         {%endfor%}
+         <button name="report_debate" type="submit" class="btn btn-index">Denunciar</button>
+      </form>
+   </div>
+</div>
 <div class="container-debate">
     <header>
         <div class="row">
