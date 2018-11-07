@@ -229,7 +229,7 @@ def debateData(debates, user, moderator):
     	else:
             infavor_percent = (float(infavor_position_num) / float(position_num))*100
             against_percent = (float(against_position_num) / float(position_num))*100
-        if debate.members_type == 1 and not moderator:
+        if debate.members_type == 1 and not moderator and debate.state == 'open':
             try:
                 participate = PrivateMembers.objects.get(id_debate_id=debate.id_debate, id_user_id=user.id)
                 debate_list.append({"model":debate, "infavor_percent":infavor_percent, "against_percent":against_percent,
