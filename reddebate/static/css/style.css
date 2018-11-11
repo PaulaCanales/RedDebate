@@ -1487,7 +1487,17 @@ hr {
 	-webkit-transform: translate3d(0,0,0);
 	transform: translate3d(0,0,0);
 }
-
+.morphsearch.open .closebtn{
+  z-index: 2;
+  color: white;
+  position: fixed;
+  font-size: 30px;
+  top: 95px;
+  right: 15px;
+  border: 0px;
+  background-color: transparent;
+  font-weight: 800;
+}
 .dummy-column:nth-child(2) {
 	margin: 0 5%;
 }

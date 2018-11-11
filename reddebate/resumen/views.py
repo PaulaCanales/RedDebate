@@ -159,7 +159,7 @@ def makeData(request, actual_user, form, state):
         if debate.state != 'closed' and debate.end_date!= None and debate.end_date <= ahora :
             debate.state = 'closed'
             debate.save()
-    #obtener informacion de los debates dependiendo de su state
+    #obtener informacion de los debates dependiendo de su estado
     total_debates = Debate.objects.filter(state=state).order_by('-id_debate')
     total_data_deb = debateData(total_debates,actual_user,False)
     moderator_view_deb = debateData(total_debates,actual_user,True)
@@ -197,7 +197,7 @@ def makeData(request, actual_user, form, state):
         profile = Profile.objects.get(user_id=user.user_id)
         top_users.append({'user':usr, 'profile':profile})
     #obtener debates recientes
-    recent_debates = Debate.objects.filter(members_type=0).order_by('-id_debate')[:5]
+    recent_debates = Debate.objects.filter(members_type=0, state=state).order_by('-id_debate')[:5]
     recent_data_deb = debateData(recent_debates,actual_user, False)
     moderator_recent_debates = Debate.objects.all().order_by('-id_debate')[:5]
     moderator_recent_data_deb = debateData(moderator_recent_debates,actual_user, True)
@@ -328,3 +328,9 @@ def allUsers(total_users):
             profile = Profile.objects.get(user=user)
             all_users.append({'object':{'id':user.id, 'type':'alias'}, 'name':profile.alias, 'reputation':profile.reputation})
     return sorted(all_users)
+
+@login_required
+def searchView(request):
+    actual_user = request.user
+    context = makeData(request, actual_user, None, 'open')
+    return render(request, "search.html", context)
