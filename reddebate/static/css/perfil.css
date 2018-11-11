@@ -1,4 +1,9 @@
 @import url('https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css');
+body{
+  text-align: justify;
+  background-color: #f7f7f7;
+  font-family: "Montserrat", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
 .container-profile {
   /* max-width: 1250px; */
   margin: 50px auto 30px;
@@ -91,7 +96,6 @@ main p{
 
 .name {
   margin-top: 20px;
-  font-family: "Open Sans";
   font-weight: 600;
   font-size: 18pt;
   color: #2D3E50;
