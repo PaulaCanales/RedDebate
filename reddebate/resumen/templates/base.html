@@ -76,7 +76,7 @@
  				$("#debTitleForm").blur(function(){
 					var text = $("#debTitleForm").val()
 					console.log(text);
-    			text = text.split(" ");
+    			text = (text.toLowerCase()).split(" ");
 					console.log(text);
 					for (var i = 0; i < stopword.length; i++) {
 						text = text.filter(e => e !== stopword[i]);

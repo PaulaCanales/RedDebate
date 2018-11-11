@@ -60,8 +60,11 @@ def ws_receive(message):
 
                 n = PrivateMembers(id_user_id=message.user.id, id_debate_id=m.id_debate, type=m.owner_type)
                 n.save()
-                id_list = list(set(id_list)) #quito los id repetidos
-                Group(grupo).send({'text': json.dumps(n.as_dict(id_list))})
+                id_list = set(id_list) #quito los id repetidos
+                id_list_unique = []
+                for id in id_list:
+                    id_list_unique.append(id)
+                Group(grupo).send({'text': json.dumps(n.as_dict(id_list_unique))})
 
             elif data['members_type']=='2':
                 m.members_type = 1
