@@ -392,7 +392,7 @@ function razonCambioChart(){
     for (i=0 ; i<positions_by_day.length ; i++){
       var date = positions_by_day[i][0].split("-")
       var value = positions_by_day[i][1];
-      data.addRow([new Date(parseInt(date[0]),parseInt(date[1]),parseInt(date[2])), value]);
+      data.addRow([new Date(parseInt(date[0]),parseInt(date[1])-1,parseInt(date[2])), value]);
     };
     var chart = new google.visualization.AnnotationChart(document.getElementById('chart_div'));
 
