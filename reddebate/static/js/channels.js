@@ -106,6 +106,7 @@ $(document).ready(function(){
 
   $("#nuevoArgForm1").on("submit", function(event){
     console.log();("a favor")
+    $("#argument1").prop("disabled",true)
     var message = {
       text: $('#descArg1').val(),
       owner_type: $('#aliasArg1').val(),
@@ -114,11 +115,12 @@ $(document).ready(function(){
       id_user_id: ""
     }
     socket.send(JSON.stringify(message));
-    setTimeout(function(){location.reload();}, 500);
+    location.reload()
     return false;
   });
   $("#nuevoArgForm0").on("submit", function(event){
     console.log("en contra");
+    $("#argument0").prop("disabled",true)
     console.log($('#descArg0').val(),);
     var message = {
       text: $('#descArg0').val(),
@@ -127,9 +129,8 @@ $(document).ready(function(){
       position: "",
       id_user_id: ""
     }
-    console.log(message);
     socket.send(JSON.stringify(message));
-    setTimeout(function(){location.reload();}, 500);
+    location.reload()
     return false;
   });
   $("#bot_af_init").click(function(event){
