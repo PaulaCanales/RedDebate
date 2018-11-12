@@ -41,7 +41,15 @@
         <div class="row">
            <div class="col-sm-11">
               <h2>{{ debate.title }}</h2>
-              <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span> Visto {{visits}} veces
+              <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span> Visto {{visits}} veces |
+              {% ifequal debate.owner_type 'alias' %}
+              Publicado por <a href="{% url 'alias' owner_profile.alias %}">{{owner_profile.alias}}</a>
+                 | {{owner_profile.reputation}} puntos de reputación
+
+              {%else%}
+              Publicado por <a href="{% url 'username' owner_user.id %}">{{owner_user}}</a>
+                 | {{owner_profile.reputation}} puntos de reputación
+              {%endifequal%}
               <input id="idDebate" type="hidden" value={{debate.id_debate}}>
            </div>
            <div class="col-sm-1">
@@ -103,16 +111,7 @@
           </table>
        </div>
        <div class="col-sm-6">
-          <p class="debateDescripcion">{{ debate.text }}</p>
-          {% ifequal debate.owner_type 'alias' %}
-          <footer>Publicado por <a href="{% url 'alias' owner_profile.alias %}">{{owner_profile.alias}}</a>
-             | {{owner_profile.reputation}} puntos de reputación
-          </footer>
-          {%else%}
-          <footer>Publicado por <a href="{% url 'username' owner_user.id %}">{{owner_user}}</a>
-             | {{owner_profile.reputation}} puntos de reputación
-          </footer>
-          {%endifequal%}
+          {{ debate.text }}
        </div>
     </div>
     <div class="row">

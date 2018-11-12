@@ -55,7 +55,7 @@
            </div>
         </div>
         <div class="col-sm-6">
-           <div class="dataDebOwner">
+           <div>
               <p><b>Fecha inicio:</b>  {{ debate.date }}</p>
               {%ifequal debate.stat 'open'%}
               <p><b>Estado:</b> Abierto </p>
@@ -69,8 +69,8 @@
               {% endifequal %}
            </div>
            {% ifequal debate.members_type 1 %}
+           <b>Participantes</b>
            <div class="membersDebOwner">
-              <b>Participantes</b>
               {% for member in debate_members%}
               {% ifequal member.type 'username' %}
               <a type = "text" class="dummy-media-object" href="{% url 'username' member.user.id %}">
@@ -96,7 +96,8 @@
 			<div class="col-sm-11">
 				<h2>{{ debate.title }}</h2>
 				<input id="idDebate" type="hidden" value={{debate.id_debate}}>
-				<span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span> Visto {{visits}} veces
+				<span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span> Visto {{visits}} veces |
+        Debate creado por ti
 			</div>
 			<div class="col-sm-1">
 				{% ifequal debate.state 'open' %}
