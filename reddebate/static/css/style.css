@@ -1364,6 +1364,10 @@ hr {
   margin: -30px -30px 15px -30px;
   padding: 5% 5% 15px 5%;
 }
+.container-debate header a{
+  color: white;
+  font-weight: bold;
+}
 .photo {
   max-height: 200px;
   border-radius: 10px;
@@ -1416,8 +1420,8 @@ hr {
 }
 .debateDescripcion{
   font-size: 14px;
-  min-height: 180px;
-  font-family: "Montserrat", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  max-height: 200px;
+  overflow-y: auto;
 }
 .cards__item a{
   width: 100%;
@@ -2209,18 +2213,14 @@ hr {
 .informationDebOwner p{
   color: var(--azul-principal);
 }
-.dataDebOwner{
-  display: flex;
-  justify-content: space-between;
-}
 .membersDebOwner{
-  displ
   max-height: 250px;
   overflow-y: auto;
 }
 .tagsOwner{
   position: absolute;
   bottom: 0;
+  margin-top: 20px;
 }
 .data-img{
   width: 100%;
