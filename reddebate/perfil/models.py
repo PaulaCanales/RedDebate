@@ -3,6 +3,8 @@ from django.db.models.fields.related import ForeignKey
 from django.contrib.auth.models import User
 from datetime import *
 from django.db import models
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 from resumen.models import Debate
 
@@ -19,6 +21,12 @@ class Profile(models.Model):
     alias = models.CharField(max_length=30, null=False, unique=True, default=unique_rand, error_messages={'unique':"Ya existe un perfil con este Alias"})
     reputation = models.IntegerField(default=0, blank=True)
     img = models.FileField(blank=True, null=True, default="RDdefault.png")
+
+
+@receiver(post_save, sender=User)
+def create_profile(sender, instance, **kwargs):
+    if kwargs['created']:
+        Profile.objects.create(user=instance)
 
 class Notification(models.Model):
     id = models.AutoField(primary_key=True)
