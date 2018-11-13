@@ -31,7 +31,15 @@ def showDebate(request, id_debate): #debate_id
 		return render(request, '404.html', status=404)
 	visits = visitCount(debate, request.user)
 	if request.method == 'POST':
-		#solicitud de rateArg un argument
+		#solicitud de publicar un argumento a favor
+		if 'textArg1' in request.POST:
+			arg = newArgument(request, id_debate, 1)
+			return redirect(showDebate,id_debate)
+		#solicitud de publicar un argumento en contra
+		if 'textArg0' in request.POST:
+			arg = newArgument(request, id_debate, 0)
+			return redirect(showDebate,id_debate)
+		#solicitud de valorar un argumento
 		if 'id_arg' in request.POST:
 			respuesta = rateArgument(request)
 			return HttpResponse(respuesta)
@@ -334,7 +342,20 @@ def argumentData(arguments, actual_user, counterarg_num, id_debate):
 							'can_counterarg': can_counterarg, 'owner_type':arg.owner_type,
 							'can_report_arg':can_report_arg})
 	return args_list
+def newArgument(request, id_debate, position):
+	if request.method == "POST":
+		if position==1:
+			arg_form = newArgForm1(request.POST, owner=0, max_length=0)
+		elif position==0:
+			arg_form = newArgForm0(request.POST, owner=0, max_length=0)
 
+		if arg_form.is_valid():
+			post = arg_form.save(commit=False)
+			post.id_user_id = request.user.id
+			post.id_debate_id = id_debate
+			post.position = position
+			post.save()
+	return arg_form
 ##@brief Funcion que guarda el arguments del user de un argument.
 ##@param request solicitud web, entrega los datos del user actual
 ##@return id_debat para redireccional a la vista "showDebate" con este id de debate
