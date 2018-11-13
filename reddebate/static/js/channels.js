@@ -104,35 +104,35 @@ $(document).ready(function(){
     return false;
   });
 
-  $("#nuevoArgForm1").on("submit", function(event){
-    console.log();("a favor")
-    $("#argument1").prop("disabled",true)
-    var message = {
-      text: $('#descArg1').val(),
-      owner_type: $('#aliasArg1').val(),
-      id_debate: $('#idDebate').val(),
-      position: "",
-      id_user_id: ""
-    }
-    socket.send(JSON.stringify(message));
-    location.reload()
-    return false;
-  });
-  $("#nuevoArgForm0").on("submit", function(event){
-    console.log("en contra");
-    $("#argument0").prop("disabled",true)
-    console.log($('#descArg0').val(),);
-    var message = {
-      text: $('#descArg0').val(),
-      owner_type: $('#aliasArg0').val(),
-      id_debate: $('#idDebate').val(),
-      position: "",
-      id_user_id: ""
-    }
-    socket.send(JSON.stringify(message));
-    location.reload()
-    return false;
-  });
+  // $("#nuevoArgForm1").on("submit", function(event){
+  //   console.log();("a favor")
+  //   $("#argument1").prop("disabled",true)
+  //   var message = {
+  //     text: $('#descArg1').val(),
+  //     owner_type: $('#aliasArg1').val(),
+  //     id_debate: $('#idDebate').val(),
+  //     position: "",
+  //     id_user_id: ""
+  //   }
+  //   socket.send(JSON.stringify(message));
+  //   location.reload()
+  //   return false;
+  // });
+  // $("#nuevoArgForm0").on("submit", function(event){
+  //   console.log("en contra");
+  //   $("#argument0").prop("disabled",true)
+  //   console.log($('#descArg0').val(),);
+  //   var message = {
+  //     text: $('#descArg0').val(),
+  //     owner_type: $('#aliasArg0').val(),
+  //     id_debate: $('#idDebate').val(),
+  //     position: "",
+  //     id_user_id: ""
+  //   }
+  //   socket.send(JSON.stringify(message));
+  //   location.reload()
+  //   return false;
+  // });
   $("#bot_af_init").click(function(event){
     var message = {
       position: 1,

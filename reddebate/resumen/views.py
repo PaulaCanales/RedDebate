@@ -60,7 +60,6 @@ def logout(request):
 
 def closedIndex(request):
     actual_user = request.user
-    startAlias(request, actual_user)
     creator=[('username', User.objects.get(id=request.user.id).username),
 	         ('alias',Profile.objects.get(user= request.user).alias)]
     total_users = User.objects.exclude(id=actual_user.id)
@@ -91,7 +90,6 @@ def closedIndex(request):
 @login_required
 def index(request):
     actual_user = request.user
-    startAlias(request, actual_user)
     creator=[('username', User.objects.get(id=request.user.id).username),
 	         ('alias',Profile.objects.get(user= request.user).alias)]
     total_users = User.objects.exclude(id=actual_user.id)
@@ -264,21 +262,6 @@ def tagged(request, slug):
                  'form':form, 'top_tags':top_tags, 'label':label, 'moderator_view_deb':moderator_view_deb}
 
     return render(request, 'filtro.html', context)
-
-##@brief Funcion que inicializa el alias del user actual, en caso de no tener alias sera "anonimo".
-##@param request solicitud web
-##@param u user a crear alias.
-##@warning Login is required
-@login_required
-def startAlias(request, u):
-    try:
-        user = Profile.objects.get(user= u)
-        user_alias = user.alias
-    except:
-        user_profile= Profile(user=u)
-        user_profile.save()
-        user = Profile.objects.get(user= u)
-        user_alias = user.alias
 
 ##@brief Funcion que cierra el debate
 ##@param request solicitud web

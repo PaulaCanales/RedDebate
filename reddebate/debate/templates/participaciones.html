@@ -118,10 +118,16 @@
       </tr>
       <tr>
         <td style="border-bottom: #fff; text-align: center;" id="val{{arg.id_arg}}"> {{arg.rate}}</td>
-        {% ifequal arg.post_usr_arg arg.11%}
-        <td style="border-bottom: #fff; text-align: center; display:none" id="change{{arg.id_arg}}"> <span class="glyphicon glyphicon-transfer" aria-hidden="true"></span> </td>
+        {% ifequal arg.position_owner position%}
+        <td style="display:none;" id="change{{arg.id_arg}}">
+          <span class="glyphicon glyphicon-transfer" aria-hidden="true"></span>
+        </td>
         {% else %}
-        <td style="border-bottom: #fff; text-align: center; display:block" id="change{{arg.id_arg}}"> <span class="glyphicon glyphicon-transfer" aria-hidden="true"></span> </td>
+        <td id="change{{arg.id_arg}}">
+          <div class="change-position-mark{{position}}" >
+            <span class="glyphicon glyphicon-transfer" aria-hidden="true"></span>
+          </div>
+        </td>
         {% endifequal %}
       </tr>
       <tr id="bordeTabla{{position}}">
