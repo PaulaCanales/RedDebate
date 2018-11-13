@@ -340,7 +340,7 @@ def argumentData(arguments, actual_user, counterarg_num, id_debate):
 		args_list.append({'text': arg.text, 'owner_arg': owner_arg, 'rate': total_rate, 'url': url,
 							'id_arg': arg.id_argument, 'exist_rate': exist_rate, 'owner_arg_id': owner_arg_id, 'counterargs': counterargs_list,
 							'can_counterarg': can_counterarg, 'owner_type':arg.owner_type,
-							'can_report_arg':can_report_arg})
+							'can_report_arg':can_report_arg, 'position_owner': position_owner_arg})
 	return args_list
 def newArgument(request, id_debate, position):
 	if request.method == "POST":

@@ -2233,3 +2233,16 @@ hr {
   margin-top: 100px;
   margin-bottom: 50px;
 }
+.change-position-mark0,
+.change-position-mark1{
+  padding: 6px 12px;
+  float:right;
+  border-bottom: #fff;
+  text-align: center;
+}
+.change-position-mark1{
+  color: var(--rojo-principal);
+}
+.change-position-mark0{
+  color: var(--verde-principal);
+}
