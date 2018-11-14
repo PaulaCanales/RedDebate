@@ -287,5 +287,21 @@
 				 </div>
 	 {% endifequal %}
 </div>
+<script>
+$(document).ready(function() {
+  $("#bot_af_init").click(function(){
+    $('#bot_af_init').prop('disabled',true)
+  });
+  $("#bot_af").click(function(){
+    $('#bot_af').prop('disabled',true)
+  });
+  $("#bot_ec_init").click(function(){
+    $('#bot_ec_init').prop('disabled',true)
+  });
+  $("#bot_ec").click(function(){
+    $('#bot_ec').prop('disabled',true)
+  });
+});
+</script>
 {% endblock content %}
 </html>
