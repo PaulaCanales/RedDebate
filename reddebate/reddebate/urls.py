@@ -29,7 +29,7 @@ urlpatterns = [
     url(r'^debate/', include('debate.urls')),
     url(r'^perfil/', include('perfil.urls')),
     url(r'^admin/', admin.site.urls),
-    url(r'^oauth/', include('social_django.urls', namespace='social')),
+    # url(r'^oauth/', include('social_django.urls', namespace='social')),
 ]
 
 if settings.DEBUG:

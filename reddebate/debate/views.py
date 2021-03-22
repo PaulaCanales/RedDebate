@@ -485,10 +485,12 @@ def visitCount(debate, user):
 	utc=pytz.UTC
 	try:
 		visit = Visit.objects.get(id_debate=debate, id_user_id=user.id)
-		delta = visit.date + timedelta(minutes=30)
+		# delta = visit.date + timedelta(minutes=30)
+		delta = visit.date
 	except:
 		visit = Visit.objects.create(id_debate=debate, id_user_id=user.id)
-		delta = utc.localize(visit.date) + timedelta(minutes=30)
+		# delta = utc.localize(visit.date) + timedelta(minutes=30)
+		delta = utc.localize(visit.date)
 	ahora = utc.localize(datetime.datetime.today())
 	if delta <= ahora:
 		visit.num = visit.num + 1

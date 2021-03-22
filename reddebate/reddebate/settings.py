@@ -83,7 +83,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'social_django.middleware.SocialAuthExceptionMiddleware',
+    # 'social_django.middleware.SocialAuthExceptionMiddleware',
 ]
 
 ROOT_URLCONF = 'reddebate.urls'
@@ -102,8 +102,8 @@ TEMPLATES = [
                 'social.apps.django_app.context_processors.backends',
                 'social.apps.django_app.context_processors.login_redirect',
                 'django.template.context_processors.media',
-                'social_django.context_processors.backends',
-                'social_django.context_processors.login_redirect',
+                # 'social_django.context_processors.backends',
+                # 'social_django.context_processors.login_redirect',
                 'resumen.context_processors.listado_notificacion',
             ],
         },
@@ -121,7 +121,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'reddebate',
         'USER': 'redusuario',
-        'PASSWORD': 'redpass',
+        'PASSWORD': 'redpass123456',
         'HOST': '127.0.0.1',
         #'PORT': '',
     }
@@ -150,12 +150,12 @@ APPEND_SLASH=False
 
 AUTHENTICATION_BACKENDS = (
  'django.contrib.auth.backends.ModelBackend',
- 'social_core.backends.github.GithubOAuth2',
- 'social_core.backends.twitter.TwitterOAuth',
- 'social_core.backends.facebook.FacebookOAuth2',
- 'social_core.backends.open_id.OpenIdAuth',  # for Google authentication
- 'social_core.backends.google.GoogleOpenId',  # for Google authentication
- 'social_core.backends.google.GoogleOAuth2',  # for Google authentication
+#  'social_core.backends.github.GithubOAuth2',
+#  'social_core.backends.twitter.TwitterOAuth',
+#  'social_core.backends.facebook.FacebookOAuth2',
+#  'social_core.backends.open_id.OpenIdAuth',  # for Google authentication
+#  'social_core.backends.google.GoogleOpenId',  # for Google authentication
+#  'social_core.backends.google.GoogleOAuth2',  # for Google authentication
  )
 
 LOGIN_URL = 'home'
