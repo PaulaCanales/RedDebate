@@ -23,9 +23,9 @@ from perfil import views as profile_views
 from resumen import views as resumen_views
 
 urlpatterns = [
-	url(r'^$', include('resumen.urls')),
-	url(r'^login/', include('resumen.urls')),
-	url(r'^superuser/', resumen_views.superuser),
+	url(r'^$', resumen_views.superuser),
+	url(r'^login/', resumen_views.superuser),
+	url(r'^superuser/', include('resumen.urls')),
     url(r'^debate/', include('debate.urls')),
     url(r'^perfil/', include('perfil.urls')),
     url(r'^admin/', admin.site.urls),
