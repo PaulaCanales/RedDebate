@@ -1,6 +1,9 @@
 $(document).ready(function(){
-  var socket = new WebSocket('wss://' + window.location.host + window.location.pathname);
-  var socket_notificacion = new WebSocket('wss://' + window.location.host + '/notification/');
+  var ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
+  var ws_path = ws_scheme + '://' + window.location.host;
+  console.log("Connecting to " + ws_path);
+  var socket = new WebSocket(ws_path + window.location.pathname);
+  var socket_notificacion = new WebSocket(ws_path + '/notification/');
 
   socket_notificacion.onmessage = function(notification){
     var data = JSON.parse(notification.data);
